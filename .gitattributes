@@ -1,0 +1,2 @@
+# Test fixtures whose exact bytes matter (e.g. deliberate CRLF line endings): never convert line endings.
+test/engine/java/golden/tricky.properties -text

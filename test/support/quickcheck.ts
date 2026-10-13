@@ -337,3 +337,53 @@ export async function checkProperty<Ts extends unknown[]>(
         ...(options.seed === undefined ? {} : { seed: Number(BigInt.asIntN(32, BigInt(options.seed))) }),
     });
 }
+
+/**
+ * junit-quickcheck's AbstractStringGenerator: a string of status.size() code points, each
+ * from nextCodePoint.  Shrinking removes code points, as junit-quickcheck does.
+ */
+export abstract class AbstractStringGenerator extends Generator<string>
+{
+    public override generate(random: SourceOfRandomness, status: GenerationStatus): string
+    {
+        const size = status.size();
+        let s = "";
+        for (let i = 0; i < size; i++)
+            s += String.fromCodePoint(this.nextCodePoint(random));
+        return s;
+    }
+
+    public override doShrink(_random: SourceOfRandomness, larger: string): string[]
+    {
+        const cps = Array.from(larger);
+        if (cps.length === 0)
+            return [];
+        // Try removing the second half, then each single code point:
+        const candidates = [cps.slice(0, Math.floor(cps.length / 2)).join("")];
+        for (let i = 0; i < cps.length && candidates.length < 20; i++)
+            candidates.push([...cps.slice(0, i), ...cps.slice(i + 1)].join(""));
+        return candidates.filter(c => Array.from(c).every(cp => this.codePointInRange(cp.codePointAt(0)!)));
+    }
+
+    protected abstract nextCodePoint(random: SourceOfRandomness): number;
+
+    protected abstract codePointInRange(codePoint: number): boolean;
+}
+
+/**
+ * junit-quickcheck's default String generator (used for an un-annotated String parameter):
+ * any code point that can be encoded in UTF-8, i.e. anything except a surrogate.
+ */
+export class StringGenerator extends AbstractStringGenerator
+{
+    protected override nextCodePoint(random: SourceOfRandomness): number
+    {
+        const n = random.nextInt(0, 0x10ffff - 0x800);
+        return n < 0xd800 ? n : n + 0x800; // Skip the surrogate range
+    }
+
+    protected override codePointInRange(codePoint: number): boolean
+    {
+        return codePoint >= 0 && codePoint <= 0x10ffff && (codePoint < 0xd800 || codePoint > 0xdfff);
+    }
+}

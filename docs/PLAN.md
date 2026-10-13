@@ -77,10 +77,10 @@ Tests:
 | Engine tests | JUnit 4 | **Vitest** (Node) | Decided. |
 | Property tests | junit-quickcheck | **fast-check**, plus a `SourceOfRandomness` shim | Generators are imperative (`gen(random, status)`), so we port them almost line by line behind `fc.integer().map(seed => gen(new SourceOfRandomness(seed)))`. Shrinking is lost, which is the same as now since the custom generators don't shrink either. |
 | Parsers | ANTLR 4 (Java target) | **antlr-ng** tool + **antlr4ng** runtime | Pure TypeScript, no Java needed at build time. Embedded Java actions and predicates (for example in `MainLexer2`/`MainParser2`) must be rewritten in TS. |
-| Decimals | `BigDecimal` + `long` fast path, `MathContext.DECIMAL128` | **decimal.js** (precision 34, ROUND_HALF_EVEN) + `bigint` fast path | The highest semantic risk; see §5. `big-math` (log, pow) maps to decimal.js `ln`/`log`/`pow`. |
-| Rationals | javaSMT `Rational` (only use of javaSMT) | small in-house `Rational` over `bigint` | Used for unit exponents. |
+| Numbers | `Long` or `BigDecimal` (which keeps its scale), `MathContext.DECIMAL128` | **Canonical decimals**: one `Decimal` type (decimal.js configured as DECIMAL128), with no significant trailing zeros | Decided in Phase 1. Java's scale only showed in how some computed results displayed (`2.50`); values, equality, ordering and files are unaffected. Java's `pow` algorithm is ported exactly. `big-math` (log, exp) is handled in Phase 4. See CONVENTIONS.md "Numbers". |
+| Rationals | javaSMT `Rational` (only use of javaSMT) | port of that `Rational` over `bigint` | Used for unit exponents. Done in Phase 1. |
 | Dates/times | `java.time` | **Temporal** (`temporal-polyfill` until Safari ships it natively) | `DateTimeFormatter` pattern parsing and formatting (8 files, including GuessFormat) needs a small in-house port, because Temporal has no pattern parser. |
-| Immutable collections, equality | Guava `ImmutableList`/`Map`, `equals`/`hashCode` | `ReadonlyArray`/`ReadonlyMap` + an `equals`/`hash` protocol and a `HashMap<K,V>` for value keys | JS `Map` uses identity, so any Java map keyed by values, identifiers or types needs this. |
+| Immutable collections, equality | Guava `ImmutableList`/`Map`, `equals`/`hashCode` | arrays, JS `Map`/`Set` for primitive keys, and `HashMap`/`HashSet` (keyed by `equals`/`hashCode`) for object keys | JS `Map` uses identity, so any Java map keyed by values, identifiers or types needs `HashMap`. It iterates in insertion order, not Java's hash order: decided in Phase 1, with a check at each ported `HashMap` site for whether the order is observable. |
 | Threading | FX thread + Simulation thread (758 `@OnThread(Simulation)`) | Single main thread with a **serial task queue** (`Workers.onWorkerThread` → time-sliced queue) | Keep the same boundaries in the API so the engine could move to a Web Worker later. |
 | Files | `java.io.File`, native dialogs, autosave | **File System Access API** (Chromium) with upload/download fallback; autosave and recent files in **OPFS/IndexedDB** | Asynchronous; kept behind a `FileService` interface. |
 | Clipboard | AWT/FX clipboard | async Clipboard API | Asynchronous. Copying HTML and plain text both work. |
@@ -180,17 +180,22 @@ Each phase lists what gets built and the original tests that should pass at the 
 **Exit:** CI runs both the Vitest suite and the Playwright smoke test, and the generated
 parsers compile.
 
-### Phase 1: Core utilities (L0–L1)
-- Port `utility-error`, `utility-functional`, `utility-adt`, `identifiers`, and the
-  non-GUI parts of `utility`.
-- Build the numeric core: the bigint/Decimal number representation and every `Utility`
-  arithmetic helper, matching DECIMAL128 rounding and `stripTrailingZeros`.
-- Write `Rational`, plus the equality/hash protocol and `HashMap`.
+### Phase 1: Core utilities (L0–L1) (done)
+- Port `utility-error`, `utility-functional`, `utility-adt`, `identifiers` and `utility`.
+- Build the numeric core: canonical `Decimal` numbers with DECIMAL128 arithmetic, Java's
+  `BigDecimal.pow` algorithm and parsing rules, and every `Utility` number helper.
+- Write the `equals`/`hashCode`/`compareTo` protocol, `HashMap`/`HashSet`, `Rational`, `Damerau`,
+  `JavaProperties` (for the translation files), and the `java.lang` helpers whose behaviour
+  differs from JavaScript (strings, doubles, characters, case mapping, Unicode digits).
 - Write the serial task queue that replaces `Workers`.
+- Check the ports against the JVM with golden tests, including the original number methods on
+  4,000 inputs (the only differences are documented `PORT-NOTE`s and Java's platform-dependent
+  `Math.pow`, which differs by up to 1 ulp).
+- Deferred (marked `PORT-DEFERRED`): `Utility`'s file and storage methods (Phases 6 and 9).
 
-**Tests:** `tests-basic` utility tests (`PropUtility`, `TestIdentifier`), and the number,
-string and date generators (`GenNumber*`, `GenString`, `GenDate`, `GenZoneId`,
-`UnicodeStringGenerator`).
+**Tests:** all of `tests-basic`'s test classes (`PropUtility`, `TestIdentifier`, `TestCompare`,
+`TestCompleteStringPool`, `PropDAG`) and its number, string and graph generators. `GenDate`,
+`GenZoneId`, `GenUnit` and the date/value parts of `TBasicUtil` move to Phase 2, which they need.
 
 ### Phase 2: Type system (L2, `types`)
 - Port DataType, DataTypeUtility, DataTypeValue, TypeExp/TypeCons unification,
@@ -200,8 +205,9 @@ string and date generators (`GenNumber*`, `GenString`, `GenDate`, `GenZoneId`,
   branded union).
 - Port the Temporal-based date/time value types and the `DateTimeFormatter` subset.
 
-**Tests:** `PropUnit`, `TestUnit`, `TestGenDataType`, `TestCompare`, and the type, unit
-and value generators.
+**Tests:** `PropUnit`, `TestUnit`, `TestGenDataType`, and the type, unit and value
+generators, plus the rest of `tests-basic`: `GenDate`, `GenZoneId`, `GenUnit` and the
+date/value parts of `TBasicUtil` (marked `PORT-DEFERRED`).
 
 ### Phase 3: Data model and file format (L3, `data`)
 - Port the column storages, Column/RecordSet/EditableRecordSet,
@@ -353,9 +359,9 @@ of `tests-gui-central` that do not need expressions.
 ## 5. Main risks and how to handle them
 
 1. **Numeric semantics.** Java BigDecimal has scale, and DECIMAL128 rounding plus the
-   `long`/`BigDecimal` dual representation affect results and display. *Mitigation:*
-   port the arithmetic first, in Phase 1. Generate golden values from the Java app
-   (a tiny Java harness that dumps results for random inputs) and compare.
+   `long`/`BigDecimal` dual representation affect results and display. *Mitigation (done in
+   Phase 1):* canonical decimals, and golden tests that run the original Java number methods
+   on the JVM. The transcendental functions (`big-math`) in Phase 4 need the same treatment.
 2. **Value equality.** JS has no `equals`/`hashCode`, so code ported naively silently
    uses identity semantics. *Mitigation:* the equality protocol and `HashMap` from
    Phase 1, plus a lint rule against `Map`/`Set` keyed by domain objects.
@@ -386,6 +392,10 @@ of `tests-gui-central` that do not need expressions.
 ## 6. Decisions
 
 Decided:
+- Numbers are canonical decimals (decimal.js configured as DECIMAL128), one representation for
+  whole and fractional numbers, so 2.5 and 2.50 are the same value (Phase 1).
+- `HashMap`/`HashSet` iterate in insertion order, with a check at each ported Java `HashMap`
+  site for whether its order is observable (Phase 1).
 - Generated ANTLR output is not committed. `npm run gen:parsers` runs on install and before
   dev, build, test and typecheck, and takes under a second.
 - Engine tests use Vitest (Node). GUI tests use Playwright Test, to be reviewed after the

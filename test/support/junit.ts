@@ -1,42 +1,16 @@
 // JUnit 4 style assertions and assumptions, so ported Java tests keep their shape:
 //   assertEquals(expected, actual) / assertEquals(message, expected, actual) / ... (delta)
 //
-// Equality follows Java's Object.equals rather than JavaScript's === or Vitest's deep
-// equality: objects with an equals method are compared with it, arrays (Java Lists) and
-// Maps/Sets element by element, numbers with == (but NaN equals NaN).  A number never
-// equals a bigint, just as an Integer never equals a Long in Java.
+// Equality follows Java's Object.equals (the engine's javaEquals) rather than JavaScript's ===
+// or Vitest's deep equality: objects with an equals method are compared with it, arrays (Java
+// Lists) and Maps/Sets element by element, numbers with == (but NaN equals NaN), and plain
+// objects by identity.  A number never equals a bigint, just as an Integer never equals a Long.
 import fc from "fast-check";
+import { javaEquals } from "../../src/engine/java/JavaObject.js";
 import { inProperty } from "./quickcheck.js";
 
-interface JavaEquatable
-{
-    equals(other: unknown): boolean;
-}
-
-function hasEquals(x: unknown): x is JavaEquatable
-{
-    return typeof x === "object" && x !== null && typeof (x as Partial<JavaEquatable>).equals === "function";
-}
-
-/** Equality as Java's Objects.equals(a, b) would compute it on the ported values. */
-export function javaEquals(a: unknown, b: unknown): boolean
-{
-    if (a === b)
-        return true;
-    if (a === null || b === null || a === undefined || b === undefined)
-        return false;
-    if (typeof a === "number" && typeof b === "number")
-        return Number.isNaN(a) && Number.isNaN(b);
-    if (hasEquals(a))
-        return a.equals(b);
-    if (Array.isArray(a) && Array.isArray(b))
-        return a.length === b.length && a.every((x, i) => javaEquals(x, b[i]));
-    if (a instanceof Map && b instanceof Map)
-        return a.size === b.size && [...a].every(([k, v]) => b.has(k) && javaEquals(v, b.get(k)));
-    if (a instanceof Set && b instanceof Set)
-        return a.size === b.size && [...a].every(k => b.has(k));
-    return false;
-}
+// Java equality is the engine's, so tests and the code under test agree on it:
+export { javaEquals };
 
 /** Roughly Java's String.valueOf(x), for failure messages. */
 export function javaToString(x: unknown): string

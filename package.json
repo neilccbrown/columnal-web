@@ -19,7 +19,7 @@
     "pretypecheck": "npm run gen:parsers",
     "typecheck": "vue-tsc --build",
     "lint": "eslint .",
-    "depcheck": "depcruise src --config .dependency-cruiser.cjs",
+    "depcheck": "depcruise src test --config .dependency-cruiser.cjs",
     "pretest": "npm run gen:parsers",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "antlr4ng": "^3.0.16",
+    "decimal.js": "^10.6.0",
     "vue": "^3.5.44"
   },
   "devDependencies": {

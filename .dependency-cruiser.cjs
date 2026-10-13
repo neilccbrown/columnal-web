@@ -7,9 +7,11 @@
 // depended on a GUI module (transformations, importers and exporters on utility-gui, and
 // importers on stf/table-gui), that dependency is deliberately dropped: the GUI parts are
 // rebuilt separately, and whatever the engine used from them must move into the engine.
-// "java" is the TypeScript-only Java compatibility module, which everything may use.
+// "java" (Java standard library equivalents) and "anns" (the Java annotation qualifiers)
+// may be used by every engine module.
 const ENGINE_MODULE_DEPENDENCIES = {
     "java": [],
+    "anns": [],
     "utility-error": [],
     "utility-functional": ["utility-error"],
     "utility-adt": ["utility-error", "utility-functional"],
@@ -30,12 +32,12 @@ const escapeRegex = (s) => s.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 
 const engineLayerRules = Object.entries(ENGINE_MODULE_DEPENDENCIES).map(([module, deps]) => ({
     name: `engine-layering-${module}`,
-    comment: `src/engine/${module} may only depend on: ${["java", ...deps].join(", ")} (mirrors the Java Gradle module dependencies).`,
+    comment: `src/engine/${module} may only depend on: ${["java", "anns", ...deps].join(", ")} (mirrors the Java Gradle module dependencies).`,
     severity: "error",
     from: { path: `^src/engine/${escapeRegex(module)}/` },
     to: {
         path: "^src/engine/[^/]+/",
-        pathNot: `^src/engine/(${[module, "java", ...deps].map(escapeRegex).join("|")})/`,
+        pathNot: `^src/engine/(${[module, "java", "anns", ...deps].map(escapeRegex).join("|")})/`,
     },
 }));
 
@@ -64,6 +66,13 @@ module.exports = {
             to: { path: "node_modules/(vue|@vue|reka-ui|@ark-ui|@zag-js)/" },
         },
         {
+            name: "decimal-only-via-java",
+            comment: "Use Decimal from src/engine/java/JavaBigDecimal.ts: importing decimal.js directly gives the wrong precision and rounding.",
+            severity: "error",
+            from: { path: "^(src|test)/", pathNot: "^src/engine/java/" },
+            to: { path: "node_modules/decimal\\.js/" },
+        },
+        {
             name: "src-not-to-test",
             comment: "Application code must not depend on tests.",
             severity: "error",
@@ -83,7 +92,7 @@ module.exports = {
             comment: "Circular imports can cause initialisation-order errors with ES module classes. Java allows cycles, so some may be needed; review each one.",
             severity: "warn",
             from: { pathNot: "^src/engine/parsers/generated/" },
-            to: { circular: true },
+            to: { circular: true, viaOnly: { dependencyTypesNot: ["type-only"] } },
         },
     ],
     options: {

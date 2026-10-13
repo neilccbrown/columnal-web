@@ -1,6 +1,7 @@
 // The subset of Hamcrest used by Columnal's tests: assertThat/assumeThat and a few matchers.
 //   Java:  assertThat(x, Matchers.greaterThanOrEqualTo(3));
 //   TS:    assertThat(x, Matchers.greaterThanOrEqualTo(3));
+import { javaCompare } from "../../src/engine/java/JavaObject.js";
 import { AssertionFailedError, assumeTrue, javaEquals, javaToString } from "./junit.js";
 
 export interface Matcher<T>
@@ -33,20 +34,8 @@ export function assumeThat<T>(actual: T, matcher: Matcher<T>): void
     assumeTrue(`assumeThat failed: expected ${matcher.describe()} but was <${javaToString(actual)}>`, matcher.matches(actual));
 }
 
-interface Comparable
-{
-    compareTo(other: unknown): number;
-}
-
-// Java's Comparable.compareTo for the ported types (objects with compareTo) and for primitives.
-function compare(a: unknown, b: unknown): number
-{
-    if (typeof a === "object" && a !== null && typeof (a as Partial<Comparable>).compareTo === "function")
-        return (a as Comparable).compareTo(b);
-    if ((typeof a === "number" || typeof a === "bigint" || typeof a === "string") && typeof a === typeof b)
-        return a < (b as typeof a) ? -1 : a > (b as typeof a) ? 1 : 0;
-    throw new TypeError(`Cannot compare ${javaToString(a)} with ${javaToString(b)}`);
-}
+// Java's Comparable.compareTo, for the ported types and built-in values:
+const compare = javaCompare;
 
 function matcher<T>(describe: () => string, matches: (actual: T) => boolean): Matcher<T>
 {

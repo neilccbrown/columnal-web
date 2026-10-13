@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<dialog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="help.xsd"
+        id="edit-check" title="Edit Check Details" >
+    <help id="check-type" title="Check">
+        <short>Where to apply the test</short>
+        <full>
+            <p>The test can be applied in four ways:</p>
+            <ul>All rows -- check that the expression is true for every row in the source table.</ul>
+            <ul>At least one row -- check that the expression is true for at least one row in the source table.</ul>
+            <ul>No rows -- check that the expression is false for every row in the source table.</ul>
+            <ul>Once -- check that the expression is true, regardless of the number of rows in the source table.</ul>
+        </full>
+    </help>
+    <help id="check-expression" title="Test">
+        <short>The expression to check is true</short>
+        <full>
+            <p>The Check evaluates this expression to ensure that it is true.</p>
+        </full>
+    </help>
+</dialog>

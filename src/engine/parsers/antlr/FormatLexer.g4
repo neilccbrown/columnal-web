@@ -1,0 +1,54 @@
+// Ported from the Java original: Unicode property \p{Alpha} renamed to \p{Alphabetic} and \p{Digit} to \p{Nd} (same sets in Java ANTLR; antlr-ng lacks those aliases).
+lexer grammar FormatLexer;
+
+import StringLexerShared;
+
+DIGITS : [0-9]+;
+
+UNIT : '{' ~'}'* '}';
+
+BOOLEAN : 'Boolean';
+NUMBER : 'Number';
+TEXT : 'Text';
+YEARMONTHDAY : 'Date';
+YEARMONTH : 'DateYM';
+TIMEOFDAY : 'Time';
+DATETIME : 'DateTime';
+DATETIMEZONED : 'DateTimeZoned';
+TAGGED : '@tagged';
+TYPE : '@TYPE';
+TYPEVAR : '@typevar';
+UNITVAR : '@unitvar';
+DEFAULT : '@DEFAULT' -> pushMode(VALUE_MODE);
+APPLY: '@apply';
+
+WS : ( ' ' | '\t' )+ -> skip;
+
+COLUMN : '@COLUMN';
+
+RECORD_MORE : '_';
+OPEN_BRACKET : '(';
+CLOSE_BRACKET : ')';
+COMMA: ',';
+OPEN_SQUARE : '[';
+CLOSE_SQUARE : ']';
+ARROW: '->';
+TAGOR: '|';
+COLON: ':';
+
+
+INCOMPLETE : '@INCOMPLETE';
+INVALIDOPS : '@invalidtypeops';
+
+
+NEWLINE : '\r'? '\n' ;
+
+// Needs to be last to favour built-in type names:
+// Important that this is the same as in ExpressionLexer
+// (I think because we use @ExpressionIdentifier as a shorthand
+// for type identifiers in our code):
+UNQUOTED_NAME : [\p{Alphabetic}\p{General_Category=Other_Letter}] (('_' | ' ')? [\p{Alphabetic}\p{Nd}\p{General_Category=Other_Letter}])*;
+
+mode VALUE_MODE;
+VALUE_END: NEWLINE -> popMode;
+VALUE: (~[\n\r])+;

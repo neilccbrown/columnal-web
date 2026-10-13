@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<functionDocumentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:noNamespaceSchemaLocation="funcdoc.xsd"
+                       namespace="lookup">
+    <function name="lookup">
+        <synonym>vlookup</synonym>
+        
+        <typeArg>a</typeArg>
+        <typeArg>b</typeArg>
+        <typeConstraint>Equatable a</typeConstraint>
+        <argType name="keys">[@typevar a]</argType>
+        <argType name="key">@typevar a</argType>
+        <argType name="values">[@typevar b]</argType>
+        <returnType name="value">@typevar b</returnType>
+        <description>
+            <p>Given a list, finds a matching item, and returns the corresponding value from the other list.</p>
+            <p>This is useful for looking up one column via the value of another, e.g. lookup(Column A, value in A, Column B)</p>
+            <p>Gives an error if there are zero or multiple matches in the left side.</p>
+        </description>
+        <exampleGroup>
+            <table name="Scores">
+                <columns>
+                    <column name="Person" type="Text"/>
+                    <column name="Score" type="Number"/>
+                </columns>
+                <data>
+                    <row><d>"Janet"</d><d>78</d></row>
+                    <row><d>"Asim"</d><d>36</d></row>
+                    <row><d>"Qing"</d><d>45</d></row>
+                </data>
+            </table>
+            <example>
+                <input>@call function\\lookup(table\\Scores#Person, "Qing", table\\Scores#Score)</input>
+                <output>45</output>
+            </example>
+            <example>
+                <input>@call function\\lookup(table\\Scores#Person, "Hannah", table\\Scores#Score)</input>
+                <output>error</output>
+            </example>
+        </exampleGroup>
+        <example>
+            <inputArg>([4, 5, 6], 6, ["a", "b", "c"])</inputArg>
+            <output>"c"</output>
+        </example>
+        <example>
+            <inputArg>([1, 1, 2, 3], 1, ["a", "b", "c", "d"])</inputArg>
+            <output>error</output>
+        </example>
+    </function>
+    <function name="lookup all">
+        <typeArg>a</typeArg>
+        <typeArg>b</typeArg>
+        <typeConstraint>Equatable a</typeConstraint>
+        <argType name="keys">[@typevar a]</argType>
+        <argType name="key">@typevar a</argType>
+        <argType name="values">[@typevar b]</argType>
+        <returnType name="matching values">[@typevar b]</returnType>
+        <description>
+            <p>Given two lists, finds all the items with a matching value in left list, and returns the right list values for each.</p>
+            <p>This is useful for looking up one column via the value of another, e.g. lookup all(Column A, value in A, Column B)</p>
+        </description>
+        <example>
+            <inputArg>([1, 2, 1, 3], 1, ["a", "b", "c", "d"])</inputArg>
+            <output>["a", "c"]</output>
+        </example>
+    </function>     
+    <!--
+    <function name="lookup all paired">
+        <typeArg>a</typeArg>
+        <typeArg>b</typeArg>
+        <typeConstraint>Equatable a</typeConstraint>
+        <argType>([(a, b)], a)</argType>
+        <returnType>[b]</returnType>
+        <description>
+            <p>Given a list of pairs, finds all the items with a matching left-hand value, and returns the right-hand values for each.</p>
+            <p>This is useful for looking up one column via the value of another, e.g. lookup single(pair lists(Column A, Column B), value)</p>
+        </description>
+        <example>
+            <input>([(1, "a"), (2, "b"), (1, "f")], 1)</input>
+            <output>["a", "f"]</output>
+        </example>
+    </function>
+    -->
+</functionDocumentation>

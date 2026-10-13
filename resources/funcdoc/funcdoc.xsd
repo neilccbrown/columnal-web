@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- From https://stackoverflow.com/questions/22774425/attempting-to-connect-xml-files-with-xinclude-attribute-xmlbase-error -->
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/03/xml.xsd" />
+    
+    <xs:element name="exampleGroup">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="table" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="columns">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="column" minOccurs="1" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute name="name" use="required" type="xs:string"/>
+                                                        <xs:attribute name="type" use="required" type="xs:string"/>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="data">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="row" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="d" minOccurs="1" maxOccurs="unbounded" type="xs:string"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" use="required" type="xs:string"/>
+                        <xs:attribute name="display" use="optional" default="true" type="xs:boolean"/>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element ref="example" minOccurs="1" maxOccurs="unbounded"/>
+                
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="example">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <xs:element name="description" type="xs:string" minOccurs="0"/>
+                <xs:choice>
+                    <xs:element name="inputArg" type="xs:string"/>
+                    <xs:element name="input" type="xs:string"/>
+                </xs:choice>
+                <xs:choice>
+                    <xs:element name="output" type="xs:string"/>
+                    <xs:element name="outputPattern" type="xs:string"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="equivalence">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- A type variable -->
+                <xs:element name="foranytype" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="typeConstraint" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+                <!-- Any value of specific type -->
+                <xs:element name="forany" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="name" type="xs:string"/>
+                                <xs:attribute name="min" type="xs:string" use="optional"/>
+                                <xs:attribute name="max" type="xs:string" use="optional"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="lhs" minOccurs="1" maxOccurs="1" type="xs:string"/>
+                <xs:element name="rhs" minOccurs="1" maxOccurs="1" type="xs:string"/>
+            </xs:sequence>
+            <xs:attribute name="display" use="optional" default="true" type="xs:boolean"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="function">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="synonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="unitArg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="typeArg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="typeConstraint" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="argType" minOccurs="1" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="returnType">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <!-- TODO add mini as mandatory here -->
+                <xs:element ref="description"/>
+                <xs:element ref="seeAlso" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="equivalence" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:choice minOccurs="1" maxOccurs="unbounded">
+                    <xs:element ref="example"/>
+                    <xs:element ref="exampleGroup"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="functionDocumentation">
+        <xs:complexType>
+            <xs:choice  minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="naryOperatorGroup"/>
+                <xs:element ref="binaryOperator"/>
+                <xs:element ref="function"/>
+                <xs:element ref="literal"/>
+                <xs:element ref="type"/>
+                <xs:element ref="syntax"/>
+                <xs:element ref="variable"/>
+            </xs:choice>
+            <xs:attribute name="namespace" type="xs:string" use="required"/>
+            <xs:attribute name="toc" type="xs:string" use="optional"/>
+            <!-- For when it's imported by XInclude -->
+            <xs:attribute ref="xml:base"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="guide">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="section" minOccurs="1" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                                <xs:element ref="p"/>
+                                <xs:element ref="ul"/>
+                            </xs:choice>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="example"/>
+                                <xs:element ref="exampleGroup"/>
+                            </xs:choice>
+                            <xs:element ref="seeAlso" minOccurs="0" maxOccurs="1"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:string" use="optional"/>
+                    </xs:complexType>
+                </xs:element>                
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="guides">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="guide" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <!-- For when it's imported by XInclude -->
+            <xs:attribute ref="xml:base"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="syntax">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="typeArg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="typeConstraint" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="syntaxElements">
+                    <xs:complexType>
+                        <xs:choice minOccurs="1" maxOccurs="unbounded">
+                            <xs:element name="keyword" type="xs:string"/>
+                            <xs:element name="type">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute name="name" use="required" type="xs:string"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element ref="description"/>
+                <xs:element ref="seeAlso" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:choice minOccurs="1" maxOccurs="unbounded">
+                    <xs:element ref="example"/>
+                    <xs:element ref="exampleGroup"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+            <xs:attribute name="title" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="variable">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="type" type="xs:string"/>
+                <xs:element ref="description"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="binaryOperator">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="operator" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="unitArg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="typeArg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="typeConstraint" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="argTypeLeft" type="xs:string"/>
+                <xs:element name="argTypeRight" type="xs:string"/>
+                <xs:element name="resultType" type="xs:string"/>
+                <xs:element ref="description"/>
+                <xs:element ref="equivalence" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:choice minOccurs="1" maxOccurs="unbounded">
+                    <xs:element ref="example"/>
+                    <xs:element ref="exampleGroup"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="title" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="naryOperatorGroup">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="operator" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="unitArg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="typeArg" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="typeConstraint" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="argType" type="xs:string"/>
+                <xs:element name="resultType" type="xs:string"/>
+                <xs:element ref="description"/>
+                <xs:element ref="equivalence" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:choice minOccurs="1" maxOccurs="unbounded">
+                    <xs:element ref="example"/>
+                    <xs:element ref="exampleGroup"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="title" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="literal">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="type" type="xs:string"/>
+                <xs:element ref="description"/>
+                <xs:element ref="equivalence" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:choice minOccurs="1" maxOccurs="unbounded">
+                    <xs:element ref="example"/>
+                    <xs:element ref="exampleGroup"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="type">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="description"/>
+                <xs:element ref="seeAlso" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="a">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="href" use="required" type="xs:anyURI"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="link">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="function" use="optional" type="xs:string"/>
+                    <xs:attribute name="operator" use="optional" type="xs:string"/>
+                    <xs:attribute name="literal" use="optional" type="xs:string"/>
+                    <xs:attribute name="namespace" use="optional" type="xs:string"/>
+                    <xs:attribute name="type" use="optional" type="xs:string"/>
+                    <xs:attribute name="guide" use="optional" type="xs:string"/>
+                    <xs:attribute name="syntax" use="optional" type="xs:string"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="p">
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="a"/>
+                <xs:element ref="link"/>
+                <xs:element name="code" type="xs:string"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ul">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="li">
+                    <xs:complexType mixed="true">
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element ref="a"/>
+                            <xs:element ref="link"/>
+                            <xs:element name="code" type="xs:string"/>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="description">
+        <xs:complexType>
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="p"/>
+                <xs:element ref="ul"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="seeAlso">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="link" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="all">
+        <xs:complexType>
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="functionDocumentation"/>
+                <xs:element ref="guides"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

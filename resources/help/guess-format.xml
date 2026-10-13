@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<dialog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="help.xsd"
+
+        id="guess-format" title="Text Import Format" >
+    <help id="tableName" title="Table Name">
+        <short>The name of the new table.</short>
+        <full><p>The name cannot be blank and must be different from all other tables in the project.</p></full>
+    </help>
+    <help id="linkCopy" title="Link/Copy">
+        <short>Whether to copy the data in to the project, or leave it in the file.</short>
+        <full><p>There are two options available to import data.  One is to take a copy
+            of the data from the file into the project.  Afterwards, the source file
+            is forgotten: it can be deleted, moved or edited with no effect on the project.
+            This is the best option if you want to access the project from multiple machines.</p>
+            <p>The alternative is to link the file.  The source file must be kept afterwards,
+                and any changes will be automatically detected by the project.  This is the best
+                option for very large datasets, or if you know the file will have its data changed
+                in future.</p></full>
+    </help>
+    <help id="charset" title="Encoding">
+        <short>The scheme used to encode characters in the file.  UTF-8 is the most likely choice.</short>
+        <full><p>There are lots of different characters in the world: Latin characters (as used in the English alphabet),
+            Arabic, Chinese and many more besides.  An encoding scheme is the way in which these characters
+        are numbered and stored in a file.  Unfortunately, historically every sub-region had its own encoding,
+        and if you get the encoding mismatched, you will get weird characters.  Recently, UTF-8 has become
+        something of a common standard, but many other encoding schemes are still in use.  Try UTF-8 first,
+            but try then others if that doesn't work.</p></full>
+    </help>
+    <help id="headerRow" title="Header Rows">
+        <short>How many rows to skip at the beginning of the file.</short>
+        <full><p>There are often header rows at the beginning of the file which
+        do not contain useful data.  This number is how many rows to skip.  The
+        last row is taken to be the names of the columns.</p></full>
+    </help>
+    <help id="quote" title="Quote Character">
+        <short>The character used to surround columns.</short>
+        <full><p>Text files use a particular character, such as a comma,
+        to separate the columns.  But some pieces of text may actually
+        contain a comma.  So quotes are sometimes used to surround
+        text values in columns.</p></full>
+    </help>
+    <help id="columnCount" title="Column Count">
+        <short>The number of columns to use in the file.</short>
+        <full><p>If every row has the same number of columns then
+        this is fixed.  If there is a varying number of columns
+            then you must specify the current number.</p></full>
+    </help>
+    <help id="separator" title="Column Separator">
+        <short>The character used to separate columns in the file.</short>
+        <full><p>The columns in each row need to be separated by a particular
+            character, such as a comma or semi-colon.</p></full>
+    </help>
+    <help id="trimWhitespace" title="Remove leading/trailing spaces">
+        <short>Removes spaces at the beginning and end of each cell on import</short>
+        <full>
+            <p>The import can either keep the values exactly as they appear in the HTML including all spaces (in which case leave this box empty) or it can remove these extra spaces, which is usually preferred (in which case tick the box).</p>
+        </full>
+    </help>
+    <help id="remove-wikipedia-footnotes" title="Remove wikipedia footnotes">
+        <short>Removes wikipedia foonotes from the table</short>
+        <full>
+            <p>Wikipedia tables often have lots of footnotes.  This option, available when importing wikipedia URLs, removes the footnotes before importing the table.</p>
+        </full>
+    </help>
+</dialog>

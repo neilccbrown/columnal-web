@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<functionDocumentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:noNamespaceSchemaLocation="funcdoc.xsd"
+                       namespace="text">
+    <function name="text length">
+        <argType name="text">Text</argType>
+        <returnType name="length">Number</returnType>
+        <description>
+            <p>Gets the length of the given text.</p>
+            <p>Technical note: this is actually the number of Unicode codepoints in the text.  For English text without accents, one character is one codepoint.  If you have complex characters (e.g. flags) in your text, what looks like one character may be made up of multiple codepoints.</p>
+        </description>
+        <example>
+            <inputArg>"hello"</inputArg>
+            <output>5</output>
+        </example>
+        <example>
+            <inputArg>"a b."</inputArg>
+            <output>4</output>
+        </example>
+        <example>
+            <inputArg>""</inputArg>
+            <output>0</output>
+        </example>
+    </function>
+    
+    <function name="replace">
+        <argType name="to replace">Text</argType>
+        <argType name="replacement">Text</argType>
+        <argType name="source">Text</argType>
+        <returnType name="with replaced">Text</returnType>
+        <description>
+            <p>Replaces all occurrences of the first text with the second text, within the third text</p>
+            <p>If the first text is empty, no replacement is performed.  If any occurrences overlap, the earlier part is replaced first.</p>
+        </description>
+        <equivalence display="false">
+            <forany name="x">Text</forany>
+            <lhs>@call function\\replace("", "foo", x)</lhs>
+            <rhs>x</rhs>
+        </equivalence>
+        <example>
+            <inputArg>("at", "og", "The cat in the hat")</inputArg>
+            <output>"The cog in the hog"</output>
+        </example>
+        <example>
+            <inputArg>("oo", "a", "Mooo!")</inputArg>
+            <output>"Mao!"</output>
+        </example>
+        <example>
+            <inputArg>("", "x", "Orange")</inputArg>
+            <output>"Orange"</output>
+        </example>
+    </function>
+
+    <function name="replace many">
+        <argType name="replacements">[(find: Text, replace: Text)]</argType>
+        <argType name="source">Text</argType>
+        <returnType name="with replaced">Text</returnType>
+        <description>
+            <p>Given a list of find/replace items, does all the find and replacements in the second parameter.</p>
+            <p>If the find text is empty, no replacement is performed.  If any find occurrences overlap, the earliest matching item in the find/replace is used.</p>
+        </description>
+        <example>
+            <inputArg>([(find: "at", replace: "og"), (find: "the", replace: "a")], "the cat in the hat")</inputArg>
+            <output>"a cog in a hog"</output>
+        </example>
+        <example>
+            <inputArg>([(find: "ooo", replace: "eow"), (find: "oo", replace: "eh")], "Mooo moo mooo!")</inputArg>
+            <output>"Meow meh meow!"</output>
+        </example>
+        <example>
+            <inputArg>([(find: "apple", replace: "pear")], "orange")</inputArg>
+            <output>"orange"</output>
+        </example>
+        <example>
+            <inputArg>([], "original")</inputArg>
+            <output>"original"</output>
+        </example>
+    </function>
+    
+    <function name="join text">
+        <synonym>concatenate</synonym>
+        
+        <argType name="list of text">[Text]</argType>
+        <returnType name="joined">Text</returnType>
+        <description>
+            <p>Joins a list of text values together as one text item.</p>
+            <p>If you want to add a separator between each text item, use <link namespace="text" function="join text with"/> instead.</p>
+        </description>
+        <equivalence>
+            <forany name="x">[Text]</forany>
+            <lhs>@call function\\join text(x)</lhs>
+            <rhs>@call function\\join text with(x, "")</rhs>
+        </equivalence>
+        <equivalence>
+            <forany name="x">[Text]</forany>
+            <lhs>@call function\\join text(x)</lhs>
+            <rhs>@call function\\combine(x, (? ; ?))</rhs> 
+        </equivalence>
+        <example>
+            <inputArg>["a", "b", "c"]</inputArg>
+            <output>"abc"</output>
+        </example>
+        <example>
+            <inputArg>["Hello", " ", "Moon"]</inputArg>
+            <output>"Hello Moon"</output>
+        </example>
+        <example>
+            <inputArg>[]</inputArg>
+            <output>""</output>
+        </example>
+    </function>
+
+    <function name="join text with">
+        <argType name="list of text">[Text]</argType>
+        <argType name="separator">Text</argType>
+        <returnType name="joined">Text</returnType>
+        <description>
+            <p>Joins a list of text values together as one text item, inserting a separator between each.</p>
+        </description>
+        <equivalence>
+            <forany name="x">[Text]</forany>
+            <lhs>@call function\\join text with(x, "")</lhs>
+            <rhs>@call function\\join text(x)</rhs>
+        </equivalence>
+        <equivalence>
+            <forany name="x">[Text]</forany>
+            <forany name="sep">Text</forany>
+            <lhs>@call function\\join text with(x, sep)</lhs>
+            <rhs>@call function\\combine(x, (? ; sep ; ?))</rhs>
+        </equivalence>
+        <example>
+            <inputArg>(["a", "b", "c"], "+")</inputArg>
+            <output>"a+b+c"</output>
+        </example>
+        <example>
+            <inputArg>(["Blanks", "", "Count"], ";")</inputArg>
+            <output>"Blanks;;Count"</output>
+        </example>
+        <example>
+            <inputArg>(["Hello", " ", "Moon"], "-")</inputArg>
+            <output>"Hello- -Moon"</output>
+        </example>
+        <example>
+            <inputArg>(["Hi"], ",")</inputArg>
+            <output>"Hi"</output>
+        </example>
+        <example>
+            <inputArg>([], ",")</inputArg>
+            <output>""</output>
+        </example>
+    </function>
+    
+    <function name="trim">
+        <argType name="original">Text</argType>
+        <returnType name="trimmed">Text</returnType>
+        <description>
+            <p>Removes white space from beginning and end of the text.</p>
+        </description>
+        <equivalence>
+            <forany name="x">Text</forany>
+            <lhs>@call function\\trim(@call function\\trim(x))</lhs>
+            <rhs>@call function\\trim(x)</rhs>
+        </equivalence>
+        <example>
+            <inputArg>"No spaces  either side."</inputArg>
+            <output>"No spaces  either side."</output>
+        </example>
+        <example>
+            <inputArg>"  Several spaces    "</inputArg>
+            <output>"Several spaces"</output>
+        </example>
+        <example>
+            <inputArg>"^t Tabs and newlines also removed.^n"</inputArg>
+            <output>"Tabs and newlines also removed."</output>
+        </example>
+    </function>
+    
+    <function name="split text">
+        <argType name="original">Text</argType>
+        <argType name="separator">Text</argType>
+        <returnType name="split">[Text]</returnType>
+        <description>
+            <p>Splits a text item into a list of smaller text items by dividing at the places where the separator occurs.</p>
+            <p>The returned list does not feature the separators.</p>
+        </description>
+        <equivalence display="false">
+            <forany name="x">Text</forany>
+            <forany name="y">Text</forany>
+            <lhs>@call function\\join text with(@call function\\split text(x, y), y)</lhs>
+            <rhs>x</rhs>
+        </equivalence>
+        <example>
+            <inputArg>("The quick brown fox", " ")</inputArg>
+            <output>["The", "quick", "brown", "fox"]</output>
+        </example>
+        <example>
+            <inputArg>("6:08:32", ":")</inputArg>
+            <output>["6", "08", "32"]</output>
+        </example>
+        <example>
+            <inputArg>("*abc*", "*")</inputArg>
+            <output>["", "abc", ""]</output>
+        </example>
+        <example>
+            <inputArg>("Hello", "")</inputArg>
+            <output>["H", "e", "l", "l", "o"]</output>
+        </example>
+    </function>
+    
+    <function name="lower case">
+        <argType name="text">Text</argType>
+        <returnType name="lower case text">Text</returnType>
+        <description>
+            <p>Changes all characters in the text value into lower-case versions, where possible.</p>
+        </description>
+        <example>
+            <inputArg>"HELLO"</inputArg>
+            <output>"hello"</output>
+        </example>
+        <example>
+            <inputArg>"Paris"</inputArg>
+            <output>"paris"</output>
+        </example>
+        <example>
+            <inputArg>"12345"</inputArg>
+            <output>"12345"</output>
+        </example>
+    </function>
+</functionDocumentation>

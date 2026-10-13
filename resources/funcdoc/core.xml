@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<functionDocumentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:noNamespaceSchemaLocation="funcdoc.xsd"
+                       namespace="core">
+    <function name="as type">
+        <typeArg>t</typeArg>
+        <argType name="type">@apply Type(@typevar t)</argType>
+        <argType name="value">@typevar t</argType>
+        <returnType name="value">@typevar t</returnType>
+        <description>
+            <p>Clarifies the type of a value.</p>
+            <p>No processing is done on the value; this function is only for specifying a type when it is ambiguous and you get a type error.  For conversions, see functions like <link function="conversion:from text"/>.</p>
+        </description>
+        <example>
+            <description>Specifies that the destination type of the conversion from text is Boolean.</description>
+            <inputArg>(type{Boolean}, @call function\\from text("True"))</inputArg>
+            <output>true</output>
+        </example>
+        <example>
+            <description>Specifies that the given empty list is a list of dates.</description>
+            <inputArg>(type{[Date]}, [])</inputArg>
+            <output>[]</output>
+        </example>
+    </function>
+    <function name="type of">
+        <typeArg>t</typeArg>
+        <argType name="value">@typevar t</argType>
+        <returnType name="type">@apply Type(@typevar t)</returnType>
+        <description>
+            <p>Gets the type of the given value.</p>
+        </description>
+        <example>
+            <input>@call function\\as type(@call function\\type of([3]), @call function\\from text("[1, 2, 5]"))</input>
+            <output>[1, 2, 5]</output>
+        </example>
+        <example>
+            <inputArg>[(a:true, b:6)]</inputArg>
+            <output>type{[(a:Boolean, b:Number)]}</output>
+        </example>
+        <example>
+            <inputArg>((t: time{00:00}, s: 21{s}))</inputArg>
+            <output>type{(t: Time, s: Number{s})}</output>
+        </example>
+    </function>
+    
+    <function name="convert unit">
+        <unitArg>u</unitArg>
+        <unitArg>v</unitArg>
+        <argType name="target unit">@apply Unit(@unitvar u)</argType>
+        <argType name="source number">Number{@unitvar v}</argType>
+        <returnType name="target number">Number{@unitvar u}</returnType>
+        <description>
+            <p>Converts a number from one unit to another (if possible).</p>
+            <p>Unit conversion is only available for exact conversions (e.g. metres to centimetres), not for approximate or changing conversions (e.g. euros to dollars).</p>
+            <p>Attempting to convert between unrelated units (e.g. metres to seconds) will result in an error.  This includes converting to/from plain numbers.  If you want to add a unit to a number multiply by 1 of that unit (for example, <code>duration * 1{s}</code>), if you want to remove a unit then divide by 1 of that unit (for example, <code>distance / 1{m}).</code></p>
+        </description>
+        <example>
+            <description>Convert one inch into centimetres</description>
+            <inputArg>(unit{cm}, 1{inch})</inputArg>
+            <output>2.54{cm}</output>
+        </example>
+
+        <example>
+            <description>Convert a volume in cubic centimetres into litres</description>
+            <inputArg>(unit{l}, 30{cm} * 20{cm} * 10{cm})</inputArg>
+            <output>6{l}</output>
+        </example>
+        <example>
+            <description>Convert speed running 100 metres in 9.58 seconds into miles per hour</description>
+            <inputArg>(unit{mile/hour}, (100{m} / 9.58{s}))</inputArg>
+            <outputPattern>23.350{mile/hour} &#x00B1; 0.001{mile/hour}</outputPattern>
+        </example>
+        <example>
+            <description>Try to convert between unrelated or impossible units (here: length and area) gives an error.</description>
+            <inputArg>(unit{m^2}, 10{m})</inputArg>
+            <output>error</output>
+        </example>
+    </function>
+</functionDocumentation>

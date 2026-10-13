@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<functionDocumentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:noNamespaceSchemaLocation="funcdoc.xsd"
+                       namespace="datetime">
+    <function name="date from ymd">
+        <argType name="year">Number{year}</argType>
+        <argType name="month">Number{month}</argType>
+        <argType name="day">Number{day}</argType>
+        <returnType name="date">Date</returnType>
+        <description>
+            <p>Creates a date from the given year, month and day.</p>
+            <p>Months and days start at 1: 1{month} is January, and 1{day} is the first day of the month.</p>
+        </description>
+        <equivalence display="false">
+            <forany name="x">Date</forany>
+            <lhs>@match @call function\\to text(x) @case y ; "-" ; m ; "-" ; d @then @call function\\date from ymd(@call function\\from text(y), @call function\\from text(m), @call function\\from text(d)) @endmatch</lhs>
+            <rhs>x</rhs>
+        </equivalence>
+        <example>
+            <inputArg>(1998{year}, 07{month}, 10{day})</inputArg>
+            <output>date{1998-07-10}</output>
+        </example>
+        <example>
+            <inputArg>(2004{year}, 08{month}, 06{day})</inputArg>
+            <output>@call function\\from text("6 August 2004")</output>
+        </example>
+    </function>
+
+    <function name="time from hms">
+        <argType name="hour">Number{hour}</argType>
+        <argType name="minute">Number{minute}</argType>
+        <argType name="second">Number{s}</argType>
+        <returnType name="time">Time</returnType>
+        <description>
+            <p>Creates a time-of-day (or clock time) from the given hours, minutes and seconds.</p>
+        </description>
+        <equivalence display="false">
+            <forany name="x">Time</forany>
+            <lhs>@match @call function\\to text(x) @case h ; ":" ; m ; ":" ; s @then @call function\\time from hms(@call function\\from text(h), @call function\\from text(m), @call function\\from text(s)) @endmatch</lhs>
+            <rhs>x</rhs>
+        </equivalence>
+        <example>
+            <inputArg>(13{hour}, 31{minute}, 0{s})</inputArg>
+            <output>time{13:31:00}</output>
+        </example>
+    </function>
+    
+    <function name="time from datetime">
+        <argType name="datetime">DateTime</argType>
+        <returnType name="time">Time</returnType>
+        <description>
+            <p>Gets the Time part of a DateTime.</p>
+        </description>
+        <example>
+            <inputArg>datetime{2001-03-04 06:54}</inputArg>
+            <output>time{06:54}</output>
+        </example>
+    </function>
+
+    <function name="time from datetimezoned">
+        <argType name="datetimezoned">DateTimeZoned</argType>
+        <returnType name="time">Time</returnType>
+        <description>
+            <p>Gets the Time part of a DateTimeZoned.</p>
+            <p>No timezone conversions are performed, this just takes the time part, ignoring the date and the zone.</p>
+        </description>
+        <example>
+            <inputArg>datetimezoned{2001-03-04 06:54 UTC}</inputArg>
+            <output>@call function\\from text("06:54")</output>
+        </example>
+    </function>
+
+    <function name="date from datetime">
+        <argType name="datetime">DateTime</argType>
+        <returnType name="date">Date</returnType>
+        <description>
+            <p>Gets the Date part of a DateTime.</p>
+        </description>
+        <example>
+            <inputArg>datetime{2001-03-04 06:54}</inputArg>
+            <output>date{2001-03-04}</output>
+        </example>
+    </function>
+
+    <function name="date from datetimezoned">
+        <argType name="datetimezoned">DateTimeZoned</argType>
+        <returnType name="date">Date</returnType>
+        <description>
+            <p>Gets the Date part of a DateTimeZoned.</p>
+            <p>No timezone conversions are performed, this just takes the time part, ignoring the date and the zone.</p>
+        </description>
+        <example>
+            <inputArg>datetimezoned{2001-03-04 06:54 UTC}</inputArg>
+            <output>date{2001-03-04}</output>
+        </example>
+    </function>
+
+    <function name="datetime from datetimezoned">
+        <argType name="datetimezoned">DateTimeZoned</argType>
+        <returnType name="datetime">DateTime</returnType>
+        <description>
+            <p>Gets the DateTime part of a DateTimeZoned.</p>
+            <p>No timezone conversions are performed, this just takes the DateTime part, ignoring the zone.</p>
+        </description>
+        <example>
+            <inputArg>datetimezoned{2001-03-04 06:54 UTC}</inputArg>
+            <output>datetime{2001-03-04 06:54}</output>
+        </example>
+    </function>
+
+    <function name="dateym from ym">
+        <argType name="year">Number{year}</argType>
+        <argType name="month">Number{month}</argType>
+        <returnType name="dateym">DateYM</returnType>
+        <description>
+            <p>Creates a year-month value from the given year and month.</p>
+        </description>
+        <example>
+            <inputArg>(1998{year}, 07{month})</inputArg>
+            <output>dateym{1998-07}</output>
+        </example>
+        <example>
+            <inputArg>(2004{year}, 08{month})</inputArg>
+            <output>dateym{2004-08}</output>
+        </example>
+    </function>
+
+    <function name="dateym from date">
+        <argType name="date">Date</argType>
+        <returnType name="dateym">DateYM</returnType>
+        <description>
+            <p>Gets the year and month part of a Date as a DateYM.</p>
+        </description>
+        <example>
+            <inputArg>@call function\\from text("2001-03-04")</inputArg>
+            <output>@call function\\from text("2001-03")</output>
+        </example>
+    </function>
+
+    <function name="datetime from dt">
+        <argType name="date">Date</argType>
+        <argType name="time">Time</argType>
+        <returnType name="datetime">DateTime</returnType>
+        <description>
+            <p>Creates a DateTime from the given Date and Time.</p>
+        </description>
+        <example>
+            <inputArg>(@call function\\from text("2001-02-03"), @call function\\from text("04:56"))</inputArg>
+            <output>@call function\\from text("2001-02-03 04:56")</output>
+        </example>
+    </function>
+    
+    <function name="datetimezoned from dtz">
+        <argType name="date">Date</argType>
+        <argType name="time">Time</argType>
+        <argType name="zone">Text</argType>
+        <returnType name="datetimezoned">DateTimeZoned</returnType>
+        <description>
+            <p>Creates a datetime with a time zone from the given Date, Time and time zone.</p>
+            <p>Note that because many of the three-letter abbreviations for time zones overlap, they are not supported here, and you must spell out the full name.</p>
+        </description>
+        <example>
+            <inputArg>(@call function\\from text("2001-02-03"), @call function\\from text("04:56"), "America/Vancouver")</inputArg>
+            <output>@call function\\from text("2001-02-03 04:56 America/Vancouver")</output>
+        </example>
+    </function>
+
+    <function name="years between">
+        <argType name="start">Date</argType>
+        <argType name="end">Date</argType>
+        <returnType name="days">Number{year}</returnType>
+        <description>
+            <p>Calculates the number of years between two dates.</p>
+            <p>If the first date is before the second date, the returned number is positive.  If the first date is after the second date, the returned number will be negative.</p>
+            <!-- <p>If you just want the whole number of years, you may want to pass the return to floor</p> -->
+        </description>
+        <!-- Function is not symmetric
+        <equivalence>
+            <forany name="a">Date</forany>
+            <forany name="b">Date</forany>
+            <lhs>@call function\\years between(a, b)</lhs>
+            <rhs>-1 * @call function\\years between(b, a)</rhs>
+        </equivalence>
+        -->
+        <example>
+            <inputArg>(date{4 April 1999}, date{4 April 2000})</inputArg>
+            <output>1{year}</output>
+        </example>
+        <example>
+            <inputArg>(date{4 April 1999}, date{5 April 2000})</inputArg>
+            <output>1{year} + (1{year}/365)</output>
+        </example>
+        <example>
+            <inputArg>(date{4 February 1999}, date{5 February 2000})</inputArg>
+            <output>1{year} + (1{year}/366)</output>
+        </example>
+    </function>
+    
+    <function name="days between">
+        <argType name="start">Date</argType>
+        <argType name="end">Date</argType>
+        <returnType name="days">Number{day}</returnType>
+        <description>
+            <p>Calculates the number of days between two dates.</p>
+            <p>If the first date is before the second date, the returned number is positive.  If the first date is after the second date, the returned number will be negative.</p>
+        </description>
+        <equivalence>
+            <forany name="a">Date</forany>
+            <forany name="b">Date</forany>
+            <lhs>@call function\\days between(a, b)</lhs>
+            <rhs>-1 * @call function\\days between(b, a)</rhs>
+        </equivalence>
+        <example>
+            <inputArg>(@call function\\from text("7 May 2003"), @call function\\from text("16 October 2004"))</inputArg>
+            <output>528{day}</output>
+        </example>
+    </function>
+    
+    <function name="add days">
+        <argType name="date">Date</argType>
+        <argType name="days to add">Number{day}</argType>
+        <returnType name="result date">Date</returnType>
+        <description>
+            <p>Adds the given number of the days to the date.</p>
+        </description>
+        <equivalence>
+            <forany name="date">Date</forany>
+            <forany name="days" min="-999999" max="999999">Number{day}</forany>
+            <lhs>@call function\\days between(date, @call function\\add days(date, @call function\\round(days)))</lhs>
+            <rhs>@call function\\round(days)</rhs>
+        </equivalence>
+        <example>
+            <inputArg>(date{2002-11-01}, 28{day})</inputArg>
+            <output>date{2002-11-29}</output>
+        </example>
+        <example>
+            <inputArg>(date{2000-01-01}, 0.5{day})</inputArg>
+            <output>error</output>
+        </example>
+    </function>
+    
+    <function name="seconds between">
+        <argType name="start">Time</argType>
+        <argType name="end">Time</argType>
+        <returnType name="seconds">Number{s}</returnType>
+        <description>
+            <p>Calculates the number of seconds between two times.</p>
+            <p>If the first time is before the second time, the returned number is positive.  If the first time is after the second time, the returned number will be negative.</p>
+            <p>This function does not consider wrap-around.  That is, 00:30 is considered to be 23 hours before 23:30, not one hour after.</p>
+        </description>
+        <example>
+            <inputArg>(time{00:05:08}, time{00:05:29})</inputArg>
+            <output>21{s}</output>
+        </example>
+    </function>
+</functionDocumentation>

@@ -153,19 +153,29 @@ completion lists.
 
 Each phase lists what gets built and the original tests that should pass at the end of it.
 
-### Phase 0: Project foundations
+### Phase 0: Project foundations (done)
 - Replace the current scaffold with:
   - Vite + TS (`strict`, ES2022, `moduleResolution: bundler`)
   - Vitest (Node) for engine tests
   - Playwright Test for GUI tests, with a placeholder smoke test that loads the dev server
   - fast-check, ESLint, dependency-cruiser layer rules
   - GitHub Actions CI, including Playwright browser install
-- Add an antlr-ng codegen script (`npm run gen:parsers`).
-- Copy in the grammars, `.properties` files, fonts, `builtin_units.txt` and funcdoc/help
-  XML, with a record of their origin. Keep the original SCSS for reference.
+- Add an antlr-ng codegen script (`npm run gen:parsers`). Port the grammars, translating
+  their Java actions to TypeScript, together with `GrammarUtility` and `Versions`, which the
+  grammars need.
+- Copy in the `.properties` files, `builtin_units.txt` and funcdoc/help XML, with a record of
+  their origin. Fonts, images and SCSS move to Phase 7, which only needs them for the GUI.
+  The fonts' OFL licence texts must be added with them.
+- Add `scripts/fetch-reference.sh`, which checks out the Java original at the pinned commit
+  into `reference/` (gitignored) for side-by-side work, `port-status` and golden values.
 - Write `CONVENTIONS.md` and `port-status.ts`.
-- Build the test shims: `SourceOfRandomness`, `GenerationStatus`, the `Generator` base
-  class, a quickcheck→fast-check adapter, and hamcrest-like assertion helpers.
+- Build the test shims:
+  - `SourceOfRandomness`, `GenerationStatus`, the `Generator` base class (including
+    `doShrink`), and a quickcheck→fast-check adapter
+  - JUnit- and hamcrest-style assertions with Java `equals` semantics
+  - a bit-for-bit port of `java.util.Random` (`JavaRandom`), which the main code also uses
+- Add `scripts/golden/`, which generates expected test values by running Java code on the
+  JVM.
 
 **Exit:** CI runs both the Vitest suite and the Playwright smoke test, and the generated
 parsers compile.
@@ -259,6 +269,8 @@ outputs on real-world files.
 - App shell: Vue 3 + Reka UI or Ark UI (pick one after building a couple of real
   components in each), the engine store adapter, i18n, fonts and design tokens,
   rendering of help and function docs.
+- Copy in the fonts (with their OFL licence texts), images and the original SCSS (for
+  reference), and record their origin in `resources/ORIGIN.md`.
 - Shared components rebuilt for the web:
   - a dialog frame with the same look as LightDialog
   - a text field that shows errors
@@ -374,6 +386,8 @@ of `tests-gui-central` that do not need expressions.
 ## 6. Decisions
 
 Decided:
+- Generated ANTLR output is not committed. `npm run gen:parsers` runs on install and before
+  dev, build, test and typecheck, and takes under a second.
 - Engine tests use Vitest (Node). GUI tests use Playwright Test, to be reviewed after the
   Phase 7 comparison with Vitest browser mode.
 - The engine is ported faithfully. The GUI is rebuilt natively in HTML to the same
@@ -383,7 +397,6 @@ Decided:
 
 Open:
 - Reka UI vs. Ark UI for headless components (Phase 7).
-- Commit generated ANTLR output, or generate it in CI.
 - Strict bug-for-bug compatibility with the Java, or fix bugs found during the port.
 - How to handle browser-reserved shortcuts.
 - Whether webR's download size is acceptable, or R support should be optional or

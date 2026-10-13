@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<functionDocumentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:noNamespaceSchemaLocation="funcdoc.xsd"
+                       namespace="conversion">
+    <function name="from text">
+        <typeArg>t</typeArg>
+        <typeConstraint>Readable t</typeConstraint>        
+        <argType name="text">Text</argType>
+        <returnType name="value">@typevar t</returnType>
+        <description>
+            <p>Converts a value from text.</p>
+            <p>This function works for any readable type (the only non-readable types are function types).  If the intended type cannot be inferred automatically, you may need to use the <link function="from text to"/> function to specify the type .</p>
+            <p>Some notes for specific types:</p>
+            <ul>
+                <li>For boolean values, lower-case and upper-case are allowed in the names.</li>
+                <li>Dates are read using a variety of formats.  Be careful with the DD-MM-YY formats and similar as they are ambiguous against MM-DD-YY.  If this is an issue, use the date from string function to specify a format.</li>
+                <li>Numbers must use dot as the decimal separator, commas are not supported.</li>
+                <li>If you want to get a Text out of from text, it must be in quotes.</li>
+            </ul>
+        </description>
+        <example>
+            <input>@call function\\from text("65") &gt; 64</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>@call function\\from text("TRUE") | false</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>@call function\\as type(type{Date}, @call function\\from text("21 March 2004"))</input>
+            <output>@call function\\date from ymd(2004{year}, 3{month}, 21{day})</output>
+        </example>
+        <example>
+            <input>@call function\\as type(type{[(a: Boolean, b: Number{m})]}, @call function\\from text("[(a:True, b:0), (a:FALSE, b:-1.6)]"))</input>
+            <output>[(a:true, b:0{m}), (a:false, b:-1.6{m})]</output>
+        </example>
+    </function>
+
+    <function name="from text to">
+        <typeArg>t</typeArg>
+        <typeConstraint>Readable t</typeConstraint>
+        <argType name="value type">@apply Type(@typevar t)</argType>
+        <argType name="text">Text</argType>
+        <returnType name="value">@typevar t</returnType>
+        <description>
+            <p>Converts a value from text, specifying the target type.</p>
+            <p>See <link namespace="conversion" function="from text"/> for more details.</p>
+        </description>
+        <example>
+            <inputArg>(type{Date}, "21 March 2004")</inputArg>
+            <output>@call function\\date from ymd(2004{year}, 3{month}, 21{day})</output>
+        </example>
+        <example>
+            <inputArg>(type{[(a:Boolean, b:Number{m})]}, "[(a:True, b:0), (a:FALSE, b:-1.6)]")</inputArg>
+            <output>[(a:true, b:0{m}), (a:false, b:-1.6{m})]</output>
+        </example>
+    </function>
+    
+    
+    <function name="to text">
+        <typeArg>t</typeArg>
+        <typeConstraint>Showable t</typeConstraint>
+        <argType name="value">@typevar t</argType>
+        <returnType name="text">Text</returnType>
+        <description>
+            <p>Converts a value to text.</p>
+        </description>
+        <equivalence>
+            <foranytype name="t"><typeConstraint>Readable</typeConstraint><typeConstraint>Showable</typeConstraint><typeConstraint>Equatable</typeConstraint></foranytype>
+            <forany name="x">@typevar t</forany>
+            <lhs>@call function\\from text(@call function\\to text(x))</lhs>
+            <rhs>x</rhs>
+        </equivalence>
+        <example>
+            <inputArg>true</inputArg>
+            <output>"true"</output>
+        </example>
+        <example>
+            <inputArg>65{m}</inputArg>
+            <output>"65"</output>
+        </example>
+        <!-- TODO add more examples -->
+    </function>
+    
+    <function name="extract number">
+        <argType name="text">Text</argType>
+        <returnType name="number">Number</returnType>
+        <description>
+            <p>Extracts a number from the given text.  If there is no number, or two numbers, gives an error.</p>
+            <p>The difference between this function and <link function="from text"/> is that this function will accept and ignore extra text around the number, and deal with comma separators.  So whereas from text will give an error on "P65n" because it's not solely a number, this extract number function will return 65.</p>
+            <p>The function assumes that commas are thousand separators, and dot is the decimal separator.  If you need to convert continental European style numbers where the opposite is true, use the replace many function as shown in the last example.</p>
+        </description>
+        <equivalence display="false">
+            <forany name="x">Number</forany>
+            <lhs>@call function\\extract number("a" ; @call function\\to text(x) ; "z")</lhs>
+            <rhs>x</rhs>
+        </equivalence>
+        <equivalence display="false">
+            <forany name="x">Number</forany>
+            <lhs>@call function\\extract number(@call function\\to text(x))</lhs>
+            <rhs>x</rhs>
+        </equivalence>
+        <example>
+            <inputArg>"-34.20m"</inputArg>
+            <output>-34.2</output>
+        </example>
+        <example>
+            <inputArg>"£17,000,000"</inputArg>
+            <output>17000000</output>
+        </example>
+        <example>
+            <inputArg>"The 6 cats"</inputArg>
+            <output>6</output>
+        </example>
+        <example>
+            <inputArg>"2 and 2 makes 4"</inputArg>
+            <output>error</output>
+        </example>
+        <example>
+            <inputArg>"Two"</inputArg>
+            <output>error</output>
+        </example>
+        <example>
+            <description>Swaps dots and commas</description>
+            <inputArg>@call function\\replace many([(find: ".", replace: ","), (find: ",", replace: ".")], "10.449,99")</inputArg>
+            <output>10449.99</output>
+        </example>
+    </function>
+
+    <function name="extract number or none">
+        <argType name="text">Text</argType>
+        <returnType name="number">@apply Optional(Number)</returnType>
+        <description>
+            <p>Extracts a number from the given text.  If there is no number, or two numbers, gives back None.</p>
+            <p>The difference between this function and <link function="extract number"/> is that this function gives back an Optional(Number), so rather than giving an error when there is no number, it gives back None.  Successfully extracted numbers are wrapped in the opposing Is constructor; see the <link guide="optional"/>.</p>
+        </description>
+        <example>
+            <inputArg>"-34.20m"</inputArg>
+            <output>@call tag\\Optional\Is(-34.2)</output>
+        </example>
+        <example>
+            <inputArg>"£17,000,000"</inputArg>
+            <output>@call tag\\Optional\Is(17000000)</output>
+        </example>
+        <example>
+            <inputArg>"The 6 cats"</inputArg>
+            <output>@call tag\\Optional\Is(6)</output>
+        </example>
+        <example>
+            <inputArg>"2 and 2 makes 4"</inputArg>
+            <output>tag\\Optional\None</output>
+        </example>
+        <example>
+            <inputArg>"Two"</inputArg>
+            <output>tag\\Optional\None</output>
+        </example>
+    </function>
+</functionDocumentation>

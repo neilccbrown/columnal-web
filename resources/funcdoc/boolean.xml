@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<functionDocumentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:noNamespaceSchemaLocation="funcdoc.xsd"
+                       namespace="boolean">
+    <function name="not">
+        <synonym>negate</synonym>
+        
+        <argType name="bool">Boolean</argType>
+        <returnType name="negated">Boolean</returnType>
+        <description>
+            <p>Returns the opposite Boolean (given true, returns false; given false, returns true)</p>
+        </description>
+        <equivalence display="false">
+            <forany name="x">Boolean</forany>
+            <lhs>@call function\\not(@call function\\not(x))</lhs>
+            <rhs>x</rhs>
+        </equivalence>
+        <equivalence display="false">
+            <forany name="x">Boolean</forany>
+            <lhs>@call function\\not(x)</lhs>
+            <rhs>x = false</rhs>
+        </equivalence>
+        <equivalence display="false">
+            <forany name="x">Boolean</forany>
+            <lhs>@call function\\not(x)</lhs>
+            <rhs>x &lt;&gt; true</rhs>
+        </equivalence>
+        <example>
+            <inputArg>true</inputArg>
+            <output>false</output>
+        </example>
+        <example>
+            <inputArg>false</inputArg>
+            <output>true</output>
+        </example>
+    </function>
+    <function name="xor">
+        <argType name="a">Boolean</argType>
+        <argType name="b">Boolean</argType>
+        <returnType name="xored">Boolean</returnType>
+        <description>
+            <p>Returns the exclusive-or of the two items: returns true if exactly one of the items is true, but false if both are true.</p>
+        </description>
+        <equivalence display="false">
+            <forany name="x">Boolean</forany>
+            <lhs>@call function\\xor(x, true)</lhs>
+            <rhs>@call function\\not(x)</rhs>
+        </equivalence>
+        <example>
+            <inputArg>(true, true)</inputArg>
+            <output>false</output>
+        </example>
+        <example>
+            <inputArg>(true, false)</inputArg>
+            <output>true</output>
+        </example>
+        <example>
+            <inputArg>(false, true)</inputArg>
+            <output>true</output>
+        </example>
+        <example>
+            <inputArg>(false, false)</inputArg>
+            <output>false</output>
+        </example>
+    </function>
+</functionDocumentation>

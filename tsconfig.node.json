@@ -1,0 +1,12 @@
+{
+  // Code that runs in Node: tests (Vitest engine tests and Playwright GUI tests),
+  // scripts and tool configuration.  Tests import from src, which is also checked here.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "lib": ["ES2023", "DOM"],
+    "types": ["node", "vite/client"]
+  },
+  "include": ["test/**/*.ts", "scripts/**/*.ts", "*.config.ts", "src/engine/**/*.ts", "src/gui-logic/**/*.ts"]
+}

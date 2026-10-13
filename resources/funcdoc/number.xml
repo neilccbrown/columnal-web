@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<functionDocumentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:noNamespaceSchemaLocation="funcdoc.xsd"
+                       namespace="number">
+    <function name="round">
+        <unitArg>u</unitArg>
+        <argType name="decimal">Number{@unitvar u}</argType>
+        <returnType name="rounded">Number{@unitvar u}</returnType>
+        <description>
+            <p>Rounds the given number to the nearest whole number (integer).</p>
+            <p>Numbers that end in .5 (which are halfway between two whole numbers) are rounded towards the nearest even number, sometimes known as <a href="https://en.wikipedia.org/wiki/Rounding#Round_half_to_even">banker's rounding</a>.</p>
+        </description>
+        <example>
+            <inputArg>0.333</inputArg>
+            <output>0</output>
+        </example>
+        <example>
+            <inputArg>2</inputArg>
+            <output>2</output>
+        </example>
+        <example>
+            <inputArg>0.5</inputArg>
+            <output>1</output>
+        </example>
+        <example>
+            <inputArg>1.5</inputArg>
+            <output>2</output>
+        </example>
+    </function>
+    <function name="round decimal">
+        <unitArg>u</unitArg>
+        <argType name="decimal">Number{@unitvar u}</argType>
+        <argType name="decimal places">Number</argType>
+        <returnType name="rounded">Number{@unitvar u}</returnType>
+        <description>
+            <p>Rounds the number to the given number of decimal places (digits after the decimal point).</p>
+            <p></p>
+        </description>
+        <example>
+            <inputArg>(3.1415927, 2)</inputArg>
+            <output>3.14</output>
+        </example>
+    </function>
+    <function name="round significant">
+        <unitArg>u</unitArg>
+        <argType name="decimal">Number{@unitvar u}</argType>
+        <argType name="significant figures">Number</argType>
+        <returnType name="rounded">Number{@unitvar u}</returnType>
+        <description>
+            <p>Rounds the number to the given number of significant figures (digits at the beginning of the number).</p>
+        </description>
+        <example>
+            <inputArg>(3.1415927, 2)</inputArg>
+            <output>3.1</output>
+        </example>
+        <example>
+            <inputArg>(1234567, 4)</inputArg>
+            <output>1235000</output>
+        </example>
+    </function>
+    <function name="abs">
+        <unitArg>u</unitArg>
+        <argType name="original">Number{@unitvar u}</argType>
+        <returnType name="positive">Number{@unitvar u}</returnType>
+        <description>
+            <p>Makes a number positive by discarding the minus sign.</p>
+        </description>
+        <example>
+            <inputArg>-3.6</inputArg>
+            <output>3.6</output>
+        </example>
+        <example>
+            <inputArg>5</inputArg>
+            <output>5</output>
+        </example>
+        <example>
+            <inputArg>0</inputArg>
+            <output>0</output>
+        </example>
+    </function>
+    <function name="average">
+        <synonym>mean</synonym>
+        <unitArg>u</unitArg>
+        <argType name="numbers">[Number{@unitvar u}]</argType>
+        <returnType name="average">Number{@unitvar u}</returnType>
+        <description>
+            <p>Calculates the average of a list of numbers.</p>
+        </description>
+        <example>
+            <inputArg>[1, 1.5, 5]</inputArg>
+            <output>2.5</output>
+        </example>
+        <example>
+            <inputArg>[33.4]</inputArg>
+            <output>33.4</output>
+        </example>
+        <example>
+            <inputArg>[]</inputArg>
+            <output>error</output>
+        </example>
+    </function>
+    <function name="sum">
+        <synonym>total</synonym>
+        <unitArg>u</unitArg>
+        <argType name="numbers">[Number{@unitvar u}]</argType>
+        <returnType name="total">Number{@unitvar u}</returnType>
+        <description>
+            <p>Calculates the sum (total) of a list of numbers.</p>
+        </description>
+        <example>
+            <inputArg>[1, 1.5, 5]</inputArg>
+            <output>7.5</output>
+        </example>
+        <example>
+            <inputArg>[33.4]</inputArg>
+            <output>33.4</output>
+        </example>
+        <example>
+            <inputArg>[]</inputArg>
+            <output>0</output>
+        </example>
+    </function>
+</functionDocumentation>

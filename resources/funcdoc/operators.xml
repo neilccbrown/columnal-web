@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Columnal: Safer, smoother data table processing.
+  ~ Copyright (c) Neil Brown, 2016-2020, 2022.
+  ~
+  ~ This file is part of Columnal.
+  ~
+  ~ Columnal is free software: you can redistribute it and/or modify it under
+  ~ the terms of the GNU General Public License as published by the Free
+  ~ Software Foundation, either version 3 of the License, or (at your option)
+  ~ any later version.
+  ~
+  ~ Columnal is distributed in the hope that it will be useful, but WITHOUT 
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
+  ~ more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along 
+  ~ with Columnal. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<functionDocumentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:noNamespaceSchemaLocation="funcdoc.xsd"
+                       namespace="" toc="Operators">
+    <naryOperatorGroup title="Adding and Subtracting">
+        <operator>+</operator>
+        <operator>-</operator>
+        <argType>Number{@unitvar u}</argType>
+        <resultType>Number{@unitvar u}</resultType>
+        <description>
+            <p>Adds or subtracts numbers.  All the numbers must have no units, or the same units.</p>
+            <p>Plus cannot be used for non-numbers.  Some other types:</p>
+            <ul>
+                <li>To join text values together, use <link operator=";"/>.</li>
+                <li>To join lists together use the <link namespace="list" function="join lists"/> function.</li>
+                <li>To manipulate dates and times, see <link namespace="datetime"/>.</li>
+            </ul>
+        </description>
+        <example>
+            <input>1 + 2 + 3</input>
+            <output>6</output>
+        </example>
+        <example>
+            <input>10 - 2 - 3 + 1</input>
+            <output>6</output>
+        </example>
+    </naryOperatorGroup>
+    <naryOperatorGroup title="Joining text">
+        <operator>;</operator>
+        <argType>Text</argType>
+        <resultType>Text</resultType>
+        <description>
+            <p>Joins text items together in order.</p>
+            <p>This operator can also be used in match expressions, usually to match and remove items from the beginning or end of a text item (see examples, below).</p>
+        </description>
+        <!-- TODO an example joining a table column together ? -->
+        <example>
+            <input>"a" ; "b" ; "c"</input>
+            <output>"abc"</output>
+        </example>
+        <example>
+            <input>@match "T-2000" @case "T-" ; y @then @call function\\from text(y) @endmatch</input>
+            <output>2000</output>
+        </example>
+    </naryOperatorGroup>
+    <binaryOperator title="Approximate numbers">
+        <operator>&#x00B1;</operator>
+        <argTypeLeft>Number{@unitvar u}</argTypeLeft>
+        <argTypeRight>Number{@unitvar u}</argTypeRight>
+        <resultType>Number{@unitvar u}</resultType>
+        <description>
+            <p>This is only valid in match cases or the right-hand side of the <link operator="~"/> operator.</p>
+            <p>It specifies a pattern that a number must be close to the left-hand operator, within the tolerance specified by the right-hand side.</p>
+        </description>
+        <example>
+            <description>Deal with inexact fractions by using a tolerance</description>
+            <input>(1 / 3) =~ (0.333 &#x00B1; 0.001)</input>
+            <output>true</output>
+        </example>
+    </binaryOperator>
+    <binaryOperator title="Not equal">
+        <operator>&lt;&gt;</operator>
+        <argTypeLeft>t</argTypeLeft>
+        <argTypeRight>t</argTypeRight>
+        <resultType>Boolean</resultType>
+        <description>
+            <p>Tests whether two values are not-equal</p>
+        </description>
+        <equivalence>
+            <foranytype name="t"><typeConstraint>Equatable</typeConstraint></foranytype>
+            <forany name="x">@typevar t</forany>
+            <forany name="y">@typevar t</forany>
+            <lhs>x &lt;&gt; y</lhs>
+            <rhs>@call function\\not(x = y)</rhs>
+        </equivalence>
+        <example>
+            <input>3 &lt;&gt; 6</input>
+            <output>true</output>
+        </example>
+    </binaryOperator>
+    <naryOperatorGroup title="Equal">
+        <operator>=</operator>
+        <operator>=~</operator>
+        <typeArg>t</typeArg>
+        <typeConstraint>Equatable t</typeConstraint>
+        <argType>t</argType>
+        <resultType>Boolean</resultType>
+        <description>
+            <p>Checks that all the items are equal.</p>
+            <p>Note that you can compare more than two items at once.  The equals expression is true only if all the items are equal to each other.</p>
+            <p>Checks if the value on the left, matches the pattern on the right.</p>
+            <p>If there are no special patterns on the right-hand side (e.g. <link syntax="_"/>, <link operator="&#x00B1;"/>, new variables) then it is equivalent to <link operator="="/>.</p>
+            <p>If you do declare a variable in the right-hand side, the variable will not be accessible outside the pattern.  For that, use the full <link syntax="match"/> expression.</p>
+        </description>
+        <equivalence display="false">
+            <foranytype name="t"><typeConstraint>Equatable</typeConstraint></foranytype>
+            <forany name="x">@typevar t</forany>
+            <forany name="y">@typevar t</forany>
+            <forany name="z">@typevar t</forany>
+            <lhs>x = y = z</lhs>
+            <rhs>(x = y) &amp; (y = z) &amp; (x = y)</rhs>
+        </equivalence>
+        <example>
+            <input>1 = 2</input>
+            <output>false</output>
+        </example>
+        <example>
+            <input>@call function\\from text("1") = 1</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>(2/2)=1=(2-1)</input>
+            <output>true</output>
+        </example>
+        <example>
+            <description>Check if text starts with a dollar sign</description>
+            <input>"$50" =~ ("$" ; _)</input>
+            <output>true</output>
+        </example>
+        <example>
+            <description>Check if number is close to another</description>
+            <input>50.0006 =~ (50 &#x00B1; 0.01)</input>
+            <output>true</output>
+        </example>
+        <example>
+            <description>Check if a list has two items, and the first is an empty text value</description>
+            <input>["Hi", "there"] =~ ["", _]</input>
+            <output>false</output>
+        </example>
+        <example>
+            <description>Check if the high item is exactly 2 higher than the low item</description>
+            <input>(low:2, high:4) =~ (low:x, high:(x + 2))</input>
+            <output>true</output>
+        </example>
+        <example>
+            <description>Check if a list has two values, and they are the same</description>
+            <input>["Bye", "Bye"] =~ [s, s]</input>
+            <output>true</output>
+        </example>
+        
+    </naryOperatorGroup>
+    <naryOperatorGroup title="And">
+        <operator>&amp;</operator>
+        <argType>Boolean</argType>
+        <resultType>Boolean</resultType>
+        <description>
+            <p>Checks if all items are true.</p>
+            <p>The items are checked left-to-right and are not evaluated beyond the first false item.  See the first example for how this is useful.</p>
+        </description>
+        <example>
+            <!-- TODO have a table to provide list -->
+            <description>Will not cause an error because list size is checked before getting the item.</description>
+            <input>(@call function\\list length([6, 7]) &gt;= 2) &amp; (@call function\\element([6, 7], 2) = 5)</input>
+            <output>false</output>
+        </example>
+        <example>
+            <input>("a" = "a") &amp; ("a" &lt;&gt; "b")</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>true &amp; true &amp; false</input>
+            <output>false</output>
+        </example>
+    </naryOperatorGroup>
+    <naryOperatorGroup title="Or">
+        <operator>|</operator>
+        <argType>Boolean</argType>
+        <resultType>Boolean</resultType>
+        <description>
+            <p>Checks if any items is true.</p>
+            <p>The items are checked left-to-right and are not evaluated beyond the first true item.  See the first example for how this is useful.</p>
+        </description>
+        <example>
+            <!-- TODO have a table to provide list -->
+            <description>Will not cause an error because list size is checked before getting the item.</description>
+            <input>(@call function\\list length([6, 7]) &gt;= 2) &amp; (@call function\\element([6, 7], 2) = 5)</input>
+            <output>false</output>
+        </example>
+        <example>
+            <input>("a" = "b") | ("a" &lt;&gt; "b")</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>true | true | false</input>
+            <output>true</output>
+        </example>
+    </naryOperatorGroup>
+
+
+    <naryOperatorGroup title="Less-than comparison">
+        <operator>&lt;</operator>
+        <operator>&lt;=</operator>
+        <typeArg>t</typeArg>
+        <typeConstraint>Comparable t</typeConstraint>
+        <argType>t</argType>
+        <resultType>Boolean</resultType>
+        <description>
+            <p>Compares the values.</p>
+            <p>Note that you can chain multiple less-than and less-than-or-equals in the same expression.</p>
+            <p>The rules for different types are as follows:</p>
+            <ul>
+                <li>Numbers are compared in the usual way.  All the numbers must have the same units.</li>
+                <li>For booleans, false is less than true.</li>
+                <li>Text is compared lexicographically using the Unicode codepoints.  English capitals come before lower-case so while bear comes before cat, Zebra comes before ant.</li>
+                <li>Date, YearMonth, Time and DateTime are compared in the usual way (earlier dates or times are less than later dates or times).</li>
+                <li>DateTimeZoned is compared by converting to the UTC DateTime and then comparing that.</li>
+                <li>Tuples are compared by initially comparing the first item.  If the first items differ, that is the result of the comparison.  Only if the first items are equal will the second values be compared, and so on until they are all equal, or there is a result.</li>
+                <li>Lists are compared lexicographically.  The empty list is less than all other lists.  If both lists are non-empty, the first item is compared.  If these differ, that is the result.  Only if the first items are the same are the second values compared.  If lists are equal until one of them ends, the shorter list is less than the longer list.</li>
+                <li>Tagged items are compared using their tag order.  Earlier tags are less than later tags.  Items with the same tag are compared using their inner value, if present.</li>
+            </ul>
+        </description>
+        <example>
+            <input>1 &lt; @call function\\abs(-2) &lt; 3</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>false &lt; true</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>"mud" &lt; "muddle"</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>@call function\\as type(type{DateTimeZoned}, @call function\\from text("2013-05-02 12:00 Europe/London")) &lt; @call function\\from text("2013-05-02 11:37 America/Toronto")</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>tag\\Optional\None &lt; @call tag\\Optional\Is(0)</input>
+            <output>true</output>
+        </example>
+        <example>
+            <input>(a:0, b:5) &lt; (a:1, b:3)</input>
+            <output>true</output>
+        </example>
+    </naryOperatorGroup>
+    
+    <binaryOperator title="Divide">
+        <operator>/</operator>
+        <argTypeLeft>Number{@unitvar u}</argTypeLeft>
+        <argTypeRight>Number{@unitvar v}</argTypeRight>
+        <resultType>Number{@unitvar u/@unitvar v}</resultType>
+        <description>
+            <p>Divides the left side by the right side.</p>
+            <p>This will produce a decimal component if necessary.  If you want integer division, round the result.</p>
+            <p>The result will have appropriate units, dividing the top units by the bottom units.</p>
+        </description>
+        <example>
+            <input>5 / 2</input>
+            <output>2.5</output>
+        </example>
+        <example>
+            <input>@call function\\round decimal((100{m} / 9.58{s}), 2)</input>
+            <output>10.44{m/s}</output>
+        </example>
+    </binaryOperator>
+    <!-- TODO need special case for types
+    <naryOperatorGroup title="Multiplying">
+        <operator>*</operator>
+        <argTypes unit="u">Number{@unitvar $u}</argTypes>
+        <resultType>Number{@unitvar u1 * @unitvar u2 * @unitvar un}</resultType>
+        <description>
+            <
+        </description>
+        <
+    </naryOperatorGroup>
+    -->
+    <!-- TODO need special case for types
+    <naryOperatorGroup title="Function chaining">
+        <operator>&gt;&gt;</operator>
+        <argType></argType>
+        <resultType></resultType>
+        <description>
+            <p>Takes the item on the left and feeds it to the function on the right
+        </description>
+        <example>
+        </example>
+    </naryOperatorGroup>
+    -->
+</functionDocumentation>

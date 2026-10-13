@@ -1,0 +1,29 @@
+// Ported from the Java original: embedded actions and predicates translated to TypeScript.
+lexer grammar UnitLexer;
+
+import StringLexerShared;
+
+WS : ( ' ' | '\t' )+;
+
+NEWLINE : '\r'? '\n' ;
+
+NUMBER : [+\-]? [0-9] [_0-9]* ('.' [_0-9]* [0-9])? {this.text = this.text.replaceAll("_", "");};
+
+POWER : '^';
+TIMES: '*';
+DIVIDE: '/';
+EQUALS : '=';
+UNIT : '@UNIT';
+OPEN_BRACKET: '(';
+CLOSE_BRACKET: ')';
+PREFIX : 'PREFIX';
+SUFFIX : 'SUFFIX';
+ALIAS : '@ALIAS';
+CATEGORY: '@CATEGORY';
+
+UNITVAR : '@unitvar';
+
+// No spaces in unit identifiers
+IDENT : [\p{Alphabetic}\p{General_Category=Other_Letter}\p{General_Category=Currency_Symbol}]+ ('_' [\p{Alphabetic}\p{General_Category=Other_Letter}\p{General_Category=Currency_Symbol}]+)*;
+
+COMMENT : '//' ~[\r\n]* NEWLINE -> skip;

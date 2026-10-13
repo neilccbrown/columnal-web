@@ -1,0 +1,392 @@
+# Columnal → TypeScript/Web: overall plan
+
+Source: https://github.com/neilccbrown/columnal (surveyed at commit `a11c9ff`).
+Goal: a purely client-side TypeScript web app that has the same semantics, look and
+behaviour as the JavaFX original, and includes every original test.
+
+**Guiding principle: port the semantics, rebuild the GUI.**
+- The **engine** (types, values, expressions, functions, transformations, file format,
+  import/export) is ported faithfully, class by class, so it gives identical results.
+- The **GUI** is rebuilt natively in HTML/CSS to the same effect: what the user sees, the
+  keyboard and mouse behaviour, and the workflows. It does not copy the JavaFX code line
+  by line or widget by widget. JavaFX workarounds such as VirtualGrid's custom scrolling
+  and node recycling are replaced by what the browser does natively wherever possible.
+- **Logic inside the GUI modules is still ported faithfully.** Examples are the
+  recognisers that parse typed cell input, number display formatting, the expression
+  lexers and savers, and completion ranking. That code moves into framework-free TS
+  modules with Vitest tests. Only the presentation is rebuilt.
+
+## 1. What we are porting
+
+About 103k lines of main Java in 21 modules, plus about 35k lines of tests in 20 test
+modules. Line counts include the 20-line licence header that every file has.
+Build-only modules (`anns`, `checkers`, `threadchecker`, `anns-threadchecker`, `buildSrc`)
+are Checker Framework plumbing and are **not ported**. TypeScript's strict mode and a few
+branded types replace them.
+
+Module layering, bottom to top, from the Gradle dependencies:
+
+| Layer | Java modules | ~Lines | Treatment |
+|---|---|---|---|
+| L0 | `utility-error`, `utility-functional`, `utility-adt`, `parsers` (25 ANTLR grammars) | 2.6k + 933 grammar | Port |
+| L1 | `identifiers`, `utility` | 4.6k | Port (numeric helpers, BigDecimal/Rational, strings) |
+| L2 | `types` | 9.6k | Port (DataType, units, TypeExp unification, TypeManager) |
+| L3 | `data` | 8.1k | Port (column storage, RecordSet, TableManager, save/load) |
+| L4 | `expressions`, `functions` | 20.2k | Port (AST, type checking, evaluation, about 65 functions) |
+| L5 | `transformations`, `r-interop` | 9.1k | Port (11 transformations, RDS read/write); R execution moves to webR |
+| L6 | `importers`, `exporters` | 5.2k | Port the engines; rebuild the import dialogs |
+| G0 | `utility-gui`, `lex-editor-completion` | 8.1k | Rebuild; port completion ranking |
+| G1 | `stf` (VirtualGrid 2.5k, DocumentTextField, cell editors) | 9.4k | Rebuild; port recognisers, NumberColumnFormatter and value display rules |
+| G2 | `lex-editor` | 8.2k | Rebuild the editor UI; port the lexers, savers, error recording and quick fixes |
+| G3 | `table-gui`, `dialogs-non-expression` | 4.2k | Rebuild |
+| G4 | `app` (MainWindow, View, TableDisplay, TableHat, dialogs) | 13.4k | Rebuild; port any embedded logic (table placement, text describing transformations, explanations) |
+
+VirtualGrid column widths apply to the whole grid column. Tables placed in the same grid
+column share widths, and the web layout must keep this.
+
+Non-code assets:
+- `xml/src/main/funcdoc/*.xml` holds the function documentation. XSLT 2.0 turns it into
+  HTML help **and into tests**: 237 `<example>`s become `.test` files.
+- `xml/src/main/help/*.xml` holds the dialog help.
+- `app/src/main/scss/*.scss` holds the styling. It's JavaFX CSS, so it serves as a
+  **visual reference and source of design tokens** (colours, fonts, spacing), not as
+  something to translate rule by rule.
+- `app/src/main/resources/*.properties` holds the UI strings. There are also fonts (OFL),
+  preview images, and `data/src/main/resources/builtin_units.txt`.
+- `book/` (AsciiDoc) and `tutorials/` are optional. Port them last.
+
+Tests:
+- Non-GUI tests are in `tests-basic`, `tests-functions` and `tests-tables`. Most are
+  property-based (junit-quickcheck) with a large set of custom generators: `Gen*`,
+  `Backwards*` expression makers and `GenNonsense*` transformations. These are **ported
+  faithfully**.
+- GUI tests are in the 16 `tests-gui-*` modules. They use testjavafx (FxRobot-style
+  `clickOn`, `write`, `push(KeyCode…)` and CSS lookups) plus traits from
+  `tests-gui-base`, and many inspect TableManager directly. These are **ported at the
+  behaviour level**. Each Java test method gets a TS test that runs the same scenario and
+  makes the same assertions. The steps are written against the new UI through page
+  objects.
+
+## 2. Key technology decisions (recommendations)
+
+### 2a. Engine and infrastructure
+
+| Concern | Java original | Web replacement | Notes |
+|---|---|---|---|
+| Build/dev | Gradle | **Vite** + npm, TypeScript `strict` | ES modules, `target: es2022` |
+| Engine tests | JUnit 4 | **Vitest** (Node) | Decided. |
+| Property tests | junit-quickcheck | **fast-check**, plus a `SourceOfRandomness` shim | Generators are imperative (`gen(random, status)`), so we port them almost line by line behind `fc.integer().map(seed => gen(new SourceOfRandomness(seed)))`. Shrinking is lost, which is the same as now since the custom generators don't shrink either. |
+| Parsers | ANTLR 4 (Java target) | **antlr-ng** tool + **antlr4ng** runtime | Pure TypeScript, no Java needed at build time. Embedded Java actions and predicates (for example in `MainLexer2`/`MainParser2`) must be rewritten in TS. |
+| Decimals | `BigDecimal` + `long` fast path, `MathContext.DECIMAL128` | **decimal.js** (precision 34, ROUND_HALF_EVEN) + `bigint` fast path | The highest semantic risk; see §5. `big-math` (log, pow) maps to decimal.js `ln`/`log`/`pow`. |
+| Rationals | javaSMT `Rational` (only use of javaSMT) | small in-house `Rational` over `bigint` | Used for unit exponents. |
+| Dates/times | `java.time` | **Temporal** (`temporal-polyfill` until Safari ships it natively) | `DateTimeFormatter` pattern parsing and formatting (8 files, including GuessFormat) needs a small in-house port, because Temporal has no pattern parser. |
+| Immutable collections, equality | Guava `ImmutableList`/`Map`, `equals`/`hashCode` | `ReadonlyArray`/`ReadonlyMap` + an `equals`/`hash` protocol and a `HashMap<K,V>` for value keys | JS `Map` uses identity, so any Java map keyed by values, identifiers or types needs this. |
+| Threading | FX thread + Simulation thread (758 `@OnThread(Simulation)`) | Single main thread with a **serial task queue** (`Workers.onWorkerThread` → time-sliced queue) | Keep the same boundaries in the API so the engine could move to a Web Worker later. |
+| Files | `java.io.File`, native dialogs, autosave | **File System Access API** (Chromium) with upload/download fallback; autosave and recent files in **OPFS/IndexedDB** | Asynchronous; kept behind a `FileService` interface. |
+| Clipboard | AWT/FX clipboard | async Clipboard API | Asynchronous. Copying HTML and plain text both work. |
+| Excel | Apache POI | **SheetJS** (`xlsx`, Apache-2.0) | |
+| HTML import | jsoup | `DOMParser` | |
+| R | runs the `R` executable; RDS parsing is pure Java | Pure Java RDS code is ported directly; **webR** (R compiled to WASM) runs R transformations | webR is a large download, so load it lazily. |
+| Function docs/help | XSLT 2.0 (Saxon) at build time | Node build script (XML → JSON), rendered by the app; also **extracts the doc example tests** | Avoids depending on Saxon; browsers only support XSLT 1.0. |
+| i18n | `.properties` + ResourceBundle | Load `.properties` at build time into typed lookups | Same keys and strings. |
+| Licence | GPLv3 | GPLv3 | This is a derivative work. |
+
+### 2b. GUI
+
+Since we're not copying the JavaFX structure, the framework only has to be good for the
+app itself. That app is a keyboard-heavy desktop-style tool: a canvas of tables, a
+structured expression editor, about 20 to 30 dialogs, and many popups, menus and
+completion lists.
+
+| Concern | JavaFX original | Web replacement (recommended) | Why |
+|---|---|---|---|
+| UI framework | JavaFX + ControlsFX + WellBehavedFX | **Vue 3** (Composition API, `<script setup lang="ts">`) with **Reka UI** or **Ark UI** headless components | Decided. The project owner knows Vue best, which matters because they'll review all the GUI code and behaviour drift is the main GUI risk. Vue's fine-grained reactivity suits "the engine changed, so update exactly the affected cells". Reka UI and Ark UI provide accessible dialogs, menus, context menus, popovers, combo boxes and tooltips, which is most of what ControlsFX and WellBehavedFX did. Ark UI is built on Zag.js state machines, which also support React and Solid. Choose between Reka UI and Ark UI in Phase 7. **Fallback:** Solid, if the Phase 7 grid prototype shows Vue can't keep up with very large tables. |
+| Engine → UI updates | FX properties and listeners | A small **store adapter**: engine listeners increment a per-table or per-column version held in a `shallowRef`, and components read it in a `computed` | The engine stays mutable and framework-free. **Rule:** engine objects are never made reactive (no `reactive()` or deep `ref()` around them; use `markRaw`/`shallowRef`). Vue's Proxies would break `#private` fields and change object identity. A lint rule enforces this where it can. |
+| Table canvas (VirtualGrid) | Custom virtualised grid with its own scrolling and floating layers | **One native scroll container.** Tables are absolutely positioned on a shared logical grid of rows and columns (widths shared per grid column). Headers and row labels use `position: sticky`. Each table only renders the rows currently visible (TanStack Virtual or a hand-rolled version). Cells are real DOM, not canvas. | Native scrolling, sticky positioning and the browser's layout replace `SmoothScroller`, `ScrollGroup` and the floating suppliers. Real DOM cells keep accessibility and test selectors. The logical grid model (cell positions, table placement, selection) is ported as pure TS. |
+| Cell editing (DocumentTextField) | Custom document and text field per cell | **One active editor overlaid on the cell being edited**, built on an `<input>` or a lightweight CodeMirror instance. It uses the **ported recognisers** for parsing and error highlighting. | Same behaviour, and far less code. |
+| Expression/type/unit editor (lex-editor) | Custom token display, caret and completion | **CodeMirror 6** using the ported lexers: tokens become decorations, the completion source uses the ported ranking, savers produce diagnostics, and quick fixes become CodeMirror actions | CodeMirror already handles editing, selection, undo, IME, completion popups and tooltips. |
+| Styling | JavaFX CSS from SCSS | Fresh CSS (SCSS or CSS modules), built on design tokens taken from the original SCSS | Matches the look, not the rule structure. |
+| GUI tests | testjavafx (FxRobot) | **Playwright Test**, page objects, and a test-only `window.__test` bridge | Decided, and to be reviewed after the Phase 7 comparison with Vitest browser mode. Values cross the bridge in the `.rec` file format's lossless text form, which Node parses back with the same engine code. Generators and expected values run in Node, which can import the engine. Elements are found by ARIA role or `data-testid`, not by CSS classes copied from JavaFX. |
+
+## 3. Working approach
+
+### 3a. Engine: faithful port
+1. **Keep the Java structure.** Each `Foo.java` becomes `Foo.ts` in the matching module
+   directory, keeping class and method names, so review is a side-by-side diff. Refactor
+   after it works, not during the port.
+2. **Layout.** `src/engine/<module>/…` mirrors the Gradle modules, and
+   `test/engine/<test-module>/…` mirrors the test modules, with `fixtures/` for the
+   `testFixtures` code. dependency-cruiser enforces the Gradle layering, and the engine
+   may never import from `src/gui`.
+3. **Fixed mapping conventions,** written up in `docs/CONVENTIONS.md`:
+   - checked exceptions → `UserException`/`InternalException` classes
+   - `@Nullable` → `| null`
+   - `Optional` → `T | null`, or an `Optional` class where null is a valid value
+   - overloaded methods → distinct names or union arguments
+   - Java `switch` over enums → union types with exhaustiveness checks
+   - Visitor interfaces → TS interfaces, unchanged
+4. **Finish each phase with its tests passing.** A phase is done when the original tests
+   for those modules are ported and green. Bugs found in the Java are noted and kept,
+   unless the project owner decides to fix them.
+
+### 3b. GUI: rebuild to the same behaviour
+1. **The spec is the Java app, its GUI code and its GUI tests.** Before building each GUI
+   area, write a short behaviour inventory in `docs/gui-spec/<area>.md` covering:
+   - what is shown, and the states it can be in
+   - keyboard shortcuts and focus movement
+   - mouse interactions and context menus
+   - validation and error display
+   - edge cases worth noting from the Java code
+
+   Add reference screenshots taken from the Java app.
+2. **Pull the logic out first.** Port any non-presentational logic from the GUI module
+   into `src/gui-logic/…` (pure TS, faithful port, Vitest-tested), then build the UI in
+   `src/gui/…` on top of it.
+3. **Port GUI tests per test method.** Keep the Java test names, run the same scenario
+   and make the same assertions. Any dropped or changed assertion is justified in
+   `PORT-STATUS.md`.
+4. **Track progress with a script.** `scripts/port-status.ts` writes
+   `docs/PORT-STATUS.md`. It lists engine and gui-logic code per Java file, and GUI code
+   per area and per Java test method.
+
+## 4. Phases
+
+Each phase lists what gets built and the original tests that should pass at the end of it.
+
+### Phase 0: Project foundations
+- Replace the current scaffold with:
+  - Vite + TS (`strict`, ES2022, `moduleResolution: bundler`)
+  - Vitest (Node) for engine tests
+  - Playwright Test for GUI tests, with a placeholder smoke test that loads the dev server
+  - fast-check, ESLint, dependency-cruiser layer rules
+  - GitHub Actions CI, including Playwright browser install
+- Add an antlr-ng codegen script (`npm run gen:parsers`).
+- Copy in the grammars, `.properties` files, fonts, `builtin_units.txt` and funcdoc/help
+  XML, with a record of their origin. Keep the original SCSS for reference.
+- Write `CONVENTIONS.md` and `port-status.ts`.
+- Build the test shims: `SourceOfRandomness`, `GenerationStatus`, the `Generator` base
+  class, a quickcheck→fast-check adapter, and hamcrest-like assertion helpers.
+
+**Exit:** CI runs both the Vitest suite and the Playwright smoke test, and the generated
+parsers compile.
+
+### Phase 1: Core utilities (L0–L1)
+- Port `utility-error`, `utility-functional`, `utility-adt`, `identifiers`, and the
+  non-GUI parts of `utility`.
+- Build the numeric core: the bigint/Decimal number representation and every `Utility`
+  arithmetic helper, matching DECIMAL128 rounding and `stripTrailingZeros`.
+- Write `Rational`, plus the equality/hash protocol and `HashMap`.
+- Write the serial task queue that replaces `Workers`.
+
+**Tests:** `tests-basic` utility tests (`PropUtility`, `TestIdentifier`), and the number,
+string and date generators (`GenNumber*`, `GenString`, `GenDate`, `GenZoneId`,
+`UnicodeStringGenerator`).
+
+### Phase 2: Type system (L2, `types`)
+- Port DataType, DataTypeUtility, DataTypeValue, TypeExp/TypeCons unification,
+  UnitManager/Unit/UnitExp (loading `builtin_units.txt`), TypeManager,
+  TaggedTypeDefinition, and JellyType/JellyUnit.
+- Port the type and unit parsers and the value representation (`@Value` becomes a
+  branded union).
+- Port the Temporal-based date/time value types and the `DateTimeFormatter` subset.
+
+**Tests:** `PropUnit`, `TestUnit`, `TestGenDataType`, `TestCompare`, and the type, unit
+and value generators.
+
+### Phase 3: Data model and file format (L3, `data`)
+- Port the column storages, Column/RecordSet/EditableRecordSet,
+  Table/DataSource/ImmediateDataSource, CalculatedColumn and TableManager.
+- Load and save the `.rec` format, byte for byte the same as Java. Files must
+  round-trip between the Java and web versions.
+
+**Tests:** `PropLoadSaveData`, `PropNumericStorage`, `TestSetValue`, `TestTextFileColumn`
+and `PropFiles`, plus a cross-compatibility check that loads `.rec` files saved by the
+Java app.
+
+### Phase 4: Expressions and functions (L4), the semantic core
+- Port the Expression AST (about 75 classes), parser glue, the saver/loader, TypeState
+  and type checking with error recording and quick-fix suggestions, evaluation, and
+  ExpressionUtil.
+- Port all the built-in functions.
+- Write the funcdoc build script: XML → JSON for the in-app docs and completions, and the
+  **example extractor that generates tests**.
+
+**Tests:** all of `tests-functions`, including the `Backwards*` and `GenExpressionValue*`
+generators, and all 237 funcdoc example tests.
+
+**Milestone:** the expression engine matches Java on every original property and
+example test.
+
+### Phase 5: Transformations (L5)
+- Port Calculate, Filter, Sort, Aggregate, Join, Concatenate, HideColumns, Check,
+  ManualEdit, MultipleTableLookup and RTransformation (R execution stubbed until
+  Phase 12).
+- Port TransformationManager, saving/loading, and the dependency DAG and recalculation.
+- Port the RDS/RData readers and writers (`RRead`, `RWrite`, `ConvertFromR`,
+  `ConvertToR`).
+
+**Tests:** all of `tests-tables`, and RDS parsing against the `.rds`/`.Rdata` fixtures.
+
+### Phase 6: Import/export engines and GUI logic (L6 and gui-logic)
+- Port GuessFormat, TextImporter, HTMLImporter (`DOMParser`), ExcelImporter (SheetJS),
+  RImporter, and the CSV, HTML, Excel and R exporters.
+- Port the non-presentational logic from the GUI modules into `src/gui-logic`:
+  - the recognisers (cell input parsing)
+  - NumberColumnFormatter and value display rules
+  - the expression, type and unit lexers and savers, plus EditorLocationAndErrorRecorder
+    and TextQuickFix
+  - completion ranking
+  - logic for the grid layout model and table placement
+- Find and extract any other logic embedded in `app` while doing this.
+
+**Tests:** the non-GUI halves of the format tests, and new Vitest unit tests for each
+gui-logic module, derived from the GUI tests that exercise it.
+
+**Milestone:** the engine is complete and headless. A Node CLI can load a `.rec` file,
+recompute everything and export it, and the results can be compared against Java
+outputs on real-world files.
+
+### Phase 7: GUI foundations, grid prototype, test harness
+- **Grid prototype first.** This is the biggest GUI risk. Build a throwaway table canvas
+  in Vue using the native-scroll design, fed with real data:
+  - several tables, one with 100k+ rows
+  - shared column widths and sticky headers
+  - keyboard navigation between cells and between tables
+  - live updates through the engine store adapter
+
+  Measure scrolling and editing performance. If Vue can't keep up, discuss switching to
+  Solid with the project owner.
+- App shell: Vue 3 + Reka UI or Ark UI (pick one after building a couple of real
+  components in each), the engine store adapter, i18n, fonts and design tokens,
+  rendering of help and function docs.
+- Shared components rebuilt for the web:
+  - a dialog frame with the same look as LightDialog
+  - a text field that shows errors
+  - a list editor that does what FancyList did
+  - help boxes, context menus and tooltips
+- Test harness on Playwright Test:
+  - page objects
+  - the `window.__test` bridge
+  - fast-check property runs driven from Node
+  - behaviour-level replacements for the `tests-gui-base` traits
+    (`CreateDataTableTrait`, `EnterTypeTrait`, `FocusOwnerTrait`, …)
+- **Compare test approaches.** Write 2–3 representative GUI tests in both Playwright and
+  Vitest browser mode, for example one cell-entry test and one property-based test that
+  checks values. Compare effort and debugging experience, then confirm or revise the
+  choice with the project owner.
+- **Decide on browser-reserved shortcuts** (Ctrl/Cmd+N/W/T/Q cannot be captured) and
+  record the remappings.
+
+### Phase 8: Table canvas and cell editing (rebuilds `stf` and `table-gui`)
+- Build the production table canvas from the prototype:
+  - the logical grid (from gui-logic), native scrolling, sticky headers and row labels
+  - row windowing per table, and grid lines
+  - table borders and the "hat" area
+- Selection: single cell, rectangular, entire table and column. Keyboard navigation
+  inside a table, between tables and into empty space, plus actions on empty cells.
+- Cell display, using the ported NumberColumnFormatter and display rules.
+- The cell editor overlay, using the ported recognisers, with the same caret, commit,
+  cancel and error behaviour.
+
+**Tests:** `tests-gui-grid`, `tests-gui-dtf`, `tests-gui-numbers` and
+`tests-gui-cell-rw`.
+
+### Phase 9: Main window and tables (core of `app`)
+- Main window, menus, initial screen, the project file flow (new/open/save/save-as,
+  autosave, recent files), data table creation, and adding and removing rows and
+  columns.
+- The type and unit editors (TypesDialog/UnitsDialog equivalents), comments and table
+  highlights.
+
+**Tests:** `tests-gui-tables`, `tests-gui-side`, `tests-gui-type-editor`, and the parts
+of `tests-gui-central` that do not need expressions.
+
+**Milestone:** a usable data-entry app in the browser.
+
+### Phase 10: Expression, type and unit editors
+- **Start with a short CodeMirror spike** that checks it can reproduce the Columnal
+  editor's distinctive behaviours:
+  - automatically matched brackets
+  - inline hints and prompts
+  - errors that depend on where the caret is
+  - completions with a documentation side panel
+  - quick fixes
+- Build the editors as CodeMirror extensions over the ported lexers and savers. Include
+  the function documentation popups.
+
+**Tests:** `tests-gui-expression-editor`, `…-delete`, `…-further` and `…-position`.
+
+### Phase 11: Transformation dialogs and the rest of the app
+- Rebuild the dialogs for creating and editing every transformation (calculate, sort,
+  filter, aggregate/split-by, join, concatenate, hide columns, check, R), plus
+  CheckDisplay, ExplanationDisplay, and the import dialogs with their live preview.
+- Wire up clipboard import/export.
+
+**Tests:** `tests-gui-transformations`, `tests-gui-transformations-create-edit`,
+`tests-gui-format`, and the rest of `tests-gui-central`.
+
+### Phase 12: R support via webR
+- Lazy-load webR. Replace `RExecution` with a webR backend that uses the ported
+  ConvertToR/ConvertFromR code.
+
+**Tests:** `tests-gui-r`.
+
+### Phase 13: Polish and release
+- Performance profiling on large tables; consider moving the engine to a Web Worker.
+- Accessibility audit, PWA/offline support, and cross-browser testing (Chrome, Firefox,
+  Safari).
+- Deploy as a static site (for example GitHub Pages).
+- Optionally port the book and tutorials.
+
+## 5. Main risks and how to handle them
+
+1. **Numeric semantics.** Java BigDecimal has scale, and DECIMAL128 rounding plus the
+   `long`/`BigDecimal` dual representation affect results and display. *Mitigation:*
+   port the arithmetic first, in Phase 1. Generate golden values from the Java app
+   (a tiny Java harness that dumps results for random inputs) and compare.
+2. **Value equality.** JS has no `equals`/`hashCode`, so code ported naively silently
+   uses identity semantics. *Mitigation:* the equality protocol and `HashMap` from
+   Phase 1, plus a lint rule against `Map`/`Set` keyed by domain objects.
+3. **Date/time.** `java.time` differs from Temporal, and `DateTimeFormatter` has no
+   equivalent. *Mitigation:* a small, focused pattern-formatter port, tested against
+   the date property tests.
+4. **Sync vs async.** Files, clipboard and webR are asynchronous in the browser.
+   *Mitigation:* confine async to the edges (file, clipboard and R service interfaces),
+   so the engine stays synchronous like the Java.
+5. **Behaviour drift in the rebuilt GUI.** Without copying the code, subtle behaviours
+   (focus rules, what Enter or Tab does in each context, error display) are easy to
+   lose. *Mitigation:* behaviour inventories and reference screenshots for each area,
+   GUI tests ported per test method, and review of each area by the project owner
+   against the Java app.
+6. **Grid performance and layout.** Many tables, very large tables, and widths shared
+   between tables in the same grid column. *Mitigation:* the Phase 7 prototype on real
+   data before any production grid code.
+7. **Matching the expression editor in CodeMirror.** Columnal's editor has unusual
+   behaviours. *Mitigation:* the Phase 10 spike. If CodeMirror can't do something,
+   write a custom extension. A fully custom editor is the fallback.
+8. **GUI test round trips.** Every check on app state goes through the Playwright
+   `window.__test` bridge. *Mitigation:* keep the bridge small and value-based, and
+   compare against Vitest browser mode in Phase 7.
+9. **Desktop-only behaviours** (native file paths, closing windows, quit, several
+   windows). *Mitigation:* map these to browser equivalents (one project per tab, OPFS)
+   and document how the corresponding tests changed.
+
+## 6. Decisions
+
+Decided:
+- Engine tests use Vitest (Node). GUI tests use Playwright Test, to be reviewed after the
+  Phase 7 comparison with Vitest browser mode.
+- The engine is ported faithfully. The GUI is rebuilt natively in HTML to the same
+  effect, not translated from JavaFX.
+- The UI framework is Vue 3. Solid is the fallback if the Phase 7 grid prototype shows
+  performance problems.
+
+Open:
+- Reka UI vs. Ark UI for headless components (Phase 7).
+- Commit generated ANTLR output, or generate it in CI.
+- Strict bug-for-bug compatibility with the Java, or fix bugs found during the port.
+- How to handle browser-reserved shortcuts.
+- Whether webR's download size is acceptable, or R support should be optional or
+  deferred.
+- Supported browsers. The File System Access API is Chromium-only, and other browsers
+  fall back to upload/download.

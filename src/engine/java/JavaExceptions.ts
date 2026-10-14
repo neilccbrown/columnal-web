@@ -30,3 +30,13 @@ export class IllegalStateException extends Error
         this.name = "IllegalStateException";
     }
 }
+
+/** java.io.IOException */
+export class IOException extends Error
+{
+    constructor(message: string)
+    {
+        super(message);
+        this.name = "IOException";
+    }
+}

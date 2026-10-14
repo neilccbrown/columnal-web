@@ -5,8 +5,9 @@
 // becomes T | null, and Java Lists become arrays.  Numbers are canonical Decimals: see
 // src/engine/java/JavaBigDecimal.ts.
 //
+// Files are JavaFiles (src/engine/java/JavaFile.ts), whose contents are read in advance.
+//
 // PORT-DEFERRED: methods that use the desktop file system or JavaFX are not ported yet:
-//   countLines, ReadState, readColumnChunk, skipFirstNRows (with the importers, Phase 6);
 //   usedFile, readRecentFilesList, getAutoSaveDirectory, getUndoDirectory, getStorageDirectory,
 //   getNewAutoSaveFile, getProperty, setProperty, MRU_FILE_NAME, saveLock (browser storage, Phase 9);
 //   addStyleClass, middle (JavaFX; the GUI is rebuilt).
@@ -16,7 +17,9 @@ import { Damerau } from "../../java/Damerau.js";
 import { HashMap, HashSet, type ReadonlyMapLike } from "../../java/HashMap.js";
 import { ArithmeticException, canonical, checkFinite, Decimal, decimalFromBigInt, decimalFromDouble, doubleValue, fitsLong, intValue, longValue, ONE, parseBigDecimal, powDecimal128, toBigInteger, toJavaString, toPlainString } from "../../java/JavaBigDecimal.js";
 import { isLetterOrDigit, isWhitespace } from "../../java/JavaCharacter.js";
-import { IndexOutOfBoundsException } from "../../java/JavaExceptions.js";
+import type { Charset } from "../../java/JavaCharset.js";
+import { IllegalArgumentException, IndexOutOfBoundsException } from "../../java/JavaExceptions.js";
+import type { JavaFile } from "../../java/JavaFile.js";
 import { javaEquals, javaHashCode, javaStringCompare } from "../../java/JavaObject.js";
 import { javaDoubleToString, javaParseDouble } from "../../java/JavaDouble.js";
 import { javaParseInt, javaParseLong, javaRegionMatches, javaSplit, javaTrim, NumberFormatException } from "../../java/JavaString.js";
@@ -128,6 +131,39 @@ export class Utility
     public static mapValuesEx<K, T, R>(original: ReadonlyMapLike<K, T>, apply: (t: T) => R): ReadonlyMapLike<K, R>
     {
         return Utility.mapValues(original, apply);
+    }
+
+    // From http://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
+    /**
+     * PORT-NOTE: Java counts with a LineNumberReader, which (since Java 16) also counts an
+     * unterminated last line, so this method counts such a line twice: "a" gives 2, but "a\n"
+     * gives 1.  That is preserved.  (A "\r\n" pair is one line ending, as in Java.)
+     */
+    public static countLines(filename: JavaFile, charset: Charset): number
+    {
+        const content = charset.decode(filename.readAllBytes());
+        // What LineNumberReader.getLineNumber() returns at the end:
+        let lineNumber = 0;
+        for (let i = 0; i < content.length; i++)
+        {
+            const c = content[i];
+            if (c === "\n" || (c === "\r" && content[i + 1] !== "\n"))
+                lineNumber += 1;
+        }
+        const empty = content.length === 0;
+        if (!empty && !content.endsWith("\n") && !content.endsWith("\r"))
+            lineNumber += 1;
+        const lastWasNewline = content.endsWith("\n");
+
+        // Nothing at all; zero lines
+        if (empty)
+            return 0;
+        // Some content, no newline, must be one line:
+        else if (lineNumber === 0 && !empty)
+            return 1;
+        else
+        // Some content with newlines:
+            return lineNumber + (lastWasNewline ? 0 : 1);
     }
 
     // Given a table of values, skips the first "skipRows" rows,
@@ -1222,6 +1258,91 @@ export class Utility
         return Utility.replicateM(length, make);
     }
 
+    public static readColumnChunk(readState: ReadState, delimiter: string | null, quote: string | null, columnIndex: number, fill: string[]): ReadState
+    {
+        // This would send us into an infinite loop, so guard against it:
+        if (quote !== null && quote.length === 0)
+            throw new IllegalArgumentException("Quote cannot be empty");
+
+        loopOverLines: for (let lineRead = 0; lineRead < 20; lineRead++)
+        {
+            const line = readState.nextLine();
+            if (line === null)
+                break loopOverLines; // No more lines to read!
+            if (delimiter === null)
+            {
+                // All just one column, so must be us:
+                fill.push(line);
+            }
+            else
+            {
+                let currentCol = 0;
+                let currentColStart = 0;
+                let inQuote = false;
+                // If null, unused for this column:
+                let withoutQuotes: string | null = null;
+                for (let i = 0; i < line.length; i++)
+                {
+                    if (!inQuote && line.startsWith(delimiter, i))
+                    {
+                        if (currentCol === columnIndex)
+                        {
+                            fill.push(withoutQuotes !== null ? withoutQuotes : line.substring(currentColStart, i));
+                            // No point going further in this line as we've found our column:
+                            continue loopOverLines;
+                        }
+                        currentCol += 1;
+                        currentColStart = i + delimiter.length;
+                        // 1 will be added by loop:
+                        i += delimiter.length - 1;
+                        // TODO this doesn't handle the last column (should fail test)
+                        withoutQuotes = null;
+                    }
+                    else if (quote !== null && line.startsWith(quote, i))
+                    {
+                        if (!inQuote)
+                        {
+                            inQuote = true;
+                            if (currentCol === columnIndex)
+                                withoutQuotes = "";
+                        }
+                        else
+                        {
+                            if (line.startsWith(quote, i + quote.length))
+                            {
+                                // Escaped quote, no problem
+                                i += quote.length;
+                                if (withoutQuotes !== null)
+                                    withoutQuotes += quote;
+                            }
+                            else
+                            {
+                                inQuote = false;
+                            }
+                        }
+                        // 1 will be added by loop:
+                        i += quote.length - 1;
+                    }
+                    else if (withoutQuotes !== null)
+                    {
+                        withoutQuotes += line.charAt(i);
+                    }
+                }
+                // Might be the last column we want:
+                if (currentCol === columnIndex)
+                {
+                    fill.push(withoutQuotes !== null ? withoutQuotes : line.substring(currentColStart));
+                }
+                else if (currentCol < columnIndex)
+                {
+                    // Blank:
+                    fill.push("");
+                }
+            }
+        }
+        return readState;
+    }
+
     public static countIn(small: string, large: string): number
     {
         let total = 0;
@@ -1230,6 +1351,11 @@ export class Utility
             total += 1;
         }
         return total;
+    }
+
+    public static skipFirstNRows(src: JavaFile, charset: Charset, headerRows: number): ReadState
+    {
+        return new ReadState(src, charset, headerRows);
     }
 
     /**
@@ -1383,6 +1509,39 @@ export interface WrappedCharSequence
     subSequence(start: number, end: number): string;
     toString(): string;
     translateWrappedToOriginalPos(position: number): number;
+}
+
+/**
+ * Java: Utility.ReadState, which reads a file line by line (lines end with "\n", "\r" or "\r\n",
+ * and a final empty line is not included, as Java's BufferedReader.readLine).
+ */
+export class ReadState
+{
+    private readonly file: JavaFile;
+    private readonly lines: string[];
+    private nextIndex: number;
+
+    // Pass 0 to start at beginning of file, any other number
+    // to skip that many lines at the beginning.
+    public constructor(file: JavaFile, charset: Charset, firstLine: number)
+    {
+        this.file = file;
+        const content = charset.decode(file.readAllBytes());
+        this.lines = content.length === 0 ? [] : content.split(/\r\n|\n|\r/);
+        if (this.lines.length > 0 && this.lines[this.lines.length - 1] === "" && /[\r\n]$/.test(content))
+            this.lines.pop();
+        this.nextIndex = firstLine;
+    }
+
+    public nextLine(): string | null
+    {
+        return this.nextIndex < this.lines.length ? this.lines[this.nextIndex++]! : null;
+    }
+
+    public getAbsolutePath(): string
+    {
+        return this.file.getAbsolutePath();
+    }
 }
 
 export class IndexRange

@@ -1,0 +1,63 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN BJO
+BJO "Test 0"
+BJO FORMAT @BEGIN
+BJO @COLUMN GenCol 40 @TYPE ( a : Number , b : Number ) @DEFAULT ( "a" : 1 , "b" : 0.420153 )
+BJO @COLUMN GenCol 41 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT Is ( None )
+BJO @END FORMAT
+BJO VALUES @BEGIN
+BJO   ( "a" : -32768 , "b" : 0.08322 ) , None
+BJO   ( "a" : 151 , "b" : 791 ) , Is ( None )
+BJO   ( "a" : -32767 , "b" : 2114404 ) , None
+BJO   ( "a" : 13616723725767214937364 , "b" : -32767 ) , Is ( None )
+BJO   ( "a" : 39425 , "b" : 127 ) , Is ( Is ( "dr990" ) )
+BJO   ( "a" : 127 , "b" : 30 ) , None
+BJO   ( "a" : 2 , "b" : 440 ) , None
+BJO   ( "a" : 3 , "b" : -32767 ) , None
+BJO   ( "a" : 0 , "b" : 51 ) , Is ( Is ( "𦩱􆖠󺠬n" ) )
+BJO @END VALUES
+BJO DISPLAY @BEGIN
+BJO POSITION 1 1
+BJO SHOWCOLUMNS ALL
+BJO @END DISPLAY
+@END BJO DATA
+COMMENT @BEGIN NVB
+NVB CONTENT @BEGIN
+NVB TYPE Date rr9990 Z9 aZ0nZ9 dnrr9aaZnna tagged SOURCE COLUMN q9n a a
+NVB @END CONTENT
+NVB DISPLAY @BEGIN
+NVB POSITION 1000 35 13 4
+NVB @END DISPLAY
+@END NVB COMMENT
+COMMENT @BEGIN LBX
+LBX CONTENT @BEGIN
+LBX 
+LBX @END CONTENT
+LBX DISPLAY @BEGIN
+LBX POSITION 2000 2 12 17
+LBX @END DISPLAY
+@END LBX COMMENT
+COMMENT @BEGIN BFS
+BFS CONTENT @BEGIN
+BFS 
+BFS @END CONTENT
+BFS DISPLAY @BEGIN
+BFS POSITION 3000 96 4 12
+BFS @END DISPLAY
+@END BFS COMMENT

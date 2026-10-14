@@ -47,6 +47,8 @@ const engineLayerRules = Object.entries(ENGINE_MODULE_DEPENDENCIES).map(([module
 const HIERARCHY_BARRELS = {
     "src/engine/types/typeExp/TypeExps.ts": ["TypeExp", "MutVar", "NumTypeExp", "RecordTypeExp", "TypeCons"],
     "src/engine/types/jellytype/JellyTypes.ts": ["JellyType", "JellyTypeApply", "JellyTypeArray", "JellyTypeFunction", "JellyTypeIdent", "JellyTypeNumberWithUnit", "JellyTypePrimitive", "JellyTypeRecord"],
+    "src/engine/data/data/DataSources.ts": ["DataSource", "ImmediateDataSource", "LinkedDataSource"],
+    "src/engine/data/data/columntype/ColumnTypes.ts": ["ColumnType", "BlankColumnType", "BoolColumnType", "CleanDateColumnType", "NumericColumnType", "OrBlankColumnType", "TextColumnType"],
 };
 
 const hierarchyRules = Object.entries(HIERARCHY_BARRELS).map(([barrel, classes]) => {

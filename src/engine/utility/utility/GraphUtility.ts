@@ -33,9 +33,9 @@ export class GraphUtility
 
         // We don't have any empty lists in the map:
         // PORT-NOTE: Java iterates this HashMap in hash order below, which affects which of the
-        // valid orderings is returned; here it is insertion order (the order of incomingEdges).
-        // The result is a valid linearisation either way, but may differ from Java's.
-        const remainingEdges = new HashMap<T, HashSet<T>>();
+        // valid orderings is returned (and so, for example, the order of tables in a saved
+        // file), so it simulates Java's hash order.
+        const remainingEdges = HashMap.javaOrder<T, HashSet<T>>();
         incomingEdges.forEach((value, key) =>
         {
             const edges = new HashSet(value);

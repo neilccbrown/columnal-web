@@ -1,7 +1,7 @@
 // Port of test.TestUnit (tests-functions).
 //
-// PORT-DEFERRED: testAs and testAsFail need the AsUnit function, TFunctionUtil and DummyManager
-// (Phase 4).
+// PORT-DEFERRED: testAs and testAsFail need the AsUnit function and the expression parts of
+// TFunctionUtil (Phase 4).
 import { beforeEach, describe, test } from "vitest";
 import { Rational } from "../../../src/engine/java/Rational.js";
 import { Unit } from "../../../src/engine/types/data/unit/Unit.js";

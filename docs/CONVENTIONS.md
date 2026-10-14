@@ -216,7 +216,8 @@ base module is the first one loaded, a subclass module runs `class X extends Bas
 exists, and fails. So:
 
 - Such a hierarchy is loaded through a **barrel module** that exports the base class first, then the
-  subclasses (`typeExp/TypeExps.ts`, `jellytype/JellyTypes.ts`). Every module, including the base and
+  subclasses (`typeExp/TypeExps.ts`, `jellytype/JellyTypes.ts`, `data/data/DataSources.ts`,
+  `data/data/columntype/ColumnTypes.ts`). Every module, including the base and
   subclass modules themselves, imports these classes' values from the barrel. Type-only imports may
   name the class files directly. The dependency-cruiser rules `via-barrel-*` enforce this; add new
   hierarchies to `HIERARCHY_BARRELS` in `.dependency-cruiser.cjs`.
@@ -224,6 +225,21 @@ exists, and fails. So:
   getter returning a module-level constant defined after the subclasses (as `DataType.NUMBER` does).
 - `test/engine/ModuleLoading.test.ts` loads every engine module first, in a fresh module registry,
   to catch initialisation-order errors from cycles.
+
+### Threads, files and charsets
+
+- The engine is single-threaded. `Workers.onWorkerThread` is a task queue (Phase 1), and JavaFX's
+  `Platform.runLater` is `src/engine/java/Platform.ts`, which runs the callbacks in a later task
+  (tests can run them at once with `Platform._test_runPending()`).
+- `java.io.File` is `JavaFile` (`src/engine/java/JavaFile.ts`): a POSIX path plus the file's contents,
+  read in advance, because reading files in the browser is asynchronous. `readAllBytes()` throws
+  `IOException` if there are no contents.
+- `java.nio.charset.Charset` is `Charset` (`src/engine/java/JavaCharset.ts`), which decodes with
+  `TextDecoder` and has only the charsets that it supports, under their Java names. As in Java, a
+  byte order mark is kept except by `UTF-16`. Tests that need to *encode* a charset use `iconv-lite`.
+- `List.addAll(index, items)` is `javaListAddAll` (`JavaCollections.ts`). Do not use
+  `list.splice(index, 0, ...items)` where `items` can be large: the spread fails beyond about
+  100,000 items.
 
 ### Exceptions
 
@@ -259,6 +275,11 @@ the affected grammar file:
 - A `@header` in an imported grammar (`StringLexerShared`) is inherited by every grammar that imports
   it, so those grammars must not declare the same import again.
 
+`npm run gen:parsers` makes every generated lexer extend `JavaLexer` (`parsers/grammar/JavaLexer.ts`)
+instead of antlr4ng's `Lexer`. antlr4ng ignores an action that sets a token's text to `""` (it tests
+`if (text)` where Java tests `text != null`), which broke empty string literals and blank lines in
+saved files; `JavaLexer` restores Java's behaviour.
+
 The parsers are regenerated (in under a second) by `npm run gen:parsers`. That also runs automatically on
 install and before `dev`, `build`, `test` and `typecheck`.
 
@@ -287,12 +308,14 @@ install and before `dev`, `build`, `test` and `typecheck`.
   utilities, 4,000 cases), `java-lang.sh` and `grammar-utility.sh`. Known, deliberate differences are
   listed explicitly in the test, with their `PORT-NOTE`.
 - For whole classes, `scripts/golden/build-columnal-jvm.sh` compiles the original engine modules
-  (so far up to `types`) into `reference/jvm/classes`: it downloads the Maven dependencies (checking
+  (so far up to `data`) into `reference/jvm/classes`: it downloads the Maven dependencies (checking
   their SHA-1s), generates the Java parsers with ANTLR 4.11, and strips the Checker Framework
   annotations. A harness such as `scripts/golden/java/TypesHarness.java` then calls the real classes,
   printing `section|input|output` lines that a test replays (`test/engine/types/TypesGolden.test.ts`).
   Cases generated from `java.util.Random` seeds make exactly the same calls in Java and in the test,
-  which `JavaRandom` makes possible.
+  which `JavaRandom` makes possible. For saved files, `scripts/golden/data.sh` has the port generate
+  random `.rec` files, which `DataHarness.java` loads into the original `TableManager` and saves
+  again; `test/engine/data/DataGolden.test.ts` checks that the port saves them identically.
 - New TS-only tests (for code with no Java test) go in `test/engine/<module>/`.
 - GUI tests (Playwright) are ported per test method, at the level of behaviour (PLAN.md §3b).
 

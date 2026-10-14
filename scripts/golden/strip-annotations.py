@@ -9,9 +9,10 @@ import os
 import re
 import sys
 
-# Packages that only contain annotations (removed imports), except RawInputLocation, whose
-# constants are used (build-columnal-jvm.sh provides a stand-in class):
-ANNOTATION_IMPORT = re.compile(r"^import\s+(static\s+)?(annotation|threadchecker|org\.checkerframework)\.(?!units\.RawInputLocation;)[^;]*;\s*$", re.M)
+# Packages that only contain annotations (removed imports), except the annotation.units types
+# whose constants are used (build-columnal-jvm.sh provides stand-in classes):
+UNITS_WITH_CONSTANTS = "RawInputLocation|AbsRowIndex|AbsColIndex|CanonicalLocation|DisplayLocation|TableDataRowIndex|TableDataColIndex"
+ANNOTATION_IMPORT = re.compile(r"^import\s+(static\s+)?(annotation|threadchecker|org\.checkerframework)\.(?!units\.(" + UNITS_WITH_CONSTANTS + r");)[^;]*;\s*$", re.M)
 
 
 def skip_literal(src, i):

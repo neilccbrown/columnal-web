@@ -387,3 +387,12 @@ export class StringGenerator extends AbstractStringGenerator
         return codePoint >= 0 && codePoint <= 0x10ffff && (codePoint < 0xd800 || codePoint > 0xdfff);
     }
 }
+
+/** junit-quickcheck's default int generator (used for an un-annotated int parameter): any int. */
+export class IntegerGenerator extends Generator<number>
+{
+    public override generate(random: SourceOfRandomness, _status: GenerationStatus): number
+    {
+        return random.nextInt(-2147483648, 2147483647);
+    }
+}

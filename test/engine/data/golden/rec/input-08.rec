@@ -1,0 +1,75 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN BOT
+BOT "Test 0"
+BOT FORMAT @BEGIN
+BOT @COLUMN GenCol 42 @TYPE ( inner : ( t 1 : Text , t 2 : Number ) , z : Number ) @DEFAULT ( "inner" : ( "t 1" : "h ZZ0naZ" , "t 2" : 90214721214175021 ) , "z" : -32767 )
+BOT @COLUMN GenCol 43 @TYPE Nested @DEFAULT A ( Single )
+BOT @COLUMN GenCol 44 @TYPE Boolean @DEFAULT false
+BOT @COLUMN GenCol 45 @TYPE ( Text : Text , bool : Boolean , c : C , dtz : DateTimeZoned ) @DEFAULT ( "Text" : "s nnaZrZr9" , "bool" : false , "c" : Num ( 30422 ) , "dtz" : 8378-10-20 04:07:49 +00:36 )
+BOT @COLUMN GenCol 46 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT None
+BOT @COLUMN GenCol 47 @TYPE Time @DEFAULT 09:19:31.817337739
+BOT @COLUMN GenCol 48 @TYPE Text @DEFAULT "Ja^c𗗰"
+BOT @END FORMAT
+BOT VALUES @BEGIN
+BOT   @INVALID "^a-1552603244" , C ( Blank ) , true , ( "Text" : "TYPE" , "bool" : true , "c" : Num ( 0 ) , "dtz" : 1920-01-05 09:47:00 America/Managua ) , None , 05:33:00 , "TRANSFORMATION"
+BOT   ( "inner" : ( "t 1" : "􃳴" , "t 2" : 3 ) , "z" : 16 ) , A ( Single ) , false , @INVALID "^a-1397086072" , None , @INVALID "^a-725097541" , "(󼘏w.􊇑􆴷䬑L6u􈦗"
+BOT   @INVALID "^a-1195559597" , C ( Blank ) , true , @INVALID "^a1692784997" , Is ( Is ( "!&y\m" ) ) , 11:36:00 , @INVALID "^a98039953"
+BOT   ( "inner" : ( "t 1" : "Ch󿬱3!~G󺯱Fzc" , "t 2" : -9223372036854775808 ) , "z" : 38993 ) , @INVALID "^a-579808006" , true , @INVALID "^a-1682536942" , None , @INVALID "^a-720185965" , "w9a"
+BOT   ( "inner" : ( "t 1" : "IC" , "t 2" : 579032150146 ) , "z" : 2147483647 ) , A ( Single ) , false , ( "Text" : "b99" , "bool" : true , "c" : Num ( 4068 ) , "dtz" : 2004-06-22 08:56:38.408242579 -11:23 ) , None , 04:28:33.65268172 , "x00nrZ nn"
+BOT   @INVALID "^a-538635430" , C ( Num ( -1 ) ) , false , @INVALID "^aEND" , Is ( Is ( "YS𠷝𬶢'K1w#{R." ) ) , 19:26:31 , "rnnZn"
+BOT   @INVALID "^a1064700891" , @INVALID "^a115046552" , @INVALID "^a-534951787" , @INVALID "^a2131332362" , None , 04:13:49.610831083 , @INVALID "^a-806990821"
+BOT   ( "inner" : ( "t 1" : "DateYM" , "t 2" : 2147483648 ) , "z" : 0 ) , C ( Blank ) , @INVALID "^a1594112635" , ( "Text" : "-{x􎖴" , "bool" : false , "c" : Blank , "dtz" : 1922-11-30 06:34:53 America/Juneau ) , Is ( Is ( "fn9 rrra" ) ) , 10:25:31.806919147 , @INVALID "^a-921075804"
+BOT @END VALUES
+BOT DISPLAY @BEGIN
+BOT POSITION 1 1
+BOT SHOWCOLUMNS ALL
+BOT @END DISPLAY
+@END BOT DATA
+COMMENT @BEGIN KPD
+KPD CONTENT @BEGIN
+KPD SKIP^naa a0 vZ BEGIN ra ZZZaZ90Z orn000r Z
+KPD @END CONTENT
+KPD DISPLAY @BEGIN
+KPD POSITION 1000 87 8 9
+KPD @END DISPLAY
+@END KPD COMMENT
+COMMENT @BEGIN IHR
+IHR CONTENT @BEGIN
+IHR Z bnr0Zn90 DATA DEFAULT mannar b9a000ZZ9r TEXTFILE^nunitvar zrn0 na9
+IHR @END CONTENT
+IHR DISPLAY @BEGIN
+IHR POSITION 2000 31 18 14
+IHR @END DISPLAY
+@END IHR COMMENT
+COMMENT @BEGIN RHZ
+RHZ CONTENT @BEGIN
+RHZ ta nrn0 CONTENT uZ0n r9n0 v 9099rZ9Za unitvar cn909 a DISPLAY kr typevar c9n^nDISPLAY vaa0Z9Z
+RHZ @END CONTENT
+RHZ DISPLAY @BEGIN
+RHZ POSITION 3000 77 12 10
+RHZ @END DISPLAY
+@END RHZ COMMENT
+COMMENT @BEGIN JJP
+JJP CONTENT @BEGIN
+JJP ^naa COLUMNAL xn Zr9 000 w9090 Boolean g0naar 990
+JJP @END CONTENT
+JJP DISPLAY @BEGIN
+JJP POSITION 4000 10 2 19
+JJP @END DISPLAY
+@END JJP COMMENT

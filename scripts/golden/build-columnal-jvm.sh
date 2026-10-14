@@ -11,7 +11,7 @@ REF="$ROOT/reference/columnal"
 JARS="$ROOT/reference/jars"
 OUT="$ROOT/reference/jvm"
 # The engine modules built so far, in dependency order:
-MODULES="utility-error utility-functional utility-adt parsers identifiers utility types"
+MODULES="utility-error utility-functional utility-adt parsers identifiers utility types data"
 
 fetch() # group/artifact/version file
 {
@@ -28,6 +28,7 @@ fetch() # group/artifact/version file
 
 CP=""
 fetch com/google/guava/guava/31.1-jre guava-31.1-jre.jar
+fetch com/google/guava/failureaccess/1.0.1 failureaccess-1.0.1.jar
 fetch org/antlr/antlr4-runtime/4.11.1 antlr4-runtime-4.11.1.jar
 fetch commons-io/commons-io/2.11.0 commons-io-2.11.0.jar
 fetch org/apache/commons/commons-lang3/3.12.0 commons-lang3-3.12.0.jar
@@ -61,17 +62,14 @@ mkdir -p "$GEN"
   java -cp "$ANTLR" org.antlr.v4.Tool -package xyz.columnal.grammar -visitor -no-listener -o "$GEN" -Xexact-output-dir $(ls *Lexer*.g4) && \
   java -cp "$ANTLR" org.antlr.v4.Tool -package xyz.columnal.grammar -visitor -no-listener -lib "$GEN" -o "$GEN" -Xexact-output-dir $(ls *.g4 | grep -v Lexer) )
 python3 "$ROOT/scripts/golden/strip-annotations.py" "$OUT/generated" "$OUT/src"
-# The one annotation type whose constants the code uses:
+# Stand-ins for the annotation types whose constants the code uses (e.g. AbsRowIndex.ONE):
 mkdir -p "$OUT/src/annotation/units"
-cat > "$OUT/src/annotation/units/RawInputLocation.java" <<'JAVA'
-package annotation.units;
-public class RawInputLocation
-{
-    public static int ONE = 1;
-    public static int ZERO = 0;
-}
-JAVA
+for unit in RawInputLocation AbsRowIndex AbsColIndex CanonicalLocation DisplayLocation TableDataRowIndex TableDataColIndex; do
+    printf 'package annotation.units;\npublic class %s\n{\n    public static final int ONE = 1;\n    public static final int ZERO = 0;\n}\n' "$unit" > "$OUT/src/annotation/units/$unit.java"
+done
 find "$OUT/src" -name "*.java" > "$OUT/sources.txt"
+# Java 21 rejects the original's extra semicolon after some imports ("import ...;;"):
+xargs perl -pi -e 's/^(import [^;]+);;\s*$/$1;\n/' < "$OUT/sources.txt"
 javac -nowarn -encoding UTF-8 -proc:none -d "$OUT/classes" -cp "$LIBS" @"$OUT/sources.txt" 2>&1 | grep -v "^Note:" || true
 [ -f "$OUT/classes/xyz/columnal/data/datatype/DataType.class" ] || { echo "Compilation failed" >&2; exit 1; }
 # Resources (e.g. builtin_units.txt):

@@ -7,10 +7,13 @@ import { describe, expect, test, vi } from "vitest";
 const modules = import.meta.glob(["../../src/engine/**/*.ts", "!../../src/engine/parsers/generated/**"]);
 
 // Base classes that construct their subclasses, so must be loaded through their barrel module
-// (TypeExps.ts, JellyTypes.ts); the dependency-cruiser rules "via-barrel-*" enforce this.
+// (TypeExps.ts, JellyTypes.ts, DataSources.ts, ColumnTypes.ts); the dependency-cruiser rules
+// "via-barrel-*" enforce this.
 const LOADED_VIA_BARREL = new Set([
     "../../src/engine/types/typeExp/TypeExp.ts",
     "../../src/engine/types/jellytype/JellyType.ts",
+    "../../src/engine/data/data/DataSource.ts",
+    "../../src/engine/data/data/columntype/ColumnType.ts",
 ]);
 
 describe("Engine modules", () =>

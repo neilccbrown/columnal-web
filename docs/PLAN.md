@@ -82,7 +82,7 @@ Tests:
 | Dates/times | `java.time` | **js-joda** (a port of java.time), wrapped in `src/engine/java/time/JavaTime.ts` | Decided in Phase 2, instead of the originally planned Temporal: js-joda has java.time's classes, `DateTimeFormatterBuilder` and parse/resolve behaviour, so the date code ports line by line. Where it differs from Java (zone-name parsing, some printing), `JavaTime.ts` corrects it using tables extracted from the JDK, checked by golden tests. |
 | Immutable collections, equality | Guava `ImmutableList`/`Map`, `equals`/`hashCode` | arrays, JS `Map`/`Set` for primitive keys, and `HashMap`/`HashSet` (keyed by `equals`/`hashCode`) for object keys | JS `Map` uses identity, so any Java map keyed by values, identifiers or types needs `HashMap`. It iterates in insertion order, not Java's hash order: decided in Phase 1, with a check at each ported `HashMap` site for whether the order is observable. Where it is, `HashMap.javaOrder()` simulates Java's table to iterate in Java's order (Phase 2). |
 | Threading | FX thread + Simulation thread (758 `@OnThread(Simulation)`) | Single main thread with a **serial task queue** (`Workers.onWorkerThread` → time-sliced queue) | Keep the same boundaries in the API so the engine could move to a Web Worker later. |
-| Files | `java.io.File`, native dialogs, autosave | **File System Access API** (Chromium) with upload/download fallback; autosave and recent files in **OPFS/IndexedDB** | Asynchronous; kept behind a `FileService` interface. |
+| Files | `java.io.File`, native dialogs, autosave | **File System Access API** (Chromium) with upload/download fallback; autosave and recent files in **OPFS/IndexedDB** | Asynchronous; kept behind a `FileService` interface. The engine stays synchronous: it reads a `JavaFile`, whose contents the GUI reads in advance (Phase 3). Charsets are the ones `TextDecoder` supports, under their Java names. |
 | Clipboard | AWT/FX clipboard | async Clipboard API | Asynchronous. Copying HTML and plain text both work. |
 | Excel | Apache POI | **SheetJS** (`xlsx`, Apache-2.0) | |
 | HTML import | jsoup | `DOMParser` | |
@@ -218,11 +218,30 @@ parsers compile.
 generators, plus the rest of `tests-basic`: `GenDate`, `GenZoneId`, `GenUnit` and the
 date/value parts of `TBasicUtil`.
 
-### Phase 3: Data model and file format (L3, `data`)
+### Phase 3: Data model and file format (L3, `data`) (done)
 - Port the column storages, Column/RecordSet/EditableRecordSet,
   Table/DataSource/ImmediateDataSource, CalculatedColumn and TableManager.
 - Load and save the `.rec` format, byte for byte the same as Java. Files must
   round-trip between the Java and web versions.
+- Done: the whole `data` module.
+  - `NumericColumnStorage` keeps two tiers (whole numbers in a `Float64Array`, other numbers as
+    decimals) instead of Java's byte/short/int/long/BigDecimal tiers, which were only a memory
+    optimisation.
+  - Files are in-memory `JavaFile`s (path plus contents, read in advance), and charsets decode
+    with `TextDecoder` under their Java names (`JavaCharset.ts`), so the engine stays synchronous.
+  - `Platform.runLater` (the FX thread) runs callbacks in a later task.
+  - Fixed an antlr4ng difference from Java's ANTLR: a lexer action setting a token's text to `""`
+    was ignored, so an empty string literal or a blank line in a saved file's detail block
+    loaded wrongly. Every generated lexer now extends `JavaLexer`, which fixes this.
+  - `GraphUtility.lineariseDAG` now uses Java's hash order, which decides the order of tables in a
+    saved file.
+- Cross-compatibility (`scripts/golden/data.sh`, `test/engine/data/DataGolden.test.ts`): the
+  original Java `TableManager`, built on the JVM, loads 16 random files saved by the port, plus
+  hand-written edge cases, and saves them again. The port saves every file byte for byte as Java did,
+  reads Java's files, and fails as Java does on an invalid file.
+- Deferred (marked `PORT-DEFERRED`): loading transformations in the tests' `DummyManager` (Phase 5),
+  storing `TableManager`'s settings (Phase 9), and the parts of `TFunctionUtil` that need
+  expressions (Phase 4).
 
 **Tests:** `PropLoadSaveData`, `PropNumericStorage`, `TestSetValue`, `TestTextFileColumn`
 and `PropFiles`, plus a cross-compatibility check that loads `.rec` files saved by the

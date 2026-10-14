@@ -1,0 +1,55 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN CBC
+CBC "Test 0"
+CBC FORMAT @BEGIN
+CBC @COLUMN GenCol 32 @TYPE Boolean @DEFAULT false
+CBC @COLUMN GenCol 33 @TYPE Boolean @DEFAULT false
+CBC @COLUMN GenCol 34 @TYPE ( inner : ( t 1 : Text , t 2 : Number ) , z : Number ) @DEFAULT ( "inner" : ( "t 1" : "s 9 0na" , "t 2" : -127 ) , "z" : 14614 )
+CBC @COLUMN GenCol 35 @TYPE ( a : Number , b : Number ) @DEFAULT ( "a" : -9223372036854775807 , "b" : 70 )
+CBC @COLUMN GenCol 36 @TYPE DateTime @DEFAULT 2005-05-17 05:05:52.523536025
+CBC @COLUMN GenCol 37 @TYPE Nested @DEFAULT C ( Num ( 139 ) )
+CBC @COLUMN GenCol 38 @TYPE DateTime @DEFAULT 0563-09-12 09:30:16.896561786
+CBC @COLUMN GenCol 39 @TYPE B @DEFAULT Single
+CBC @END FORMAT
+CBC VALUES @BEGIN
+CBC   true , true , @INVALID "^a1275062114" , ( "a" : -9223372036854775807 , "b" : 9223372036854775807 ) , 1995-07-28 08:40:18 , @INVALID "^a-1916860627" , 5737-06-01 02:50:58.712256397 , Single
+CBC   @INVALID "^a-1944785265" , @INVALID "^a15371762" , ( "inner" : ( "t 1" : "h9 9 9" , "t 2" : 1 ) , "z" : 2 ) , ( "a" : 883 , "b" : 127 ) , @INVALID "^a-501051211" , @INVALID "^a1325732346" , @INVALID "^aEND" , @INVALID "^a-1346708018"
+CBC   false , @INVALID "^a-2069692480" , @INVALID "^a769589945" , ( "a" : 470 , "b" : -9223372036854775809 ) , 2018-11-24 18:55:00 , @INVALID "^a-1340791341" , @INVALID "^a1139465011" , @INVALID "^a-1472224969"
+CBC @END VALUES
+CBC DISPLAY @BEGIN
+CBC POSITION 1 1
+CBC SHOWCOLUMNS ALL
+CBC @END DISPLAY
+@END CBC DATA
+COMMENT @BEGIN OKI
+OKI CONTENT @BEGIN
+OKI 
+OKI @END CONTENT
+OKI DISPLAY @BEGIN
+OKI POSITION 1000 30 18 8
+OKI @END DISPLAY
+@END OKI COMMENT
+COMMENT @BEGIN FKW
+FKW CONTENT @BEGIN
+FKW Z p9Zr9 arnn a ka909nZn ra0n0 LINKED h 9 n0r9nnn CONTENT an0r r9n0
+FKW @END CONTENT
+FKW DISPLAY @BEGIN
+FKW POSITION 2000 67 8 16
+FKW @END DISPLAY
+@END FKW COMMENT

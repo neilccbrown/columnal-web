@@ -1,0 +1,54 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN DKP
+DKP "Test 0"
+DKP FORMAT @BEGIN
+DKP @COLUMN GenCol 18 @TYPE Number {GBP} @DEFAULT -127
+DKP @COLUMN GenCol 19 @TYPE Number {GBP} @DEFAULT 924007188435913
+DKP @COLUMN GenCol 20 @TYPE C @DEFAULT Blank
+DKP @COLUMN GenCol 21 @TYPE Date @DEFAULT 1927-06-20
+DKP @COLUMN GenCol 22 @TYPE [ Text ] @DEFAULT [ "𠏴o􎗦n|?+^a{" , "z0 9Zrar0Z" , "j[󳌗3B𬢟bᷴ?^c7𠎔p" , "a" ]
+DKP @COLUMN GenCol 23 @TYPE [ Number ] @DEFAULT [ 0.874533 ]
+DKP @COLUMN GenCol 24 @TYPE Number {cm} @DEFAULT -9223372036854775809
+DKP @COLUMN GenCol 25 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT Is ( Is ( "SOURCE" ) )
+DKP @COLUMN GenCol 26 @TYPE DateTime @DEFAULT 2012-06-16 21:08:01.125396662
+DKP @END FORMAT
+DKP VALUES @BEGIN
+DKP   @INVALID "^a1035309735" , @INVALID "^a-730345442" , @INVALID "^a1816503303" , @INVALID "^aEND" , @INVALID "^a1620939334" , [ -9223372036854775809 ] , @INVALID "^a2117015773" , @INVALID "^a772176022" , @INVALID "^aEND"
+DKP @END VALUES
+DKP DISPLAY @BEGIN
+DKP POSITION 1 1
+DKP SHOWCOLUMNS ALL
+DKP @END DISPLAY
+@END DKP DATA
+COMMENT @BEGIN BYM
+BYM CONTENT @BEGIN
+BYM v0Z09a 0rr END t na9Zn9r s90nZ 09nn g n a COMMENT DateTime tagged r9a0 k n9a0ra^nCONTENT COLUMN
+BYM @END CONTENT
+BYM DISPLAY @BEGIN
+BYM POSITION 1000 41 4 2
+BYM @END DISPLAY
+@END BYM COMMENT
+COMMENT @BEGIN IWG
+IWG CONTENT @BEGIN
+IWG FORMAT x9 r9a Time END n0Zanr9Zr DateTimeZoned^nSKIP jr0ZZ0 kar 9 l9Zn0rZ TEXTFILE t9nr a UNITS
+IWG @END CONTENT
+IWG DISPLAY @BEGIN
+IWG POSITION 2000 3 19 4
+IWG @END DISPLAY
+@END IWG COMMENT

@@ -316,7 +316,7 @@ export class DateTimeInfo
 
     public static readonly DEFAULT_VALUE: TemporalAccessor = ZonedDateTime.of(1900, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
 
-    public getDefaultValue(): TemporalAccessor
+    public getDefaultValue(): TemporalValue
     {
         switch (this.type)
         {

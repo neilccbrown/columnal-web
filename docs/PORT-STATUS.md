@@ -18,7 +18,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ identifiers | 5 / 5 | 501 / 501 (100%) |
 | ✅ utility | 14 / 14 | 4114 / 4114 (100%) |
 | ✅ types | 34 / 34 | 9637 / 9637 (100%) |
-| data | 0 / 48 | 0 / 8072 (0%) |
+| ✅ data | 48 / 48 | 8072 / 8072 (100%) |
 | expressions | 0 / 74 | 0 / 14567 (0%) |
 | functions | 0 / 65 | 0 / 5719 (0%) |
 | r-interop | 0 / 13 | 0 / 3275 (0%) |
@@ -207,54 +207,54 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `data/src/main/java/xyz/columnal/data/ArrayColumnStorage.java` | `src/engine/data/data/ArrayColumnStorage.ts` | 144 | – |
-| `data/src/main/java/xyz/columnal/data/BooleanColumnStorage.java` | `src/engine/data/data/BooleanColumnStorage.ts` | 150 | – |
-| `data/src/main/java/xyz/columnal/data/CachedCalculatedColumn.java` | `src/engine/data/data/CachedCalculatedColumn.ts` | 94 | – |
-| `data/src/main/java/xyz/columnal/data/CalculatedColumn.java` | `src/engine/data/data/CalculatedColumn.ts` | 191 | – |
-| `data/src/main/java/xyz/columnal/data/CellPosition.java` | `src/engine/data/data/CellPosition.ts` | 93 | – |
-| `data/src/main/java/xyz/columnal/data/Column.java` | `src/engine/data/data/Column.ts` | 185 | – |
-| `data/src/main/java/xyz/columnal/data/ColumnMaker.java` | `src/engine/data/data/ColumnMaker.ts` | 76 | – |
-| `data/src/main/java/xyz/columnal/data/ColumnStorage.java` | `src/engine/data/data/ColumnStorage.ts` | 68 | – |
-| `data/src/main/java/xyz/columnal/data/ColumnUtility.java` | `src/engine/data/data/ColumnUtility.ts` | 320 | – |
-| `data/src/main/java/xyz/columnal/data/DataSource.java` | `src/engine/data/data/DataSource.ts` | 242 | – |
-| `data/src/main/java/xyz/columnal/data/EditableColumn.java` | `src/engine/data/data/EditableColumn.ts` | 66 | – |
-| `data/src/main/java/xyz/columnal/data/EditableRecordSet.java` | `src/engine/data/data/EditableRecordSet.ts` | 355 | – |
-| `data/src/main/java/xyz/columnal/data/ErrorColumn.java` | `src/engine/data/data/ErrorColumn.ts` | 75 | – |
-| `data/src/main/java/xyz/columnal/data/GridComment.java` | `src/engine/data/data/GridComment.ts` | 154 | – |
-| `data/src/main/java/xyz/columnal/data/ImmediateDataSource.java` | `src/engine/data/data/ImmediateDataSource.ts` | 157 | – |
-| `data/src/main/java/xyz/columnal/data/KnownLengthRecordSet.java` | `src/engine/data/data/KnownLengthRecordSet.ts` | 56 | – |
-| `data/src/main/java/xyz/columnal/data/LinkedDataSource.java` | `src/engine/data/data/LinkedDataSource.ts` | 109 | – |
-| `data/src/main/java/xyz/columnal/data/MemoryArrayColumn.java` | `src/engine/data/data/MemoryArrayColumn.ts` | 102 | – |
-| `data/src/main/java/xyz/columnal/data/MemoryBooleanColumn.java` | `src/engine/data/data/MemoryBooleanColumn.ts` | 92 | – |
-| `data/src/main/java/xyz/columnal/data/MemoryNumericColumn.java` | `src/engine/data/data/MemoryNumericColumn.ts` | 107 | – |
-| `data/src/main/java/xyz/columnal/data/MemoryRecordColumn.java` | `src/engine/data/data/MemoryRecordColumn.ts` | 115 | – |
-| `data/src/main/java/xyz/columnal/data/MemoryStringColumn.java` | `src/engine/data/data/MemoryStringColumn.ts` | 97 | – |
-| `data/src/main/java/xyz/columnal/data/MemoryTaggedColumn.java` | `src/engine/data/data/MemoryTaggedColumn.ts` | 111 | – |
-| `data/src/main/java/xyz/columnal/data/MemoryTemporalColumn.java` | `src/engine/data/data/MemoryTemporalColumn.ts` | 101 | – |
-| `data/src/main/java/xyz/columnal/data/NumericColumnStorage.java` | `src/engine/data/data/NumericColumnStorage.ts` | 681 | – |
-| `data/src/main/java/xyz/columnal/data/PluggedContentHandler.java` | `src/engine/data/data/PluggedContentHandler.ts` | 38 | – |
-| `data/src/main/java/xyz/columnal/data/RecordColumnStorage.java` | `src/engine/data/data/RecordColumnStorage.ts` | 221 | – |
-| `data/src/main/java/xyz/columnal/data/RecordSet.java` | `src/engine/data/data/RecordSet.ts` | 385 | – |
-| `data/src/main/java/xyz/columnal/data/RenameOnEdit.java` | `src/engine/data/data/RenameOnEdit.ts` | 70 | – |
-| `data/src/main/java/xyz/columnal/data/Settings.java` | `src/engine/data/data/Settings.ts` | 61 | – |
-| `data/src/main/java/xyz/columnal/data/SingleSourceTransformation.java` | `src/engine/data/data/SingleSourceTransformation.ts` | 38 | – |
-| `data/src/main/java/xyz/columnal/data/SparseErrorColumnStorage.java` | `src/engine/data/data/SparseErrorColumnStorage.ts` | 216 | – |
-| `data/src/main/java/xyz/columnal/data/StringColumnStorage.java` | `src/engine/data/data/StringColumnStorage.ts` | 174 | – |
-| `data/src/main/java/xyz/columnal/data/Table.java` | `src/engine/data/data/Table.ts` | 481 | – |
-| `data/src/main/java/xyz/columnal/data/TableManager.java` | `src/engine/data/data/TableManager.ts` | 1015 | – |
-| `data/src/main/java/xyz/columnal/data/TableOperations.java` | `src/engine/data/data/TableOperations.ts` | 94 | – |
-| `data/src/main/java/xyz/columnal/data/TaggedColumnStorage.java` | `src/engine/data/data/TaggedColumnStorage.ts` | 232 | – |
-| `data/src/main/java/xyz/columnal/data/TemporalColumnStorage.java` | `src/engine/data/data/TemporalColumnStorage.ts` | 178 | – |
-| `data/src/main/java/xyz/columnal/data/TextFileColumn.java` | `src/engine/data/data/TextFileColumn.ts` | 162 | – |
-| `data/src/main/java/xyz/columnal/data/Transformation.java` | `src/engine/data/data/Transformation.ts` | 206 | – |
-| `data/src/main/java/xyz/columnal/data/TransformationRecordSet.java` | `src/engine/data/data/TransformationRecordSet.ts` | 51 | – |
-| `data/src/main/java/xyz/columnal/data/columntype/BlankColumnType.java` | `src/engine/data/data/columntype/BlankColumnType.ts` | 54 | – |
-| `data/src/main/java/xyz/columnal/data/columntype/BoolColumnType.java` | `src/engine/data/data/columntype/BoolColumnType.ts` | 71 | – |
-| `data/src/main/java/xyz/columnal/data/columntype/CleanDateColumnType.java` | `src/engine/data/data/columntype/CleanDateColumnType.ts` | 115 | – |
-| `data/src/main/java/xyz/columnal/data/columntype/ColumnType.java` | `src/engine/data/data/columntype/ColumnType.ts` | 41 | – |
-| `data/src/main/java/xyz/columnal/data/columntype/NumericColumnType.java` | `src/engine/data/data/columntype/NumericColumnType.ts` | 106 | – |
-| `data/src/main/java/xyz/columnal/data/columntype/OrBlankColumnType.java` | `src/engine/data/data/columntype/OrBlankColumnType.ts` | 74 | – |
-| `data/src/main/java/xyz/columnal/data/columntype/TextColumnType.java` | `src/engine/data/data/columntype/TextColumnType.ts` | 48 | – |
+| `data/src/main/java/xyz/columnal/data/ArrayColumnStorage.java` | `src/engine/data/data/ArrayColumnStorage.ts` | 144 | ✅ |
+| `data/src/main/java/xyz/columnal/data/BooleanColumnStorage.java` | `src/engine/data/data/BooleanColumnStorage.ts` | 150 | ✅ |
+| `data/src/main/java/xyz/columnal/data/CachedCalculatedColumn.java` | `src/engine/data/data/CachedCalculatedColumn.ts` | 94 | ✅ |
+| `data/src/main/java/xyz/columnal/data/CalculatedColumn.java` | `src/engine/data/data/CalculatedColumn.ts` | 191 | ✅ |
+| `data/src/main/java/xyz/columnal/data/CellPosition.java` | `src/engine/data/data/CellPosition.ts` | 93 | ✅ |
+| `data/src/main/java/xyz/columnal/data/Column.java` | `src/engine/data/data/Column.ts` | 185 | ✅ |
+| `data/src/main/java/xyz/columnal/data/ColumnMaker.java` | `src/engine/data/data/ColumnMaker.ts` | 76 | ✅ |
+| `data/src/main/java/xyz/columnal/data/ColumnStorage.java` | `src/engine/data/data/ColumnStorage.ts` | 68 | ✅ |
+| `data/src/main/java/xyz/columnal/data/ColumnUtility.java` | `src/engine/data/data/ColumnUtility.ts` | 320 | ✅ |
+| `data/src/main/java/xyz/columnal/data/DataSource.java` | `src/engine/data/data/DataSource.ts` | 242 | ✅ |
+| `data/src/main/java/xyz/columnal/data/EditableColumn.java` | `src/engine/data/data/EditableColumn.ts` | 66 | ✅ |
+| `data/src/main/java/xyz/columnal/data/EditableRecordSet.java` | `src/engine/data/data/EditableRecordSet.ts` | 355 | ✅ |
+| `data/src/main/java/xyz/columnal/data/ErrorColumn.java` | `src/engine/data/data/ErrorColumn.ts` | 75 | ✅ |
+| `data/src/main/java/xyz/columnal/data/GridComment.java` | `src/engine/data/data/GridComment.ts` | 154 | ✅ |
+| `data/src/main/java/xyz/columnal/data/ImmediateDataSource.java` | `src/engine/data/data/ImmediateDataSource.ts` | 157 | ✅ |
+| `data/src/main/java/xyz/columnal/data/KnownLengthRecordSet.java` | `src/engine/data/data/KnownLengthRecordSet.ts` | 56 | ✅ |
+| `data/src/main/java/xyz/columnal/data/LinkedDataSource.java` | `src/engine/data/data/LinkedDataSource.ts` | 109 | ✅ |
+| `data/src/main/java/xyz/columnal/data/MemoryArrayColumn.java` | `src/engine/data/data/MemoryArrayColumn.ts` | 102 | ✅ |
+| `data/src/main/java/xyz/columnal/data/MemoryBooleanColumn.java` | `src/engine/data/data/MemoryBooleanColumn.ts` | 92 | ✅ |
+| `data/src/main/java/xyz/columnal/data/MemoryNumericColumn.java` | `src/engine/data/data/MemoryNumericColumn.ts` | 107 | ✅ |
+| `data/src/main/java/xyz/columnal/data/MemoryRecordColumn.java` | `src/engine/data/data/MemoryRecordColumn.ts` | 115 | ✅ |
+| `data/src/main/java/xyz/columnal/data/MemoryStringColumn.java` | `src/engine/data/data/MemoryStringColumn.ts` | 97 | ✅ |
+| `data/src/main/java/xyz/columnal/data/MemoryTaggedColumn.java` | `src/engine/data/data/MemoryTaggedColumn.ts` | 111 | ✅ |
+| `data/src/main/java/xyz/columnal/data/MemoryTemporalColumn.java` | `src/engine/data/data/MemoryTemporalColumn.ts` | 101 | ✅ |
+| `data/src/main/java/xyz/columnal/data/NumericColumnStorage.java` | `src/engine/data/data/NumericColumnStorage.ts` | 681 | ✅ |
+| `data/src/main/java/xyz/columnal/data/PluggedContentHandler.java` | `src/engine/data/data/PluggedContentHandler.ts` | 38 | ✅ |
+| `data/src/main/java/xyz/columnal/data/RecordColumnStorage.java` | `src/engine/data/data/RecordColumnStorage.ts` | 221 | ✅ |
+| `data/src/main/java/xyz/columnal/data/RecordSet.java` | `src/engine/data/data/RecordSet.ts` | 385 | ✅ |
+| `data/src/main/java/xyz/columnal/data/RenameOnEdit.java` | `src/engine/data/data/RenameOnEdit.ts` | 70 | ✅ |
+| `data/src/main/java/xyz/columnal/data/Settings.java` | `src/engine/data/data/Settings.ts` | 61 | ✅ |
+| `data/src/main/java/xyz/columnal/data/SingleSourceTransformation.java` | `src/engine/data/data/SingleSourceTransformation.ts` | 38 | ✅ |
+| `data/src/main/java/xyz/columnal/data/SparseErrorColumnStorage.java` | `src/engine/data/data/SparseErrorColumnStorage.ts` | 216 | ✅ |
+| `data/src/main/java/xyz/columnal/data/StringColumnStorage.java` | `src/engine/data/data/StringColumnStorage.ts` | 174 | ✅ |
+| `data/src/main/java/xyz/columnal/data/Table.java` | `src/engine/data/data/Table.ts` | 481 | ✅ |
+| `data/src/main/java/xyz/columnal/data/TableManager.java` | `src/engine/data/data/TableManager.ts` | 1015 | ✅ (parts deferred) |
+| `data/src/main/java/xyz/columnal/data/TableOperations.java` | `src/engine/data/data/TableOperations.ts` | 94 | ✅ |
+| `data/src/main/java/xyz/columnal/data/TaggedColumnStorage.java` | `src/engine/data/data/TaggedColumnStorage.ts` | 232 | ✅ |
+| `data/src/main/java/xyz/columnal/data/TemporalColumnStorage.java` | `src/engine/data/data/TemporalColumnStorage.ts` | 178 | ✅ |
+| `data/src/main/java/xyz/columnal/data/TextFileColumn.java` | `src/engine/data/data/TextFileColumn.ts` | 162 | ✅ |
+| `data/src/main/java/xyz/columnal/data/Transformation.java` | `src/engine/data/data/Transformation.ts` | 206 | ✅ |
+| `data/src/main/java/xyz/columnal/data/TransformationRecordSet.java` | `src/engine/data/data/TransformationRecordSet.ts` | 51 | ✅ |
+| `data/src/main/java/xyz/columnal/data/columntype/BlankColumnType.java` | `src/engine/data/data/columntype/BlankColumnType.ts` | 54 | ✅ |
+| `data/src/main/java/xyz/columnal/data/columntype/BoolColumnType.java` | `src/engine/data/data/columntype/BoolColumnType.ts` | 71 | ✅ |
+| `data/src/main/java/xyz/columnal/data/columntype/CleanDateColumnType.java` | `src/engine/data/data/columntype/CleanDateColumnType.ts` | 115 | ✅ |
+| `data/src/main/java/xyz/columnal/data/columntype/ColumnType.java` | `src/engine/data/data/columntype/ColumnType.ts` | 41 | ✅ |
+| `data/src/main/java/xyz/columnal/data/columntype/NumericColumnType.java` | `src/engine/data/data/columntype/NumericColumnType.ts` | 106 | ✅ |
+| `data/src/main/java/xyz/columnal/data/columntype/OrBlankColumnType.java` | `src/engine/data/data/columntype/OrBlankColumnType.ts` | 74 | ✅ |
+| `data/src/main/java/xyz/columnal/data/columntype/TextColumnType.java` | `src/engine/data/data/columntype/TextColumnType.ts` | 48 | ✅ |
 
 </details>
 
@@ -716,7 +716,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Module | Files | Lines | Test methods |
 |---|---|---|---|
 | ✅ tests-basic | 17 / 17 | 1783 / 1783 (100%) | 9 / 9 (100%) |
-| tests-functions | 9 / 43 | 1523 / 8812 (17%) | 7 / 78 (9%) |
+| tests-functions | 12 / 43 | 2201 / 8812 (25%) | 7 / 78 (9%) |
 | tests-gui-base | 0 / 26 | 0 / 4004 (0%) |  |
 | tests-gui-cell-rw | 0 / 1 | 0 / 353 (0%) | 0 / 4 (0%) |
 | tests-gui-central | 0 / 21 | 0 / 3623 (0%) | 0 / 47 (0%) |
@@ -734,7 +734,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | tests-gui-transformations | 0 / 8 | 0 / 2251 (0%) | 0 / 22 (0%) |
 | tests-gui-transformations-create-edit | 0 / 1 | 0 / 651 (0%) | 0 / 2 (0%) |
 | tests-gui-type-editor | 0 / 4 | 0 / 954 (0%) | 0 / 57 (0%) |
-| tests-tables | 0 / 28 | 0 / 3385 (0%) | 0 / 19 (0%) |
+| tests-tables | 12 / 28 | 1446 / 3385 (43%) | 9 / 19 (47%) |
 
 <details><summary>tests-basic</summary>
 
@@ -774,11 +774,11 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-functions/src/test/java/test/functions/PropNumericFunctions.java` | `test/engine/tests-functions/functions/PropNumericFunctions.test.ts` | 193 | – (0/4 tests) |
 | `tests-functions/src/test/java/test/functions/PropStringFunctions.java` | `test/engine/tests-functions/functions/PropStringFunctions.test.ts` | 313 | – (0/8 tests) |
 | `tests-functions/src/test/java/test/functions/TestBooleanFunctions.java` | `test/engine/tests-functions/functions/TestBooleanFunctions.test.ts` | 99 | – (0/2 tests) |
-| `tests-functions/src/testFixtures/java/test/DummyManager.java` | `test/engine/tests-functions/fixtures/DummyManager.ts` | 82 | – |
+| `tests-functions/src/testFixtures/java/test/DummyManager.java` | `test/engine/tests-functions/fixtures/DummyManager.ts` | 82 | ✅ (parts deferred) |
 | `tests-functions/src/testFixtures/java/test/SingleTableLookup.java` | `test/engine/tests-functions/fixtures/SingleTableLookup.ts` | 119 | – |
-| `tests-functions/src/testFixtures/java/test/functions/TFunctionUtil.java` | `test/engine/tests-functions/fixtures/functions/TFunctionUtil.ts` | 496 | – |
+| `tests-functions/src/testFixtures/java/test/functions/TFunctionUtil.java` | `test/engine/tests-functions/fixtures/functions/TFunctionUtil.ts` | 496 | ✅ (parts deferred) |
 | `tests-functions/src/testFixtures/java/test/gen/ExpressionValue.java` | `test/engine/tests-functions/fixtures/gen/ExpressionValue.ts` | 78 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenColumn.java` | `test/engine/tests-functions/fixtures/gen/GenColumn.ts` | 100 | – |
+| `tests-functions/src/testFixtures/java/test/gen/GenColumn.java` | `test/engine/tests-functions/fixtures/gen/GenColumn.ts` | 100 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueBackwards.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueBackwards.ts` | 175 | – |
 | `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueBase.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueBase.ts` | 129 | – |
 | `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueForwards.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueForwards.ts` | 1002 | – |
@@ -1024,22 +1024,22 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-tables/src/test/java/test/PropLoadSaveData.java` | `test/engine/tests-tables/PropLoadSaveData.test.ts` | 158 | – (0/2 tests) |
+| `tests-tables/src/test/java/test/PropLoadSaveData.java` | `test/engine/tests-tables/PropLoadSaveData.test.ts` | 158 | ✅ (2/2 tests) |
 | `tests-tables/src/test/java/test/PropLoadSaveTransformation.java` | `test/engine/tests-tables/PropLoadSaveTransformation.test.ts` | 101 | – (0/1 tests) |
-| `tests-tables/src/test/java/test/PropNumericStorage.java` | `test/engine/tests-tables/PropNumericStorage.test.ts` | 140 | – (0/4 tests) |
+| `tests-tables/src/test/java/test/PropNumericStorage.java` | `test/engine/tests-tables/PropNumericStorage.test.ts` | 140 | ✅ (4/4 tests) |
 | `tests-tables/src/test/java/test/PropRunTransformation.java` | `test/engine/tests-tables/PropRunTransformation.test.ts` | 495 | – (0/8 tests) |
-| `tests-tables/src/test/java/test/TestSetValue.java` | `test/engine/tests-tables/TestSetValue.test.ts` | 106 | – (0/1 tests) |
-| `tests-tables/src/test/java/test/data/PropFiles.java` | `test/engine/tests-tables/data/PropFiles.test.ts` | 60 | – (0/1 tests) |
-| `tests-tables/src/test/java/test/data/TestTextFileColumn.java` | `test/engine/tests-tables/data/TestTextFileColumn.test.ts` | 140 | – (0/1 tests) |
+| `tests-tables/src/test/java/test/TestSetValue.java` | `test/engine/tests-tables/TestSetValue.test.ts` | 106 | ✅ (1/1 tests) |
+| `tests-tables/src/test/java/test/data/PropFiles.java` | `test/engine/tests-tables/data/PropFiles.test.ts` | 60 | ✅ (1/1 tests) |
+| `tests-tables/src/test/java/test/data/TestTextFileColumn.java` | `test/engine/tests-tables/data/TestTextFileColumn.test.ts` | 140 | ✅ (1/1 tests) |
 | `tests-tables/src/test/java/test/expressions/PropRunExpression.java` | `test/engine/tests-tables/expressions/PropRunExpression.test.ts` | 93 | – (0/1 tests) |
-| `tests-tables/src/testFixtures/java/test/TTableUtil.java` | `test/engine/tests-tables/fixtures/TTableUtil.ts` | 244 | – |
+| `tests-tables/src/testFixtures/java/test/TTableUtil.java` | `test/engine/tests-tables/fixtures/TTableUtil.ts` | 244 | ✅ |
 | `tests-tables/src/testFixtures/java/test/Transformation_Mgr.java` | `test/engine/tests-tables/fixtures/Transformation_Mgr.ts` | 48 | – |
-| `tests-tables/src/testFixtures/java/test/data/GeneratedTextFile.java` | `test/engine/tests-tables/fixtures/data/GeneratedTextFile.ts` | 106 | – |
-| `tests-tables/src/testFixtures/java/test/gen/GenColumnId.java` | `test/engine/tests-tables/fixtures/gen/GenColumnId.ts` | 42 | – |
-| `tests-tables/src/testFixtures/java/test/gen/GenFile.java` | `test/engine/tests-tables/fixtures/gen/GenFile.ts` | 161 | – |
-| `tests-tables/src/testFixtures/java/test/gen/GenImmediateData.java` | `test/engine/tests-tables/fixtures/gen/GenImmediateData.ts` | 201 | – |
-| `tests-tables/src/testFixtures/java/test/gen/GenTableId.java` | `test/engine/tests-tables/fixtures/gen/GenTableId.ts` | 42 | – |
-| `tests-tables/src/testFixtures/java/test/gen/GenTableManager.java` | `test/engine/tests-tables/fixtures/gen/GenTableManager.ts` | 46 | – |
+| `tests-tables/src/testFixtures/java/test/data/GeneratedTextFile.java` | `test/engine/tests-tables/fixtures/data/GeneratedTextFile.ts` | 106 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/GenColumnId.java` | `test/engine/tests-tables/fixtures/gen/GenColumnId.ts` | 42 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/GenFile.java` | `test/engine/tests-tables/fixtures/gen/GenFile.ts` | 161 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/GenImmediateData.java` | `test/engine/tests-tables/fixtures/gen/GenImmediateData.ts` | 201 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/GenTableId.java` | `test/engine/tests-tables/fixtures/gen/GenTableId.ts` | 42 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/GenTableManager.java` | `test/engine/tests-tables/fixtures/gen/GenTableManager.ts` | 46 | ✅ |
 | `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseCheck.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseCheck.ts` | 69 | – |
 | `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseConcatenate.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseConcatenate.ts` | 77 | – |
 | `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseExpression.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseExpression.ts` | 369 | – |

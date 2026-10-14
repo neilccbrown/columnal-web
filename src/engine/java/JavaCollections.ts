@@ -26,3 +26,18 @@ export function javaListGet<T>(list: readonly T[], index: number): T
         throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + list.length);
     return list[index]!;
 }
+
+/**
+ * Java's List.addAll(index, items).  Use it rather than list.splice(index, 0, ...items), which
+ * fails with a RangeError (too many arguments) when inserting many items, as a large table can.
+ */
+export function javaListAddAll<T>(list: T[], index: number, items: readonly T[]): void
+{
+    if (index < 0 || index > list.length)
+        throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + list.length);
+    const tail = list.splice(index);
+    for (const item of items)
+        list.push(item);
+    for (const item of tail)
+        list.push(item);
+}

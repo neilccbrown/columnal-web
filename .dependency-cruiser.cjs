@@ -41,6 +41,30 @@ const engineLayerRules = Object.entries(ENGINE_MODULE_DEPENDENCIES).map(([module
     },
 }));
 
+// Class hierarchies whose base class constructs its subclasses (so the modules import each
+// other): each is loaded through a barrel module that lists the base class first, and other
+// modules must import these classes' values through the barrel (see docs/CONVENTIONS.md).
+const HIERARCHY_BARRELS = {
+    "src/engine/types/typeExp/TypeExps.ts": ["TypeExp", "MutVar", "NumTypeExp", "RecordTypeExp", "TypeCons"],
+    "src/engine/types/jellytype/JellyTypes.ts": ["JellyType", "JellyTypeApply", "JellyTypeArray", "JellyTypeFunction", "JellyTypeIdent", "JellyTypeNumberWithUnit", "JellyTypePrimitive", "JellyTypeRecord"],
+};
+
+const hierarchyRules = Object.entries(HIERARCHY_BARRELS).map(([barrel, classes]) => {
+    const dir = barrel.substring(0, barrel.lastIndexOf("/") + 1);
+    return {
+        name: `via-barrel-${barrel.substring(barrel.lastIndexOf("/") + 1, barrel.length - 3)}`,
+        comment: `Import ${classes.join(", ")} through ${barrel}, so the base class is always initialised first (type-only imports are fine).`,
+        severity: "error",
+        from: { pathNot: `^${escapeRegex(barrel)}$` },
+        to: {
+            path: `^${escapeRegex(dir)}(${classes.join("|")})\\.ts$`,
+            dependencyTypesNot: ["type-only"],
+        },
+    };
+});
+
+const barrelPaths = Object.keys(HIERARCHY_BARRELS).map(escapeRegex).join("|");
+
 /** @type {import('dependency-cruiser').IConfiguration} */
 module.exports = {
     forbidden: [
@@ -73,6 +97,13 @@ module.exports = {
             to: { path: "node_modules/decimal\\.js/" },
         },
         {
+            name: "js-joda-only-via-java",
+            comment: "Use java.time classes from src/engine/java/time/JavaTime.ts, which adapts js-joda to behave like Java 21.",
+            severity: "error",
+            from: { path: "^(src|test)/", pathNot: "^src/engine/java/" },
+            to: { path: "node_modules/@js-joda/" },
+        },
+        {
             name: "src-not-to-test",
             comment: "Application code must not depend on tests.",
             severity: "error",
@@ -92,8 +123,10 @@ module.exports = {
             comment: "Circular imports can cause initialisation-order errors with ES module classes. Java allows cycles, so some may be needed; review each one.",
             severity: "warn",
             from: { pathNot: "^src/engine/parsers/generated/" },
-            to: { circular: true, viaOnly: { dependencyTypesNot: ["type-only"] } },
+            // Cycles through the hierarchy barrels are by design:
+            to: { circular: true, viaOnly: { dependencyTypesNot: ["type-only"], pathNot: `^(${barrelPaths})$` } },
         },
+        ...hierarchyRules,
     ],
     options: {
         doNotFollow: { path: "node_modules" },

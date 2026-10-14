@@ -1,14 +1,12 @@
-// Placeholder for java.time values (LocalDate, LocalTime, LocalDateTime, YearMonth,
-// ZonedDateTime), which are ported in Phase 2.  They will implement this interface.
-import type { Comparable, JavaObject } from "../JavaObject.js";
+// java.time values in Columnal (LocalDate, LocalTime, LocalDateTime, YearMonth, ZonedDateTime) are
+// js-joda objects (see JavaTime.ts); this is their common type, as java.time.temporal.TemporalAccessor.
+import { TemporalAccessor as JsJodaTemporalAccessor } from "./JavaTime.js";
+import type { Comparable } from "../JavaObject.js";
 
-export interface TemporalAccessor extends JavaObject, Comparable<TemporalAccessor>
-{
-    /** Marks java.time values at runtime. */
-    readonly isTemporalAccessor: true;
-}
+/** A java.time value: a js-joda TemporalAccessor, which (for Columnal's types) is Comparable. */
+export type TemporalAccessor = JsJodaTemporalAccessor & Comparable<TemporalAccessor>;
 
 export function isTemporalAccessor(x: unknown): x is TemporalAccessor
 {
-    return typeof x === "object" && x !== null && (x as Partial<TemporalAccessor>).isTemporalAccessor === true;
+    return x instanceof JsJodaTemporalAccessor;
 }

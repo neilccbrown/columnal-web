@@ -1,8 +1,4 @@
 // Port of xyz.columnal.data.TBasicUtil (tests-basic testFixtures).
-//
-// PORT-DEFERRED: these need the type system and java.time (Phase 2): generateDate, generateTime,
-// generateDateTime, generateDateTimeZoned, generateZone, generateZoneOffset, generateZoneString,
-// makeStringV, getAllCollapsedData, getAllCollapsedDataValid, getSingleCollapsedData.
 import { CharStream } from "antlr4ng";
 import type { ExpressionIdentifier } from "../../../../../src/engine/anns/Annotations.js";
 import { ColumnId } from "../../../../../src/engine/identifiers/id/ColumnId.js";
@@ -17,7 +13,11 @@ import { MainLexer } from "../../../../../src/engine/parsers/generated/MainLexer
 import { Either } from "../../../../../src/engine/utility-adt/utility/adt/Either.js";
 import { Pair } from "../../../../../src/engine/utility-adt/utility/adt/Pair.js";
 import { InternalException } from "../../../../../src/engine/utility-error/error/InternalException.js";
+import { InvalidImmediateValueException } from "../../../../../src/engine/utility-error/error/InvalidImmediateValueException.js";
 import { UserException } from "../../../../../src/engine/utility-error/error/UserException.js";
+import { LocalDate, LocalDateTime, LocalTime, ZonedDateTime, ZoneOffset, type ZoneId } from "../../../../../src/engine/java/time/JavaTime.js";
+import { DataTypeUtility } from "../../../../../src/engine/types/data/datatype/DataTypeUtility.js";
+import type { DataTypeValue } from "../../../../../src/engine/types/data/datatype/DataTypeValue.js";
 import { IdentifierUtility } from "../../../../../src/engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../../../../src/engine/utility/utility/Utility.js";
 import type { Value } from "../../../../../src/engine/utility/utility/Value.js";
@@ -25,6 +25,7 @@ import { assertEquals, assertNotNull, fail, javaToString } from "../../../../sup
 import type { GenerationStatus, Generator, SourceOfRandomness } from "../../../../support/quickcheck.js";
 import { GenNumber } from "../gen/GenNumber.js";
 import { GenString } from "../gen/GenString.js";
+import { GenZoneId } from "../gen/GenZoneId.js";
 
 export class TBasicUtil
 {
@@ -63,7 +64,6 @@ export class TBasicUtil
 
     // PORT-NOTE: Java runs the comparison on the Workers thread and waits for it; here everything
     // runs on one thread, so it is compared directly.
-    // PORT-DEFERRED: Java describes values with DataTypeUtility._test_valueToString (Phase 2).
     public static assertValueEqual(prefix: string, a: Value | null, b: Value | null): void
     {
         if ((a === null) !== (b === null))
@@ -74,7 +74,7 @@ export class TBasicUtil
             const compare = Utility.compareValues(a, b);
             if (compare !== 0)
             {
-                fail(prefix + " comparing " + javaToString(a) + " against " + javaToString(b) + " result: " + compare);
+                fail(prefix + " comparing " + DataTypeUtility._test_valueToString(a) + " against " + DataTypeUtility._test_valueToString(b) + " result: " + compare);
             }
         }
     }
@@ -120,6 +120,60 @@ export class TBasicUtil
     public static generateNumberV(r: SourceOfRandomness, gs: GenerationStatus): Decimal
     {
         return new GenNumber().generate(r, gs);
+    }
+
+    private static readonly MIN_DATE = LocalDate.of(1, 1, 1);
+    private static readonly MAX_DATE = LocalDate.of(9999, 12, 31);
+    private static readonly MIN_CLOSE_DATE = LocalDate.of(1900, 1, 1);
+    private static readonly MAX_CLOSE_DATE = LocalDate.of(2050, 12, 31);
+
+    public static generateDate(r: SourceOfRandomness, _gs: GenerationStatus): LocalDate
+    {
+        // Usually, generate dates in sensible range (1900->2050)
+        if (r.nextInt(4) !== 0)
+            return LocalDate.ofEpochDay(Number(r.nextLong(BigInt(TBasicUtil.MIN_CLOSE_DATE.toEpochDay()), BigInt(TBasicUtil.MAX_CLOSE_DATE.toEpochDay()))));
+        else
+            return LocalDate.ofEpochDay(Number(r.nextLong(BigInt(TBasicUtil.MIN_DATE.toEpochDay()), BigInt(TBasicUtil.MAX_DATE.toEpochDay()))));
+    }
+
+    public static generateTime(r: SourceOfRandomness, _gs: GenerationStatus): LocalTime
+    {
+        // Java: junit-quickcheck's LocalTimeGenerator, which picks a nano-of-day between LocalTime.MIN and MAX
+        let localTime = LocalTime.ofNanoOfDay(Number(r.nextLong(BigInt(LocalTime.MIN.toNanoOfDay()), BigInt(LocalTime.MAX.toNanoOfDay()))));
+        // Produce half the dates without partial seconds (and perhaps seconds set to zero): common case
+        if (r.nextBoolean())
+        {
+            localTime = localTime.minusNanos(localTime.nano());
+            if (r.nextBoolean())
+                localTime = localTime.minusSeconds(localTime.second());
+        }
+        return localTime;
+    }
+
+    public static generateDateTime(r: SourceOfRandomness, gs: GenerationStatus): LocalDateTime
+    {
+        return LocalDateTime.of(TBasicUtil.generateDate(r, gs), TBasicUtil.generateTime(r, gs));
+    }
+
+    public static generateDateTimeZoned(r: SourceOfRandomness, gs: GenerationStatus): ZonedDateTime
+    {
+        return ZonedDateTime.of(TBasicUtil.generateDateTime(r, gs), r.nextBoolean() ? TBasicUtil.generateZone(r, gs) : TBasicUtil.generateZoneOffset(r, gs));
+    }
+
+    public static generateZone(r: SourceOfRandomness, gs: GenerationStatus): ZoneId
+    {
+        return new GenZoneId().generate(r, gs);
+    }
+
+    public static generateZoneOffset(r: SourceOfRandomness, _gs: GenerationStatus): ZoneOffset
+    {
+        // We don't support sub-minute offsets:
+        return ZoneOffset.ofTotalSeconds(r.nextInt(-12 * 60, 12 * 60) * 60);
+    }
+
+    public static generateZoneString(r: SourceOfRandomness, gs: GenerationStatus): string
+    {
+        return TBasicUtil.generateZone(r, gs).toString();
     }
 
     public static generateExpressionIdentifier(sourceOfRandomness: SourceOfRandomness): ExpressionIdentifier
@@ -204,6 +258,11 @@ export class TBasicUtil
         return list;
     }
 
+    public static makeStringV(r: SourceOfRandomness, gs: GenerationStatus): string
+    {
+        return DataTypeUtility.value(TBasicUtil.makeString(r, gs).replaceAll("\"", ""));
+    }
+
     public static makeString(r: SourceOfRandomness, gs: GenerationStatus | null): string
     {
         // Makes either totally random String from generator, or "awkward" string
@@ -217,6 +276,35 @@ export class TBasicUtil
         }
         else
             return TBasicUtil.generateIdent(r);
+    }
+
+    public static getAllCollapsedData(type: DataTypeValue, size: number): Either<string, Value>[]
+    {
+        const r: Either<string, Value>[] = [];
+        for (let i = 0; i < size; i++)
+        {
+            try
+            {
+                r.push(Either.right(type.getCollapsed(i)));
+            }
+            catch (e)
+            {
+                if (!(e instanceof InvalidImmediateValueException))
+                    throw e;
+                r.push(Either.left(e.getInvalid()));
+            }
+        }
+        return r;
+    }
+
+    public static getAllCollapsedDataValid(type: DataTypeValue, size: number): Value[]
+    {
+        const r: Value[] = [];
+        for (let i = 0; i < size; i++)
+        {
+            r.push(type.getCollapsed(i));
+        }
+        return r;
     }
 
     public static assertUserException(simulationRunnable: () => void): void
@@ -364,5 +452,19 @@ export class TBasicUtil
     public static stringAsHexChars(str: string): string
     {
         return Array.from({ length: str.length }, (_, i) => str.charCodeAt(i)).map(c => c.toString(16) + (c === 10 ? "\n" : "")).join(" ");
+    }
+
+    public static getSingleCollapsedData(type: DataTypeValue, index: number): Either<string, Value>
+    {
+        try
+        {
+            return Either.right(type.getCollapsed(index));
+        }
+        catch (e)
+        {
+            if (!(e instanceof InvalidImmediateValueException))
+                throw e;
+            return Either.left(e.getInvalid());
+        }
     }
 }

@@ -17,7 +17,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ parsers | 2 / 2 | 291 / 291 (100%) |
 | ✅ identifiers | 5 / 5 | 501 / 501 (100%) |
 | ✅ utility | 14 / 14 | 4114 / 4114 (100%) |
-| types | 0 / 34 | 0 / 9637 (0%) |
+| ✅ types | 34 / 34 | 9637 / 9637 (100%) |
 | data | 0 / 48 | 0 / 8072 (0%) |
 | expressions | 0 / 74 | 0 / 14567 (0%) |
 | functions | 0 / 65 | 0 / 5719 (0%) |
@@ -166,40 +166,40 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `types/src/main/java/xyz/columnal/data/datatype/DataType.java` | `src/engine/types/data/datatype/DataType.ts` | 1943 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/DataTypeUtility.java` | `src/engine/types/data/datatype/DataTypeUtility.ts` | 1127 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/DataTypeValue.java` | `src/engine/types/data/datatype/DataTypeValue.ts` | 585 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/ListExDTV.java` | `src/engine/types/data/datatype/ListExDTV.ts` | 65 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/NumberDisplayInfo.java` | `src/engine/types/data/datatype/NumberDisplayInfo.ts` | 112 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/NumberInfo.java` | `src/engine/types/data/datatype/NumberInfo.ts` | 76 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/ProgressListener.java` | `src/engine/types/data/datatype/ProgressListener.ts` | 42 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/TaggedTypeDefinition.java` | `src/engine/types/data/datatype/TaggedTypeDefinition.ts` | 214 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/TypeId.java` | `src/engine/types/data/datatype/TypeId.ts` | 83 | – |
-| `types/src/main/java/xyz/columnal/data/datatype/TypeManager.java` | `src/engine/types/data/datatype/TypeManager.ts` | 551 | – |
-| `types/src/main/java/xyz/columnal/data/unit/SingleUnit.java` | `src/engine/types/data/unit/SingleUnit.ts` | 91 | – |
-| `types/src/main/java/xyz/columnal/data/unit/Unit.java` | `src/engine/types/data/unit/Unit.ts` | 234 | – |
-| `types/src/main/java/xyz/columnal/data/unit/UnitDeclaration.java` | `src/engine/types/data/unit/UnitDeclaration.ts` | 96 | – |
-| `types/src/main/java/xyz/columnal/data/unit/UnitManager.java` | `src/engine/types/data/unit/UnitManager.ts` | 497 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyType.java` | `src/engine/types/jellytype/JellyType.ts` | 341 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyTypeApply.java` | `src/engine/types/jellytype/JellyTypeApply.ts` | 155 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyTypeArray.java` | `src/engine/types/jellytype/JellyTypeArray.ts` | 97 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyTypeFunction.java` | `src/engine/types/jellytype/JellyTypeFunction.ts` | 118 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyTypeIdent.java` | `src/engine/types/jellytype/JellyTypeIdent.ts` | 146 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyTypeNumberWithUnit.java` | `src/engine/types/jellytype/JellyTypeNumberWithUnit.ts` | 111 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyTypePrimitive.java` | `src/engine/types/jellytype/JellyTypePrimitive.ts` | 186 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyTypeRecord.java` | `src/engine/types/jellytype/JellyTypeRecord.ts` | 164 | – |
-| `types/src/main/java/xyz/columnal/jellytype/JellyUnit.java` | `src/engine/types/jellytype/JellyUnit.ts` | 281 | – |
-| `types/src/main/java/xyz/columnal/loadsave/OutputBuilder.java` | `src/engine/types/loadsave/OutputBuilder.ts` | 511 | – |
-| `types/src/main/java/xyz/columnal/typeExp/ExpressionBase.java` | `src/engine/types/typeExp/ExpressionBase.ts` | 30 | – |
-| `types/src/main/java/xyz/columnal/typeExp/MutVar.java` | `src/engine/types/typeExp/MutVar.ts` | 161 | – |
-| `types/src/main/java/xyz/columnal/typeExp/NumTypeExp.java` | `src/engine/types/typeExp/NumTypeExp.ts` | 117 | – |
-| `types/src/main/java/xyz/columnal/typeExp/RecordTypeExp.java` | `src/engine/types/typeExp/RecordTypeExp.ts` | 163 | – |
-| `types/src/main/java/xyz/columnal/typeExp/TypeClassRequirements.java` | `src/engine/types/typeExp/TypeClassRequirements.ts` | 90 | – |
-| `types/src/main/java/xyz/columnal/typeExp/TypeConcretisationError.java` | `src/engine/types/typeExp/TypeConcretisationError.ts` | 69 | – |
-| `types/src/main/java/xyz/columnal/typeExp/TypeCons.java` | `src/engine/types/typeExp/TypeCons.ts` | 237 | – |
-| `types/src/main/java/xyz/columnal/typeExp/TypeExp.java` | `src/engine/types/typeExp/TypeExp.ts` | 460 | – |
-| `types/src/main/java/xyz/columnal/typeExp/units/MutUnitVar.java` | `src/engine/types/typeExp/units/MutUnitVar.ts` | 81 | – |
-| `types/src/main/java/xyz/columnal/typeExp/units/UnitExp.java` | `src/engine/types/typeExp/units/UnitExp.ts` | 403 | – |
+| `types/src/main/java/xyz/columnal/data/datatype/DataType.java` | `src/engine/types/data/datatype/DataType.ts` | 1943 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/DataTypeUtility.java` | `src/engine/types/data/datatype/DataTypeUtility.ts` | 1127 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/DataTypeValue.java` | `src/engine/types/data/datatype/DataTypeValue.ts` | 585 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/ListExDTV.java` | `src/engine/types/data/datatype/ListExDTV.ts` | 65 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/NumberDisplayInfo.java` | `src/engine/types/data/datatype/NumberDisplayInfo.ts` | 112 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/NumberInfo.java` | `src/engine/types/data/datatype/NumberInfo.ts` | 76 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/ProgressListener.java` | `src/engine/types/data/datatype/ProgressListener.ts` | 42 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/TaggedTypeDefinition.java` | `src/engine/types/data/datatype/TaggedTypeDefinition.ts` | 214 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/TypeId.java` | `src/engine/types/data/datatype/TypeId.ts` | 83 | ✅ |
+| `types/src/main/java/xyz/columnal/data/datatype/TypeManager.java` | `src/engine/types/data/datatype/TypeManager.ts` | 551 | ✅ |
+| `types/src/main/java/xyz/columnal/data/unit/SingleUnit.java` | `src/engine/types/data/unit/SingleUnit.ts` | 91 | ✅ |
+| `types/src/main/java/xyz/columnal/data/unit/Unit.java` | `src/engine/types/data/unit/Unit.ts` | 234 | ✅ |
+| `types/src/main/java/xyz/columnal/data/unit/UnitDeclaration.java` | `src/engine/types/data/unit/UnitDeclaration.ts` | 96 | ✅ |
+| `types/src/main/java/xyz/columnal/data/unit/UnitManager.java` | `src/engine/types/data/unit/UnitManager.ts` | 497 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyType.java` | `src/engine/types/jellytype/JellyType.ts` | 341 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyTypeApply.java` | `src/engine/types/jellytype/JellyTypeApply.ts` | 155 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyTypeArray.java` | `src/engine/types/jellytype/JellyTypeArray.ts` | 97 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyTypeFunction.java` | `src/engine/types/jellytype/JellyTypeFunction.ts` | 118 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyTypeIdent.java` | `src/engine/types/jellytype/JellyTypeIdent.ts` | 146 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyTypeNumberWithUnit.java` | `src/engine/types/jellytype/JellyTypeNumberWithUnit.ts` | 111 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyTypePrimitive.java` | `src/engine/types/jellytype/JellyTypePrimitive.ts` | 186 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyTypeRecord.java` | `src/engine/types/jellytype/JellyTypeRecord.ts` | 164 | ✅ |
+| `types/src/main/java/xyz/columnal/jellytype/JellyUnit.java` | `src/engine/types/jellytype/JellyUnit.ts` | 281 | ✅ |
+| `types/src/main/java/xyz/columnal/loadsave/OutputBuilder.java` | `src/engine/types/loadsave/OutputBuilder.ts` | 511 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/ExpressionBase.java` | `src/engine/types/typeExp/ExpressionBase.ts` | 30 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/MutVar.java` | `src/engine/types/typeExp/MutVar.ts` | 161 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/NumTypeExp.java` | `src/engine/types/typeExp/NumTypeExp.ts` | 117 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/RecordTypeExp.java` | `src/engine/types/typeExp/RecordTypeExp.ts` | 163 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/TypeClassRequirements.java` | `src/engine/types/typeExp/TypeClassRequirements.ts` | 90 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/TypeConcretisationError.java` | `src/engine/types/typeExp/TypeConcretisationError.ts` | 69 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/TypeCons.java` | `src/engine/types/typeExp/TypeCons.ts` | 237 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/TypeExp.java` | `src/engine/types/typeExp/TypeExp.ts` | 460 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/units/MutUnitVar.java` | `src/engine/types/typeExp/units/MutUnitVar.ts` | 81 | ✅ |
+| `types/src/main/java/xyz/columnal/typeExp/units/UnitExp.java` | `src/engine/types/typeExp/units/UnitExp.ts` | 403 | ✅ |
 
 </details>
 
@@ -715,8 +715,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Module | Files | Lines | Test methods |
 |---|---|---|---|
-| tests-basic | 14 / 17 | 1604 / 1783 (90%) | 9 / 9 (100%) |
-| tests-functions | 0 / 43 | 0 / 8812 (0%) | 0 / 78 (0%) |
+| ✅ tests-basic | 17 / 17 | 1783 / 1783 (100%) | 9 / 9 (100%) |
+| tests-functions | 9 / 43 | 1523 / 8812 (17%) | 7 / 78 (9%) |
 | tests-gui-base | 0 / 26 | 0 / 4004 (0%) |  |
 | tests-gui-cell-rw | 0 / 1 | 0 / 353 (0%) | 0 / 4 (0%) |
 | tests-gui-central | 0 / 21 | 0 / 3623 (0%) | 0 / 47 (0%) |
@@ -745,7 +745,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-basic/src/test/java/test/TestCompleteStringPool.java` | `test/engine/tests-basic/TestCompleteStringPool.test.ts` | 45 | ✅ (1/1 tests) |
 | `tests-basic/src/test/java/test/utility/PropUtility.java` | `test/engine/tests-basic/utility/PropUtility.test.ts` | 75 | ✅ (1/1 tests) |
 | `tests-basic/src/test/java/test/utility/TestIdentifier.java` | `test/engine/tests-basic/utility/TestIdentifier.test.ts` | 142 | ✅ (2/2 tests) |
-| `tests-basic/src/testFixtures/java/test/gen/GenDate.java` | `test/engine/tests-basic/fixtures/gen/GenDate.ts` | 46 | – |
+| `tests-basic/src/testFixtures/java/test/gen/GenDate.java` | `test/engine/tests-basic/fixtures/gen/GenDate.ts` | 46 | ✅ |
 | `tests-basic/src/testFixtures/java/test/gen/GenGraph.java` | `test/engine/tests-basic/fixtures/gen/GenGraph.ts` | 107 | ✅ |
 | `tests-basic/src/testFixtures/java/test/gen/GenNumber.java` | `test/engine/tests-basic/fixtures/gen/GenNumber.ts` | 83 | ✅ |
 | `tests-basic/src/testFixtures/java/test/gen/GenNumberAsString.java` | `test/engine/tests-basic/fixtures/gen/GenNumberAsString.ts` | 89 | ✅ |
@@ -753,10 +753,10 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-basic/src/testFixtures/java/test/gen/GenNumbersAsString.java` | `test/engine/tests-basic/fixtures/gen/GenNumbersAsString.ts` | 48 | ✅ |
 | `tests-basic/src/testFixtures/java/test/gen/GenRandom.java` | `test/engine/tests-basic/fixtures/gen/GenRandom.ts` | 45 | ✅ |
 | `tests-basic/src/testFixtures/java/test/gen/GenString.java` | `test/engine/tests-basic/fixtures/gen/GenString.ts` | 40 | ✅ |
-| `tests-basic/src/testFixtures/java/test/gen/GenUnit.java` | `test/engine/tests-basic/fixtures/gen/GenUnit.ts` | 79 | – |
-| `tests-basic/src/testFixtures/java/test/gen/GenZoneId.java` | `test/engine/tests-basic/fixtures/gen/GenZoneId.ts` | 54 | – |
+| `tests-basic/src/testFixtures/java/test/gen/GenUnit.java` | `test/engine/tests-basic/fixtures/gen/GenUnit.ts` | 79 | ✅ |
+| `tests-basic/src/testFixtures/java/test/gen/GenZoneId.java` | `test/engine/tests-basic/fixtures/gen/GenZoneId.ts` | 54 | ✅ |
 | `tests-basic/src/testFixtures/java/test/gen/UnicodeStringGenerator.java` | `test/engine/tests-basic/fixtures/gen/UnicodeStringGenerator.ts` | 36 | ✅ |
-| `tests-basic/src/testFixtures/java/xyz/columnal/data/TBasicUtil.java` | `test/engine/tests-basic/fixtures/data/TBasicUtil.ts` | 584 | ✅ (parts deferred) |
+| `tests-basic/src/testFixtures/java/xyz/columnal/data/TBasicUtil.java` | `test/engine/tests-basic/fixtures/data/TBasicUtil.ts` | 584 | ✅ |
 
 </details>
 
@@ -766,9 +766,9 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | `tests-functions/src/test/java/test/PropTypecheck.java` | `test/engine/tests-functions/PropTypecheck.test.ts` | 304 | – (0/11 tests) |
 | `tests-functions/src/test/java/test/PropTypecheckIndividual.java` | `test/engine/tests-functions/PropTypecheckIndividual.test.ts` | 669 | – (0/35 tests) |
-| `tests-functions/src/test/java/test/PropUnit.java` | `test/engine/tests-functions/PropUnit.test.ts` | 168 | – (0/2 tests) |
-| `tests-functions/src/test/java/test/TestGenDataType.java` | `test/engine/tests-functions/TestGenDataType.test.ts` | 156 | – (0/1 tests) |
-| `tests-functions/src/test/java/test/TestUnit.java` | `test/engine/tests-functions/TestUnit.test.ts` | 243 | – (0/6 tests) |
+| `tests-functions/src/test/java/test/PropUnit.java` | `test/engine/tests-functions/PropUnit.test.ts` | 168 | ✅ (2/2 tests) |
+| `tests-functions/src/test/java/test/TestGenDataType.java` | `test/engine/tests-functions/TestGenDataType.test.ts` | 156 | ✅ (1/1 tests) |
+| `tests-functions/src/test/java/test/TestUnit.java` | `test/engine/tests-functions/TestUnit.test.ts` | 243 | – (4/6 tests) |
 | `tests-functions/src/test/java/test/functions/PropDateFunctions.java` | `test/engine/tests-functions/functions/PropDateFunctions.test.ts` | 249 | – (0/5 tests) |
 | `tests-functions/src/test/java/test/functions/PropListFunctions.java` | `test/engine/tests-functions/functions/PropListFunctions.test.ts` | 193 | – (0/4 tests) |
 | `tests-functions/src/test/java/test/functions/PropNumericFunctions.java` | `test/engine/tests-functions/functions/PropNumericFunctions.test.ts` | 193 | – (0/4 tests) |
@@ -784,11 +784,11 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueForwards.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueForwards.ts` | 1002 | – |
 | `tests-functions/src/testFixtures/java/test/gen/GenTaggedTypeDefinition.java` | `test/engine/tests-functions/fixtures/gen/GenTaggedTypeDefinition.ts` | 94 | – |
 | `tests-functions/src/testFixtures/java/test/gen/GenTypecheckFail.java` | `test/engine/tests-functions/fixtures/gen/GenTypecheckFail.ts` | 284 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenUnitDefinition.java` | `test/engine/tests-functions/fixtures/gen/GenUnitDefinition.ts` | 137 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenValueBase.java` | `test/engine/tests-functions/fixtures/gen/GenValueBase.ts` | 259 | – |
+| `tests-functions/src/testFixtures/java/test/gen/GenUnitDefinition.java` | `test/engine/tests-functions/fixtures/gen/GenUnitDefinition.ts` | 137 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/GenValueBase.java` | `test/engine/tests-functions/fixtures/gen/GenValueBase.ts` | 259 | ✅ (parts deferred) |
 | `tests-functions/src/testFixtures/java/test/gen/GenValueBaseE.java` | `test/engine/tests-functions/fixtures/gen/GenValueBaseE.ts` | 143 | – |
 | `tests-functions/src/testFixtures/java/test/gen/GenValueList.java` | `test/engine/tests-functions/fixtures/gen/GenValueList.ts` | 99 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenValueSpecifiedType.java` | `test/engine/tests-functions/fixtures/gen/GenValueSpecifiedType.ts` | 58 | – |
+| `tests-functions/src/testFixtures/java/test/gen/GenValueSpecifiedType.java` | `test/engine/tests-functions/fixtures/gen/GenValueSpecifiedType.ts` | 58 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsBooleans.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsBooleans.ts` | 244 | – |
 | `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsColumnRef.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsColumnRef.ts` | 147 | – |
 | `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsFixType.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsFixType.ts` | 60 | – |
@@ -803,10 +803,10 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsText.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsText.ts` | 78 | – |
 | `tests-functions/src/testFixtures/java/test/gen/backwards/ExpressionMaker.java` | `test/engine/tests-functions/fixtures/gen/backwards/ExpressionMaker.ts` | 56 | – |
 | `tests-functions/src/testFixtures/java/test/gen/backwards/RequestBackwardsExpression.java` | `test/engine/tests-functions/fixtures/gen/backwards/RequestBackwardsExpression.ts` | 46 | – |
-| `tests-functions/src/testFixtures/java/test/gen/type/GenDataType.java` | `test/engine/tests-functions/fixtures/gen/type/GenDataType.ts` | 100 | – |
-| `tests-functions/src/testFixtures/java/test/gen/type/GenDataTypeMaker.java` | `test/engine/tests-functions/fixtures/gen/type/GenDataTypeMaker.ts` | 241 | – |
-| `tests-functions/src/testFixtures/java/test/gen/type/GenJellyTypeMaker.java` | `test/engine/tests-functions/fixtures/gen/type/GenJellyTypeMaker.ts` | 287 | – |
-| `tests-functions/src/testFixtures/java/test/gen/type/GenTypeAndValueGen.java` | `test/engine/tests-functions/fixtures/gen/type/GenTypeAndValueGen.ts` | 117 | – |
+| `tests-functions/src/testFixtures/java/test/gen/type/GenDataType.java` | `test/engine/tests-functions/fixtures/gen/type/GenDataType.ts` | 100 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/type/GenDataTypeMaker.java` | `test/engine/tests-functions/fixtures/gen/type/GenDataTypeMaker.ts` | 241 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/type/GenJellyTypeMaker.java` | `test/engine/tests-functions/fixtures/gen/type/GenJellyTypeMaker.ts` | 287 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/type/GenTypeAndValueGen.java` | `test/engine/tests-functions/fixtures/gen/type/GenTypeAndValueGen.ts` | 117 | ✅ |
 
 </details>
 

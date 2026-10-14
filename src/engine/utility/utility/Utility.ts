@@ -48,7 +48,8 @@ function mapLike<K, V>(likeThis: ReadonlyMapLike<K, unknown>): Map<K, V> | HashM
     return likeThis instanceof HashMap ? new HashMap<K, V>() : new Map<K, V>();
 }
 
-function javaClassName(x: unknown): string
+// Java: x.getClass().toString(), approximately
+export function javaClassName(x: unknown): string
 {
     if (x === null || x === undefined)
         return "null";
@@ -1456,6 +1457,8 @@ export class RecordMap extends Record
 // Eugh -- nasty way to represent ValueFunction which must depend on Expression
 export abstract class ValueFunctionBase
 {
+    // Makes the class nominal, so that only real functions are assignable to Value:
+    declare private readonly valueFunctionBrand: void;
 }
 
 export abstract class ListEx

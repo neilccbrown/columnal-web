@@ -1,0 +1,1071 @@
+script|USER_UNITS|@UNIT widget "A widget" = 3 * m\n@UNIT gadget "Gadget" = 7/2 * widget^2\n@ALIAS wd = widget\n@UNIT zork "Zork"\n@UNIT blarg "Blarg" PREFIX "B$"= 1000 * zork/s\n@ALIAS gg = gadget\n@UNIT alpha "A"\n@UNIT beta "B" SUFFIX "bb"= 2 * alpha\n@UNIT gamma "G" = 10^3 * beta*widget\n@UNIT delta "D" = 1/4 * gamma\n@UNIT epsilon "E"\n@UNIT zeta "Z" = 5 * epsilon^-1\n@UNIT m "Clashes with built-in"\n@UNIT été "Summer" = 3 * month\n@UNIT k_x "Underscored" = 0.25 * kg\n\n
+script|TYPE_DECLS|@TYPE Colour @tagged (Red \p Green \p Blue \p Custom(Number))\n@TYPE Pair @tagged @typevar a @typevar b (Pair((first: @apply Optional(a), second: b)))\n@TYPE Measure @tagged @unitvar u (Measured(Number{@unitvar u}) \p Unmeasured)\n@TYPE Tree @tagged @typevar t (Leaf \p Node(t) \p Many([@apply Tree(t)]))\n@TYPE Shape @tagged (Circle((radius: Number{m})) \p Rect((width: Number{m}, height: Number{m})) \p Named(Text))\n@TYPE Wrapper @tagged (Wrap(@apply Pair(Colour)(Shape)))\n@TYPE Multi Word Name @tagged (Odd Tag \p Normal)\n@TYPE Fn @tagged (F((Number, Text) -> Boolean))\n@TYPE Dates @tagged (D(Date) \p DT(DateTime) \p DTZ(DateTimeZoned) \p T(Time) \p YM(DateYM))\n@TYPE Zebra @tagged (Stripe(Shape) \p Plain)\n@TYPE Apple @tagged (Core(@apply Tree(Zebra)))\n@TYPE Mango @tagged @typevar x (Fruit(x) \p Is)\n\n
+unit|m|m ; m ;  ;  ; (1, m) ; 1/m ; m^3 ; 1 ; 108
+unit|s|s ; s ;  ;  ; (1, s) ; 1/s ; s^3 ; empty ; 114
+unit|m/s|m/s ; m/s ;  ;  ; (1, m/s) ; s/m ; m^3/s^3 ; empty ; -8
+unit|m^2|m^2 ; m^2 ;  ;  ; (1, m^2) ; 1/m^2 ; m^6 ; empty ; 111
+unit|kg*m/s^2|!ParseException: Error while parsing on line 1:\nkg*m/s^2\n    ^-- Unexpected\n\nFound: {/} '/' [6] 4
+unit|1/s|1/s ; 1/s ;  ;  ; (1, 1/s) ; s ; 1/s^3 ; empty ; -116
+unit|inch|inch ; inch ;  ;  ; (127/5000, m) ; 1/inch ; inch^3 ; 127/5000 ; 3236939
+unit|inch/hour|inch/hour ; inch/hour ;  ;  ; (127/18000000, m/s) ; hour/inch ; inch^3/hour^3 ; empty ; 28262
+unit|cm^2|cm^2 ; cm^2 ;  ;  ; (1/10000, m^2) ; 1/cm^2 ; cm^6 ; empty ; 3176
+unit|m/cm|m/cm ; m/cm ;  ;  ; (100, 1) ; cm/m ; m^3/cm^3 ; empty ; -3071
+unit|USD|USD ; USD ; $ ;  ; (1, USD) ; 1/USD ; USD^3 ; empty ; 84327
+unit|GBP*m|(GBP*m) ; (GBP*m) ;  ;  ; (1, (GBP*m)) ; 1/(GBP*m) ; (GBP^3*m^3) ; empty ; 70464
+unit|(m*l)/(g^3*s^2)|(l*m)/(g^3*s^2) ; (l*m)/(g^3*s^2) ;  ;  ; (1/1000, m^4/(g^3*s^2)) ; (g^3*s^2)/(l*m) ; (l^3*m^3)/(g^9*s^6) ; empty ; 0
+unit|mile/hour^2|mile/hour^2 ; mile/hour^2 ;  ;  ; (1397/11250000, m/s^2) ; hour^2/mile ; mile^3/hour^6 ; empty ; 142894
+unit|1|1 ;  ;  ;  ; (1, 1) ; 1 ; 1 ; empty ; 0
+unit||1 ;  ;  ;  ; (1, 1) ; 1 ; 1 ; empty ; 0
+unit|{m}|m ; m ;  ;  ; (1, m) ; 1/m ; m^3 ; 1 ; 108
+unit|m^0|1 ;  ;  ;  ; (1, 1) ; 1 ; 1 ; empty ; 0
+unit|foo|!UserException: Unknown unit: "foo"
+unit|m/s/s|!ParseException: Error while parsing on line 1:\nm/s/s\n   ^-- Unexpected\n\nFound: {/} '/' [6] 3
+unit|m^-2|1/m^2 ; 1/m^2 ;  ;  ; (1, 1/m^2) ; m^2 ; 1/m^6 ; empty ; -109
+unit|l|l ; l ;  ;  ; (1/1000, m^3) ; 1/l ; l^3 ; empty ; 109
+unit|ml|ml ; ml ;  ;  ; (1/1000000, m^3) ; 1/ml ; ml^3 ; empty ; 3486
+unit|hour|hour ; hour ;  ;  ; (3600, s) ; 1/hour ; hour^3 ; empty ; 3208677
+unit|day|day ; day ;  ;  ; (86400, s) ; 1/day ; day^3 ; empty ; 99229
+unit|year|year ; year ;  ;  ; (12, month) ; 1/year ; year^3 ; empty ; 3704892
+unit|degC|!UserException: Unknown unit: "degC"
+unit|$|!UserException: Unknown unit: "$"
+unit|s^-1*m|m/s ; m/s ;  ;  ; (1, m/s) ; s/m ; m^3/s^3 ; empty ; -8
+unit|m*m*m/(s*s)|!ParseException: Error while parsing on line 1:\nm*m*m/(s*s)\n     ^-- Unexpected\n\nFound: {/} '/' [6] 5
+unit|kg*m*s^-2|(kg*m)/s^2 ; (kg*m)/s^2 ;  ;  ; (1000, (g*m)/s^2) ; s^2/(kg*m) ; (kg^3*m^3)/s^6 ; empty ; 3414
+unit|(kg*m)/s^2|(kg*m)/s^2 ; (kg*m)/s^2 ;  ;  ; (1000, (g*m)/s^2) ; s^2/(kg*m) ; (kg^3*m^3)/s^6 ; empty ; 3414
+unit|km/hour|km/hour ; km/hour ;  ;  ; (5/18, m/s) ; hour/km ; km^3/hour^3 ; empty ; -3205250
+unit|mile/hour|mile/hour ; mile/hour ;  ;  ; (1397/3125, m/s) ; hour/mile ; mile^3/hour^3 ; empty ; 142895
+unit|mg/l|mg/l ; mg/l ;  ;  ; (1, g/m^3) ; l/mg ; mg^3/l^3 ; empty ; 3374
+unit|(m/s)/s|m/s^2 ; m/s^2 ;  ;  ; (1, m/s^2) ; s^2/m ; m^3/s^6 ; empty ; -7
+unit|m^2*s^-3|m^2/s^3 ; m^2/s^3 ;  ;  ; (1, m^2/s^3) ; s^3/m^2 ; m^6/s^9 ; empty ; -3
+unit|acre|!UserException: Unknown unit: "acre"
+unit|lb|lb ; lb ;  ;  ; (454, g) ; 1/lb ; lb^3 ; empty ; 3447
+unit|ft^3|!UserException: Unknown unit: "ft"
+unit|ha/km^2|!UserException: Unknown unit: "ha"
+allDeclared||yard week ns year deg hour GBP rad mg kg kHz day foot ml mm km EUR mile ms g USD cm oz l m minute Hz s month lb GHz inch MHz
+allBuiltIn||yard week ns year deg hour GBP rad mg kg kHz day foot ml mm km EUR mile ms g USD cm oz l € m minute Hz s month lb GHz inch MHz
+canonicalBase|m|[m]
+canonicalBase|inch|[m]
+canonicalBase|acre|null
+canonicalBase|N|null
+canonicalBase|foo|null
+canonicalBase|l|[m]
+canonicalBase|year|[month]
+canonicalBase|kg|[g]
+canonicalBase|MHz|[Hz]
+loadUser||ok
+userDeclared||gg zeta widget gadget k_x delta wd m epsilon zork alpha blarg été beta gamma
+saveAll||@ALIAS gg = gadget\n@UNIT zeta "Z" = 5 * 1/epsilon\n@UNIT widget "A widget" = 3 * m\n@UNIT gadget "Gadget" = 7/2 * widget^2\n@UNIT k_x "Underscored" = 1/4 * kg\n@UNIT delta "D" = 1/4 * gamma\n@ALIAS wd = widget\n@UNIT m "Clashes with built-in"\n@UNIT epsilon "E"\n@UNIT zork "Zork"\n@UNIT alpha "A"\n@UNIT blarg "Blarg" = 1000 * zork/s\n@UNIT été "Summer" = 3 * month\n@UNIT beta "B" = 2 * alpha\n@UNIT gamma "G" = 1000 * (beta*widget)
+saveSome|gamma zeta|@UNIT zeta "Z" = 5 * 1/epsilon\n@UNIT epsilon "E"\n@UNIT widget "A widget" = 3 * m\n@UNIT alpha "A"\n@UNIT m "Clashes with built-in"\n@UNIT gamma "G" = 1000 * (beta*widget)\n@UNIT beta "B" = 2 * alpha
+canonGamma||(63000, (alpha*m^2))
+userUnit|widget|widget ; (3, m) ;  ;  ; [m]
+userUnit|gadget|gadget ; (63/2, m^2) ;  ;  ; [m]
+userUnit|gamma|gamma ; (6000, (alpha*m)) ;  ;  ; [alpha, m]
+userUnit|delta|delta ; (1500, (alpha*m)) ;  ;  ; [alpha, m]
+userUnit|zeta|zeta ; (5, 1/epsilon) ;  ;  ; [epsilon]
+userUnit|blarg|blarg ; (1000, zork/s) ; B$ ;  ; [s, zork]
+userUnit|beta|beta ; (2, alpha) ;  ; bb ; [alpha]
+userUnit|été|été ; (3, month) ;  ;  ; [month]
+userUnit|k_x|k_x ; (250, g) ;  ;  ; [g]
+userUnit|m|m ; (1, m) ;  ;  ; [m]
+saveAfterRemove||@ALIAS gg = gadget\n@UNIT zeta "Z" = 5 * 1/epsilon\n@UNIT widget "A widget" = 3 * m\n@UNIT gadget "Gadget" = 7/2 * widget^2\n@UNIT k_x "Underscored" = 1/4 * kg\n@ALIAS wd = widget\n@UNIT m "Clashes with built-in"\n@UNIT epsilon "E"\n@UNIT zork "Zork"\n@UNIT alpha "A"\n@UNIT blarg "Blarg" = 1000 * zork/s\n@UNIT été "Summer" = 3 * month\n@UNIT beta "B" = 2 * alpha\n@UNIT gamma "G" = 1000 * (beta*widget)
+saveAfterClear||
+unitExp|0|_u^-2*g^-1 = g => g ; 1/g ; then fail ; 1/g
+unitExp|1|1 = m^3 => fail ; null ; then fail ; null
+unitExp|2|_u^2 = (_u^2*_u)/g^3 => _u^2 ; null ; g^3 ; then m^2 ; m ; g^3
+unitExp|3|USD^-3 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|4|(g^2*s)/_u = (_u^2*m^2)/_u => (_u^2*m^2)/_u ; null ; null ; null ; then m^2 ; null ; (g^2*s)/m^2 ; null
+unitExp|5|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|6|1 = m^3/_u^6 => fail ; null ; null ; then fail ; null ; null
+unitExp|7|_u^2/USD^3 = _u^2*s => fail ; null ; null ; then fail ; null ; null
+unitExp|8|_u/USD = USD^3 => USD^3 ; USD^4 ; null ; then fail ; USD^4 ; null
+unitExp|9|1 = _u^-1*s^-3 => 1 ; null ; 1/s^3 ; then fail ; null ; 1/s^3
+unitExp|10|s^-3 = s^2 => fail ; null ; then fail ; null
+unitExp|11|m = 1 => fail ; null ; then fail ; null
+unitExp|12|1 = 1 => 1 ; null ; then fail ; null
+unitExp|13|m^3 = _u/_u => m^3 ; null ; null ; then fail ; null ; null
+unitExp|14|_u^-1 = m^-1 => m^-1 ; null ; null ; m ; then fail ; null ; null ; m
+unitExp|15|m^2/(_u^3s) = 1 => fail ; null ; then fail ; null
+unitExp|16|_u = USD^2/_u^2 => fail ; null ; then m^2 ; m^2
+unitExp|17|_u^-3*USD^-4 = USD/g^3 => fail ; null ; then fail ; null
+unitExp|18|(m^3*s)/_u^2 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|19|1 = USD^3/_u => 1 ; null ; USD^3 ; null ; then fail ; null ; USD^3 ; null
+unitExp|20|_u^3 = 1 => 1 ; null ; 1 ; null ; then fail ; null ; 1 ; null
+unitExp|21|_u*USD^3 = g^-3 => g^-3 ; null ; null ; 1/(USD^3*g^3) ; then fail ; null ; null ; 1/(USD^3*g^3)
+unitExp|22|1 = _u^4 => 1 ; null ; 1 ; then fail ; null ; 1
+unitExp|23|m^3 = _u/m => m^3 ; null ; m^4 ; then fail ; null ; m^4
+unitExp|24|_u^-3 = _u^-3*USD^-3 => fail ; null ; null ; then fail ; null ; null
+unitExp|25|USD/(m^2s^3) = _u*_u^2*USD^2 => USD/(m^2s^3) ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|26|1 = _u^-3 => 1 ; 1 ; then fail ; 1
+unitExp|27|_u^2 = s^2/g => fail ; null ; null ; then m^2 ; m ; null
+unitExp|28|_u^2*m^3*s^3 = _u*s^2 => s/m^3 ; 1/(m^3*s) ; then fail ; 1/(m^3*s)
+unitExp|29|1 = USD^-3*s^-3 => fail ; null ; null ; then fail ; null ; null
+unitExp|30|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|31|1 = _u^-3 => 1 ; 1 ; then fail ; 1
+unitExp|32|_u^-1 = _u^-4 => 1 ; null ; 1 ; null ; then fail ; null ; 1 ; null
+unitExp|33|_u/s^2 = g^4/_u => g^2/s ; (g^2*s) ; then fail ; (g^2*s)
+unitExp|34|1 = _u^3 => 1 ; 1 ; null ; then fail ; 1 ; null
+unitExp|35|1 = s^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|36|g^2*s^2 = g^3*s^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|37|m^2/_u = s^-3 => s^-3 ; null ; (m^2*s^3) ; null ; then fail ; null ; (m^2*s^3) ; null
+unitExp|38|(USD^3*s^3)/m^3 = m^3/_u => (USD^3*s^3)/m^3 ; m^6/(USD^3*s^3) ; then fail ; m^6/(USD^3*s^3)
+unitExp|39|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|40|g/USD = _u^-1 => g/USD ; USD/g ; null ; then fail ; USD/g ; null
+unitExp|41|s^3/(_ug^3) = 1 => 1 ; null ; s^3/g^3 ; then fail ; null ; s^3/g^3
+unitExp|42|1 = g^3*s => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|43|_u^-1 = g^3/m => g^3/m ; m/g^3 ; then fail ; m/g^3
+unitExp|44|USD^2/_u = _u^-5*USD^-1 => fail ; null ; then m^2 ; USD^2/m^2
+unitExp|45|_u*USD*g^2 = _u^-3*m^-3 => fail ; null ; then m^2 ; m^2/(USD*g^2)
+unitExp|46|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|47|_u^2 = _u^2*s^2 => _u^2 ; null ; null ; null ; then m^2 ; m/s ; null ; m
+unitExp|48|1 = _u^3/USD^3 => 1 ; null ; null ; USD ; then fail ; null ; null ; USD
+unitExp|49|m^2 = 1 => fail ; null ; then m^2 ; null
+unitExp|50|_u*g = s^3/_u^4 => fail ; null ; null ; then m^2 ; null ; m^2/g
+unitExp|51|_u^3/(gs) = _u^2*USD => _u^6/(USD^3g^4s^4) ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|52|1 = _u^-1*USD^-1 => 1 ; null ; null ; 1/USD ; then fail ; null ; null ; 1/USD
+unitExp|53|1 = _u^3*s^2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|54|g^-2*m^-1 = _u => g^-2*m^-1 ; 1/(g^2*m) ; then fail ; 1/(g^2*m)
+unitExp|55|_u^2*USD*s^3 = USD^-2 => fail ; null ; null ; then fail ; null ; null
+unitExp|56|USD^2 = (g^3*m^2)/s^3 => fail ; null ; null ; then fail ; null ; null
+unitExp|57|g^-1*m^-2 = g^-2 => fail ; null ; null ; then fail ; null ; null
+unitExp|58|_u^4/USD = 1 => fail ; null ; then fail ; null
+unitExp|59|1 = 1 => 1 ; null ; then fail ; null
+unitExp|60|1 = _u/s^2 => 1 ; s^2 ; then fail ; s^2
+unitExp|61|USD^2*m^2 = _u^3 => fail ; null ; then fail ; null
+unitExp|62|_u*USD = _u^2/USD^2 => _u^2/USD^2 ; null ; null ; null ; then m^2 ; m^2/USD ; (USD*m) ; null
+unitExp|63|1 = _u^-2*m^-3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|64|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|65|g^-1 = s => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|66|_u^-3 = m^-3*s^-1 => fail ; null ; null ; then fail ; null ; null
+unitExp|67|_u^2/USD^2 = _u^3/_u => fail ; null ; null ; then m^2 ; (USD*m) ; null
+unitExp|68|1 = _u/(_us) => 1 ; null ; null ; then fail ; null ; null
+unitExp|69|_u^-3 = _u^2 => 1 ; null ; 1 ; then fail ; null ; 1
+unitExp|70|s/m^3 = 1 => fail ; null ; then fail ; null
+unitExp|71|USD^2/(_u^2m^3) = m^3/s^2 => m^3/s^2 ; (USD*s)/m^3 ; then fail ; (USD*s)/m^3
+unitExp|72|1 = g^-2 => fail ; null ; then fail ; null
+unitExp|73|_u = _u^-2 => _u^-2 ; null ; null ; then m^2 ; m^2 ; 1/m
+unitExp|74|g^-1*s^-2 = _u^3/_u => g^-1*s^-2 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|75|s^2/_u = 1 => 1 ; s^2 ; then fail ; s^2
+unitExp|76|s^-3 = s^5 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|77|USD/s = 1 => fail ; null ; then fail ; null
+unitExp|78|s^2/_u^2 = (USD^2*m)/_u^3 => (USD^2*m^2)/_u^6 ; null ; null ; then fail ; null ; null
+unitExp|79|1 = _u^-2*USD^-1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|80|1 = g => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|81|1 = _u^-1*_u^-2 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|82|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|83|s = g^-2 => fail ; null ; null ; then fail ; null ; null
+unitExp|84|_u^3*m*s = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|85|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|86|_u^2 = _u^2/USD => fail ; null ; then m^2 ; m
+unitExp|87|s^3/_u = g^2 => g^2 ; s^3/g^2 ; null ; then fail ; s^3/g^2 ; null
+unitExp|88|USD^-2*s^-2 = _u^-3 => fail ; null ; then fail ; null
+unitExp|89|1 = m^5/_u^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|90|1 = _u^-2*_u^-3 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|91|_u^3 = g^3 => g^3 ; g ; then fail ; g
+unitExp|92|_u^5/g^2 = s^-3 => fail ; null ; then fail ; null
+unitExp|93|1 = s/m^3 => fail ; null ; then fail ; null
+unitExp|94|m^-1 = _u^-1 => m^-1 ; null ; m ; then fail ; null ; m
+unitExp|95|USD*g = _u^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|96|g^3 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|97|_u^-4*_u^-3 = _u^-2*s^-1 => (_u^6*s^3)/_u^4 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|98|1 = 1 => 1 ; null ; then fail ; null
+unitExp|99|g^-2 = _u^-3 => fail ; null ; null ; then fail ; null ; null
+unitExp|100|g^-2 = _u^-1*s^-2 => g^-2 ; null ; g^2/s^2 ; then fail ; null ; g^2/s^2
+unitExp|101|1 = _u^-3 => 1 ; 1 ; null ; then fail ; 1 ; null
+unitExp|102|1 = m^2/g^2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|103|USD = _u^-2 => fail ; null ; then fail ; null
+unitExp|104|s/_u^6 = _u^3*USD^3 => fail ; null ; then fail ; null
+unitExp|105|1 = 1 => 1 ; null ; then fail ; null
+unitExp|106|_u^-3 = s^3 => s^3 ; null ; null ; 1/s ; then fail ; null ; null ; 1/s
+unitExp|107|m^-1 = g/_u^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|108|_u*_u^3 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|109|1 = _u/_u^2 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|110|g = g^-1 => fail ; null ; null ; then fail ; null ; null
+unitExp|111|s^-2 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|112|_u = s^-2 => s^-2 ; 1/s^2 ; null ; null ; then fail ; 1/s^2 ; null ; null
+unitExp|113|USD^2/_u^2 = USD^-1 => fail ; null ; null ; null ; then m^2 ; null ; USD/m ; null
+unitExp|114|(m*s^3)/g = _u^-2 => fail ; null ; then fail ; null
+unitExp|115|1 = _u^3*USD^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|116|USD^-1 = g => fail ; null ; null ; then fail ; null ; null
+unitExp|117|_u/m = 1 => 1 ; null ; m ; then fail ; null ; m
+unitExp|118|_u = 1 => 1 ; 1 ; then fail ; 1
+unitExp|119|1 = USD^2 => fail ; null ; then fail ; null
+unitExp|120|m^-2*s^-2 = 1 => fail ; null ; then fail ; null
+unitExp|121|m^3 = _u^2 => fail ; null ; then fail ; null
+unitExp|122|g/_u^3 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|123|1 = s/(_u_u^2) => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|124|_u*g^2 = _u^2/m^3 => g^4*m^3 ; null ; null ; (g^2*m^3) ; then fail ; null ; null ; (g^2*m^3)
+unitExp|125|m^-5 = m^3 => fail ; null ; then fail ; null
+unitExp|126|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|127|_u^-1 = 1 => 1 ; null ; 1 ; null ; then fail ; null ; 1 ; null
+unitExp|128|_u^-3 = 1 => 1 ; 1 ; null ; then fail ; 1 ; null
+unitExp|129|_u^-1 = _u^3*_u^2 => _u^3*_u^2 ; null ; null ; null ; then m^2 ; null ; 1/m^2 ; null
+unitExp|130|_u^-3*USD^-3*s^-2 = g^2 => fail ; null ; then fail ; null
+unitExp|131|1 = m^-1 => fail ; null ; null ; then fail ; null ; null
+unitExp|132|s^2 = 1 => fail ; null ; then fail ; null
+unitExp|133|_u^-3*m^-3 = 1 => 1 ; 1/m ; null ; then fail ; 1/m ; null
+unitExp|134|_u^3 = g^-1*s^-1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|135|1 = 1 => 1 ; null ; then fail ; null
+unitExp|136|_u^-1 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|137|_u^2*s^3 = 1 => fail ; null ; then fail ; null
+unitExp|138|1 = _u^-3*m^-3 => 1 ; 1/m ; null ; then fail ; 1/m ; null
+unitExp|139|_u^-3 = _u^2 => _u^-6 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|140|_u^-6 = _u^-2*m^-3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|141|_u^-1*_u^-3*USD^-1 = (_u*m)/s^2 => (USD*m^2)/(_u^5s) ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|142|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|143|USD^2 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|144|1 = g^3/_u^4 => fail ; null ; null ; then fail ; null ; null
+unitExp|145|1 = _u^3 => 1 ; null ; 1 ; null ; then fail ; null ; 1 ; null
+unitExp|146|s^3/g = _u^2/m => fail ; null ; then fail ; null
+unitExp|147|_u^9 = _u/m^3 => fail ; null ; null ; then fail ; null ; null
+unitExp|148|1 = USD^2*s^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|149|_u^-2 = 1 => 1 ; 1 ; null ; then fail ; 1 ; null
+unitExp|150|USD^-3*s^-1 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|151|_u^-1*USD^-1*g^-1 = _u^-2 => USD^-2*g^-2 ; (USD*g) ; then fail ; (USD*g)
+unitExp|152|1 = 1 => 1 ; null ; then fail ; null
+unitExp|153|USD^2/s^3 = s/USD^3 => fail ; null ; then fail ; null
+unitExp|154|_u^3*_u^3 = _u^-3*_u^-2 => _u^3/_u^6 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|155|(_u^3*_u)/USD^2 = g^2/(_u_u) => g^2/(_u_u) ; null ; null ; null ; then m^2 ; null ; null ; null
+unitExp|156|_u^-2 = g^-1 => fail ; null ; null ; null ; then m^2 ; null ; 1/m ; null
+unitExp|157|g^2*m^3 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|158|_u^-1 = _u^2/USD^3 => USD^-1 ; USD ; null ; then fail ; USD ; null
+unitExp|159|1 = _u => 1 ; 1 ; null ; then fail ; 1 ; null
+unitExp|160|1 = _u/m^3 => 1 ; null ; m^3 ; then fail ; null ; m^3
+unitExp|161|g^-3 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|162|_u^3 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|163|1 = _u^3*g^3 => 1 ; 1/g ; then fail ; 1/g
+unitExp|164|1 = _u^2 => 1 ; 1 ; then fail ; 1
+unitExp|165|_u^2 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|166|_u^-2*s^-1 = m^6*s^3 => m^6*s^3 ; null ; 1/(m^3*s^2) ; null ; then fail ; null ; 1/(m^3*s^2) ; null
+unitExp|167|(m^3*s)/_u = 1 => 1 ; (m^3*s) ; null ; null ; then fail ; (m^3*s) ; null ; null
+unitExp|168|1 = s => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|169|USD^-1 = 1 => fail ; null ; then fail ; null
+unitExp|170|_u^2/_u^2 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|171|(_u^2*s^2)/_u^3 = 1 => _u^4 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|172|1 = _u/g => 1 ; null ; g ; then fail ; null ; g
+unitExp|173|_u^2/m^3 = _u^2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|174|_u^2 = _u^-5 => 1 ; 1 ; then fail ; 1
+unitExp|175|_u^-2*USD^-1*m^-3 = g^-3 => fail ; null ; null ; then fail ; null ; null
+unitExp|176|_u*USD^3 = 1 => 1 ; null ; 1/USD^3 ; then fail ; null ; 1/USD^3
+unitExp|177|_u^2/g^2 = USD => fail ; null ; null ; then m^2 ; null ; (g*m)
+unitExp|178|1 = (g*s^2)/_u^3 => fail ; null ; then fail ; null
+unitExp|179|m^-1 = 1 => fail ; null ; then fail ; null
+unitExp|180|_u^-3 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|181|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|182|1 = g^-2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|183|_u^-3*s^-2 = 1 => fail ; null ; then fail ; null
+unitExp|184|m^2/_u = USD^-2 => USD^-2 ; null ; (USD^2*m^2) ; null ; then fail ; null ; (USD^2*m^2) ; null
+unitExp|185|1 = _u^-3*USD^-2*m^-1 => fail ; null ; then fail ; null
+unitExp|186|g^-1 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|187|_u*s^3 = _u*g => _u*s^3 ; null ; null ; null ; then m^2 ; null ; m^2/g ; m^2/s^3
+unitExp|188|s^3/(_u^2_u^2) = _u^3 => _u^2/s ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|189|1 = m^-3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|190|_u^-3 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|191|_u^-2*g^-1 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|192|s^-2 = s^3/g^4 => fail ; null ; then fail ; null
+unitExp|193|_u^2*m^3 = _u/_u^3 => _u^2*m^3 ; null ; null ; then fail ; null ; null
+unitExp|194|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|195|g^3 = 1 => fail ; null ; then fail ; null
+unitExp|196|g^3/_u^3 = 1 => 1 ; g ; then fail ; g
+unitExp|197|s^2/_u = 1 => 1 ; s^2 ; then fail ; s^2
+unitExp|198|1 = g^3 => fail ; null ; null ; then fail ; null ; null
+unitExp|199|_u = _u^-1*s^-4 => s^-2 ; 1/s^2 ; null ; null ; then fail ; 1/s^2 ; null ; null
+unitExp|200|_u^3/_u^2 = _u/_u^2 => _u/_u^3 ; null ; null ; null ; then m^2 ; null ; null ; null
+unitExp|201|1 = _u*_u => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|202|1 = g^-1 => fail ; null ; null ; then fail ; null ; null
+unitExp|203|_u^-2 = (_u^2*_u^2)/s^3 => fail ; null ; null ; then m^2 ; null ; 1/m
+unitExp|204|USD^-3 = m^-1 => fail ; null ; null ; then fail ; null ; null
+unitExp|205|1 = _u^-1*_u^-3 => 1 ; null ; null ; then fail ; null ; null
+unitExp|206|s = 1 => fail ; null ; then fail ; null
+unitExp|207|m^3/_u^3 = _u^-1 => fail ; null ; then fail ; null
+unitExp|208|_u^-1 = 1 => 1 ; null ; 1 ; then fail ; null ; 1
+unitExp|209|_u^3/_u = m^2 => m^2 ; null ; null ; then m^2 ; null ; null
+unitExp|210|(_u^3*USD^2)/g^2 = _u^-3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|211|1 = m^3/_u => 1 ; m^3 ; then fail ; m^3
+unitExp|212|g^-3 = 1 => fail ; null ; then fail ; null
+unitExp|213|_u^4 = _u^2/USD^2 => USD^-4 ; 1/USD ; then fail ; 1/USD
+unitExp|214|_u^2/(_um^2) = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|215|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|216|USD^3 = (_u^2*_u^2)/m^2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|217|g^-2 = _u^-3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|218|g/(_u^3m^2) = _u => g/(_u^3m^2) ; null ; null ; then fail ; null ; null
+unitExp|219|1 = m^3/_u => 1 ; m^3 ; null ; then fail ; m^3 ; null
+unitExp|220|_u^4 = _u^-2 => _u^4 ; null ; null ; then fail ; null ; null
+unitExp|221|_u^2*_u^3 = _u^-3*s^-1 => _u^-9*s^-4 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|222|g^2/USD^2 = _u^-3 => fail ; null ; then fail ; null
+unitExp|223|_u^-3 = 1 => 1 ; 1 ; null ; then fail ; 1 ; null
+unitExp|224|1 = USD/_u^3 => fail ; null ; then fail ; null
+unitExp|225|1 = s^2/_u^3 => fail ; null ; then fail ; null
+unitExp|226|_u^2/s^3 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|227|_u/m^3 = g^-5 => g^-5 ; m^3/g^5 ; null ; null ; then fail ; m^3/g^5 ; null ; null
+unitExp|228|m = _u^-2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|229|_u^5 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|230|(USD^3*g^2)/m^2 = m^-2 => fail ; null ; null ; then fail ; null ; null
+unitExp|231|1 = m^-2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|232|1 = _u*m^3 => 1 ; 1/m^3 ; null ; then fail ; 1/m^3 ; null
+unitExp|233|m^2/_u = 1 => 1 ; null ; m^2 ; null ; then fail ; null ; m^2 ; null
+unitExp|234|_u = m^4*s^3 => m^4*s^3 ; (m^4*s^3) ; then fail ; (m^4*s^3)
+unitExp|235|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|236|_u^3 = _u^-2*_u^-3*USD^-1 => fail ; null ; null ; then fail ; null ; null
+unitExp|237|g^3 = g^2*m^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|238|_u^-3 = _u^2 => 1 ; 1 ; null ; null ; then fail ; 1 ; null ; null
+unitExp|239|1 = _u^2*g^2 => 1 ; 1/g ; then fail ; 1/g
+unitExp|240|_u^3/m^4 = 1 => fail ; null ; then m^2 ; m^2
+unitExp|241|1 = _u^3 => 1 ; null ; 1 ; then fail ; null ; 1
+unitExp|242|_u^-2 = m^2*s => fail ; null ; null ; null ; then m^2 ; null ; 1/m ; null
+unitExp|243|_u^3 = s^2 => fail ; null ; then fail ; null
+unitExp|244|_u^2*m^3 = _u^3/_u^2 => _u^2*m^3 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|245|_u^-3 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|246|USD^3 = _u^-3*s^-2 => fail ; null ; null ; then fail ; null ; null
+unitExp|247|_u^-2 = (_u*m^3)/USD^2 => _u^-2 ; null ; null ; null ; then m^2 ; 1/m ; USD^2/m ; null
+unitExp|248|1 = _u => 1 ; null ; null ; 1 ; then fail ; null ; null ; 1
+unitExp|249|_u^3 = USD^-3 => USD^-3 ; null ; null ; 1/USD ; then fail ; null ; null ; 1/USD
+unitExp|250|_u*USD^2 = 1 => 1 ; 1/USD^2 ; then fail ; 1/USD^2
+unitExp|251|s/(USD^3g) = _u^3 => fail ; null ; null ; then fail ; null ; null
+unitExp|252|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|253|g = m*s^3 => fail ; null ; null ; then fail ; null ; null
+unitExp|254|_u^-2 = USD => fail ; null ; then m^2 ; 1/m
+unitExp|255|_u^3*g^3 = _u^-1*g^-2 => fail ; null ; then fail ; null
+unitExp|256|_u^-3*s^-3 = _u^-3*g^-3 => fail ; null ; then fail ; null
+unitExp|257|1 = 1 => 1 ; null ; then fail ; null
+unitExp|258|USD = _u^-2*g^-1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|259|_u^3/g = _u^-3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|260|1 = g/_u^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|261|_u = s^2/(_u^2m) => fail ; null ; null ; null ; then m^2 ; m^2 ; null ; null
+unitExp|262|m^-1 = _u^-1 => m^-1 ; m ; null ; then fail ; m ; null
+unitExp|263|_u^3*USD = g^2/s => fail ; null ; null ; then fail ; null ; null
+unitExp|264|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|265|g^-1 = m^-3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|266|_u^2 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|267|s/USD^3 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|268|1 = _u^-1*m^-3*s^-3 => 1 ; 1/(m^3*s^3) ; then fail ; 1/(m^3*s^3)
+unitExp|269|USD^3 = s^-3 => fail ; null ; null ; then fail ; null ; null
+unitExp|270|_u*m^3 = USD^-1*m^-3 => USD^-1*m^-3 ; 1/(USD*m^6) ; null ; null ; then fail ; 1/(USD*m^6) ; null ; null
+unitExp|271|_u*USD = _u^5/m^3 => fail ; null ; then m^2 ; m^2/USD
+unitExp|272|g/_u^2 = _u*s^3 => fail ; null ; then fail ; null
+unitExp|273|g^6/USD^2 = _u^-2 => g^6/USD^2 ; USD/g^3 ; then fail ; USD/g^3
+unitExp|274|1 = g^3/(USD^2s^3) => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|275|_u^-1 = _u*s^3 => fail ; null ; null ; null ; then m^2 ; null ; 1/m^2 ; null
+unitExp|276|USD/_u = _u^-1 => fail ; null ; null ; null ; then m^2 ; null ; null ; USD/m^2
+unitExp|277|_u^2 = _u^-3*g^-3*m^-3 => fail ; null ; then m^2 ; m
+unitExp|278|1 = g^-3 => fail ; null ; null ; then fail ; null ; null
+unitExp|279|_u^2 = s^2/_u^3 => _u^6*s^2 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|280|m^6/_u = USD^3/_u^3 => fail ; null ; null ; then m^2 ; m^4 ; null
+unitExp|281|1 = _u^-1 => 1 ; 1 ; null ; null ; then fail ; 1 ; null ; null
+unitExp|282|g^-1 = _u => g^-1 ; 1/g ; then fail ; 1/g
+unitExp|283|s/_u^2 = _u^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|284|m^2*s = _u^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|285|1 = USD => fail ; null ; null ; then fail ; null ; null
+unitExp|286|_u^2 = _u^3*m^3 => _u^-2 ; null ; null ; null ; then m^2 ; m ; null ; m
+unitExp|287|_u = _u/(USD^3g^2) => fail ; null ; then m^2 ; m^2
+unitExp|288|m^-2*s^-3 = _u^3/_u^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|289|m^2/g^2 = g/_u^3 => fail ; null ; then fail ; null
+unitExp|290|1 = _u^2/_u => 1 ; null ; null ; then fail ; null ; null
+unitExp|291|s = _u^2/_u => s ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|292|_u*s = 1 => 1 ; null ; null ; 1/s ; then fail ; null ; null ; 1/s
+unitExp|293|_u^3/m^3 = 1 => 1 ; m ; null ; null ; then fail ; m ; null ; null
+unitExp|294|1 = _u^-5 => 1 ; 1 ; then fail ; 1
+unitExp|295|_u^-1 = _u^2/g^2 => _u^2/g^2 ; null ; null ; then m^2 ; (g*m) ; 1/m^2
+unitExp|296|g^2 = USD^-1 => fail ; null ; null ; then fail ; null ; null
+unitExp|297|_u^4/m^2 = _u/(m^2s^2) => fail ; null ; null ; then m^2 ; m ; null
+unitExp|298|1 = _u^3 => 1 ; 1 ; then fail ; 1
+unitExp|299|USD^-2 = _u^3*s^3 => fail ; null ; then fail ; null
+unitExp|300|USD^-5*g^-1 = _u^-2 => fail ; null ; then fail ; null
+unitExp|301|1 = _u => 1 ; 1 ; then fail ; 1
+unitExp|302|_u^-1 = m^2/_u^3 => m^-1 ; m ; null ; null ; then fail ; m ; null ; null
+unitExp|303|USD^2 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|304|_u^-1 = _u^2 => 1 ; 1 ; then fail ; 1
+unitExp|305|_u^4 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|306|m^-1 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|307|g^2/(USD^2m^2) = _u => g^2/(USD^2m^2) ; null ; null ; g^2/(USD^2*m^2) ; then fail ; null ; null ; g^2/(USD^2*m^2)
+unitExp|308|g^2 = _u^3/g => g^2 ; null ; null ; g ; then fail ; null ; null ; g
+unitExp|309|1 = m^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|310|s/(_u^2g^3) = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|311|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|312|_u = m^3/s => m^3/s ; null ; m^3/s ; then fail ; null ; m^3/s
+unitExp|313|USD^3/g^2 = 1 => fail ; null ; null ; then fail ; null ; null
+unitExp|314|_u^4/s^2 = USD^-3*g^-1 => fail ; null ; then fail ; null
+unitExp|315|1 = _u*USD^2 => 1 ; 1/USD^2 ; then fail ; 1/USD^2
+unitExp|316|_u^-1 = g/_u => fail ; null ; then m^2 ; 1/m^2
+unitExp|317|_u^5/USD^2 = g^3 => fail ; null ; null ; then fail ; null ; null
+unitExp|318|g^2/m^3 = USD^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|319|1 = m^-1 => fail ; null ; then fail ; null
+unitExp|320|1 = _u^3 => 1 ; null ; 1 ; null ; then fail ; null ; 1 ; null
+unitExp|321|_u^-2 = g^-2 => g^-2 ; null ; g ; null ; then fail ; null ; g ; null
+unitExp|322|USD^-2*m^-3 = g/_u^3 => fail ; null ; null ; then fail ; null ; null
+unitExp|323|s/_u^4 = _u^-3 => _u^-12*s^-3 ; null ; null ; then fail ; null ; null
+unitExp|324|m^-1 = m^3/USD => fail ; null ; null ; then fail ; null ; null
+unitExp|325|_u^3/s = g^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|326|1 = 1 => 1 ; null ; then fail ; null
+unitExp|327|_u^3/m^3 = 1 => 1 ; m ; null ; then fail ; m ; null
+unitExp|328|m^-2 = _u^-5 => fail ; null ; then fail ; null
+unitExp|329|s^3 = _u^2*s^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|330|_u/m^3 = _u^3/_u => _u/m^3 ; null ; null ; null ; then m^2 ; m^13 ; m^5 ; null
+unitExp|331|1 = _u*m => 1 ; 1/m ; then fail ; 1/m
+unitExp|332|_u^3 = _u => 1 ; 1 ; then fail ; 1
+unitExp|333|_u^-2*g^-3 = USD^3 => fail ; null ; then fail ; null
+unitExp|334|_u/USD^3 = m^-1 => m^-1 ; USD^3/m ; null ; then fail ; USD^3/m ; null
+unitExp|335|1 = _u^3 => 1 ; null ; null ; 1 ; then fail ; null ; null ; 1
+unitExp|336|_u^2*USD^3 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|337|1 = 1 => 1 ; null ; then fail ; null
+unitExp|338|_u^-2 = _u/s^2 => fail ; null ; null ; then m^2 ; 1/m ; null
+unitExp|339|m^-2 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|340|m^2 = 1 => fail ; null ; null ; then m^2 ; null ; null
+unitExp|341|1 = _u^-3 => 1 ; 1 ; null ; null ; then fail ; 1 ; null ; null
+unitExp|342|g = g^-1*s^-1 => fail ; null ; then fail ; null
+unitExp|343|m^-1*s^-2 = _u^2*s^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|344|1 = g^-2 => fail ; null ; null ; then fail ; null ; null
+unitExp|345|_u = _u^4 => 1 ; 1 ; null ; then fail ; 1 ; null
+unitExp|346|1 = _u^2 => 1 ; null ; 1 ; null ; then fail ; null ; 1 ; null
+unitExp|347|g^2*m*s^3 = 1 => fail ; null ; then fail ; null
+unitExp|348|1 = 1 => 1 ; null ; then fail ; null
+unitExp|349|s^-1 = _u^2*s^2 => fail ; null ; then fail ; null
+unitExp|350|g^2/_u^2 = _u^-1 => g^-2 ; g^2 ; null ; null ; then fail ; g^2 ; null ; null
+unitExp|351|_u^-2 = s^2/_u^3 => s^2/_u^6 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|352|(_u^2*m^2)/s = _u^-2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|353|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|354|1 = _u^4*s^2 => fail ; null ; then fail ; null
+unitExp|355|_u^-3*g^-3 = g => fail ; null ; null ; then fail ; null ; null
+unitExp|356|_u^-7 = (_u*s^3)/_u^2 => fail ; null ; null ; then fail ; null ; null
+unitExp|357|1 = _u*m^2 => 1 ; 1/m^2 ; null ; then fail ; 1/m^2 ; null
+unitExp|358|m^-2 = _u^-3 => fail ; null ; then fail ; null
+unitExp|359|g^-2 = _u^3 => fail ; null ; then fail ; null
+unitExp|360|_u^2*USD^3 = g^2 => fail ; null ; then fail ; null
+unitExp|361|1 = _u^-2*s^-1 => fail ; null ; then fail ; null
+unitExp|362|m^-3 = g => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|363|USD^2/m = _u/_u => USD^2/m ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|364|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|365|USD^3 = 1 => fail ; null ; then fail ; null
+unitExp|366|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|367|_u^-3*_u^-1 = m^3 => m^3 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|368|1 = _u^2 => 1 ; null ; 1 ; null ; then fail ; null ; 1 ; null
+unitExp|369|(_u*g)/_u^3 = USD^2/_u^2 => USD^2/_u^2 ; null ; null ; null ; then m^2 ; null ; USD/m ; null
+unitExp|370|m/_u = 1 => 1 ; m ; null ; then fail ; m ; null
+unitExp|371|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|372|USD^-2 = _u^2*_u => USD^-2 ; null ; null ; then fail ; null ; null
+unitExp|373|USD^3/_u^2 = m^3 => fail ; null ; null ; then fail ; null ; null
+unitExp|374|1 = USD^3/s^2 => fail ; null ; then fail ; null
+unitExp|375|_u^3 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|376|m/_u^3 = _u^-1 => fail ; null ; then fail ; null
+unitExp|377|_u^2 = _u^3/_u^2 => _u^6 ; null ; null ; then fail ; null ; null
+unitExp|378|1 = g^3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|379|1 = g^2 => fail ; null ; then fail ; null
+unitExp|380|s^-2 = (_u*g^3)/USD^3 => s^-2 ; null ; USD^3/(g^3*s^2) ; null ; then fail ; null ; USD^3/(g^3*s^2) ; null
+unitExp|381|s^3/_u^5 = _u/g^2 => fail ; null ; then fail ; null
+unitExp|382|1 = 1 => 1 ; null ; null ; then fail ; null ; null
+unitExp|383|s^-2 = g^-2 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|384|USD^3/m^2 = _u^-2 => fail ; null ; null ; then fail ; null ; null
+unitExp|385|_u^2/(_uUSD^2) = USD => USD ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|386|_u^-4 = 1 => 1 ; 1 ; then fail ; 1
+unitExp|387|_u^-1 = 1 => 1 ; 1 ; null ; then fail ; 1 ; null
+unitExp|388|_u^3 = _u^2/_u => _u^3 ; null ; null ; then fail ; null ; null
+unitExp|389|_u^2/(_u^3g^2) = 1 => _u^4 ; null ; null ; then fail ; null ; null
+unitExp|390|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|391|_u^-3 = _u^3 => 1 ; 1 ; then fail ; 1
+unitExp|392|_u^-1*s^-2 = 1 => 1 ; 1/s^2 ; then fail ; 1/s^2
+unitExp|393|_u^3 = g^-3 => g^-3 ; 1/g ; then fail ; 1/g
+unitExp|394|1 = 1 => 1 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|395|g^3 = 1 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|396|(_u^3*g^3)/_u = s^-3 => s^-3 ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|397|1 = m^-3 => fail ; null ; null ; null ; then fail ; null ; null ; null
+unitExp|398|1 = g^-2 => fail ; null ; null ; then fail ; null ; null
+unitExp|399|USD = 1 => fail ; null ; null ; then fail ; null ; null
+typeExp|0|(b c: List(Boolean), aa: List(Number{_u}), ...) = Boolean => E:Type mismatch: (b c: List(Boolean), aa: List(Number{_u}), ...) versus Boolean ; (aa: [Number], b c: [Boolean]) ; Boolean ; _t ; _t
+typeExp|1|(Total: _t, b c: Boolean) = Function((aa: _t, Total: Boolean))(Function(_t)(Text)) => E:Type mismatch: (Total: _t, b c: Boolean) versus Function((aa: _t, Total: Boolean))(Function(_t)(Text)) ; E:Ambiguous type ; ((Total: Boolean, aa: Void <>)) -> (Void <>) -> Text ; _t ; _t
+typeExp|2|(x: Number{m}) = Number{_u} => E:Type mismatch: (x: Number{m}) versus Number{_u} ; (x: Number{m}) ; Number ; _t ; _t
+typeExp|3|(x: Optional(Number{_u}), b c: Text, field: (Total: Number{s}, field: Number{_u}, ...)) = Function(List(_t))(List(Number{_u})) => E:Type mismatch: (x: Optional(Number{_u}), b c: Text, field: (Total: Number{s}, field: Number{_u}, ...)) versus Function(List(_t))(List(Number{_u})) ; (b c: Text, field: (Total: Number{s}, field: Number), x: Optional(Number) <None \p Is:Number>) ; ([Void <>]) -> [Number] ; _t ; _t
+typeExp|4|(aa: Optional(_t), field: Boolean, ...) = _t => _t[=(aa: Optional(_t), field: Boolean, ...)] ; E:Ambiguous type ; (aa: Optional(Void <>) <None \p Is:Void <>>, field: Boolean) ; _t ; _t
+typeExp|5|(b c: List(Text), x: _t, ...) = _t [tc ok] => E:Cyclic type while attempting to match _t with (b c: List(Text), x: _t, ...) ; E:Ambiguous type ; Void <> ; _t ; _t
+typeExp|6|(field: Text) = Optional(Number{s}) => E:Type mismatch: (field: Text) versus Optional(Number{s}) ; (field: Text) ; Optional(Number{s}) <None \p Is:Number{s}> ; _t ; _t
+typeExp|7|(x: Number{s}, aa: Boolean) = (aa: Function(Number{_u})(_t)) => E:Type mismatch: Boolean versus Function(Number{_u})(_t) ; (aa: Boolean, x: Number{s}) ; (aa: (Number) -> Void <>) ; _t ; _t
+typeExp|8|(x: Number{g}, field: _t, ...) = (Total: Text, aa: (field: _t, ...), ...) => (aa: (field: _t, ...), field: _t, Total: Text, x: Number{g}, ...) ; E:Ambiguous type ; (Total: Text, aa: (field: Void <>)) ; _t ; _t
+typeExp|9|(aa: Function(_t)(Text), ...) = List(List(Boolean)) => E:Type mismatch: (aa: Function(_t)(Text), ...) versus List(List(Boolean)) ; E:Ambiguous type ; [[Boolean]] ; _t ; _t
+typeExp|10|(aa: _t) = Text => E:Type mismatch: (aa: _t) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|11|(field: Text, aa: Text, ...) = Number{_u} => E:Type mismatch: (field: Text, aa: Text, ...) versus Number{_u} ; (aa: Text, field: Text) ; Number ; _t ; _t
+typeExp|12|(field: Function(Text)(Number{s}), b c: Number{_u}, ...) = Optional((x: _t, Total: _t, field: Boolean)) [tc Function(Text)(Number{s}) is not Readable] => E:Type mismatch: (field: Function(Text)(Number{s}), b c: Number{_u}, ...) versus Optional((x: _t, Total: _t, field: Boolean)) ; (b c: Number, field: (Text) -> Number{s}) ; Optional((Total: Void <>, field: Boolean, x: Void <>)) <None \p Is:(Total: Void <>, field: Boolean, x: Void <>)> ; _t ; _t
+typeExp|13|(x: Number{g}, aa: Text, ...) = Optional(Number{_u}) => E:Type mismatch: (x: Number{g}, aa: Text, ...) versus Optional(Number{_u}) ; (aa: Text, x: Number{g}) ; Optional(Number) <None \p Is:Number> ; _t ; _t
+typeExp|14|(Total: List(Text)) = Boolean => E:Type mismatch: (Total: List(Text)) versus Boolean ; (Total: [Text]) ; Boolean ; _t ; _t
+typeExp|15|(aa: _t, x: (Total: Number{_u}, aa: Text)) = Function(List(Boolean))(Function(Boolean)(Number{_u})) => E:Type mismatch: (aa: _t, x: (Total: Number{_u}, aa: Text)) versus Function(List(Boolean))(Function(Boolean)(Number{_u})) ; E:Ambiguous type ; ([Boolean]) -> (Boolean) -> Number ; _t ; _t
+typeExp|16|(x: Optional(Boolean), Total: Number{s}) = List(Optional(Number{_u})) => E:Type mismatch: (x: Optional(Boolean), Total: Number{s}) versus List(Optional(Number{_u})) ; (Total: Number{s}, x: Optional(Boolean) <None \p Is:Boolean>) ; [Optional(Number) <None \p Is:Number>] ; _t ; _t
+typeExp|17|(b c: List(Number{s})) = Number{_u} [tc ok] => E:Type mismatch: (b c: List(Number{s})) versus Number{_u} ; (b c: [Number{s}]) ; Number ; _t ; _t
+typeExp|18|(aa: Boolean, Total: Text) = Number{m} [tc ok] => E:Type mismatch: (aa: Boolean, Total: Text) versus Number{m} ; (Total: Text, aa: Boolean) ; Number{m} ; _t ; _t
+typeExp|19|(field: Function(_t)(Text), aa: Boolean, Total: Function(_t)(Text)) = Boolean => E:Type mismatch: (field: Function(_t)(Text), aa: Boolean, Total: Function(_t)(Text)) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|20|(field: Function(_t)(Number{_u}), aa: Boolean, ...) = _t => E:Cyclic type while attempting to match _t with (field: Function(_t)(Number{_u}), aa: Boolean, ...) ; E:Ambiguous type ; Void <> ; _t ; _t
+typeExp|21|(x: Optional(Text), ...) = Function(Text)(List(Boolean)) => E:Type mismatch: (x: Optional(Text), ...) versus Function(Text)(List(Boolean)) ; (x: Optional(Text) <None \p Is:Text>) ; (Text) -> [Boolean] ; _t ; _t
+typeExp|22|(Total: _t, ...) = List(List(Text)) => E:Type mismatch: (Total: _t, ...) versus List(List(Text)) ; E:Ambiguous type ; [[Text]] ; _t ; _t
+typeExp|23|(aa: Optional(Text), x: Optional(Boolean)) = List(Optional(Boolean)) => E:Type mismatch: (aa: Optional(Text), x: Optional(Boolean)) versus List(Optional(Boolean)) ; (aa: Optional(Text) <None \p Is:Text>, x: Optional(Boolean) <None \p Is:Boolean>) ; [Optional(Boolean) <None \p Is:Boolean>] ; _t ; _t
+typeExp|24|(field: Text, x: _t) = (aa: Number{_u}, ...) => E:Field "aa" occurs in one record but not in the other complete record ; E:Ambiguous type ; (aa: Number) ; _t ; _t
+typeExp|25|(Total: Function(Boolean)(Number{m}), ...) = Boolean => E:Type mismatch: (Total: Function(Boolean)(Number{m}), ...) versus Boolean ; (Total: (Boolean) -> Number{m}) ; Boolean ; _t ; _t
+typeExp|26|(b c: List(_t)) = (b c: Text, field: Boolean, ...) => E:Field "field" occurs in one record but not in the other complete record ; E:Ambiguous type ; (b c: Text, field: Boolean) ; _t ; _t
+typeExp|27|(Total: _t, field: List(Number{s}), b c: Text, ...) = (Total: Boolean, ...) => (field: List(Number{s}), b c: Text, Total: _t[=Boolean], ...) ; (Total: Boolean, b c: Text, field: [Number{s}]) ; (Total: Boolean) ; _t ; _t
+typeExp|28|(Total: _t, x: _t, ...) = Number{_u} => E:Type mismatch: (Total: _t, x: _t, ...) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|29|(field: Text, b c: Text, ...) = _t => _t[=(field: Text, b c: Text, ...)] ; (b c: Text, field: Text) ; (b c: Text, field: Text) ; _t ; _t
+typeExp|30|(x: Optional(Number{_u})) = _t [tc ok] => _t[=(x: Optional(Number{_u}))] ; (x: Optional(Number) <None \p Is:Number>) ; (x: Optional(Number) <None \p Is:Number>) ; _t ; _t
+typeExp|31|(b c: _t, x: Function(_t)(_t), ...) = List(List(_t)) => E:Type mismatch: (b c: _t, x: Function(_t)(_t), ...) versus List(List(_t)) ; E:Ambiguous type ; [[Void <>]] ; _t ; _t
+typeExp|32|(x: Text, b c: List(Boolean), ...) = _t => _t[=(x: Text, b c: List(Boolean), ...)] ; (b c: [Boolean], x: Text) ; (b c: [Boolean], x: Text) ; _t ; _t[=(x: Text, b c: List(Boolean), ...)]
+typeExp|33|(aa: Number{s}, ...) = Function(Optional(Text))(List(_t)) => E:Type mismatch: (aa: Number{s}, ...) versus Function(Optional(Text))(List(_t)) ; (aa: Number{s}) ; (Optional(Text) <None \p Is:Text>) -> [Void <>] ; _t ; _t
+typeExp|34|(Total: (Total: Boolean, b c: Boolean, ...), aa: Number{_u}, x: List(_t)) = Number{_u} => E:Type mismatch: (Total: (Total: Boolean, b c: Boolean, ...), aa: Number{_u}, x: List(_t)) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|35|(field: Optional(_t), x: Text, ...) = Boolean => E:Type mismatch: (field: Optional(_t), x: Text, ...) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|36|(field: _t, x: (Total: Boolean, ...)) = Optional(_t) => E:Type mismatch: (field: _t, x: (Total: Boolean, ...)) versus Optional(_t) ; E:Ambiguous type ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|37|(x: Text) = Text => E:Type mismatch: (x: Text) versus Text ; (x: Text) ; Text ; _t ; _t
+typeExp|38|(b c: Text, x: Text) = Number{g} => E:Type mismatch: (b c: Text, x: Text) versus Number{g} ; (b c: Text, x: Text) ; Number{g} ; _t ; _t
+typeExp|39|(Total: (b c: _t), aa: Function(_t)(Boolean), field: Function(Text)(Number{_u})) = Boolean [tc Function(_t)(Boolean) is not Readable] => E:Type mismatch: (Total: (b c: _t), aa: Function(_t)(Boolean), field: Function(Text)(Number{_u})) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|40|(Total: (aa: Boolean, field: _t, ...), b c: Optional(Boolean)) = Optional(List(Number{s})) => E:Type mismatch: (Total: (aa: Boolean, field: _t, ...), b c: Optional(Boolean)) versus Optional(List(Number{s})) ; E:Ambiguous type ; Optional([Number{s}]) <None \p Is:[Number{s}]> ; _t ; _t
+typeExp|41|(field: _t, ...) = List(Boolean) => E:Type mismatch: (field: _t, ...) versus List(Boolean) ; E:Ambiguous type ; [Boolean] ; _t ; _t
+typeExp|42|(aa: Number{s}, ...) = (aa: Function(Text)(Text), Total: Boolean) [tc ok] => E:Type mismatch: Number{s} versus Function(Text)(Text) ; (aa: Number{s}) ; (Total: Boolean, aa: (Text) -> Text) ; _t ; _t
+typeExp|43|(Total: Optional(_t), aa: Text, field: Number{_u}) = Function(Text)(Boolean) => E:Type mismatch: (Total: Optional(_t), aa: Text, field: Number{_u}) versus Function(Text)(Boolean) ; E:Ambiguous type ; (Text) -> Boolean ; _t ; _t
+typeExp|44|(Total: Optional(Boolean), x: Function(_t)(Boolean)) = Optional(Optional(Boolean)) [tc Function(_t)(Boolean) is not Readable] => E:Type mismatch: (Total: Optional(Boolean), x: Function(_t)(Boolean)) versus Optional(Optional(Boolean)) ; E:Ambiguous type ; Optional(Optional(Boolean) <None \p Is:Boolean>) <None \p Is:Optional(Boolean) <None \p Is:Boolean>> ; _t ; _t
+typeExp|45|(field: (field: _t, ...)) = List(Optional(Text)) [tc ok] => E:Type mismatch: (field: (field: _t, ...)) versus List(Optional(Text)) ; E:Ambiguous type ; [Optional(Text) <None \p Is:Text>] ; _t ; _t
+typeExp|46|(x: Boolean) = Optional(_t) => E:Type mismatch: (x: Boolean) versus Optional(_t) ; (x: Boolean) ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|47|(aa: _t, Total: Boolean) = Boolean => E:Type mismatch: (aa: _t, Total: Boolean) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|48|(field: Number{_u}, b c: Number{_u}, ...) = Boolean => E:Type mismatch: (field: Number{_u}, b c: Number{_u}, ...) versus Boolean ; (b c: Number, field: Number) ; Boolean ; _t ; _t
+typeExp|49|(field: Text, ...) = (Total: Function(Boolean)(_t), ...) => (field: Text, Total: Function(Boolean)(_t), ...) ; (field: Text) ; (Total: (Boolean) -> Void <>) ; _t ; _t
+typeExp|50|(aa: Optional(Boolean), ...) = List((aa: _t, ...)) => E:Type mismatch: (aa: Optional(Boolean), ...) versus List((aa: _t, ...)) ; (aa: Optional(Boolean) <None \p Is:Boolean>) ; [(aa: Void <>)] ; _t ; _t
+typeExp|51|(Total: List(Number{s}), x: Text, field: _t, ...) = Optional(Boolean) => E:Type mismatch: (Total: List(Number{s}), x: Text, field: _t, ...) versus Optional(Boolean) ; E:Ambiguous type ; Optional(Boolean) <None \p Is:Boolean> ; _t ; _t
+typeExp|52|(Total: (b c: Number{_u}, Total: _t, aa: Boolean, ...), aa: Text) = Optional(_t) => E:Type mismatch: (Total: (b c: Number{_u}, Total: _t, aa: Boolean, ...), aa: Text) versus Optional(_t) ; E:Ambiguous type ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|53|(field: _t) = Function(_t)(Boolean) => E:Type mismatch: (field: _t) versus Function(_t)(Boolean) ; E:Ambiguous type ; (Void <>) -> Boolean ; _t ; _t
+typeExp|54|(x: _t) = _t => E:Cyclic type while attempting to match _t with (x: _t) ; E:Ambiguous type ; Void <> ; _t ; _t
+typeExp|55|(b c: Optional(Text), x: _t) = _t => E:Cyclic type while attempting to match _t with (b c: Optional(Text), x: _t) ; E:Ambiguous type ; Void <> ; _t ; _t
+typeExp|56|(b c: Optional(Text), Total: Boolean, ...) = _t [tc ok] => _t[=(b c: Optional(Text), Total: Boolean, ...)] ; (Total: Boolean, b c: Optional(Text) <None \p Is:Text>) ; (Total: Boolean, b c: Optional(Text) <None \p Is:Text>) ; _t ; _t[=(b c: Optional(Text), Total: Boolean, ...)]
+typeExp|57|(Total: (aa: Number{_u}, ...), ...) = Optional(Optional(Text)) => E:Type mismatch: (Total: (aa: Number{_u}, ...), ...) versus Optional(Optional(Text)) ; (Total: (aa: Number)) ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; _t ; _t
+typeExp|58|(b c: Text, aa: Boolean, x: Number{_u}, ...) = Number{m} [tc ok] => E:Type mismatch: (b c: Text, aa: Boolean, x: Number{_u}, ...) versus Number{m} ; (aa: Boolean, b c: Text, x: Number) ; Number{m} ; _t ; _t
+typeExp|59|(x: (field: Number{s}, aa: Text, ...), aa: List(Number{s}), ...) = Text => E:Type mismatch: (x: (field: Number{s}, aa: Text, ...), aa: List(Number{s}), ...) versus Text ; (aa: [Number{s}], x: (aa: Text, field: Number{s})) ; Text ; _t ; _t
+typeExp|60|(aa: Number{_u}, x: Boolean) = Optional(Text) => E:Type mismatch: (aa: Number{_u}, x: Boolean) versus Optional(Text) ; (aa: Number, x: Boolean) ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|61|(b c: Optional(Number{g})) = Boolean [tc ok] => E:Type mismatch: (b c: Optional(Number{g})) versus Boolean ; (b c: Optional(Number{g}) <None \p Is:Number{g}>) ; Boolean ; _t ; _t
+typeExp|62|(field: _t, b c: Function(Number{g})(_t), aa: Optional(_t)) = Number{_u} [tc Function(Number{g})(_t) is not Comparable] => E:Type mismatch: (field: _t, b c: Function(Number{g})(_t), aa: Optional(_t)) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|63|(b c: Function(Boolean)(Boolean), aa: Optional(Boolean)) = Number{s} [tc Function(Boolean)(Boolean) is not Comparable] => E:Type mismatch: (b c: Function(Boolean)(Boolean), aa: Optional(Boolean)) versus Number{s} ; (aa: Optional(Boolean) <None \p Is:Boolean>, b c: (Boolean) -> Boolean) ; Number{s} ; _t ; _t
+typeExp|64|(Total: List(Number{_u}), aa: _t) = (Total: (field: Boolean, ...), x: Function(Number{_u})(Boolean)) [tc ok] => E:Field "aa" occurs in one record but not in the other complete record ; E:Ambiguous type ; (Total: (field: Boolean), x: (Number) -> Boolean) ; _t ; _t
+typeExp|65|(field: (aa: Text, ...), b c: Text, ...) = Optional(Function(Number{m})(Text)) => E:Type mismatch: (field: (aa: Text, ...), b c: Text, ...) versus Optional(Function(Number{m})(Text)) ; (b c: Text, field: (aa: Text)) ; Optional((Number{m}) -> Text) <None \p Is:(Number{m}) -> Text> ; _t ; _t
+typeExp|66|(aa: Boolean) = _t => _t[=(aa: Boolean)] ; (aa: Boolean) ; (aa: Boolean) ; _t[=(aa: Boolean)] ; _t
+typeExp|67|(Total: Boolean, x: Boolean) = Function(Optional(Number{g}))(Text) [tc ok] => E:Type mismatch: (Total: Boolean, x: Boolean) versus Function(Optional(Number{g}))(Text) ; (Total: Boolean, x: Boolean) ; (Optional(Number{g}) <None \p Is:Number{g}>) -> Text ; _t ; _t
+typeExp|68|(Total: Number{s}, aa: Function(_t)(Number{s})) = Function(Optional(Boolean))(_t) => E:Type mismatch: (Total: Number{s}, aa: Function(_t)(Number{s})) versus Function(Optional(Boolean))(_t) ; E:Ambiguous type ; (Optional(Boolean) <None \p Is:Boolean>) -> Void <> ; _t ; _t
+typeExp|69|(x: Function(_t)(Boolean)) = Text => E:Type mismatch: (x: Function(_t)(Boolean)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|70|(x: _t, b c: Number{g}) = List((aa: Text, x: Boolean)) [tc ok] => E:Type mismatch: (x: _t, b c: Number{g}) versus List((aa: Text, x: Boolean)) ; E:Ambiguous type ; [(aa: Text, x: Boolean)] ; _t ; _t
+typeExp|71|(aa: Number{_u}, ...) = Number{m} [tc ok] => E:Type mismatch: (aa: Number{_u}, ...) versus Number{m} ; (aa: Number) ; Number{m} ; _t ; _t
+typeExp|72|(aa: Boolean, x: (aa: Text, field: _t, ...)) = Function((Total: Boolean))(Boolean) => E:Type mismatch: (aa: Boolean, x: (aa: Text, field: _t, ...)) versus Function((Total: Boolean))(Boolean) ; E:Ambiguous type ; ((Total: Boolean)) -> Boolean ; _t ; _t
+typeExp|73|(Total: Number{g}) = (x: List(Boolean), Total: Optional(_t)) => E:Type mismatch: Number{g} versus Optional(_t) ; (Total: Number{g}) ; (Total: Optional(Void <>) <None \p Is:Void <>>, x: [Boolean]) ; _t ; _t
+typeExp|74|(field: (Total: Text, x: Boolean), b c: Text, x: Optional(_t)) = Text => E:Type mismatch: (field: (Total: Text, x: Boolean), b c: Text, x: Optional(_t)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|75|(x: _t, field: Number{_u}) = Number{g} => E:Type mismatch: (x: _t, field: Number{_u}) versus Number{g} ; E:Ambiguous type ; Number{g} ; _t ; _t
+typeExp|76|(x: Number{g}, ...) = _t => _t[=(x: Number{g}, ...)] ; (x: Number{g}) ; (x: Number{g}) ; _t ; _t[=(x: Number{g}, ...)]
+typeExp|77|(aa: Boolean) = Boolean => E:Type mismatch: (aa: Boolean) versus Boolean ; (aa: Boolean) ; Boolean ; _t ; _t
+typeExp|78|(x: Function(Boolean)(Number{_u}), Total: (x: Number{m}, field: _t)) = Optional((field: Number{m})) [tc Function(Boolean)(Number{_u}) is not Comparable] => E:Type mismatch: (x: Function(Boolean)(Number{_u}), Total: (x: Number{m}, field: _t)) versus Optional((field: Number{m})) ; E:Ambiguous type ; Optional((field: Number{m})) <None \p Is:(field: Number{m})> ; _t ; _t
+typeExp|79|(b c: (b c: Number{_u}, ...), aa: List(Boolean), ...) = _t [tc ok] => _t[=(b c: (b c: Number{_u}, ...), aa: List(Boolean), ...)] ; (aa: [Boolean], b c: (b c: Number)) ; (aa: [Boolean], b c: (b c: Number)) ; _t ; _t[=(b c: (b c: Number{_u}, ...), aa: List(Boolean), ...)]
+typeExp|80|(aa: Number{m}, x: Text, ...) = _t => _t[=(aa: Number{m}, x: Text, ...)] ; (aa: Number{m}, x: Text) ; (aa: Number{m}, x: Text) ; _t[=(aa: Number{m}, x: Text, ...)] ; _t
+typeExp|81|(Total: Function(Boolean)(Boolean), ...) = Boolean [tc Function(Boolean)(Boolean) is not Comparable] => E:Type mismatch: (Total: Function(Boolean)(Boolean), ...) versus Boolean ; (Total: (Boolean) -> Boolean) ; Boolean ; _t ; _t
+typeExp|82|(field: _t) = List(Number{_u}) => E:Type mismatch: (field: _t) versus List(Number{_u}) ; E:Ambiguous type ; [Number] ; _t ; _t
+typeExp|83|(x: Function(Text)(_t), b c: _t) = Boolean [tc Function(Text)(_t) is not Comparable] => E:Type mismatch: (x: Function(Text)(_t), b c: _t) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|84|(x: Number{m}) = Number{g} => E:Type mismatch: (x: Number{m}) versus Number{g} ; (x: Number{m}) ; Number{g} ; _t ; _t
+typeExp|85|(aa: Number{_u}, Total: Optional(Number{s})) = Number{_u} => E:Type mismatch: (aa: Number{_u}, Total: Optional(Number{s})) versus Number{_u} ; (Total: Optional(Number{s}) <None \p Is:Number{s}>, aa: Number) ; Number ; _t ; _t
+typeExp|86|(field: (aa: Boolean, x: Number{m}, Total: Text)) = List(Boolean) => E:Type mismatch: (field: (aa: Boolean, x: Number{m}, Total: Text)) versus List(Boolean) ; (field: (Total: Text, aa: Boolean, x: Number{m})) ; [Boolean] ; _t ; _t
+typeExp|87|(b c: _t, field: Text) = Text => E:Type mismatch: (b c: _t, field: Text) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|88|(b c: _t, aa: Boolean, ...) = Boolean => E:Type mismatch: (b c: _t, aa: Boolean, ...) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|89|(aa: Boolean, Total: Optional(Number{m})) = (aa: Optional(Text)) => E:Type mismatch: Boolean versus Optional(Text) ; (Total: Optional(Number{m}) <None \p Is:Number{m}>, aa: Boolean) ; (aa: Optional(Text) <None \p Is:Text>) ; _t ; _t
+typeExp|90|(Total: Optional(Text)) = Optional(_t) => E:Type mismatch: (Total: Optional(Text)) versus Optional(_t) ; (Total: Optional(Text) <None \p Is:Text>) ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|91|(field: (Total: Boolean, x: _t, ...), aa: Text, Total: List(Text)) = Optional((aa: Text, ...)) => E:Type mismatch: (field: (Total: Boolean, x: _t, ...), aa: Text, Total: List(Text)) versus Optional((aa: Text, ...)) ; E:Ambiguous type ; Optional((aa: Text)) <None \p Is:(aa: Text)> ; _t ; _t
+typeExp|92|(field: Number{m}, ...) = Function(Boolean)((b c: Text, ...)) => E:Type mismatch: (field: Number{m}, ...) versus Function(Boolean)((b c: Text, ...)) ; (field: Number{m}) ; (Boolean) -> (b c: Text) ; _t ; _t
+typeExp|93|(b c: _t, x: Boolean, ...) = Text => E:Type mismatch: (b c: _t, x: Boolean, ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|94|(b c: Number{_u}) = List(Number{_u}) => E:Type mismatch: (b c: Number{_u}) versus List(Number{_u}) ; (b c: Number) ; [Number] ; _t ; _t
+typeExp|95|(Total: Optional(Text), x: List(_t)) = Function(_t)(List(Text)) [tc ok] => E:Type mismatch: (Total: Optional(Text), x: List(_t)) versus Function(_t)(List(Text)) ; E:Ambiguous type ; (Void <>) -> [Text] ; _t ; _t
+typeExp|96|(aa: (field: _t, b c: _t)) = _t [tc ok] => _t[=(aa: (field: _t, b c: _t))] ; E:Ambiguous type ; (aa: (b c: Void <>, field: Void <>)) ; _t[=(aa: (field: _t, b c: _t))] ; _t
+typeExp|97|(Total: Boolean) = Optional(_t) [tc ok] => E:Type mismatch: (Total: Boolean) versus Optional(_t) ; (Total: Boolean) ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|98|(field: Function(Number{_u})(Number{m})) = Optional(Optional(_t)) => E:Type mismatch: (field: Function(Number{_u})(Number{m})) versus Optional(Optional(_t)) ; (field: (Number) -> Number{m}) ; Optional(Optional(Void <>) <None \p Is:Void <>>) <None \p Is:Optional(Void <>) <None \p Is:Void <>>> ; _t ; _t
+typeExp|99|(b c: Boolean) = (aa: Boolean, field: (field: _t, Total: _t)) [tc ok] => E:Field "aa" occurs in one record but not in the other complete record ; (b c: Boolean) ; (aa: Boolean, field: (Total: Void <>, field: Void <>)) ; _t ; _t
+typeExp|100|(b c: (field: _t, aa: Boolean), Total: Text, ...) = _t => _t[=(b c: (field: _t, aa: Boolean), Total: Text, ...)] ; E:Ambiguous type ; (Total: Text, b c: (aa: Boolean, field: Void <>)) ; _t[=(b c: (field: _t, aa: Boolean), Total: Text, ...)] ; _t
+typeExp|101|(aa: Function(Boolean)(Text), ...) = Optional(Optional(Text)) => E:Type mismatch: (aa: Function(Boolean)(Text), ...) versus Optional(Optional(Text)) ; (aa: (Boolean) -> Text) ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; _t ; _t
+typeExp|102|(x: Number{_u}, ...) = Text => E:Type mismatch: (x: Number{_u}, ...) versus Text ; (x: Number) ; Text ; _t ; _t
+typeExp|103|(field: Function(Number{g})(_t), b c: Function(Text)(Boolean), Total: List(Boolean)) = Function(List(_t))(Optional(_t)) [tc Function(Number{g})(_t) is not Readable] => E:Type mismatch: (field: Function(Number{g})(_t), b c: Function(Text)(Boolean), Total: List(Boolean)) versus Function(List(_t))(Optional(_t)) ; E:Ambiguous type ; ([Void <>]) -> Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|104|(b c: Function(_t)(_t), field: _t) = List(_t) [tc Function(_t)(_t) is not Comparable] => E:Type mismatch: (b c: Function(_t)(_t), field: _t) versus List(_t) ; E:Ambiguous type ; [Void <>] ; _t ; _t
+typeExp|105|(x: (aa: Boolean, ...), field: Boolean) = (aa: Number{g}) => E:Field "aa" occurs in one record but not in the other complete record ; (field: Boolean, x: (aa: Boolean)) ; (aa: Number{g}) ; _t ; _t
+typeExp|106|(Total: Boolean) = _t => _t[=(Total: Boolean)] ; (Total: Boolean) ; (Total: Boolean) ; _t ; _t
+typeExp|107|(x: Function(_t)(Text)) = Function(_t)(Text) [tc Function(_t)(Text) is not Readable] => E:Type mismatch: (x: Function(_t)(Text)) versus Function(_t)(Text) ; E:Ambiguous type ; (Void <>) -> Text ; _t ; _t
+typeExp|108|(x: Number{g}, Total: (aa: Number{s}), ...) = (Total: _t, aa: Text, field: Optional(Number{m}), ...) => (aa: Text, field: Optional(Number{m}), Total: _t[=(aa: Number{s})], x: Number{g}, ...) ; (Total: (aa: Number{s}), x: Number{g}) ; (Total: (aa: Number{s}), aa: Text, field: Optional(Number{m}) <None \p Is:Number{m}>) ; _t[=(aa: Number{s})] ; _t
+typeExp|109|(b c: Function(_t)(_t), Total: Number{_u}, ...) = Text => E:Type mismatch: (b c: Function(_t)(_t), Total: Number{_u}, ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|110|(aa: List(Number{m})) = Optional(Boolean) [tc ok] => E:Type mismatch: (aa: List(Number{m})) versus Optional(Boolean) ; (aa: [Number{m}]) ; Optional(Boolean) <None \p Is:Boolean> ; _t ; _t
+typeExp|111|(Total: Text, b c: Number{g}, ...) = List(Boolean) => E:Type mismatch: (Total: Text, b c: Number{g}, ...) versus List(Boolean) ; (Total: Text, b c: Number{g}) ; [Boolean] ; _t ; _t
+typeExp|112|(b c: (Total: Number{s}, aa: Text), Total: Number{_u}, ...) = _t => _t[=(b c: (Total: Number{s}, aa: Text), Total: Number{_u}, ...)] ; (Total: Number, b c: (Total: Number{s}, aa: Text)) ; (Total: Number, b c: (Total: Number{s}, aa: Text)) ; _t ; _t
+typeExp|113|(aa: _t, ...) = Function(Number{_u})(Optional(Number{g})) [tc ok] => E:Type mismatch: (aa: _t, ...) versus Function(Number{_u})(Optional(Number{g})) ; E:Ambiguous type ; (Number) -> Optional(Number{g}) <None \p Is:Number{g}> ; _t ; _t
+typeExp|114|(Total: Number{m}, aa: _t, field: Optional(Text)) = Text => E:Type mismatch: (Total: Number{m}, aa: _t, field: Optional(Text)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|115|(field: Function(Boolean)(_t), x: Optional(Text), ...) = Boolean => E:Type mismatch: (field: Function(Boolean)(_t), x: Optional(Text), ...) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|116|(field: Function(Boolean)(Text), aa: (aa: _t, Total: _t)) = Boolean => E:Type mismatch: (field: Function(Boolean)(Text), aa: (aa: _t, Total: _t)) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|117|(b c: (field: Number{g})) = (field: (aa: Boolean, field: Text)) [tc ok] => E:Field "field" occurs in one record but not in the other complete record ; (b c: (field: Number{g})) ; (field: (aa: Boolean, field: Text)) ; _t ; _t
+typeExp|118|(aa: Function(Boolean)(Boolean), Total: Function(Boolean)(Number{_u}), ...) = Optional(_t) => E:Type mismatch: (aa: Function(Boolean)(Boolean), Total: Function(Boolean)(Number{_u}), ...) versus Optional(_t) ; (Total: (Boolean) -> Number, aa: (Boolean) -> Boolean) ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|119|(Total: Function(Text)(_t), x: Number{g}, ...) = List((field: Text, ...)) => E:Type mismatch: (Total: Function(Text)(_t), x: Number{g}, ...) versus List((field: Text, ...)) ; E:Ambiguous type ; [(field: Text)] ; _t ; _t
+typeExp|120|(Total: Optional(Number{_u}), ...) = Boolean => E:Type mismatch: (Total: Optional(Number{_u}), ...) versus Boolean ; (Total: Optional(Number) <None \p Is:Number>) ; Boolean ; _t ; _t
+typeExp|121|(field: Function(Text)(Number{s})) = _t [tc Function(Text)(Number{s}) is not Comparable] => _t[=(field: Function(Text)(Number{s}))] ; (field: (Text) -> Number{s}) ; (field: (Text) -> Number{s}) ; _t[=(field: Function(Text)(Number{s}))] ; _t
+typeExp|122|(aa: List(Boolean), x: (x: Number{_u}, field: Boolean)) = Number{_u} => E:Type mismatch: (aa: List(Boolean), x: (x: Number{_u}, field: Boolean)) versus Number{_u} ; (aa: [Boolean], x: (field: Boolean, x: Number)) ; Number ; _t ; _t
+typeExp|123|(field: Boolean, x: List(Boolean), Total: Optional(Boolean)) = List((Total: Boolean, x: Text, b c: Number{_u}, ...)) => E:Type mismatch: (field: Boolean, x: List(Boolean), Total: Optional(Boolean)) versus List((Total: Boolean, x: Text, b c: Number{_u}, ...)) ; (Total: Optional(Boolean) <None \p Is:Boolean>, field: Boolean, x: [Boolean]) ; [(Total: Boolean, b c: Number, x: Text)] ; _t ; _t
+typeExp|124|(Total: Boolean, field: Text) = Function((x: Number{_u}, aa: Boolean, ...))((Total: Boolean)) => E:Type mismatch: (Total: Boolean, field: Text) versus Function((x: Number{_u}, aa: Boolean, ...))((Total: Boolean)) ; (Total: Boolean, field: Text) ; ((aa: Boolean, x: Number)) -> (Total: Boolean) ; _t ; _t
+typeExp|125|(Total: Number{_u}, ...) = List(Number{s}) => E:Type mismatch: (Total: Number{_u}, ...) versus List(Number{s}) ; (Total: Number) ; [Number{s}] ; _t ; _t
+typeExp|126|(b c: (aa: _t, Total: Text), ...) = _t => _t[=(b c: (aa: _t, Total: Text), ...)] ; E:Ambiguous type ; (b c: (Total: Text, aa: Void <>)) ; _t ; _t[=(b c: (aa: _t, Total: Text), ...)]
+typeExp|127|(aa: List(Boolean), b c: (aa: Text, b c: Number{g}), x: Number{_u}, ...) = _t => _t[=(aa: List(Boolean), b c: (aa: Text, b c: Number{g}), x: Number{_u}, ...)] ; (aa: [Boolean], b c: (aa: Text, b c: Number{g}), x: Number) ; (aa: [Boolean], b c: (aa: Text, b c: Number{g}), x: Number) ; _t[=(aa: List(Boolean), b c: (aa: Text, b c: Number{g}), x: Number{_u}, ...)] ; _t
+typeExp|128|(Total: Number{_u}, aa: Optional(Number{_u}), ...) = Boolean => E:Type mismatch: (Total: Number{_u}, aa: Optional(Number{_u}), ...) versus Boolean ; (Total: Number, aa: Optional(Number) <None \p Is:Number>) ; Boolean ; _t ; _t
+typeExp|129|(field: Optional(Number{_u}), ...) = List(Optional(_t)) => E:Type mismatch: (field: Optional(Number{_u}), ...) versus List(Optional(_t)) ; (field: Optional(Number) <None \p Is:Number>) ; [Optional(Void <>) <None \p Is:Void <>>] ; _t ; _t
+typeExp|130|(x: Optional(Boolean), b c: Function(_t)(Number{_u})) = Number{_u} [tc Function(_t)(Number{_u}) is not Readable] => E:Type mismatch: (x: Optional(Boolean), b c: Function(_t)(Number{_u})) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|131|(aa: Boolean, x: List(Boolean), Total: Optional(_t), ...) = Optional(Number{_u}) [tc ok] => E:Type mismatch: (aa: Boolean, x: List(Boolean), Total: Optional(_t), ...) versus Optional(Number{_u}) ; E:Ambiguous type ; Optional(Number) <None \p Is:Number> ; _t ; _t
+typeExp|132|(aa: Boolean, b c: Text) = Function((Total: Boolean, b c: _t, ...))(_t) => E:Type mismatch: (aa: Boolean, b c: Text) versus Function((Total: Boolean, b c: _t, ...))(_t) ; (aa: Boolean, b c: Text) ; ((Total: Boolean, b c: Void <>)) -> Void <> ; _t ; _t
+typeExp|133|(Total: Number{g}, ...) = _t => _t[=(Total: Number{g}, ...)] ; (Total: Number{g}) ; (Total: Number{g}) ; _t[=(Total: Number{g}, ...)] ; _t
+typeExp|134|(b c: (aa: _t, x: Boolean), field: _t, x: Number{g}, ...) = Function(Function(Boolean)(Boolean))((aa: Number{s}, ...)) [tc ok] => E:Type mismatch: (b c: (aa: _t, x: Boolean), field: _t, x: Number{g}, ...) versus Function(Function(Boolean)(Boolean))((aa: Number{s}, ...)) ; E:Ambiguous type ; ((Boolean) -> Boolean) -> (aa: Number{s}) ; _t ; _t
+typeExp|135|(x: _t, b c: Optional(Text), Total: (Total: Number{m}), ...) = Number{s} => E:Type mismatch: (x: _t, b c: Optional(Text), Total: (Total: Number{m}), ...) versus Number{s} ; E:Ambiguous type ; Number{s} ; _t ; _t
+typeExp|136|(aa: (x: Text, Total: Text, aa: Number{m}), ...) = _t => _t[=(aa: (x: Text, Total: Text, aa: Number{m}), ...)] ; (aa: (Total: Text, aa: Number{m}, x: Text)) ; (aa: (Total: Text, aa: Number{m}, x: Text)) ; _t ; _t
+typeExp|137|(b c: Boolean) = Optional(_t) [tc ok] => E:Type mismatch: (b c: Boolean) versus Optional(_t) ; (b c: Boolean) ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|138|(field: Optional(Number{_u}), ...) = _t => _t[=(field: Optional(Number{_u}), ...)] ; (field: Optional(Number) <None \p Is:Number>) ; (field: Optional(Number) <None \p Is:Number>) ; _t[=(field: Optional(Number{_u}), ...)] ; _t
+typeExp|139|(b c: (Total: _t), aa: Function(Text)(Text), x: _t) = List(_t) [tc Function(Text)(Text) is not Comparable] => E:Type mismatch: (b c: (Total: _t), aa: Function(Text)(Text), x: _t) versus List(_t) ; E:Ambiguous type ; [Void <>] ; _t ; _t
+typeExp|140|(b c: Text, ...) = (Total: _t, b c: List(_t), field: (x: Text, ...)) [tc ok] => E:Type mismatch: Text versus List(_t) ; (b c: Text) ; (Total: Void <>, b c: [Void <>], field: (x: Text)) ; _t ; _t
+typeExp|141|(aa: _t) = List(Optional(Number{_u})) => E:Type mismatch: (aa: _t) versus List(Optional(Number{_u})) ; E:Ambiguous type ; [Optional(Number) <None \p Is:Number>] ; _t ; _t
+typeExp|142|(Total: Number{g}, ...) = Text => E:Type mismatch: (Total: Number{g}, ...) versus Text ; (Total: Number{g}) ; Text ; _t ; _t
+typeExp|143|(field: List(_t), aa: Text, ...) = Function(Text)(_t) [tc ok] => E:Type mismatch: (field: List(_t), aa: Text, ...) versus Function(Text)(_t) ; E:Ambiguous type ; (Text) -> Void <> ; _t ; _t
+typeExp|144|(aa: Text, x: List(_t), Total: Function(Text)(Boolean), ...) = Function(_t)(Number{g}) => E:Type mismatch: (aa: Text, x: List(_t), Total: Function(Text)(Boolean), ...) versus Function(_t)(Number{g}) ; E:Ambiguous type ; (Void <>) -> Number{g} ; _t ; _t
+typeExp|145|(Total: Number{m}, field: (b c: Number{_u}, aa: Text, ...), ...) = Number{_u} => E:Type mismatch: (Total: Number{m}, field: (b c: Number{_u}, aa: Text, ...), ...) versus Number{_u} ; (Total: Number{m}, field: (aa: Text, b c: Number)) ; Number ; _t ; _t
+typeExp|146|(field: (Total: Text, field: Number{_u})) = List(Function(Text)(Boolean)) [tc ok] => E:Type mismatch: (field: (Total: Text, field: Number{_u})) versus List(Function(Text)(Boolean)) ; (field: (Total: Text, field: Number)) ; [(Text) -> Boolean] ; _t ; _t
+typeExp|147|(x: _t, field: Number{_u}, b c: Optional(_t), ...) = List(Text) => E:Type mismatch: (x: _t, field: Number{_u}, b c: Optional(_t), ...) versus List(Text) ; E:Ambiguous type ; [Text] ; _t ; _t
+typeExp|148|(x: Number{g}, aa: Text, ...) = _t [tc ok] => _t[=(x: Number{g}, aa: Text, ...)] ; (aa: Text, x: Number{g}) ; (aa: Text, x: Number{g}) ; _t[=(x: Number{g}, aa: Text, ...)] ; _t
+typeExp|149|(aa: Boolean, field: Text) = Optional(Text) => E:Type mismatch: (aa: Boolean, field: Text) versus Optional(Text) ; (aa: Boolean, field: Text) ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|150|(Total: Optional(Boolean), ...) = _t => _t[=(Total: Optional(Boolean), ...)] ; (Total: Optional(Boolean) <None \p Is:Boolean>) ; (Total: Optional(Boolean) <None \p Is:Boolean>) ; _t[=(Total: Optional(Boolean), ...)] ; _t
+typeExp|151|(field: (aa: Number{_u}), Total: List(Text), ...) = Boolean => E:Type mismatch: (field: (aa: Number{_u}), Total: List(Text), ...) versus Boolean ; (Total: [Text], field: (aa: Number)) ; Boolean ; _t ; _t
+typeExp|152|(field: (Total: Number{g}, field: Text, ...), Total: (field: Text), ...) = Function(Boolean)(Optional(Boolean)) => E:Type mismatch: (field: (Total: Number{g}, field: Text, ...), Total: (field: Text), ...) versus Function(Boolean)(Optional(Boolean)) ; (Total: (field: Text), field: (Total: Number{g}, field: Text)) ; (Boolean) -> Optional(Boolean) <None \p Is:Boolean> ; _t ; _t
+typeExp|153|(x: _t, aa: Function(_t)(Text), ...) = Optional(Boolean) [tc Function(_t)(Text) is not Readable] => E:Type mismatch: (x: _t, aa: Function(_t)(Text), ...) versus Optional(Boolean) ; E:Ambiguous type ; Optional(Boolean) <None \p Is:Boolean> ; _t ; _t
+typeExp|154|(Total: Number{_u}) = Boolean [tc ok] => E:Type mismatch: (Total: Number{_u}) versus Boolean ; (Total: Number) ; Boolean ; _t ; _t
+typeExp|155|(Total: Optional(Boolean), field: _t, b c: _t) = Text => E:Type mismatch: (Total: Optional(Boolean), field: _t, b c: _t) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|156|(field: Optional(Text), x: Boolean, Total: (x: Text, Total: Text)) = Function(Optional(Text))(Number{s}) => E:Type mismatch: (field: Optional(Text), x: Boolean, Total: (x: Text, Total: Text)) versus Function(Optional(Text))(Number{s}) ; (Total: (Total: Text, x: Text), field: Optional(Text) <None \p Is:Text>, x: Boolean) ; (Optional(Text) <None \p Is:Text>) -> Number{s} ; _t ; _t
+typeExp|157|(field: (field: Number{s}, Total: _t)) = _t => _t[=(field: (field: Number{s}, Total: _t))] ; E:Ambiguous type ; (field: (Total: Void <>, field: Number{s})) ; _t[=(field: (field: Number{s}, Total: _t))] ; _t
+typeExp|158|(aa: Boolean, ...) = Optional((field: Text, b c: Boolean, ...)) => E:Type mismatch: (aa: Boolean, ...) versus Optional((field: Text, b c: Boolean, ...)) ; (aa: Boolean) ; Optional((b c: Boolean, field: Text)) <None \p Is:(b c: Boolean, field: Text)> ; _t ; _t
+typeExp|159|(Total: Number{_u}) = Number{m} => E:Type mismatch: (Total: Number{_u}) versus Number{m} ; (Total: Number) ; Number{m} ; _t ; _t
+typeExp|160|(aa: (Total: Text, b c: Number{_u}), b c: Text, Total: Text, ...) = Optional(Boolean) [tc ok] => E:Type mismatch: (aa: (Total: Text, b c: Number{_u}), b c: Text, Total: Text, ...) versus Optional(Boolean) ; (Total: Text, aa: (Total: Text, b c: Number), b c: Text) ; Optional(Boolean) <None \p Is:Boolean> ; _t ; _t
+typeExp|161|(aa: Text) = _t [tc ok] => _t[=(aa: Text)] ; (aa: Text) ; (aa: Text) ; _t ; _t[=(aa: Text)]
+typeExp|162|(field: Number{_u}) = Number{s} => E:Type mismatch: (field: Number{_u}) versus Number{s} ; (field: Number) ; Number{s} ; _t ; _t
+typeExp|163|(b c: Function(Text)(_t), Total: Function(Text)(Number{_u})) = Boolean => E:Type mismatch: (b c: Function(Text)(_t), Total: Function(Text)(Number{_u})) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|164|(b c: _t, ...) = Number{g} => E:Type mismatch: (b c: _t, ...) versus Number{g} ; E:Ambiguous type ; Number{g} ; _t ; _t
+typeExp|165|(aa: Number{_u}, ...) = Boolean => E:Type mismatch: (aa: Number{_u}, ...) versus Boolean ; (aa: Number) ; Boolean ; _t ; _t
+typeExp|166|(Total: Boolean, ...) = Function(Number{m})(_t) => E:Type mismatch: (Total: Boolean, ...) versus Function(Number{m})(_t) ; (Total: Boolean) ; (Number{m}) -> Void <> ; _t ; _t
+typeExp|167|(field: Number{_u}, aa: Text) = _t => _t[=(field: Number{_u}, aa: Text)] ; (aa: Text, field: Number) ; (aa: Text, field: Number) ; _t ; _t
+typeExp|168|(field: _t, x: Number{g}) = Function((field: Text, b c: Boolean, Total: _t, ...))(Boolean) => E:Type mismatch: (field: _t, x: Number{g}) versus Function((field: Text, b c: Boolean, Total: _t, ...))(Boolean) ; E:Ambiguous type ; ((Total: Void <>, b c: Boolean, field: Text)) -> Boolean ; _t ; _t
+typeExp|169|(b c: Function(Number{g})(_t), field: Optional(_t), ...) = Function(Boolean)(Function(_t)(Number{_u})) [tc Function(Number{g})(_t) is not Comparable] => E:Type mismatch: (b c: Function(Number{g})(_t), field: Optional(_t), ...) versus Function(Boolean)(Function(_t)(Number{_u})) ; E:Ambiguous type ; (Boolean) -> (Void <>) -> Number ; _t ; _t
+typeExp|170|(field: List(Text)) = Text [tc ok] => E:Type mismatch: (field: List(Text)) versus Text ; (field: [Text]) ; Text ; _t ; _t
+typeExp|171|(Total: Boolean, b c: List(_t), field: Number{s}) = Function(Function(Number{_u})(Text))(_t) => E:Type mismatch: (Total: Boolean, b c: List(_t), field: Number{s}) versus Function(Function(Number{_u})(Text))(_t) ; E:Ambiguous type ; ((Number) -> Text) -> Void <> ; _t ; _t
+typeExp|172|(x: List(Text)) = Optional((b c: _t, x: Text, field: Number{s})) => E:Type mismatch: (x: List(Text)) versus Optional((b c: _t, x: Text, field: Number{s})) ; (x: [Text]) ; Optional((b c: Void <>, field: Number{s}, x: Text)) <None \p Is:(b c: Void <>, field: Number{s}, x: Text)> ; _t ; _t
+typeExp|173|(field: Number{g}, aa: Text) = (b c: Boolean, ...) => E:Field "b c" occurs in one record but not in the other complete record ; (aa: Text, field: Number{g}) ; (b c: Boolean) ; _t ; _t
+typeExp|174|(aa: (aa: Text, field: _t, ...)) = (Total: Optional(Number{_u}), ...) => E:Field "Total" occurs in one record but not in the other complete record ; E:Ambiguous type ; (Total: Optional(Number) <None \p Is:Number>) ; _t ; _t
+typeExp|175|(Total: List(Number{s}), aa: Text) = Text => E:Type mismatch: (Total: List(Number{s}), aa: Text) versus Text ; (Total: [Number{s}], aa: Text) ; Text ; _t ; _t
+typeExp|176|(field: Function(_t)(_t), b c: (aa: Boolean, x: Number{g}), ...) = Boolean [tc Function(_t)(_t) is not Comparable] => E:Type mismatch: (field: Function(_t)(_t), b c: (aa: Boolean, x: Number{g}), ...) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|177|(x: (aa: Boolean)) = (aa: Text) => E:Field "aa" occurs in one record but not in the other complete record ; (x: (aa: Boolean)) ; (aa: Text) ; _t ; _t
+typeExp|178|(Total: Boolean) = _t => _t[=(Total: Boolean)] ; (Total: Boolean) ; (Total: Boolean) ; _t ; _t
+typeExp|179|(Total: Number{_u}, field: Function(_t)(Text), ...) = Text [tc Function(_t)(Text) is not Readable] => E:Type mismatch: (Total: Number{_u}, field: Function(_t)(Text), ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|180|(x: Number{m}, aa: List(Boolean), ...) = (field: List(_t)) => E:Field "aa" occurs in one record but not in the other complete record ; (aa: [Boolean], x: Number{m}) ; (field: [Void <>]) ; _t ; _t
+typeExp|181|(field: Function(Boolean)(Boolean), b c: Text) = Boolean => E:Type mismatch: (field: Function(Boolean)(Boolean), b c: Text) versus Boolean ; (b c: Text, field: (Boolean) -> Boolean) ; Boolean ; _t ; _t
+typeExp|182|(aa: _t, ...) = _t => _t[=(aa: _t, ...)] ; E:Ambiguous type ; (aa: Void <>) ; _t ; _t[=(aa: _t, ...)]
+typeExp|183|(Total: Boolean, b c: Number{s}, field: _t, ...) = Boolean => E:Type mismatch: (Total: Boolean, b c: Number{s}, field: _t, ...) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|184|(Total: Boolean, field: (Total: Number{m}, field: Number{_u})) = (Total: List(_t), x: Optional(Boolean)) => E:Field "field" occurs in one record but not in the other complete record ; (Total: Boolean, field: (Total: Number{m}, field: Number)) ; (Total: [Void <>], x: Optional(Boolean) <None \p Is:Boolean>) ; _t ; _t
+typeExp|185|(x: Number{_u}, aa: Boolean, ...) = Number{s} => E:Type mismatch: (x: Number{_u}, aa: Boolean, ...) versus Number{s} ; (aa: Boolean, x: Number) ; Number{s} ; _t ; _t
+typeExp|186|(x: (field: Boolean, x: Text, b c: Number{_u})) = _t => _t[=(x: (field: Boolean, x: Text, b c: Number{_u}))] ; (x: (b c: Number, field: Boolean, x: Text)) ; (x: (b c: Number, field: Boolean, x: Text)) ; _t ; _t[=(x: (field: Boolean, x: Text, b c: Number{_u}))]
+typeExp|187|(aa: _t, field: _t, Total: Text) = Optional((aa: Number{_u}, b c: Boolean, ...)) => E:Type mismatch: (aa: _t, field: _t, Total: Text) versus Optional((aa: Number{_u}, b c: Boolean, ...)) ; E:Ambiguous type ; Optional((aa: Number, b c: Boolean)) <None \p Is:(aa: Number, b c: Boolean)> ; _t ; _t
+typeExp|188|(aa: _t, b c: Boolean) = List(Optional(Number{g})) => E:Type mismatch: (aa: _t, b c: Boolean) versus List(Optional(Number{g})) ; E:Ambiguous type ; [Optional(Number{g}) <None \p Is:Number{g}>] ; _t ; _t
+typeExp|189|(Total: Boolean, ...) = _t [tc ok] => _t[=(Total: Boolean, ...)] ; (Total: Boolean) ; (Total: Boolean) ; _t ; _t[=(Total: Boolean, ...)]
+typeExp|190|(b c: Function(Text)(Number{_u})) = Number{_u} => E:Type mismatch: (b c: Function(Text)(Number{_u})) versus Number{_u} ; (b c: (Text) -> Number) ; Number ; _t ; _t
+typeExp|191|(x: _t, ...) = Number{s} => E:Type mismatch: (x: _t, ...) versus Number{s} ; E:Ambiguous type ; Number{s} ; _t ; _t
+typeExp|192|(x: Boolean, Total: Optional(Text), ...) = Function(Boolean)(Boolean) => E:Type mismatch: (x: Boolean, Total: Optional(Text), ...) versus Function(Boolean)(Boolean) ; (Total: Optional(Text) <None \p Is:Text>, x: Boolean) ; (Boolean) -> Boolean ; _t ; _t
+typeExp|193|(b c: Text) = _t => _t[=(b c: Text)] ; (b c: Text) ; (b c: Text) ; _t[=(b c: Text)] ; _t
+typeExp|194|(aa: (field: _t, b c: Text)) = Text => E:Type mismatch: (aa: (field: _t, b c: Text)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|195|(Total: List(Boolean), aa: (b c: _t, ...), b c: Optional(Text), ...) = Text => E:Type mismatch: (Total: List(Boolean), aa: (b c: _t, ...), b c: Optional(Text), ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|196|(Total: List(Text), b c: List(Boolean), ...) = Number{_u} => E:Type mismatch: (Total: List(Text), b c: List(Boolean), ...) versus Number{_u} ; (Total: [Text], b c: [Boolean]) ; Number ; _t ; _t
+typeExp|197|(field: Boolean) = _t [tc ok] => _t[=(field: Boolean)] ; (field: Boolean) ; (field: Boolean) ; _t ; _t[=(field: Boolean)]
+typeExp|198|(aa: Function(Text)(Number{m})) = Text [tc Function(Text)(Number{m}) is not Readable] => E:Type mismatch: (aa: Function(Text)(Number{m})) versus Text ; (aa: (Text) -> Number{m}) ; Text ; _t ; _t
+typeExp|199|(field: (aa: _t, Total: Number{s}, b c: Text), aa: (aa: Number{_u}, x: Number{g}, b c: Text), b c: Optional(Text), ...) = Number{m} [tc ok] => E:Type mismatch: (field: (aa: _t, Total: Number{s}, b c: Text), aa: (aa: Number{_u}, x: Number{g}, b c: Text), b c: Optional(Text), ...) versus Number{m} ; E:Ambiguous type ; Number{m} ; _t ; _t
+typeExp|200|(field: (Total: Boolean, b c: _t), b c: Function(Number{_u})(Number{s})) = _t [tc Function(Number{_u})(Number{s}) is not Readable] => E:Cyclic type while attempting to match _t with (field: (Total: Boolean, b c: _t), b c: Function(Number{_u})(Number{s})) ; E:Ambiguous type ; Void <> ; _t ; _t
+typeExp|201|(x: List(Text), aa: List(Text), ...) = (x: List(Boolean), ...) [tc ok] => E:Type mismatch: Text versus Boolean ; (aa: [Text], x: [Text]) ; (x: [Boolean]) ; _t ; _t
+typeExp|202|(b c: Text) = Text => E:Type mismatch: (b c: Text) versus Text ; (b c: Text) ; Text ; _t ; _t
+typeExp|203|(aa: _t, field: Function(Text)(Text), ...) = Text => E:Type mismatch: (aa: _t, field: Function(Text)(Text), ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|204|(aa: Function(_t)(_t), field: _t, ...) = Boolean [tc Function(_t)(_t) is not Readable] => E:Type mismatch: (aa: Function(_t)(_t), field: _t, ...) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|205|(field: (field: Boolean, b c: Text, ...)) = _t => _t[=(field: (field: Boolean, b c: Text, ...))] ; (field: (b c: Text, field: Boolean)) ; (field: (b c: Text, field: Boolean)) ; _t ; _t[=(field: (field: Boolean, b c: Text, ...))]
+typeExp|206|(field: Boolean) = Number{g} [tc ok] => E:Type mismatch: (field: Boolean) versus Number{g} ; (field: Boolean) ; Number{g} ; _t ; _t
+typeExp|207|(b c: Text, Total: (Total: Boolean, b c: Boolean, ...)) = Text => E:Type mismatch: (b c: Text, Total: (Total: Boolean, b c: Boolean, ...)) versus Text ; (Total: (Total: Boolean, b c: Boolean), b c: Text) ; Text ; _t ; _t
+typeExp|208|(Total: List(Number{g}), aa: Function(Text)(Boolean), ...) = Number{_u} [tc Function(Text)(Boolean) is not Readable] => E:Type mismatch: (Total: List(Number{g}), aa: Function(Text)(Boolean), ...) versus Number{_u} ; (Total: [Number{g}], aa: (Text) -> Boolean) ; Number ; _t ; _t
+typeExp|209|(x: Boolean) = Optional(Optional(Text)) [tc ok] => E:Type mismatch: (x: Boolean) versus Optional(Optional(Text)) ; (x: Boolean) ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; _t ; _t
+typeExp|210|(b c: Function(_t)(Text)) = Text => E:Type mismatch: (b c: Function(_t)(Text)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|211|(aa: Boolean, Total: Boolean) = (b c: Boolean) [tc ok] => E:Field "aa" occurs in one record but not in the other complete record ; (Total: Boolean, aa: Boolean) ; (b c: Boolean) ; _t ; _t
+typeExp|212|(aa: List(Boolean)) = Boolean => E:Type mismatch: (aa: List(Boolean)) versus Boolean ; (aa: [Boolean]) ; Boolean ; _t ; _t
+typeExp|213|(Total: List(_t)) = _t => _t[=(Total: List(_t))] ; E:Ambiguous type ; (Total: [Void <>]) ; _t ; _t
+typeExp|214|(field: Number{m}, x: Optional(Number{m}), ...) = _t => _t[=(field: Number{m}, x: Optional(Number{m}), ...)] ; (field: Number{m}, x: Optional(Number{m}) <None \p Is:Number{m}>) ; (field: Number{m}, x: Optional(Number{m}) <None \p Is:Number{m}>) ; _t ; _t[=(field: Number{m}, x: Optional(Number{m}), ...)]
+typeExp|215|(b c: Function(Boolean)(Text), aa: List(_t)) = _t => _t[=(b c: Function(Boolean)(Text), aa: List(_t))] ; E:Ambiguous type ; (aa: [Void <>], b c: (Boolean) -> Text) ; _t ; _t[=(b c: Function(Boolean)(Text), aa: List(_t))]
+typeExp|216|(x: Function(_t)(Text)) = Boolean => E:Type mismatch: (x: Function(_t)(Text)) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|217|(aa: (Total: Number{_u})) = Boolean => E:Type mismatch: (aa: (Total: Number{_u})) versus Boolean ; (aa: (Total: Number)) ; Boolean ; _t ; _t
+typeExp|218|(x: Boolean, b c: _t, Total: Text, ...) = List((x: Text, aa: _t, ...)) => E:Type mismatch: (x: Boolean, b c: _t, Total: Text, ...) versus List((x: Text, aa: _t, ...)) ; E:Ambiguous type ; [(aa: Void <>, x: Text)] ; _t ; _t
+typeExp|219|(b c: Text, aa: List(Boolean)) = Text => E:Type mismatch: (b c: Text, aa: List(Boolean)) versus Text ; (aa: [Boolean], b c: Text) ; Text ; _t ; _t
+typeExp|220|(b c: Text, Total: Optional(Text), ...) = _t => _t[=(b c: Text, Total: Optional(Text), ...)] ; (Total: Optional(Text) <None \p Is:Text>, b c: Text) ; (Total: Optional(Text) <None \p Is:Text>, b c: Text) ; _t ; _t
+typeExp|221|(aa: Function(Text)(Boolean), ...) = Optional(Optional(Boolean)) [tc Function(Text)(Boolean) is not Comparable] => E:Type mismatch: (aa: Function(Text)(Boolean), ...) versus Optional(Optional(Boolean)) ; (aa: (Text) -> Boolean) ; Optional(Optional(Boolean) <None \p Is:Boolean>) <None \p Is:Optional(Boolean) <None \p Is:Boolean>> ; _t ; _t
+typeExp|222|(Total: List(Boolean), b c: Optional(Number{_u}), x: Boolean) = Boolean [tc ok] => E:Type mismatch: (Total: List(Boolean), b c: Optional(Number{_u}), x: Boolean) versus Boolean ; (Total: [Boolean], b c: Optional(Number) <None \p Is:Number>, x: Boolean) ; Boolean ; _t ; _t
+typeExp|223|(x: Text, Total: (Total: _t, x: _t), ...) = Optional(Text) => E:Type mismatch: (x: Text, Total: (Total: _t, x: _t), ...) versus Optional(Text) ; E:Ambiguous type ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|224|(field: Number{_u}) = Number{m} => E:Type mismatch: (field: Number{_u}) versus Number{m} ; (field: Number) ; Number{m} ; _t ; _t
+typeExp|225|(x: Optional(_t), ...) = Boolean => E:Type mismatch: (x: Optional(_t), ...) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|226|(b c: Boolean, ...) = List(Function(Boolean)(Number{m})) => E:Type mismatch: (b c: Boolean, ...) versus List(Function(Boolean)(Number{m})) ; (b c: Boolean) ; [(Boolean) -> Number{m}] ; _t ; _t
+typeExp|227|(aa: Text, Total: Boolean, x: Text, ...) = Number{s} [tc ok] => E:Type mismatch: (aa: Text, Total: Boolean, x: Text, ...) versus Number{s} ; (Total: Boolean, aa: Text, x: Text) ; Number{s} ; _t ; _t
+typeExp|228|(aa: Function(Boolean)(_t)) = _t => _t[=(aa: Function(Boolean)(_t))] ; E:Ambiguous type ; (aa: (Boolean) -> Void <>) ; _t[=(aa: Function(Boolean)(_t))] ; _t
+typeExp|229|(field: Function(Number{_u})(Text)) = (x: Optional(_t), aa: Number{m}) => E:Field "aa" occurs in one record but not in the other complete record ; (field: (Number) -> Text) ; (aa: Number{m}, x: Optional(Void <>) <None \p Is:Void <>>) ; _t ; _t
+typeExp|230|(x: List(Boolean), b c: Number{_u}, Total: Text, ...) = Number{m} [tc ok] => E:Type mismatch: (x: List(Boolean), b c: Number{_u}, Total: Text, ...) versus Number{m} ; (Total: Text, b c: Number, x: [Boolean]) ; Number{m} ; _t ; _t
+typeExp|231|(b c: Boolean, field: Text, x: _t) = Optional(Text) [tc ok] => E:Type mismatch: (b c: Boolean, field: Text, x: _t) versus Optional(Text) ; E:Ambiguous type ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|232|(b c: _t, Total: Optional(Number{_u}), ...) = (field: Number{_u}, Total: Function(Text)(Boolean)) => E:Field "b c" occurs in one record but not in the other complete record ; E:Ambiguous type ; (Total: (Text) -> Boolean, field: Number) ; _t ; _t
+typeExp|233|(aa: Text) = List(List(Boolean)) => E:Type mismatch: (aa: Text) versus List(List(Boolean)) ; (aa: Text) ; [[Boolean]] ; _t ; _t
+typeExp|234|(x: Optional(_t), aa: Number{_u}, field: Optional(Text), ...) = Text => E:Type mismatch: (x: Optional(_t), aa: Number{_u}, field: Optional(Text), ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|235|(x: List(Text), Total: Function(Boolean)(Text), aa: List(_t)) = Number{_u} => E:Type mismatch: (x: List(Text), Total: Function(Boolean)(Text), aa: List(_t)) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|236|(b c: List(Number{_u}), x: Text, ...) = Function(Boolean)(Optional(Boolean)) => E:Type mismatch: (b c: List(Number{_u}), x: Text, ...) versus Function(Boolean)(Optional(Boolean)) ; (b c: [Number], x: Text) ; (Boolean) -> Optional(Boolean) <None \p Is:Boolean> ; _t ; _t
+typeExp|237|(b c: _t, ...) = (aa: Text) => E:Field "b c" occurs in one record but not in the other complete record ; E:Ambiguous type ; (aa: Text) ; _t ; _t
+typeExp|238|(field: _t, x: Function(Text)(Text), ...) = Number{s} => E:Type mismatch: (field: _t, x: Function(Text)(Text), ...) versus Number{s} ; E:Ambiguous type ; Number{s} ; _t ; _t
+typeExp|239|(x: Number{_u}, field: Text, ...) = Text => E:Type mismatch: (x: Number{_u}, field: Text, ...) versus Text ; (field: Text, x: Number) ; Text ; _t ; _t
+typeExp|240|(b c: _t, ...) = Optional(Text) => E:Type mismatch: (b c: _t, ...) versus Optional(Text) ; E:Ambiguous type ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|241|(aa: Function(_t)(_t), b c: Number{_u}, ...) = Function(Number{g})(Boolean) => E:Type mismatch: (aa: Function(_t)(_t), b c: Number{_u}, ...) versus Function(Number{g})(Boolean) ; E:Ambiguous type ; (Number{g}) -> Boolean ; _t ; _t
+typeExp|242|(x: List(Number{_u}), ...) = Number{m} [tc ok] => E:Type mismatch: (x: List(Number{_u}), ...) versus Number{m} ; (x: [Number]) ; Number{m} ; _t ; _t
+typeExp|243|(b c: Boolean, x: (aa: Text, x: Text, ...), Total: Optional(Number{_u})) = Text => E:Type mismatch: (b c: Boolean, x: (aa: Text, x: Text, ...), Total: Optional(Number{_u})) versus Text ; (Total: Optional(Number) <None \p Is:Number>, b c: Boolean, x: (aa: Text, x: Text)) ; Text ; _t ; _t
+typeExp|244|(b c: Boolean, field: Boolean, ...) = Boolean => E:Type mismatch: (b c: Boolean, field: Boolean, ...) versus Boolean ; (b c: Boolean, field: Boolean) ; Boolean ; _t ; _t
+typeExp|245|(Total: Text, x: Number{_u}) = Optional(_t) => E:Type mismatch: (Total: Text, x: Number{_u}) versus Optional(_t) ; (Total: Text, x: Number) ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|246|(Total: Optional(Text)) = List(Text) => E:Type mismatch: (Total: Optional(Text)) versus List(Text) ; (Total: Optional(Text) <None \p Is:Text>) ; [Text] ; _t ; _t
+typeExp|247|(x: List(_t), Total: (x: Number{_u}, b c: Number{s}, ...), aa: Text) = Boolean [tc ok] => E:Type mismatch: (x: List(_t), Total: (x: Number{_u}, b c: Number{s}, ...), aa: Text) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|248|(x: List(_t), b c: _t, Total: _t, ...) = Optional(Optional(Number{m})) => E:Type mismatch: (x: List(_t), b c: _t, Total: _t, ...) versus Optional(Optional(Number{m})) ; E:Ambiguous type ; Optional(Optional(Number{m}) <None \p Is:Number{m}>) <None \p Is:Optional(Number{m}) <None \p Is:Number{m}>> ; _t ; _t
+typeExp|249|(b c: Boolean, aa: Function(Number{_u})(Boolean), ...) = Text => E:Type mismatch: (b c: Boolean, aa: Function(Number{_u})(Boolean), ...) versus Text ; (aa: (Number) -> Boolean, b c: Boolean) ; Text ; _t ; _t
+typeExp|250|(aa: Function(Boolean)(_t), ...) = Number{_u} => E:Type mismatch: (aa: Function(Boolean)(_t), ...) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|251|(Total: (field: Boolean, ...)) = List(Number{_u}) => E:Type mismatch: (Total: (field: Boolean, ...)) versus List(Number{_u}) ; (Total: (field: Boolean)) ; [Number] ; _t ; _t
+typeExp|252|(Total: Optional(Number{m}), b c: Number{_u}) = List(_t) => E:Type mismatch: (Total: Optional(Number{m}), b c: Number{_u}) versus List(_t) ; (Total: Optional(Number{m}) <None \p Is:Number{m}>, b c: Number) ; [Void <>] ; _t ; _t
+typeExp|253|(x: Text, ...) = (aa: Optional(Number{m}), b c: _t, Total: Boolean) => E:Field "x" occurs in one record but not in the other complete record ; (x: Text) ; (Total: Boolean, aa: Optional(Number{m}) <None \p Is:Number{m}>, b c: Void <>) ; _t ; _t
+typeExp|254|(Total: Text) = (Total: List(Text)) [tc ok] => E:Type mismatch: Text versus List(Text) ; (Total: Text) ; (Total: [Text]) ; _t ; _t
+typeExp|255|(field: Function(_t)(Boolean)) = Boolean [tc Function(_t)(Boolean) is not Readable] => E:Type mismatch: (field: Function(_t)(Boolean)) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|256|Optional(Function(_t)(Boolean)) = Text => E:Type mismatch: Optional(Function(_t)(Boolean)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|257|Optional(Text) = Number{g} [tc ok] => E:Type mismatch: Optional(Text) versus Number{g} ; Optional(Text) <None \p Is:Text> ; Number{g} ; _t ; _t
+typeExp|258|Optional(_t) = Function(List(Boolean))((field: Number{_u}, ...)) => E:Type mismatch: Optional(_t) versus Function(List(Boolean))((field: Number{_u}, ...)) ; E:Ambiguous type ; ([Boolean]) -> (field: Number) ; _t ; _t
+typeExp|259|Optional((b c: Number{s})) = _t => _t[=Optional((b c: Number{s}))] ; Optional((b c: Number{s})) <None \p Is:(b c: Number{s})> ; Optional((b c: Number{s})) <None \p Is:(b c: Number{s})> ; _t ; _t[=Optional((b c: Number{s}))]
+typeExp|260|Optional(Number{_u}) = Function(Number{s})(Boolean) => E:Type mismatch: Optional(Number{_u}) versus Function(Number{s})(Boolean) ; Optional(Number) <None \p Is:Number> ; (Number{s}) -> Boolean ; _t ; _t
+typeExp|261|Optional(Boolean) = (field: Optional(Number{s})) [tc ok] => E:Type mismatch: Optional(Boolean) versus (field: Optional(Number{s})) ; Optional(Boolean) <None \p Is:Boolean> ; (field: Optional(Number{s}) <None \p Is:Number{s}>) ; _t ; _t
+typeExp|262|Optional(_t) = Text => E:Type mismatch: Optional(_t) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|263|Optional(Optional(Text)) = Function(Boolean)(Boolean) [tc ok] => E:Type mismatch: Optional(Optional(Text)) versus Function(Boolean)(Boolean) ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; (Boolean) -> Boolean ; _t ; _t
+typeExp|264|Optional(Number{g}) = Text => E:Type mismatch: Optional(Number{g}) versus Text ; Optional(Number{g}) <None \p Is:Number{g}> ; Text ; _t ; _t
+typeExp|265|Optional(_t) = (Total: Boolean, field: Text, x: Text) => E:Type mismatch: Optional(_t) versus (Total: Boolean, field: Text, x: Text) ; E:Ambiguous type ; (Total: Boolean, field: Text, x: Text) ; _t ; _t
+typeExp|266|Optional(List(_t)) = Number{_u} => E:Type mismatch: Optional(List(_t)) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|267|Optional(Optional(Number{m})) = Text => E:Type mismatch: Optional(Optional(Number{m})) versus Text ; Optional(Optional(Number{m}) <None \p Is:Number{m}>) <None \p Is:Optional(Number{m}) <None \p Is:Number{m}>> ; Text ; _t ; _t
+typeExp|268|Optional(Text) = Optional(Text) => Optional(Text) ; Optional(Text) <None \p Is:Text> ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|269|Optional(_t) = Function(Number{_u})(_t) => E:Type mismatch: Optional(_t) versus Function(Number{_u})(_t) ; E:Ambiguous type ; (Number) -> Void <> ; _t ; _t
+typeExp|270|Optional((b c: Text, aa: _t, ...)) = Text [tc ok] => E:Type mismatch: Optional((b c: Text, aa: _t, ...)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|271|Optional(Function(Boolean)(Text)) = Function(Text)(Function(Text)(_t)) => E:Type mismatch: Optional(Function(Boolean)(Text)) versus Function(Text)(Function(Text)(_t)) ; Optional((Boolean) -> Text) <None \p Is:(Boolean) -> Text> ; (Text) -> (Text) -> Void <> ; _t ; _t
+typeExp|272|Optional((aa: Boolean)) = Optional((aa: Text, ...)) => E:Type mismatch: Boolean versus Text ; Optional((aa: Boolean)) <None \p Is:(aa: Boolean)> ; Optional((aa: Text)) <None \p Is:(aa: Text)> ; _t ; _t
+typeExp|273|Optional(Function(Text)(Boolean)) = Number{m} => E:Type mismatch: Optional(Function(Text)(Boolean)) versus Number{m} ; Optional((Text) -> Boolean) <None \p Is:(Text) -> Boolean> ; Number{m} ; _t ; _t
+typeExp|274|Optional(Number{_u}) = _t => _t[=Optional(Number{_u})] ; Optional(Number) <None \p Is:Number> ; Optional(Number) <None \p Is:Number> ; _t ; _t[=Optional(Number{_u})]
+typeExp|275|Optional(_t) = Function(Function(_t)(Number{_u}))((field: Text, aa: Number{g}, Total: Number{_u}, ...)) => E:Type mismatch: Optional(_t) versus Function(Function(_t)(Number{_u}))((field: Text, aa: Number{g}, Total: Number{_u}, ...)) ; E:Ambiguous type ; ((Void <>) -> Number) -> (Total: Number, aa: Number{g}, field: Text) ; _t ; _t
+typeExp|276|Optional((x: _t)) = Function(_t)(Function(Number{g})(Number{_u})) [tc ok] => E:Type mismatch: Optional((x: _t)) versus Function(_t)(Function(Number{g})(Number{_u})) ; E:Ambiguous type ; (Void <>) -> (Number{g}) -> Number ; _t ; _t
+typeExp|277|Optional(Function(_t)(Text)) = Text => E:Type mismatch: Optional(Function(_t)(Text)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|278|Optional(Text) = _t [tc ok] => _t[=Optional(Text)] ; Optional(Text) <None \p Is:Text> ; Optional(Text) <None \p Is:Text> ; _t ; _t[=Optional(Text)]
+typeExp|279|Optional(_t) = Number{m} [tc ok] => E:Type mismatch: Optional(_t) versus Number{m} ; E:Ambiguous type ; Number{m} ; _t ; _t
+typeExp|280|Optional(Optional(Text)) = Number{s} => E:Type mismatch: Optional(Optional(Text)) versus Number{s} ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; Number{s} ; _t ; _t
+typeExp|281|Optional(Number{_u}) = (Total: List(Number{m})) [tc ok] => E:Type mismatch: Optional(Number{_u}) versus (Total: List(Number{m})) ; Optional(Number) <None \p Is:Number> ; (Total: [Number{m}]) ; _t ; _t
+typeExp|282|Optional(Boolean) = Text [tc ok] => E:Type mismatch: Optional(Boolean) versus Text ; Optional(Boolean) <None \p Is:Boolean> ; Text ; _t ; _t
+typeExp|283|Optional(List(Text)) = Boolean => E:Type mismatch: Optional(List(Text)) versus Boolean ; Optional([Text]) <None \p Is:[Text]> ; Boolean ; _t ; _t
+typeExp|284|Optional(Function(Number{m})(Number{m})) = Boolean => E:Type mismatch: Optional(Function(Number{m})(Number{m})) versus Boolean ; Optional((Number{m}) -> Number{m}) <None \p Is:(Number{m}) -> Number{m}> ; Boolean ; _t ; _t
+typeExp|285|Optional(Text) = Boolean => E:Type mismatch: Optional(Text) versus Boolean ; Optional(Text) <None \p Is:Text> ; Boolean ; _t ; _t
+typeExp|286|Optional(Boolean) = Optional((aa: Boolean, ...)) => E:Type mismatch: Boolean versus (aa: Boolean, ...) ; Optional(Boolean) <None \p Is:Boolean> ; Optional((aa: Boolean)) <None \p Is:(aa: Boolean)> ; _t ; _t
+typeExp|287|Optional(List(_t)) = Optional(List(Text)) => Optional(List(_t[=Text])) ; Optional([Text]) <None \p Is:[Text]> ; Optional([Text]) <None \p Is:[Text]> ; _t[=Text] ; _t
+typeExp|288|Optional(List(Text)) = Text => E:Type mismatch: Optional(List(Text)) versus Text ; Optional([Text]) <None \p Is:[Text]> ; Text ; _t ; _t
+typeExp|289|Optional(Optional(Text)) = Function(_t)(Number{m}) => E:Type mismatch: Optional(Optional(Text)) versus Function(_t)(Number{m}) ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; (Void <>) -> Number{m} ; _t ; _t
+typeExp|290|Optional(Number{_u}) = Optional(Function(_t)(_t)) [tc ok] => E:Type mismatch: Number{_u} versus Function(_t)(_t) ; Optional(Number) <None \p Is:Number> ; Optional((Void <>) -> Void <>) <None \p Is:(Void <>) -> Void <>> ; _t ; _t
+typeExp|291|Optional(Boolean) = Number{g} [tc ok] => E:Type mismatch: Optional(Boolean) versus Number{g} ; Optional(Boolean) <None \p Is:Boolean> ; Number{g} ; _t ; _t
+typeExp|292|Optional((field: Number{s}, x: Number{s}, ...)) = Number{m} [tc ok] => E:Type mismatch: Optional((field: Number{s}, x: Number{s}, ...)) versus Number{m} ; Optional((field: Number{s}, x: Number{s})) <None \p Is:(field: Number{s}, x: Number{s})> ; Number{m} ; _t ; _t
+typeExp|293|Optional(Function(Number{g})(Number{g})) = List(Boolean) => E:Type mismatch: Optional(Function(Number{g})(Number{g})) versus List(Boolean) ; Optional((Number{g}) -> Number{g}) <None \p Is:(Number{g}) -> Number{g}> ; [Boolean] ; _t ; _t
+typeExp|294|Optional(Number{_u}) = Number{_u} => E:Type mismatch: Optional(Number{_u}) versus Number{_u} ; Optional(Number) <None \p Is:Number> ; Number ; _t ; _t
+typeExp|295|Optional(_t) = List(List(Boolean)) => E:Type mismatch: Optional(_t) versus List(List(Boolean)) ; E:Ambiguous type ; [[Boolean]] ; _t ; _t
+typeExp|296|Optional((Total: Text, aa: Boolean, field: Boolean, ...)) = Function(Optional(Text))(List(Boolean)) [tc ok] => E:Type mismatch: Optional((Total: Text, aa: Boolean, field: Boolean, ...)) versus Function(Optional(Text))(List(Boolean)) ; Optional((Total: Text, aa: Boolean, field: Boolean)) <None \p Is:(Total: Text, aa: Boolean, field: Boolean)> ; (Optional(Text) <None \p Is:Text>) -> [Boolean] ; _t ; _t
+typeExp|297|Optional(Function(_t)(Number{_u})) = List(Number{s}) => E:Type mismatch: Optional(Function(_t)(Number{_u})) versus List(Number{s}) ; E:Ambiguous type ; [Number{s}] ; _t ; _t
+typeExp|298|Optional(Text) = Boolean => E:Type mismatch: Optional(Text) versus Boolean ; Optional(Text) <None \p Is:Text> ; Boolean ; _t ; _t
+typeExp|299|Optional(_t) = Optional(Function(Boolean)(_t)) [tc ok] => E:Function(Boolean)(_t) is not Readable ; E:Ambiguous type ; Optional((Boolean) -> Void <>) <None \p Is:(Boolean) -> Void <>> ; _t ; _t
+typeExp|300|(x: (x: _t, aa: Boolean, field: Boolean), ...) = Optional(Optional(Number{g})) [tc ok] => E:Type mismatch: (x: (x: _t, aa: Boolean, field: Boolean), ...) versus Optional(Optional(Number{g})) ; E:Ambiguous type ; Optional(Optional(Number{g}) <None \p Is:Number{g}>) <None \p Is:Optional(Number{g}) <None \p Is:Number{g}>> ; _t ; _t
+typeExp|301|(b c: _t, ...) = (b c: Boolean, field: _t) [tc ok] => (field: _t, b c: _t[=Boolean]) ; (b c: Boolean) ; (b c: Boolean, field: Void <>) ; _t[=Boolean] ; _t
+typeExp|302|Optional(Boolean) = Function(Text)(List(Boolean)) => E:Type mismatch: Optional(Boolean) versus Function(Text)(List(Boolean)) ; Optional(Boolean) <None \p Is:Boolean> ; (Text) -> [Boolean] ; _t ; _t
+typeExp|303|Optional(List(Number{_u})) = _t [tc ok] => _t[=Optional(List(Number{_u}))] ; Optional([Number]) <None \p Is:[Number]> ; Optional([Number]) <None \p Is:[Number]> ; _t ; _t[=Optional(List(Number{_u}))]
+typeExp|304|Optional(Boolean) = List(Boolean) [tc ok] => E:Type mismatch: Optional(Boolean) versus List(Boolean) ; Optional(Boolean) <None \p Is:Boolean> ; [Boolean] ; _t ; _t
+typeExp|305|Optional(List(Boolean)) = Text [tc ok] => E:Type mismatch: Optional(List(Boolean)) versus Text ; Optional([Boolean]) <None \p Is:[Boolean]> ; Text ; _t ; _t
+typeExp|306|Optional((field: Boolean, ...)) = Text [tc ok] => E:Type mismatch: Optional((field: Boolean, ...)) versus Text ; Optional((field: Boolean)) <None \p Is:(field: Boolean)> ; Text ; _t ; _t
+typeExp|307|Optional(Function(Text)(Boolean)) = Text [tc Function(Text)(Boolean) is not Readable] => E:Type mismatch: Optional(Function(Text)(Boolean)) versus Text ; Optional((Text) -> Boolean) <None \p Is:(Text) -> Boolean> ; Text ; _t ; _t
+typeExp|308|Optional(Boolean) = Text => E:Type mismatch: Optional(Boolean) versus Text ; Optional(Boolean) <None \p Is:Boolean> ; Text ; _t ; _t
+typeExp|309|Optional(List(Text)) = Boolean => E:Type mismatch: Optional(List(Text)) versus Boolean ; Optional([Text]) <None \p Is:[Text]> ; Boolean ; _t ; _t
+typeExp|310|Optional(Optional(_t)) = Function(Text)(Boolean) => E:Type mismatch: Optional(Optional(_t)) versus Function(Text)(Boolean) ; E:Ambiguous type ; (Text) -> Boolean ; _t ; _t
+typeExp|311|Optional(Number{m}) = _t => _t[=Optional(Number{m})] ; Optional(Number{m}) <None \p Is:Number{m}> ; Optional(Number{m}) <None \p Is:Number{m}> ; _t ; _t[=Optional(Number{m})]
+typeExp|312|Optional(_t) = Optional(Boolean) => Optional(_t[=Boolean]) ; Optional(Boolean) <None \p Is:Boolean> ; Optional(Boolean) <None \p Is:Boolean> ; _t ; _t[=Boolean]
+typeExp|313|Optional((field: _t)) = Function(Number{g})(Boolean) => E:Type mismatch: Optional((field: _t)) versus Function(Number{g})(Boolean) ; E:Ambiguous type ; (Number{g}) -> Boolean ; _t ; _t
+typeExp|314|Optional(Function(Boolean)(Number{s})) = _t => _t[=Optional(Function(Boolean)(Number{s}))] ; Optional((Boolean) -> Number{s}) <None \p Is:(Boolean) -> Number{s}> ; Optional((Boolean) -> Number{s}) <None \p Is:(Boolean) -> Number{s}> ; _t[=Optional(Function(Boolean)(Number{s}))] ; _t
+typeExp|315|Optional(Text) = (b c: Optional(Text), aa: List(Boolean)) [tc ok] => E:Type mismatch: Optional(Text) versus (b c: Optional(Text), aa: List(Boolean)) ; Optional(Text) <None \p Is:Text> ; (aa: [Boolean], b c: Optional(Text) <None \p Is:Text>) ; _t ; _t
+typeExp|316|Optional(_t) = Function(List(Boolean))(Text) => E:Type mismatch: Optional(_t) versus Function(List(Boolean))(Text) ; E:Ambiguous type ; ([Boolean]) -> Text ; _t ; _t
+typeExp|317|Optional(Optional(_t)) = Text [tc ok] => E:Type mismatch: Optional(Optional(_t)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|318|Optional(Function(Number{m})(Number{_u})) = _t [tc Function(Number{m})(Number{_u}) is not Readable] => _t[=Optional(Function(Number{m})(Number{_u}))] ; Optional((Number{m}) -> Number) <None \p Is:(Number{m}) -> Number> ; Optional((Number{m}) -> Number) <None \p Is:(Number{m}) -> Number> ; _t ; _t
+typeExp|319|Optional(Text) = _t [tc ok] => _t[=Optional(Text)] ; Optional(Text) <None \p Is:Text> ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|320|(b c: Optional(Number{_u}), Total: List(Text), aa: _t) = List(Boolean) => E:Type mismatch: (b c: Optional(Number{_u}), Total: List(Text), aa: _t) versus List(Boolean) ; E:Ambiguous type ; [Boolean] ; _t ; _t
+typeExp|321|(Total: List(Boolean), aa: Text) = Function(Boolean)(Optional(Text)) => E:Type mismatch: (Total: List(Boolean), aa: Text) versus Function(Boolean)(Optional(Text)) ; (Total: [Boolean], aa: Text) ; (Boolean) -> Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|322|(field: Text) = Text => E:Type mismatch: (field: Text) versus Text ; (field: Text) ; Text ; _t ; _t
+typeExp|323|(x: Text, field: _t) = Text => E:Type mismatch: (x: Text, field: _t) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|324|(x: Number{s}, field: Number{_u}) = Optional(_t) => E:Type mismatch: (x: Number{s}, field: Number{_u}) versus Optional(_t) ; (field: Number, x: Number{s}) ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|325|(b c: Optional(Text), ...) = List(Function(Number{g})(Number{m})) => E:Type mismatch: (b c: Optional(Text), ...) versus List(Function(Number{g})(Number{m})) ; (b c: Optional(Text) <None \p Is:Text>) ; [(Number{g}) -> Number{m}] ; _t ; _t
+typeExp|326|(aa: _t, ...) = Function(Text)(Boolean) [tc ok] => E:Type mismatch: (aa: _t, ...) versus Function(Text)(Boolean) ; E:Ambiguous type ; (Text) -> Boolean ; _t ; _t
+typeExp|327|(field: Text, Total: Optional(Boolean), b c: (field: Number{s}, aa: Number{s}, Total: Text, ...)) = Optional(Optional(Text)) => E:Type mismatch: (field: Text, Total: Optional(Boolean), b c: (field: Number{s}, aa: Number{s}, Total: Text, ...)) versus Optional(Optional(Text)) ; (Total: Optional(Boolean) <None \p Is:Boolean>, b c: (Total: Text, aa: Number{s}, field: Number{s}), field: Text) ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; _t ; _t
+typeExp|328|(Total: Text, b c: List(Boolean), field: _t) = (field: Boolean, aa: Boolean, b c: (Total: Number{m}, aa: _t, ...)) => E:Field "aa" occurs in one record but not in the other complete record ; E:Ambiguous type ; (aa: Boolean, b c: (Total: Number{m}, aa: Void <>), field: Boolean) ; _t ; _t
+typeExp|329|(x: Number{g}, b c: Function(_t)(Number{_u})) = Text => E:Type mismatch: (x: Number{g}, b c: Function(_t)(Number{_u})) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|330|(Total: List(Boolean), ...) = Number{s} => E:Type mismatch: (Total: List(Boolean), ...) versus Number{s} ; (Total: [Boolean]) ; Number{s} ; _t ; _t
+typeExp|331|(field: _t) = Optional(Optional(Number{_u})) => E:Type mismatch: (field: _t) versus Optional(Optional(Number{_u})) ; E:Ambiguous type ; Optional(Optional(Number) <None \p Is:Number>) <None \p Is:Optional(Number) <None \p Is:Number>> ; _t ; _t
+typeExp|332|(field: _t, x: (field: Boolean, ...), ...) = Boolean [tc ok] => E:Type mismatch: (field: _t, x: (field: Boolean, ...), ...) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|333|(x: Text) = Text => E:Type mismatch: (x: Text) versus Text ; (x: Text) ; Text ; _t ; _t
+typeExp|334|(b c: Optional(_t), ...) = _t [tc ok] => _t[=(b c: Optional(_t), ...)] ; E:Ambiguous type ; (b c: Optional(Void <>) <None \p Is:Void <>>) ; _t ; _t[=(b c: Optional(_t), ...)]
+typeExp|335|(Total: List(Text)) = Function(Number{_u})(List(Text)) [tc ok] => E:Type mismatch: (Total: List(Text)) versus Function(Number{_u})(List(Text)) ; (Total: [Text]) ; (Number) -> [Text] ; _t ; _t
+typeExp|336|(x: Function(Number{g})(Text), Total: List(Text), ...) = Number{_u} => E:Type mismatch: (x: Function(Number{g})(Text), Total: List(Text), ...) versus Number{_u} ; (Total: [Text], x: (Number{g}) -> Text) ; Number ; _t ; _t
+typeExp|337|(x: Optional(Boolean), Total: List(_t), ...) = Number{_u} => E:Type mismatch: (x: Optional(Boolean), Total: List(_t), ...) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|338|(aa: _t) = Boolean => E:Type mismatch: (aa: _t) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|339|(field: Optional(Number{_u}), aa: Boolean, ...) = _t => _t[=(field: Optional(Number{_u}), aa: Boolean, ...)] ; (aa: Boolean, field: Optional(Number) <None \p Is:Number>) ; (aa: Boolean, field: Optional(Number) <None \p Is:Number>) ; _t ; _t[=(field: Optional(Number{_u}), aa: Boolean, ...)]
+typeExp|340|(field: Text, b c: Function(_t)(Number{s})) = Boolean [tc Function(_t)(Number{s}) is not Readable] => E:Type mismatch: (field: Text, b c: Function(_t)(Number{s})) versus Boolean ; E:Ambiguous type ; Boolean ; _t ; _t
+typeExp|341|(x: Function(_t)(Boolean), aa: _t) = List(Function(Boolean)(Number{g})) => E:Type mismatch: (x: Function(_t)(Boolean), aa: _t) versus List(Function(Boolean)(Number{g})) ; E:Ambiguous type ; [(Boolean) -> Number{g}] ; _t ; _t
+typeExp|342|(b c: List(Number{_u}), ...) = Boolean [tc ok] => E:Type mismatch: (b c: List(Number{_u}), ...) versus Boolean ; (b c: [Number]) ; Boolean ; _t ; _t
+typeExp|343|(aa: _t, b c: Text, x: (x: _t, Total: Number{_u}, ...)) = _t => _t[=(aa: _t, b c: Text, x: (x: _t, Total: Number{_u}, ...))] ; E:Ambiguous type ; (aa: Void <>, b c: Text, x: (Total: Number, x: Void <>)) ; _t ; _t
+typeExp|344|(aa: Optional(Text), field: Number{_u}) = Boolean [tc ok] => E:Type mismatch: (aa: Optional(Text), field: Number{_u}) versus Boolean ; (aa: Optional(Text) <None \p Is:Text>, field: Number) ; Boolean ; _t ; _t
+typeExp|345|(field: List(_t)) = Optional(_t) => E:Type mismatch: (field: List(_t)) versus Optional(_t) ; E:Ambiguous type ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|346|(aa: Optional(Text), ...) = List((b c: Text, Total: Boolean, field: Number{_u})) [tc ok] => E:Type mismatch: (aa: Optional(Text), ...) versus List((b c: Text, Total: Boolean, field: Number{_u})) ; (aa: Optional(Text) <None \p Is:Text>) ; [(Total: Boolean, b c: Text, field: Number)] ; _t ; _t
+typeExp|347|(b c: List(Number{s}), x: Text, Total: Number{s}) = Number{s} => E:Type mismatch: (b c: List(Number{s}), x: Text, Total: Number{s}) versus Number{s} ; (Total: Number{s}, b c: [Number{s}], x: Text) ; Number{s} ; _t ; _t
+typeExp|348|(b c: List(_t), Total: Optional(Number{_u})) = Text => E:Type mismatch: (b c: List(_t), Total: Optional(Number{_u})) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|349|(aa: _t, x: Number{m}) = Number{_u} => E:Type mismatch: (aa: _t, x: Number{m}) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|350|(x: Function(Boolean)(Text)) = Optional(Boolean) [tc Function(Boolean)(Text) is not Readable] => E:Type mismatch: (x: Function(Boolean)(Text)) versus Optional(Boolean) ; (x: (Boolean) -> Text) ; Optional(Boolean) <None \p Is:Boolean> ; _t ; _t
+typeExp|351|(b c: Optional(Text), x: _t, Total: (aa: Text)) = _t [tc ok] => E:Cyclic type while attempting to match _t with (b c: Optional(Text), x: _t, Total: (aa: Text)) ; E:Ambiguous type ; Void <> ; _t ; _t
+typeExp|352|(field: _t, ...) = Number{_u} => E:Type mismatch: (field: _t, ...) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|353|(x: (Total: Boolean, field: Text, x: Text), ...) = Text [tc ok] => E:Type mismatch: (x: (Total: Boolean, field: Text, x: Text), ...) versus Text ; (x: (Total: Boolean, field: Text, x: Text)) ; Text ; _t ; _t
+typeExp|354|(Total: Optional(Number{_u}), ...) = List(Boolean) => E:Type mismatch: (Total: Optional(Number{_u}), ...) versus List(Boolean) ; (Total: Optional(Number) <None \p Is:Number>) ; [Boolean] ; _t ; _t
+typeExp|355|(field: Boolean, ...) = List(Text) [tc ok] => E:Type mismatch: (field: Boolean, ...) versus List(Text) ; (field: Boolean) ; [Text] ; _t ; _t
+typeExp|356|(field: (b c: Boolean, Total: _t, ...), x: Text, ...) = Number{_u} [tc ok] => E:Type mismatch: (field: (b c: Boolean, Total: _t, ...), x: Text, ...) versus Number{_u} ; E:Ambiguous type ; Number ; _t ; _t
+typeExp|357|(b c: _t, x: Boolean, ...) = Text => E:Type mismatch: (b c: _t, x: Boolean, ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|358|(b c: Number{_u}) = List(Number{_u}) [tc ok] => E:Type mismatch: (b c: Number{_u}) versus List(Number{_u}) ; (b c: Number) ; [Number] ; _t ; _t
+typeExp|359|(Total: Optional(Number{s}), field: Function(Boolean)(_t), ...) = Text => E:Type mismatch: (Total: Optional(Number{s}), field: Function(Boolean)(_t), ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|360|(Total: Optional(_t), b c: Optional(Text)) = Number{m} => E:Type mismatch: (Total: Optional(_t), b c: Optional(Text)) versus Number{m} ; E:Ambiguous type ; Number{m} ; _t ; _t
+typeExp|361|(field: (aa: Text, ...), Total: _t, ...) = Number{g} => E:Type mismatch: (field: (aa: Text, ...), Total: _t, ...) versus Number{g} ; E:Ambiguous type ; Number{g} ; _t ; _t
+typeExp|362|(x: Text) = Boolean [tc ok] => E:Type mismatch: (x: Text) versus Boolean ; (x: Text) ; Boolean ; _t ; _t
+typeExp|363|(b c: Number{g}, field: Text, x: List(Text)) = Optional(Function(_t)(Text)) [tc ok] => E:Type mismatch: (b c: Number{g}, field: Text, x: List(Text)) versus Optional(Function(_t)(Text)) ; (b c: Number{g}, field: Text, x: [Text]) ; Optional((Void <>) -> Text) <None \p Is:(Void <>) -> Text> ; _t ; _t
+typeExp|364|(b c: Optional(Boolean)) = _t => _t[=(b c: Optional(Boolean))] ; (b c: Optional(Boolean) <None \p Is:Boolean>) ; (b c: Optional(Boolean) <None \p Is:Boolean>) ; _t ; _t
+typeExp|365|(Total: Optional(_t), field: _t, ...) = _t => E:Cyclic type while attempting to match _t with (Total: Optional(_t), field: _t, ...) ; E:Ambiguous type ; Void <> ; _t ; _t
+typeExp|366|(b c: _t, ...) = Text => E:Type mismatch: (b c: _t, ...) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|367|(aa: Function(_t)(Text), field: Number{s}, ...) = (b c: (field: Number{_u}, ...), aa: Number{_u}, Total: (x: Boolean, Total: Number{m}, ...), ...) => E:Type mismatch: Function(_t)(Text) versus Number{_u} ; E:Ambiguous type ; (Total: (Total: Number{m}, x: Boolean), aa: Number, b c: (field: Number)) ; _t ; _t
+typeExp|368|(Total: Optional(Boolean), ...) = Text [tc ok] => E:Type mismatch: (Total: Optional(Boolean), ...) versus Text ; (Total: Optional(Boolean) <None \p Is:Boolean>) ; Text ; _t ; _t
+typeExp|369|(field: _t, ...) = (b c: Text) => E:Field "field" occurs in one record but not in the other complete record ; E:Ambiguous type ; (b c: Text) ; _t ; _t
+typeExp|370|(x: Number{g}, field: (Total: Boolean, ...), b c: Boolean) = Boolean [tc ok] => E:Type mismatch: (x: Number{g}, field: (Total: Boolean, ...), b c: Boolean) versus Boolean ; (b c: Boolean, field: (Total: Boolean), x: Number{g}) ; Boolean ; _t ; _t
+typeExp|371|(b c: Optional(Boolean), field: Number{m}, x: Text) = Function(Function(_t)(_t))((b c: _t, Total: Number{g}, ...)) [tc ok] => E:Type mismatch: (b c: Optional(Boolean), field: Number{m}, x: Text) versus Function(Function(_t)(_t))((b c: _t, Total: Number{g}, ...)) ; (b c: Optional(Boolean) <None \p Is:Boolean>, field: Number{m}, x: Text) ; ((Void <>) -> Void <>) -> (Total: Number{g}, b c: Void <>) ; _t ; _t
+typeExp|372|(b c: Optional(Boolean), x: Function(_t)(_t), ...) = Function(List(Boolean))((field: Boolean)) => E:Type mismatch: (b c: Optional(Boolean), x: Function(_t)(_t), ...) versus Function(List(Boolean))((field: Boolean)) ; E:Ambiguous type ; ([Boolean]) -> (field: Boolean) ; _t ; _t
+typeExp|373|(aa: List(Number{_u}), ...) = Boolean => E:Type mismatch: (aa: List(Number{_u}), ...) versus Boolean ; (aa: [Number]) ; Boolean ; _t ; _t
+typeExp|374|(x: Text, ...) = Optional(_t) => E:Type mismatch: (x: Text, ...) versus Optional(_t) ; (x: Text) ; Optional(Void <>) <None \p Is:Void <>> ; _t ; _t
+typeExp|375|(aa: Function(Boolean)(Text), ...) = Optional(Text) => E:Type mismatch: (aa: Function(Boolean)(Text), ...) versus Optional(Text) ; (aa: (Boolean) -> Text) ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|376|(aa: Number{_u}, field: Number{s}, ...) = Number{s} => E:Type mismatch: (aa: Number{_u}, field: Number{s}, ...) versus Number{s} ; (aa: Number, field: Number{s}) ; Number{s} ; _t ; _t
+typeExp|377|(Total: Optional(Text)) = Function((x: _t))(Boolean) => E:Type mismatch: (Total: Optional(Text)) versus Function((x: _t))(Boolean) ; (Total: Optional(Text) <None \p Is:Text>) ; ((x: Void <>)) -> Boolean ; _t ; _t
+typeExp|378|(field: _t) = List(Number{_u}) => E:Type mismatch: (field: _t) versus List(Number{_u}) ; E:Ambiguous type ; [Number] ; _t ; _t
+typeExp|379|(x: Number{_u}, b c: _t, ...) = List(Text) => E:Type mismatch: (x: Number{_u}, b c: _t, ...) versus List(Text) ; E:Ambiguous type ; [Text] ; _t ; _t
+typeExp|380|(x: Number{s}) = _t [tc ok] => _t[=(x: Number{s})] ; (x: Number{s}) ; (x: Number{s}) ; _t ; _t[=(x: Number{s})]
+typeExp|381|(aa: Number{_u}, ...) = Optional(Boolean) => E:Type mismatch: (aa: Number{_u}, ...) versus Optional(Boolean) ; (aa: Number) ; Optional(Boolean) <None \p Is:Boolean> ; _t ; _t
+typeExp|382|(aa: List(_t)) = Text [tc ok] => E:Type mismatch: (aa: List(_t)) versus Text ; E:Ambiguous type ; Text ; _t ; _t
+typeExp|383|(field: _t, b c: _t, x: _t) = Function(_t)((Total: Boolean)) => E:Type mismatch: (field: _t, b c: _t, x: _t) versus Function(_t)((Total: Boolean)) ; E:Ambiguous type ; (Void <>) -> (Total: Boolean) ; _t ; _t
+typeExp|384|Optional(List(Number{_u})) = Number{s} => E:Type mismatch: Optional(List(Number{_u})) versus Number{s} ; Optional([Number]) <None \p Is:[Number]> ; Number{s} ; _t ; _t
+typeExp|385|Optional(Optional(Text)) = Optional(Text) [tc ok] => E:Type mismatch: Optional(Text) versus Text ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; Optional(Text) <None \p Is:Text> ; _t ; _t
+typeExp|386|Optional(Function(_t)(Boolean)) = List(List(_t)) [tc Function(_t)(Boolean) is not Comparable] => E:Type mismatch: Optional(Function(_t)(Boolean)) versus List(List(_t)) ; E:Ambiguous type ; [[Void <>]] ; _t ; _t
+typeExp|387|Optional(Boolean) = Function(Text)(Number{g}) => E:Type mismatch: Optional(Boolean) versus Function(Text)(Number{g}) ; Optional(Boolean) <None \p Is:Boolean> ; (Text) -> Number{g} ; _t ; _t
+typeExp|388|Optional(List(_t)) = Function(Function(Text)(Number{_u}))((x: _t, Total: Number{_u}, b c: _t, ...)) => E:Type mismatch: Optional(List(_t)) versus Function(Function(Text)(Number{_u}))((x: _t, Total: Number{_u}, b c: _t, ...)) ; E:Ambiguous type ; ((Text) -> Number) -> (Total: Number, b c: Void <>, x: Void <>) ; _t ; _t
+typeExp|389|Optional(Optional(_t)) = _t [tc ok] => E:Cyclic type while attempting to match _t with Optional(Optional(_t)) ; E:Ambiguous type ; Void <> ; _t ; _t
+typeExp|390|Optional(Number{s}) = Optional(List(Boolean)) => E:Type mismatch: Number{s} versus List(Boolean) ; Optional(Number{s}) <None \p Is:Number{s}> ; Optional([Boolean]) <None \p Is:[Boolean]> ; _t ; _t
+typeExp|391|Optional(Boolean) = (field: Boolean, aa: (field: _t, b c: Text, ...), b c: Function(Boolean)(Boolean)) [tc ok] => E:Type mismatch: Optional(Boolean) versus (field: Boolean, aa: (field: _t, b c: Text, ...), b c: Function(Boolean)(Boolean)) ; Optional(Boolean) <None \p Is:Boolean> ; (aa: (b c: Text, field: Void <>), b c: (Boolean) -> Boolean, field: Boolean) ; _t ; _t
+typeExp|392|Optional((field: Number{_u}, Total: Text)) = Optional(Number{_u}) => E:Type mismatch: (field: Number{_u}, Total: Text) versus Number{_u} ; Optional((Total: Text, field: Number)) <None \p Is:(Total: Text, field: Number)> ; Optional(Number) <None \p Is:Number> ; _t ; _t
+typeExp|393|Optional(Function(Boolean)(Number{_u})) = Text => E:Type mismatch: Optional(Function(Boolean)(Number{_u})) versus Text ; Optional((Boolean) -> Number) <None \p Is:(Boolean) -> Number> ; Text ; _t ; _t
+typeExp|394|Optional(Text) = Text [tc ok] => E:Type mismatch: Optional(Text) versus Text ; Optional(Text) <None \p Is:Text> ; Text ; _t ; _t
+typeExp|395|Optional(_t) = List((aa: _t, ...)) [tc ok] => E:Type mismatch: Optional(_t) versus List((aa: _t, ...)) ; E:Ambiguous type ; [(aa: Void <>)] ; _t ; _t
+typeExp|396|Optional(Optional(Number{_u})) = Optional(List(Boolean)) [tc ok] => E:Type mismatch: Optional(Number{_u}) versus List(Boolean) ; Optional(Optional(Number) <None \p Is:Number>) <None \p Is:Optional(Number) <None \p Is:Number>> ; Optional([Boolean]) <None \p Is:[Boolean]> ; _t ; _t
+typeExp|397|Optional(Number{g}) = Number{_u} [tc ok] => E:Type mismatch: Optional(Number{g}) versus Number{_u} ; Optional(Number{g}) <None \p Is:Number{g}> ; Number ; _t ; _t
+typeExp|398|Optional(Text) = Optional(Function(Text)(Text)) => E:Type mismatch: Text versus Function(Text)(Text) ; Optional(Text) <None \p Is:Text> ; Optional((Text) -> Text) <None \p Is:(Text) -> Text> ; _t ; _t
+typeExp|399|Optional(_t) = Optional(Function(Number{_u})(Boolean)) [tc ok] => E:Function(Number{_u})(Boolean) is not Readable ; E:Ambiguous type ; Optional((Number) -> Boolean) <None \p Is:(Number) -> Boolean> ; _t ; _t
+typeDecls||ok
+knownTypes||Wrapper Shape Optional Zebra Fn Mango Dates Unit Multi Word Name Colour Type Apple Measure Tree Void Pair
+userTypes||Wrapper Apple Shape Zebra Measure Fn Mango Tree Dates Multi Word Name Colour Pair
+saveTypes||@TYPE Apple @tagged ( Core ( @apply   Tree ( Zebra ) ) )\n@TYPE Colour @tagged ( Red \p Green \p Blue \p Custom ( Number ) )\n@TYPE Dates @tagged ( D ( Date ) \p DT ( DateTime ) \p DTZ ( DateTimeZoned ) \p T ( Time ) \p YM ( DateYM ) )\n@TYPE Fn @tagged ( F ( (( Number Text ,  ) ->  Boolean ) ) )\n@TYPE Mango @tagged @typevar x ( Fruit ( x ) \p Is )\n@TYPE Measure @tagged @unitvar u ( Measured ( Number { @unitvar u } ) \p Unmeasured )\n@TYPE Multi Word Name @tagged ( Odd Tag \p Normal )\n@TYPE Shape @tagged ( Circle ( ( radius : Number { m } ) ) \p Rect ( ( height : Number { m } , width : Number { m } ) ) \p Named ( Text ) )\n@TYPE Pair @tagged @typevar a @typevar b ( Pair ( ( first : @apply   Optional ( a ) , second : b ) ) )\n@TYPE Wrapper @tagged ( Wrap ( @apply   Pair ( Colour ) ( Shape ) ) )\n@TYPE Zebra @tagged ( Stripe ( Shape ) \p Plain )
+lookupTag|Red|Colour 0 Red false
+lookupTagIn|Red|Colour 0
+ambiguous|Red|false
+lookupTag|Is|E:Multiple tags found: Optional, Mango
+lookupTagIn|Is|E:No such tag: Is
+ambiguous|Is|true
+lookupTag|None|Optional 0 None false
+lookupTagIn|None|E:No such tag: None
+ambiguous|None|false
+lookupTag|Pair|Pair 0 Pair true
+lookupTagIn|Pair|E:No such tag: Pair
+ambiguous|Pair|false
+lookupTag|Node|Tree 1 Node true
+lookupTagIn|Node|E:No such tag: Node
+ambiguous|Node|false
+lookupTag|Leaf|Tree 0 Leaf false
+lookupTagIn|Leaf|E:No such tag: Leaf
+ambiguous|Leaf|false
+lookupTag|Unknown|E:No such tag found: Unknown
+lookupTagIn|Unknown|E:No such tag: Unknown
+ambiguous|Unknown|false
+lookupTag|Odd Tag|Multi Word Name 0 Odd Tag false
+lookupTagIn|Odd Tag|E:No such tag: Odd Tag
+ambiguous|Odd Tag|false
+lookupTag|Type|Type 0 Type false
+lookupTagIn|Type|E:No such tag: Type
+ambiguous|Type|false
+lookupTag|Wrap|Wrapper 0 Wrap true
+lookupTagIn|Wrap|E:No such tag: Wrap
+ambiguous|Wrap|false
+lookupTag|Stripe|Zebra 0 Stripe true
+lookupTagIn|Stripe|E:No such tag: Stripe
+ambiguous|Stripe|false
+lookupTag|Plain|Zebra 1 Plain false
+lookupTagIn|Plain|E:No such tag: Plain
+ambiguous|Plain|false
+typeUse|Number|Number ; Number ; Number ; Number ; Number{1} ; 0 ; 0 ; 31
+jellyParse|Number|Number ; Number
+typeUse|Number{m/s}|Number{m/s} ; Number{m/s} ; Number {m/s} ; Number { m * s ^-1 } ; Number{m/s} ; 0 ; 0{m/s} ; 23
+jellyParse|Number{m/s}|Number { m * s ^-1 } ; Number{m/s}
+typeUse|Text|Text ; Text ; Text ; Text ; Text ; "" ; "" ; 1
+jellyParse|Text|Text ; Text
+typeUse|Boolean|Boolean ; Boolean ; Boolean ; Boolean ; Boolean ; false ; false ; 1
+jellyParse|Boolean|Boolean ; Boolean
+typeUse|Date|Date ; Date ; Date ; Date ; Date ; 1900-01-01 ; date{1900-01-01} ; 500772896
+jellyParse|Date|Date ; Date
+typeUse|DateYM|DateYM ; DateYM ; DateYM ; DateYM ; DateYM ; 1900-01 ; dateym{1900-01} ; 1335505746
+jellyParse|DateYM|DateYM ; DateYM
+typeUse|Time|Time ; Time ; Time ; Time ; Time ; 00:00:00 ; time{00:00:00} ; 459848162
+jellyParse|Time|Time ; Time
+typeUse|DateTime|DateTime ; DateTime ; DateTime ; DateTime ; DateTime ; 1900-01-01 00:00:00 ; datetime{1900-01-01 00:00:00} ; 1800659581
+jellyParse|DateTime|DateTime ; DateTime
+typeUse|DateTimeZoned|DateTimeZoned ; DateTimeZoned ; DateTimeZoned ; DateTimeZoned ; DateTimeZoned ; 1900-01-01 00:00:00 UTC ; datetimezoned{1900-01-01 00:00:00 UTC} ; 1691538319
+jellyParse|DateTimeZoned|DateTimeZoned ; DateTimeZoned
+typeUse|[Number]|[Number] ; [Number] ; [ Number ] ; [ Number ] ; List(Number{1}) ; [] ; [] ; 62
+jellyParse|[Number]|[ Number ] ; [Number]
+typeUse|[[Text]]|[[Text]] ; [[Text]] ; [ [ Text ] ] ; [ [ Text ] ] ; List(List(Text)) ; [] ; [] ; 63
+jellyParse|[[Text]]|[ [ Text ] ] ; [[Text]]
+typeUse|(a: Number, b: Text)|(a: Number, b: Text) ; (a: Number, b: Text) ; ( a : Number , b : Text ) ; ( a ?: Number , b ?: Text ) ; (a: Number{1}, b: Text) ; (a: 0, b: "") ; (a: 0, b: "") ; 256
+jellyParse|(a: Number, b: Text)|( a : Number , b : Text ) ; (a: Number, b: Text)
+typeUse|(z: Boolean, field: [Date], Total: Number{USD}, aa: Text, x: Time)|(Total: Number{USD}, aa: Text, field: [Date], x: Time, z: Boolean) ; (Total: Number{USD}, aa: Text, field: [Date], x: Time, z: Boolean) ; ( Total : Number {USD} , aa : Text , field : [ Date ] , x : Time , z : Boolean ) ; ( Total ?: Number { USD } , aa ?: Text , field ?: [ Date ] , x ?: Time , z ?: Boolean ) ; (aa: Text, field: List(Date), Total: Number{USD}, x: Time, z: Boolean) ; (Total: 0, aa: "", field: [], x: 00:00:00, z: false) ; (Total: 0{USD}, aa: "", field: [], x: time{00:00:00}, z: false) ; 944961980
+jellyParse|(z: Boolean, field: [Date], Total: Number{USD}, aa: Text, x: Time)|( Total : Number { USD } , aa : Text , field : [ Date ] , x : Time , z : Boolean ) ; (Total: Number{USD}, aa: Text, field: [Date], x: Time, z: Boolean)
+typeUse|Colour|Colour <Red \p Green \p Blue \p Custom:Number> ; Colour ; Colour ; Colour ; Colour ; Red ; tag\\\\Colour\\Red ; -1353087551
+jellyParse|Colour|Colour ; Colour <Red \p Green \p Blue \p Custom:Number>
+typeUse|@apply Optional(Number)|Optional(Number) <None \p Is:Number> ; Optional(Number) ; @apply   Optional ( Number ) ; @apply   Optional ( Number ) ; Optional(Number{1}) ; None ; tag\\\\Optional\\None ; 1411521679
+jellyParse|@apply Optional(Number)|@apply   Optional ( Number ) ; Optional(Number) <None \p Is:Number>
+typeUse|@apply Optional(@apply Optional(Text))|Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>> ; Optional(Optional(Text) <None \p Is:Text>) ; @apply   Optional ( @apply   Optional ( Text ) ) ; @apply   Optional ( @apply   Optional ( Text ) ) ; Optional(Optional(Text)) ; None ; tag\\\\Optional\\None ; -664456561
+jellyParse|@apply Optional(@apply Optional(Text))|@apply   Optional ( @apply   Optional ( Text ) ) ; Optional(Optional(Text) <None \p Is:Text>) <None \p Is:Optional(Text) <None \p Is:Text>>
+typeUse|@apply Pair(Number)(Text)|Pair(Number)(Text) <Pair:(first: Optional(Number) <None \p Is:Number>, second: Text)> ; Pair(Number)(Text) ; @apply   Pair ( Number ) ( Text ) ; @apply   Pair ( Number ) ( Text ) ; Pair(Number{1})(Text) ; Pair(first: None, second: "") ; @call tag\\\\Pair\\Pair(first: tag\\\\Optional\\None, second: "") ; -1366656786
+jellyParse|@apply Pair(Number)(Text)|@apply   Pair ( Number ) ( Text ) ; Pair(Number)(Text) <Pair:(first: Optional(Number) <None \p Is:Number>, second: Text)>
+typeUse|@apply Measure{m}|Measure({m}) <Measured:Number{m} \p Unmeasured> ; Measure({m}) ; @apply   Measure {m} ; @apply   Measure ( { m } ) ; Measure(m) ; Unmeasured ; tag\\\\Measure\\Unmeasured ; -1407807409
+jellyParse|@apply Measure{m}|@apply   Measure ( { m } ) ; Measure({m}) <Measured:Number{m} \p Unmeasured>
+typeUse|@apply Measure{kg*m/s^2}|!ParseException: Error while parsing on line 1:\nkg*m/s^2\n    ^-- Unexpected\n\nFound: {/} '/' [6] 4
+jellyParse|@apply Measure{kg*m/s^2}|!ParseException: Error while parsing on line 1:\nkg*m/s^2\n    ^-- Unexpected\n\nFound: {/} '/' [6] 4
+typeUse|@apply Tree(Boolean)|!StackOverflowError: null
+jellyParse|@apply Tree(Boolean)|@apply   Tree ( Boolean ) ; !StackOverflowError: null
+typeUse|Shape|Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text> ; Shape ; Shape ; Shape ; Shape ; Circle(radius: 0) ; @call tag\\\\Shape\\Circle(radius: 0{m}) ; -1613195174
+jellyParse|Shape|Shape ; Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>
+typeUse|Wrapper|Wrapper <Wrap:Pair(Colour <Red \p Green \p Blue \p Custom:Number>)(Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>) <Pair:(first: Optional(Colour <Red \p Green \p Blue \p Custom:Number>) <None \p Is:Colour <Red \p Green \p Blue \p Custom:Number>>, second: Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>)>> ; Wrapper ; Wrapper ; Wrapper ; Wrapper ; Wrap(Pair(first: None, second: Circle(radius: 0))) ; @call tag\\\\Wrapper\\Wrap(@call tag\\\\Pair\\Pair(first: tag\\\\Optional\\None, second: @call tag\\\\Shape\\Circle(radius: 0{m}))) ; 954721782
+jellyParse|Wrapper|Wrapper ; Wrapper <Wrap:Pair(Colour <Red \p Green \p Blue \p Custom:Number>)(Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>) <Pair:(first: Optional(Colour <Red \p Green \p Blue \p Custom:Number>) <None \p Is:Colour <Red \p Green \p Blue \p Custom:Number>>, second: Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>)>>
+typeUse|Multi Word Name|Multi Word Name <Odd Tag \p Normal> ; Multi Word Name ; Multi Word Name ; Multi Word Name ; Multi Word Name ; Odd Tag ; tag\\\\Multi Word Name\\Odd Tag ; -911929381
+jellyParse|Multi Word Name|Multi Word Name ; Multi Word Name <Odd Tag \p Normal>
+typeUse|Fn|Fn <F:(Number, Text) -> Boolean> ; Fn ; Fn ; Fn ; Fn ; !InternalException: Functions are unsupported, plain data values expected ; 2283678
+jellyParse|Fn|Fn ; Fn <F:(Number, Text) -> Boolean>
+typeUse|Apple|!StackOverflowError: null
+jellyParse|Apple|Apple ; !StackOverflowError: null
+typeUse|@apply Mango(Number)|Mango(Number) <Fruit:Number \p Is> ; Mango(Number) ; @apply   Mango ( Number ) ; @apply   Mango ( Number ) ; Mango(Number{1}) ; Is ; tag\\\\Mango\\Is ; -719000209
+jellyParse|@apply Mango(Number)|@apply   Mango ( Number ) ; Mango(Number) <Fruit:Number \p Is>
+typeUse|(a: Number, _)|(a: Number) ; (a: Number) ; ( a : Number ) ; ( a ?: Number ) ; (a: Number{1}) ; (a: 0) ; (a: 0) ; 157
+jellyParse|(a: Number, _)|( a : Number ) ; (a: Number)
+typeUse|Dates|Dates <D:Date \p DT:DateTime \p DTZ:DateTimeZoned \p T:Time \p YM:DateYM> ; Dates ; Dates ; Dates ; Dates ; D(1900-01-01) ; @call tag\\\\Dates\\D(date{1900-01-01}) ; 1131911110
+jellyParse|Dates|Dates ; Dates <D:Date \p DT:DateTime \p DTZ:DateTimeZoned \p T:Time \p YM:DateYM>
+typeUse|(Number, Text) -> Boolean|!InternalException: Functions are unsupported, plain data values expected
+jellyParse|(Number, Text) -> Boolean|(( Number Text ,  ) ->  Boolean ) ; (Number, Text) -> Boolean
+typeUse|[(a: Colour, b: @apply Optional(Shape))]|[(a: Colour <Red \p Green \p Blue \p Custom:Number>, b: Optional(Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>) <None \p Is:Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>>)] ; [(a: Colour, b: Optional(Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>))] ; [ ( a : Colour , b : @apply   Optional ( Shape ) ) ] ; [ ( a ?: Colour , b ?: @apply   Optional ( Shape ) ) ] ; List((a: Colour, b: Optional(Shape))) ; [] ; [] ; -24204949
+jellyParse|[(a: Colour, b: @apply Optional(Shape))]|[ ( a : Colour , b : @apply   Optional ( Shape ) ) ] ; [(a: Colour <Red \p Green \p Blue \p Custom:Number>, b: Optional(Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>) <None \p Is:Shape <Circle:(radius: Number{m}) \p Rect:(height: Number{m}, width: Number{m}) \p Named:Text>>)]
+typeUse|Nonexistent|!UserException: Undeclared tagged type: "Nonexistent"
+jellyParse|Nonexistent|Nonexistent ; !UnknownTypeException: Unknown type or type variable: Nonexistent
+typeUse|@apply Optional(Number)(Text)|!TaggedInstantiationException: Attempting to use type with 1 variables but trying to substitute 2
+jellyParse|@apply Optional(Number)(Text)|@apply   Optional ( Number ) ( Text ) ; !TaggedInstantiationException: Attempting to use type with 1 variables but trying to substitute 2
+typeUse|@apply Measure(Number)|!TaggedInstantiationException: Expected unit variable but found type variable for variable #1
+jellyParse|@apply Measure(Number)|@apply   Measure ( Number ) ; !TaggedInstantiationException: Expected unit variable but found type variable for variable #1
+typeUse|Number{foo}|!UserException: Unknown unit: "foo"
+jellyParse|Number{foo}|!InternalException: Unknown unit: foo
+typeUse|(a: Number, a: Text)|!UserException: Duplicated field: "a"
+jellyParse|(a: Number, a: Text)|!UserException: Duplicated field: "a"
+typeUse|Void|Void <> ; Void ; Void ; Void ; Void ; !ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0 ; -1727095501
+jellyParse|Void|Void ; Void <>
+typeUse|@apply Type(Number)|Type(Number) <Type> ; Type(Number) ; @apply   Type ( Number ) ; @apply   Type ( Number ) ; Type(Number{1}) ; Type ; tag\\\\Type\\Type ; -1693615936
+jellyParse|@apply Type(Number)|@apply   Type ( Number ) ; Type(Number) <Type>
+typeUse|@apply Unit{m}|Unit({m}) <Unit> ; Unit({m}) ; @apply   Unit {m} ; @apply   Unit ( { m } ) ; Unit(m) ; Unit ; tag\\\\Unit\\Unit ; -1674747693
+jellyParse|@apply Unit{m}|@apply   Unit ( { m } ) ; Unit({m}) <Unit>
+value|Number := 0|0 ; 0 ; 0 ; 0
+value|Number := -12.50|-12.5 ; -12.5 ; -12.5 ; -12.5
+value|Number := 1e3|L:1e3
+value|Number := 123456789012345678901234567890.123456789|123456789012345678901234567890.1235 ; 123456789012345678901234567890.1235 ; 123456789012345678901234567890.1235 ; 123456789012345678901234567890.1235
+value|Number := abc|L:abc
+value|Number{m} := 3.14159|3.14159 ; 3.14159{m} ; 3.14159 ; 3.14159
+value|Text := "hello"|"hello" ; "hello" ; "hello" ; "hello"
+value|Text := "with ^q quote and ^n newline"|"with ^q quote and ^n newline" ; "with ^q quote and ^n newline" ; "with ^q quote and ^n newline" ; "with ^q quote and ^n newline"
+value|Text := unquoted|L:unquoted
+value|Boolean := true|true ; true ; true ; true
+value|Boolean := FALSE|L:FALSE
+value|Date := 2023-02-28|2023-02-28 ; date{2023-02-28} ; 2023-02-28 ; 2023-02-28
+value|Date := 2023-02-30|2023-02-28 ; date{2023-02-28} ; 2023-02-28 ; 2023-02-28
+value|DateYM := 1999-12|1999-12 ; dateym{1999-12} ; 1999-12 ; 1999-12
+value|Time := 13:45:07.123|13:45:07.123 ; time{13:45:07.123} ; 13:45:07.123 ; 13:45:07.123
+value|Time := 1:2|L:1:2
+value|DateTime := 2001-01-01 00:00:00|2001-01-01 00:00:00 ; datetime{2001-01-01 00:00:00} ; 2001-01-01 00:00:00 ; 2001-01-01T00:00
+value|DateTimeZoned := 2001-06-01 12:00 Europe/London|L:2001-06-01 12:00 Europe/London
+value|DateTimeZoned := 2001-06-01 12:00 +05:30|L:2001-06-01 12:00 +05:30
+value|[Number] := [1, 2, 3]|[1, 2, 3] ; [1, 2, 3] ; [ 1 , 2 , 3 ] ; [1, 2, 3]
+value|[Number] := []|[] ; [] ; [ ] ; []
+value|[[Text]] := [["a"], [], ["b", "c"]]|[["a"], [], ["b", "c"]] ; [["a"], [], ["b", "c"]] ; [ [ "a" ] , [ ] , [ "b" , "c" ] ] ; [[a], [], [b, c]]
+value|(a: Number, b: Text) := (b: "x", a: 5)|(a: 5, b: "x") ; (a: 5, b: "x") ; ( "a" : 5 , "b" : "x" ) ; RecordMap{values={a=5, b=x}}
+value|(a: Number, b: Text) := (a: 5)|L:(a: 5)
+value|Colour := Red|Red ; tag\\\\Colour\\Red ; Red ; TaggedValue{0: null}
+value|Colour := Custom(4)|Custom(4) ; @call tag\\\\Colour\\Custom(4) ; Custom ( 4 ) ; TaggedValue{3: 4}
+value|Colour := Purple|L:Purple
+value|@apply Optional(Number) := None|None ; tag\\\\Optional\\None ; None ; TaggedValue{0: null}
+value|@apply Optional(Number) := Is(7)|Is(7) ; @call tag\\\\Optional\\Is(7) ; Is ( 7 ) ; TaggedValue{1: 7}
+value|@apply Pair(Number)(Text) := Pair((first: Is(1), second: "two"))|L:Pair((first: Is(1), second: "two"))
+value|@apply Measure{m} := Measured(2.5)|Measured(2.5) ; @call tag\\\\Measure\\Measured(2.5{m}) ; Measured ( 2.5 ) ; TaggedValue{0: 2.5}
+value|@apply Tree(Boolean) := Many([Leaf, Node(true), Many([])])|!StackOverflowError: null
+value|Multi Word Name := "Odd Tag"|Odd Tag ; tag\\\\Multi Word Name\\Odd Tag ; Odd Tag ; TaggedValue{0: null}
+value|Multi Word Name := Normal|Normal ; tag\\\\Multi Word Name\\Normal ; Normal ; TaggedValue{1: null}
+value|@apply Mango(Text) := Is|Is ; tag\\\\Mango\\Is ; Is ; TaggedValue{1: null}
+value|@apply Mango(Text) := Fruit("apple")|Fruit("apple") ; @call tag\\\\Mango\\Fruit("apple") ; Fruit ( "apple" ) ; TaggedValue{0: apple}
+value|Shape := Rect((height: 2, width: 3))|L:Rect((height: 2, width: 3))
+value|[(a: Colour, b: @apply Optional(Shape))] := [(a: Blue, b: Is(Circle((radius: 1))))]|L:[(a: Blue, b: Is(Circle((radius: 1))))]
+value|Number := @INVALID "bad"|L:bad
+value|[Number] := [1, @INVALID "x"]|!InternalException: Invalid nested disallowed
+flexible|YEARMONTHDAY 2023-02-28|2023-02-28 @10
+flexible|YEARMONTHDAY 28/02/2023|2023-02-28 @10
+flexible|YEARMONTHDAY 02/28/2023|2023-02-28 @10
+flexible|YEARMONTHDAY 1/2/2003|!PositionedUserException: 2 ways to interpret DateTimeInfo{type=YEARMONTHDAY} value ">>>1/2/2003": [2003-02-01, 2003-01-02, 2020-02-01, 2020-01-02] using formatters [Value(DayOfMonth,1,2,NEVER)' 'Value(MonthOfYear,1,2,NEVER)' 'Value(Year,4,4,NEVER), Value(MonthOfYear,1,2,NEVER)' 'Value(DayOfMonth,1,2,NEVER)' 'Value(Year,4,4,NEVER), Value(DayOfMonth,1,2,NEVER)' 'Value(MonthOfYear,1,2,NEVER)' 'ReducedValue(Year,2,2,1946), Value(MonthOfYear,1,2,NEVER)' 'Value(DayOfMonth,1,2,NEVER)' 'ReducedValue(Year,2,2,1946)]
+flexible|YEARMONTHDAY 3 March 1999|1999-03-03 @12
+flexible|YEARMONTHDAY March 3 1999 and more|1999-03-03 @12
+flexible|YEARMONTHDAY   2001 Jan 5|2001-01-05 @12
+flexible|YEARMONTHDAY 12/13/14|2014-12-13 @8
+flexible|YEARMONTHDAY not a date|!PositionedUserException: Expected Date value but found: ">>>not a date"
+flexible|YEARMONTH 03/1999|1999-03 @7
+flexible|YEARMONTH Mar 99|1999-03 @6
+flexible|YEARMONTH 1999-03|1999-03 @7
+flexible|TIMEOFDAY 13:45|13:45 @5
+flexible|TIMEOFDAY 1:45 PM|13:45 @7
+flexible|TIMEOFDAY 1:45:30.5pm|13:45:30.500 @11
+flexible|TIMEOFDAY 25:00|!PositionedUserException: Expected Time value but found: ">>>25:00"
+flexible|DATETIME 2001-02-03 04:05:06|2001-02-03T04:05:06 @19
+flexible|DATETIME 3 Feb 2001 4:05 AM|2001-02-03T04:05 @18
+flexible|DATETIME 2001-02-03T04:05|2001-02-03T04:05 @16
+flexible|DATETIMEZONED 2001-02-03 04:05 Europe/Paris|2001-02-03T04:05+01:00[Europe/Paris] @29
+flexible|DATETIMEZONED 2001-02-03 04:05 UTC|2001-02-03T04:05Z[UTC] @20
+flexible|DATETIMEZONED 2001-02-03 04:05 EST|2001-02-03T04:05-05:00[America/New_York] @20
+flexible|DATETIMEZONED 2001-02-03 04:05+01:00[Europe/Paris]|2001-02-03T04:05+01:00[Europe/Paris] @36
+flexible|DATETIMEZONED 2001-02-03 04:05|!PositionedUserException: Expected DateTimeZoned value but found: ">>>2001-02-03 04:05"
+d|0.0|0.000000
+d|-0.0|-0.000000
+d|1.5|1.500000
+d|0.15|0.150000
+d|2.5E-7|0.000000
+d|1234567.891234567|1234567.891235
+d|-3.0000005|-3.000001
+d|1.0E20|100000000000000000000.000000
+d|123.4564999|123.456500
+d|NaN|NaN
+d|Infinity|Infinity
+id|simple|"simple" simple simple "simple"\nnext {m/s} 42 @END ; "simple" simple simple "simple",next {m/s} 42 @END
+id|with space|"with space" "with space" with space "with space"\nnext {m/s} 42 @END ; "with space" "with space" with space "with space",next {m/s} 42 @END
+id|Number|"Number" Number Number "Number"\nnext {m/s} 42 @END ; "Number" Number Number "Number",next {m/s} 42 @END
+id|@BEGIN|"^aBEGIN" "^aBEGIN" "^aBEGIN" "^aBEGIN"\nnext {m/s} 42 @END ; "^aBEGIN" "^aBEGIN" "^aBEGIN" "^aBEGIN",next {m/s} 42 @END
+id|a"b|"a^qb" "a^qb" "a^qb" "a^qb"\nnext {m/s} 42 @END ; "a^qb" "a^qb" "a^qb" "a^qb",next {m/s} 42 @END
+id||"" "" "" ""\nnext {m/s} 42 @END ; "" "" "" "",next {m/s} 42 @END
+id|x^y|"x^cy" "x^cy" "x^cy" "x^cy"\nnext {m/s} 42 @END ; "x^cy" "x^cy" "x^cy" "x^cy",next {m/s} 42 @END
+id|true|"true" "true" "true" "true"\nnext {m/s} 42 @END ; "true" "true" "true" "true",next {m/s} 42 @END
+id|tab	here|"tab	here" "tab	here" "tab	here" "tab	here"\nnext {m/s} 42 @END ; "tab	here" "tab	here" "tab	here" "tab	here",next {m/s} 42 @END

@@ -114,6 +114,21 @@ export function javaHashCode(x: unknown): number
     }
     if (hasHashCode(x))
         return x.hashCode() | 0;
+    // JavaScript Maps and Sets (used for string-keyed Java maps and sets): Map.hashCode and Set.hashCode
+    if (x instanceof Map)
+    {
+        let h = 0;
+        for (const [k, v] of x)
+            h = (h + (javaHashCode(k) ^ javaHashCode(v))) | 0;
+        return h;
+    }
+    if (x instanceof Set)
+    {
+        let h = 0;
+        for (const k of x)
+            h = (h + javaHashCode(k)) | 0;
+        return h;
+    }
     return identityHashCode(x as object);
 }
 
@@ -179,4 +194,10 @@ export function comparing<T>(...keys: ((t: T) => unknown)[]): Comparator<T>
         }
         return 0;
     };
+}
+
+/** Java's Objects.hash(values...) (that is, Arrays.hashCode of the values). */
+export function javaObjectsHash(...values: unknown[]): number
+{
+    return javaHashCode(values);
 }

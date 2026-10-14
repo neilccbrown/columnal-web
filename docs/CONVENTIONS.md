@@ -27,8 +27,9 @@ reviewed side by side with the Java. Refactoring comes after a module works and 
 - `src/engine/java/` is a TypeScript-only module of Java standard library equivalents, and of the
   small third-party Java classes Columnal used (`Rational` from javaSMT, `Damerau` from
   java-string-similarity). Any module may use it. It contains `JavaObject` (equals/hashCode/compareTo),
-  `HashMap`/`HashSet`, `JavaBigDecimal` (numbers), `JavaString`, `JavaDouble`, `JavaCharacter`,
-  `JavaRandom`, `JavaCollections`, `JavaProperties`, `JavaEnum` and `JavaExceptions`.
+  `HashMap`/`HashSet`, `TreeMap`/`TreeSet`, `JavaBigDecimal` (numbers), `JavaString`, `JavaDouble`,
+  `JavaCharacter`, `JavaRandom`, `JavaCollections`, `JavaProperties`, `JavaEnum`, `JavaExceptions`,
+  and `time/` (java.time, see "Dates and times" below).
 - `src/engine/anns/` holds type aliases for the Java Checker Framework qualifiers
   (`ExpressionIdentifier`, `TableDataRowIndex`, ...), which document ported signatures.
 - `npm run depcheck` enforces the layering: the engine never imports `src/gui` or `src/gui-logic`,
@@ -122,21 +123,57 @@ trailing zeros are not significant (2.5 and 2.50 are the same value) and there i
 - Maps and sets: use JavaScript `Map`/`Set` for string, number or boolean keys, and `HashMap`/`HashSet`
   (`src/engine/java/HashMap.ts`) for object keys (ids, values, Pairs, ...), which compare keys with
   `equals`/`hashCode`. A plain `Map` would compare objects by identity. `ReadonlyMapLike` accepts either.
-- **Iteration order:** `HashMap`/`HashSet` iterate in insertion order, like `LinkedHashMap` and Guava's
-  `ImmutableMap`, *not* in Java `HashMap`'s hash order. When porting code that iterates a Java
-  `HashMap`/`HashSet`, check whether the order is observable (in output, files or behaviour). If it is,
-  sort explicitly or otherwise reproduce it, and say what you did in a `PORT-NOTE`.
+- **Iteration order:** `new HashMap()`/`new HashSet()` iterate in insertion order, like `LinkedHashMap`
+  and Guava's `ImmutableMap`, *not* in Java `HashMap`'s hash order. When porting code that iterates a
+  Java `HashMap`/`HashSet`, check whether the order is observable (in output, files, error messages or
+  behaviour). If it is, use `HashMap.javaOrder()`/`HashSet.javaOrder()` (with `{ initialCapacity }` if
+  the Java passes one, and the entries for Java's copy constructors), and say so in a `PORT-NOTE`. These
+  simulate Java 17's hash table, which a golden test checks against the JVM: iteration goes through
+  the buckets in order; `set` (Java's `put`) appends to its bucket, while `merge`, `compute` and
+  `computeIfAbsent` add at the head of the bucket, as Java does; and the table grows at the same points.
+  Use the same method the Java used (`merge` rather than an equivalent `get` and `set`), as it affects
+  the order. Java's `HashMap<String, ...>` becomes `HashMap.javaOrder<string, ...>()` in this case,
+  rather than a JS `Map`. Guava's `ImmutableMap.copyOf(hashMap)` keeps the order, so becomes
+  `new Map(javaOrderMap)`.
+- Java's `TreeMap`/`TreeSet` become `TreeMap`/`TreeSet` (`src/engine/java/TreeMap.ts`), which keep
+  their keys sorted with `javaCompare` (or a given comparator).
+- `List.get(i)` with an index that may be out of range: use `javaListGet` (`JavaCollections.ts`),
+  which throws Java's `IndexOutOfBoundsException` rather than returning `undefined`.
 - Classes that override `equals`/`hashCode` in Java keep `equals(other: unknown): boolean` and
   `hashCode(): number` methods, with `hashCode` returning a Java int (using `| 0` and `Math.imul`).
   `javaEquals`, `javaHashCode` and `javaCompare` (`JavaObject.ts`) extend the protocol to strings,
   numbers, booleans, `Decimal`s, arrays and JS `Map`/`Set`. Objects without `equals` compare by
-  identity, as in Java.
+  identity, as in Java. `javaObjectsHash(...)` is `Objects.hash(...)`.
+- A Java enum's `hashCode()` is an identity hash, which varies between JVM runs, so the port uses the
+  ordinal. Nothing may depend on its value (golden tests skip such hash codes).
 
 ### Values
 
 A Columnal value (Java `@Value Object`) is the `Value` type in `src/engine/utility/utility/Value.ts`:
-`Decimal | boolean | string | TemporalAccessor | TaggedValue | ListEx | Record`. The java.time types
-arrive in Phase 2.
+`Decimal | boolean | string | TemporalAccessor | TaggedValue | ListEx | Record | ValueFunctionBase`.
+`TemporalAccessor` is js-joda's, narrowed to the comparable types (`LocalDate`, `YearMonth`,
+`LocalTime`, `LocalDateTime`, `ZonedDateTime`), which are assignable to it directly.
+
+Java checks a value's class at run time in a few places (`Class.cast`, `isAssignableFrom`). Those
+checks use `ValueClass` (`DataType.ts`), for example `ValueClass.cast(ValueClass.NUMBER, v)`.
+
+### Dates and times
+
+`java.time` is replaced by [js-joda](https://js-joda.github.io/js-joda/), a port of java.time with the
+same classes and methods, imported only through `src/engine/java/time/JavaTime.ts` (`npm run depcheck`
+enforces this). `JavaTime.ts` corrects the places where js-joda differs from Java in Columnal's use,
+and golden tests (`scripts/golden/datetime.sh`, `zone-data.sh`) check the formatters against the JVM:
+
+- Use `JavaDateTimeFormatterBuilder` instead of `DateTimeFormatterBuilder`. Its zone parsing
+  (`appendZoneId`, `appendZoneRegionId`, `appendZoneOrOffsetId`, and `appendZoneTextJava` for
+  `appendZoneText`) follows Java's algorithm and uses Java's tables of zone IDs and en-US short zone
+  names (`JavaZoneData.ts`, extracted from the JDK). Formatters use the en-US locale.
+- `DateTimeFormatter.parse(text, ParsePosition)` is `parseFromPosition(formatter, text, position)`.
+- js-joda's `DateTimeParseException` is not a subclass of `DateTimeException`, unlike Java's, so a
+  ported `catch (DateTimeException e)` must test `isDateTimeException(e)`.
+- `javaMessage(e)` gives the message Java would give for a java.time exception.
+- Accepted differences: time-zone rules beyond the tabulated years may differ, and some "Unable to
+  obtain X from TemporalAccessor" messages end differently.
 
 ### Classes, interfaces and enums
 
@@ -151,7 +188,18 @@ arrive in Phase 2.
   Anonymous classes become object literals or local classes. Nested classes that Java code imports
   directly (`import ...Utility.ListEx`) are exported at the top level instead, as `Utility.ts` does for
   `ListEx`, `Record` and `EpsilonType`.
-- Other interfaces stay interfaces. Default methods move into an abstract base class or helper functions.
+- Other interfaces stay interfaces. Default methods move into an abstract base class or helper functions,
+  or become optional members where the default just throws (as `DataTypeVisitorEx.function?` does; the
+  caller then throws in its place).
+- **Visitors** (`DataTypeVisitorEx`, `JellyTypeVisitorEx`, ...) become interfaces, implemented with
+  object literals. Java's partial visitor classes (`SpecificDataTypeVisitor`, `FlatDataTypeVisitor`)
+  stay classes, and an anonymous Java subclass becomes `new class extends SpecificDataTypeVisitor<R> {
+  public override tagged(...) { ... } }()`. Generic exception parameters (`<R, E extends Throwable>`)
+  are dropped.
+- Where Java has a public final method and an abstract protected overload that subclasses implement
+  (`TypeExp.toStyledString()` and `toStyledString(int maxDepth)`), the TypeScript has one public
+  method with an optional parameter, and subclasses implement a renamed protected method
+  (`toStyledStringDepth`). The comment on the base method says so.
 - **Enums**: a numeric TypeScript `enum`, so values keep their declaration order and ordinals. Static
   methods go in a merged `namespace`. Instance methods become namespace functions that take the value
   as their first argument. `values()` and `name()` become `javaEnumValues(E)` and `javaEnumName(E, v)`
@@ -160,6 +208,23 @@ arrive in Phase 2.
 - **Switch statements** over enums or strings must end with an exhaustiveness check (`const _: never = x`),
   wherever the Java relied on covering every case.
 
+### Class hierarchies split across files
+
+ES modules run a module's imports before its body. If a base class's module imports its
+subclasses (because its static methods construct them, as `TypeExp` and `JellyType` do), and the
+base module is the first one loaded, a subclass module runs `class X extends Base` before `Base`
+exists, and fails. So:
+
+- Such a hierarchy is loaded through a **barrel module** that exports the base class first, then the
+  subclasses (`typeExp/TypeExps.ts`, `jellytype/JellyTypes.ts`). Every module, including the base and
+  subclass modules themselves, imports these classes' values from the barrel. Type-only imports may
+  name the class files directly. The dependency-cruiser rules `via-barrel-*` enforce this; add new
+  hierarchies to `HIERARCHY_BARRELS` in `.dependency-cruiser.cjs`.
+- A static field whose initialiser needs a subclass defined later in the same file becomes a static
+  getter returning a module-level constant defined after the subclasses (as `DataType.NUMBER` does).
+- `test/engine/ModuleLoading.test.ts` loads every engine module first, in a fresh module registry,
+  to catch initialisation-order errors from cycles.
+
 ### Exceptions
 
 - Java exceptions become `Error` subclasses with the same names (`UserException` and
@@ -167,13 +232,14 @@ arrive in Phase 2.
 - TypeScript `catch` catches everything, so a ported `catch (SomeException e)` must re-throw anything
   else: `catch (e) { if (!(e instanceof SomeException)) throw e; ... }`.
 - `IllegalArgumentException` from Java's built-in classes usually becomes a `RangeError` or `TypeError`
-  from the JavaScript equivalent. Tests should expect that.
+  from the JavaScript equivalent. Tests should expect that. A `StackOverflowError` is a `RangeError`
+  ("Maximum call stack size exceeded").
 
 ### Annotations
 
 - `@OnThread(...)` is dropped, unless it says something important about threading (then keep it as a comment).
-- `@Nullable` becomes `| null`. `@Value`, `@ImmediateValue` and the other Checker Framework value
-  annotations become branded types (Phase 2).
+- `@Nullable` becomes `| null`. `@Value` and `@ImmediateValue` become the `Value` type. Identifier
+  annotations become the aliases in `src/engine/anns/` (`ExpressionIdentifier`, `UnitIdentifier`, ...).
 
 ## Grammars
 
@@ -220,6 +286,13 @@ install and before `dev`, `build`, `test` and `typecheck`.
   `npm run fetch-reference`) into a single-file Java program. Examples: `numbers.sh` (the number
   utilities, 4,000 cases), `java-lang.sh` and `grammar-utility.sh`. Known, deliberate differences are
   listed explicitly in the test, with their `PORT-NOTE`.
+- For whole classes, `scripts/golden/build-columnal-jvm.sh` compiles the original engine modules
+  (so far up to `types`) into `reference/jvm/classes`: it downloads the Maven dependencies (checking
+  their SHA-1s), generates the Java parsers with ANTLR 4.11, and strips the Checker Framework
+  annotations. A harness such as `scripts/golden/java/TypesHarness.java` then calls the real classes,
+  printing `section|input|output` lines that a test replays (`test/engine/types/TypesGolden.test.ts`).
+  Cases generated from `java.util.Random` seeds make exactly the same calls in Java and in the test,
+  which `JavaRandom` makes possible.
 - New TS-only tests (for code with no Java test) go in `test/engine/<module>/`.
 - GUI tests (Playwright) are ported per test method, at the level of behaviour (PLAN.md §3b).
 

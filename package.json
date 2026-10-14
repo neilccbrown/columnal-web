@@ -28,6 +28,10 @@
     "port-status": "tsx scripts/port-status.ts"
   },
   "dependencies": {
+    "@js-joda/core": "^6.3.0",
+    "@js-joda/locale": "^5.3.2",
+    "@js-joda/locale_en": "^5.3.2",
+    "@js-joda/timezone": "^3.1.0",
     "antlr4ng": "^3.0.16",
     "decimal.js": "^10.6.0",
     "vue": "^3.5.44"

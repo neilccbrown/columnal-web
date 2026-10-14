@@ -79,8 +79,8 @@ Tests:
 | Parsers | ANTLR 4 (Java target) | **antlr-ng** tool + **antlr4ng** runtime | Pure TypeScript, no Java needed at build time. Embedded Java actions and predicates (for example in `MainLexer2`/`MainParser2`) must be rewritten in TS. |
 | Numbers | `Long` or `BigDecimal` (which keeps its scale), `MathContext.DECIMAL128` | **Canonical decimals**: one `Decimal` type (decimal.js configured as DECIMAL128), with no significant trailing zeros | Decided in Phase 1. Java's scale only showed in how some computed results displayed (`2.50`); values, equality, ordering and files are unaffected. Java's `pow` algorithm is ported exactly. `big-math` (log, exp) is handled in Phase 4. See CONVENTIONS.md "Numbers". |
 | Rationals | javaSMT `Rational` (only use of javaSMT) | port of that `Rational` over `bigint` | Used for unit exponents. Done in Phase 1. |
-| Dates/times | `java.time` | **Temporal** (`temporal-polyfill` until Safari ships it natively) | `DateTimeFormatter` pattern parsing and formatting (8 files, including GuessFormat) needs a small in-house port, because Temporal has no pattern parser. |
-| Immutable collections, equality | Guava `ImmutableList`/`Map`, `equals`/`hashCode` | arrays, JS `Map`/`Set` for primitive keys, and `HashMap`/`HashSet` (keyed by `equals`/`hashCode`) for object keys | JS `Map` uses identity, so any Java map keyed by values, identifiers or types needs `HashMap`. It iterates in insertion order, not Java's hash order: decided in Phase 1, with a check at each ported `HashMap` site for whether the order is observable. |
+| Dates/times | `java.time` | **js-joda** (a port of java.time), wrapped in `src/engine/java/time/JavaTime.ts` | Decided in Phase 2, instead of the originally planned Temporal: js-joda has java.time's classes, `DateTimeFormatterBuilder` and parse/resolve behaviour, so the date code ports line by line. Where it differs from Java (zone-name parsing, some printing), `JavaTime.ts` corrects it using tables extracted from the JDK, checked by golden tests. |
+| Immutable collections, equality | Guava `ImmutableList`/`Map`, `equals`/`hashCode` | arrays, JS `Map`/`Set` for primitive keys, and `HashMap`/`HashSet` (keyed by `equals`/`hashCode`) for object keys | JS `Map` uses identity, so any Java map keyed by values, identifiers or types needs `HashMap`. It iterates in insertion order, not Java's hash order: decided in Phase 1, with a check at each ported `HashMap` site for whether the order is observable. Where it is, `HashMap.javaOrder()` simulates Java's table to iterate in Java's order (Phase 2). |
 | Threading | FX thread + Simulation thread (758 `@OnThread(Simulation)`) | Single main thread with a **serial task queue** (`Workers.onWorkerThread` → time-sliced queue) | Keep the same boundaries in the API so the engine could move to a Web Worker later. |
 | Files | `java.io.File`, native dialogs, autosave | **File System Access API** (Chromium) with upload/download fallback; autosave and recent files in **OPFS/IndexedDB** | Asynchronous; kept behind a `FileService` interface. |
 | Clipboard | AWT/FX clipboard | async Clipboard API | Asynchronous. Copying HTML and plain text both work. |
@@ -197,17 +197,26 @@ parsers compile.
 `TestCompleteStringPool`, `PropDAG`) and its number, string and graph generators. `GenDate`,
 `GenZoneId`, `GenUnit` and the date/value parts of `TBasicUtil` move to Phase 2, which they need.
 
-### Phase 2: Type system (L2, `types`)
-- Port DataType, DataTypeUtility, DataTypeValue, TypeExp/TypeCons unification,
-  UnitManager/Unit/UnitExp (loading `builtin_units.txt`), TypeManager,
-  TaggedTypeDefinition, and JellyType/JellyUnit.
-- Port the type and unit parsers and the value representation (`@Value` becomes a
-  branded union).
-- Port the Temporal-based date/time value types and the `DateTimeFormatter` subset.
+### Phase 2: Type system (L2, `types`) (done)
+- Port the whole `types` module: DataType, DataTypeUtility, DataTypeValue, TypeExp/TypeCons
+  unification, UnitManager/Unit/UnitExp (loading `builtin_units.txt`), TypeManager,
+  TaggedTypeDefinition, JellyType/JellyUnit and OutputBuilder.
+- Dates and times use js-joda (a port of java.time) through `JavaTime.ts`, which makes zone parsing
+  and printing match Java's, using zone tables extracted from the JDK.
+- Add `TreeMap`/`TreeSet`, and a Java-order mode for `HashMap`/`HashSet` that simulates Java's
+  hash table, for the places where Java's iteration order is observable (saved units, record
+  field order, type lookups).
+- Build the original Java engine modules on the JVM (`scripts/golden/build-columnal-jvm.sh`) and
+  check the port against them: units, unit and type inference (800 seeded cases), type parsing and
+  saving, value printing, flexible date parsing and OutputBuilder (`TypesGolden.test.ts`), the date
+  formatters, and Java's HashMap order.
+- Deferred (marked `PORT-DEFERRED`): `TestUnit`'s `testAs`/`testAsFail` and function values in
+  `GenValueBase` (Phase 4, which has `ValueFunction` and `AsUnit`). `GenValueBaseE` and
+  `GenValueList` (tests-functions fixtures that need expressions) move to Phase 4.
 
 **Tests:** `PropUnit`, `TestUnit`, `TestGenDataType`, and the type, unit and value
 generators, plus the rest of `tests-basic`: `GenDate`, `GenZoneId`, `GenUnit` and the
-date/value parts of `TBasicUtil` (marked `PORT-DEFERRED`).
+date/value parts of `TBasicUtil`.
 
 ### Phase 3: Data model and file format (L3, `data`)
 - Port the column storages, Column/RecordSet/EditableRecordSet,
@@ -365,9 +374,9 @@ of `tests-gui-central` that do not need expressions.
 2. **Value equality.** JS has no `equals`/`hashCode`, so code ported naively silently
    uses identity semantics. *Mitigation:* the equality protocol and `HashMap` from
    Phase 1, plus a lint rule against `Map`/`Set` keyed by domain objects.
-3. **Date/time.** `java.time` differs from Temporal, and `DateTimeFormatter` has no
-   equivalent. *Mitigation:* a small, focused pattern-formatter port, tested against
-   the date property tests.
+3. **Date/time.** `java.time`'s behaviour (formatter parsing and resolving, zone names) is
+   subtle. *Mitigation (done in Phase 2):* js-joda, which mirrors java.time, corrected where
+   it differs and checked against the JVM by golden tests.
 4. **Sync vs async.** Files, clipboard and webR are asynchronous in the browser.
    *Mitigation:* confine async to the edges (file, clipboard and R service interfaces),
    so the engine stays synchronous like the Java.
@@ -395,7 +404,9 @@ Decided:
 - Numbers are canonical decimals (decimal.js configured as DECIMAL128), one representation for
   whole and fractional numbers, so 2.5 and 2.50 are the same value (Phase 1).
 - `HashMap`/`HashSet` iterate in insertion order, with a check at each ported Java `HashMap`
-  site for whether its order is observable (Phase 1).
+  site for whether its order is observable (Phase 1). Where it is, a Java-order mode
+  reproduces Java's order (Phase 2).
+- Dates and times use js-joda rather than Temporal (Phase 2).
 - Generated ANTLR output is not committed. `npm run gen:parsers` runs on install and before
   dev, build, test and typecheck, and takes under a second.
 - Engine tests use Vitest (Node). GUI tests use Playwright Test, to be reviewed after the

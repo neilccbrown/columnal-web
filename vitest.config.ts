@@ -11,5 +11,8 @@ export default defineConfig({
     test: {
         include: ["test/engine/**/*.test.ts", "test/support/**/*.test.ts"],
         environment: "node",
+        // JUnit has no per-test timeout, and property tests run many trials, which can take
+        // several seconds on a slow CI machine (Vitest's default is 5 seconds):
+        testTimeout: 60_000,
     },
 });

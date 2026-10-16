@@ -1,0 +1,57 @@
+ @call function\\minimum([54, 7, 82]) = (7)
+ @call function\\minimum(["cat", "aardvark", "bear"]) = ("aardvark")
+!!!  @call function\\minimum([])
+
+==* t//Comparable t
+== x//[@typevar t]
+==== @call function\\all(x, (@call function\\minimum(x) <= ?))
+==== true
+
+==* t//Comparable t
+== x//[@typevar t]
+==== @call function\\list contains(x, @call function\\minimum(x))
+==== true
+ @call function\\maximum([54, 7, 82]) = (82)
+ @call function\\maximum(["zebra", "wolf", "vole"]) = ("zebra")
+!!!  @call function\\maximum([])
+
+==* t//Comparable t
+== x//[@typevar t]
+==== @call function\\all(x, (@call function\\maximum(x) >= ?))
+==== true
+
+==* t//Comparable t
+== x//[@typevar t]
+==== @call function\\minimum(x) <= @call function\\maximum(x)
+==== true
+
+==* t//Comparable t
+== x//[@typevar t]
+==== @call function\\list contains(x, @call function\\maximum(x))
+==== true
+ @call function\\minimum index([54, 82, -7]) = (3)
+ @call function\\minimum index(["cat", "aardvark", "bear"]) = (2)
+!!!  @call function\\minimum index([])
+
+==* t//Comparable t
+== x//[@typevar t]
+==== 1 <= @call function\\minimum index(x) <= @call function\\list length(x)
+==== true
+
+==* t//Comparable t
+== x//[@typevar t]
+==== @call function\\element(x, @call function\\minimum index(x))
+==== @call function\\minimum(x)
+ @call function\\maximum index([54, 82, -7]) = (2)
+ @call function\\maximum index(["cat", "aardvark", "bear"]) = (1)
+!!!  @call function\\maximum index([])
+
+==* t//Comparable t
+== x//[@typevar t]
+==== 1 <= @call function\\maximum index(x) <= @call function\\list length(x)
+==== true
+
+==* t//Comparable t
+== x//[@typevar t]
+==== @call function\\element(x, @call function\\maximum index(x))
+==== @call function\\maximum(x)

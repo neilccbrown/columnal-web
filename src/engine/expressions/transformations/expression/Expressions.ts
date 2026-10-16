@@ -1,0 +1,41 @@
+// The Expression class hierarchy, loaded base classes first: Expression and the operator base
+// classes refer to their subclasses (IdentExpression, ImplicitLambdaArg, ...), so other modules
+// import these classes from here (see "Class hierarchies split across files" in docs/CONVENTIONS.md).
+export { Expression } from "./Expression.js";
+export { NonOperatorExpression } from "./NonOperatorExpression.js";
+export { Literal } from "./Literal.js";
+export { BinaryOpExpression } from "./BinaryOpExpression.js";
+export { NaryOpExpression } from "./NaryOpExpression.js";
+export { NaryOpShortCircuitExpression } from "./NaryOpShortCircuitExpression.js";
+export { NaryOpTotalExpression } from "./NaryOpTotalExpression.js";
+export { AddSubtractExpression } from "./AddSubtractExpression.js";
+export { AndExpression } from "./AndExpression.js";
+export { ArrayExpression } from "./ArrayExpression.js";
+export { BooleanLiteral } from "./BooleanLiteral.js";
+export { CallExpression } from "./CallExpression.js";
+export { ComparisonExpression } from "./ComparisonExpression.js";
+export { DefineExpression } from "./DefineExpression.js";
+export { DivideExpression } from "./DivideExpression.js";
+export { EqualExpression } from "./EqualExpression.js";
+export { FieldAccessExpression } from "./FieldAccessExpression.js";
+export { HasTypeExpression } from "./HasTypeExpression.js";
+export { IdentExpression } from "./IdentExpression.js";
+export { IfThenElseExpression } from "./IfThenElseExpression.js";
+export { ImplicitLambdaArg } from "./ImplicitLambdaArg.js";
+export { InvalidIdentExpression } from "./InvalidIdentExpression.js";
+export { InvalidOperatorExpression } from "./InvalidOperatorExpression.js";
+export { LambdaExpression } from "./LambdaExpression.js";
+export { MatchAnythingExpression } from "./MatchAnythingExpression.js";
+export { MatchExpression } from "./MatchExpression.js";
+export { NotEqualExpression } from "./NotEqualExpression.js";
+export { NumericLiteral } from "./NumericLiteral.js";
+export { OrExpression } from "./OrExpression.js";
+export { PlusMinusPatternExpression } from "./PlusMinusPatternExpression.js";
+export { RaiseExpression } from "./RaiseExpression.js";
+export { RecordExpression } from "./RecordExpression.js";
+export { StringConcatExpression } from "./StringConcatExpression.js";
+export { StringLiteral } from "./StringLiteral.js";
+export { TemporalLiteral } from "./TemporalLiteral.js";
+export { TimesExpression } from "./TimesExpression.js";
+export { TypeLiteralExpression } from "./TypeLiteralExpression.js";
+export { UnitLiteralExpression } from "./UnitLiteralExpression.js";

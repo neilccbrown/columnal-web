@@ -1,0 +1,32 @@
+(@call function\\from text("65") > 64) = (true)
+(@call function\\from text("TRUE") | false) = (true)
+(@call function\\as type(type{Date}, @call function\\from text("21 March 2004"))) = (@call function\\date from ymd(2004{year}, 3{month}, 21{day}))
+(@call function\\as type(type{[(a: Boolean, b: Number{m})]}, @call function\\from text("[(a:True, b:0), (a:FALSE, b:-1.6)]"))) = ([(a:true, b:0{m}), (a:false, b:-1.6{m})])
+ @call function\\from text to(type{Date}, "21 March 2004") = (@call function\\date from ymd(2004{year}, 3{month}, 21{day}))
+ @call function\\from text to(type{[(a:Boolean, b:Number{m})]}, "[(a:True, b:0), (a:FALSE, b:-1.6)]") = ([(a:true, b:0{m}), (a:false, b:-1.6{m})])
+ @call function\\to text(true) = ("true")
+ @call function\\to text(65{m}) = ("65")
+
+==* t//Readable//Showable//Equatable
+== x//@typevar t
+==== @call function\\from text(@call function\\to text(x))
+==== x
+ @call function\\extract number("-34.20m") = (-34.2)
+ @call function\\extract number("£17,000,000") = (17000000)
+ @call function\\extract number("The 6 cats") = (6)
+!!!  @call function\\extract number("2 and 2 makes 4")
+!!!  @call function\\extract number("Two")
+ @call function\\extract number(@call function\\replace many([(find: ".", replace: ","), (find: ",", replace: ".")], "10.449,99")) = (10449.99)
+
+== x//Number
+==== @call function\\extract number("a" ; @call function\\to text(x) ; "z")
+==== x
+
+== x//Number
+==== @call function\\extract number(@call function\\to text(x))
+==== x
+ @call function\\extract number or none("-34.20m") = (@call tag\\Optional\Is(-34.2))
+ @call function\\extract number or none("£17,000,000") = (@call tag\\Optional\Is(17000000))
+ @call function\\extract number or none("The 6 cats") = (@call tag\\Optional\Is(6))
+ @call function\\extract number or none("2 and 2 makes 4") = (tag\\Optional\None)
+ @call function\\extract number or none("Two") = (tag\\Optional\None)

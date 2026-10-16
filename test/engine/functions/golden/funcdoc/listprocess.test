@@ -1,0 +1,33 @@
+ @call function\\any(["a", "b", "c"], (? = "b")) = (true)
+ @call function\\any([0, 1, 2, 3], (? > 5)) = (false)
+ @call function\\any([], (? = 0)) = (false)
+ @call function\\all([0, 1, 2, 3], (? < 5)) = (true)
+ @call function\\all(["a", "b", "c"], (? = "b")) = (false)
+ @call function\\all([], (? = 0)) = (true)
+ @call function\\none([0, 1, 2, 3], (? > 5)) = (true)
+ @call function\\none(["a", "b", "c"], (? = "b")) = (false)
+ @call function\\none([], (? = 0)) = (true)
+ @call function\\combine([1, 2, 3], (? + ?)) = (6)
+ @call function\\combine(["a", "b", "c"], (? ; ?)) = ("abc")
+ @call function\\combine([true, false, false, true], (? | ?)) = (true)
+!!!  @call function\\combine([], (? + ?))
+ @call function\\select([3, 8, 4, 6, 2], (? >= 5)) = ([8, 6])
+ @call function\\select([], (? = 0)) = ([])
+
+==* t//
+== xs//[@typevar t]
+== f//((@typevar t) -> Boolean)
+==== @call function\\all(@call function\\select(xs, f), f)
+==== true
+ @call function\\apply each([3, 6, 9], (? + 1)) = ([4, 7, 10])
+ @call function\\apply each([-3, 4, -7], function\\abs) = ([3, 4, 7])
+ @call function\\count where([11, -2, 14, 4, 0], (? > 10)) = (2)
+ @call function\\count where(["Hi", "Hello"], (? = "Bye")) = (0)
+
+==* t//
+== xs//[@typevar t]
+== f//((@typevar t) -> Boolean)
+==== @call function\\list length(@call function\\select(xs, f))
+==== @call function\\count where(xs, f)
+ @call function\\list contains([1, 2, 3], 2) = (true)
+ @call function\\list contains(["a", "b", "c"], "d") = (false)

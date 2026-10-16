@@ -1,0 +1,6 @@
+ @call function\\log(100, 10) = (2)
+ @call function\\log(256, 2) = (8)
+ @call function\\log(53252, 10) =~ (4.726 ± 0.001)
+ @call function\\log natural(53252) =~ (10.883 ± 0.001)
+ @call function\\log natural(1) = (0)
+!!!  @call function\\log natural(0)

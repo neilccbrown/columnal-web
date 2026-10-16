@@ -1,0 +1,198 @@
+# Expressions for scripts/golden/functions.sh (one per line; # starts a comment).
+# Operators and literals:
+1 + 2
+1.5 * 2
+1 / 3
+2 / 3 * 3
+10 - 2 - 3 + 1
+-5 / 2
+1 / 0
+0 / 0
+1.25 * 2
+12345678901234567890123456789012345678 * 3
+0.1 + 0.2
+1 - 0.9999999999999999999999999999999999999
+2 ^ 10
+2 ^ 0.5
+4 ^ 0.5
+2 ^ -2
+0 ^ 0
+10 ^ 40
+1.0001 ^ 10000
+(-8) ^ (1 / 3)
+5{m} / 2{s}
+3{m} + 4{cm}
+3{m} * 4{cm}
+3{m} ^ 2
+9{m^2} ^ 0.5
+8{m^3} ^ (1 / 3)
+3{m} ^ 1.5
+1 + true
+"a" + "b"
+"a" ; "b" ; "c"
+1 < 2 < 3
+1 < 2 > 0
+3 <> 6
+[1, 2] = [1, 2]
+(1 / 3) =~ (0.333 ± 0.001)
+(a: 1, b: 2)#b
+(a: 1, b: 2)#c
+true & false | true
+true & (false | true)
+"mud" < "muddle"
+false < true
+@if 1 < 2 @then "yes" @else "no" @endif
+@if 1 @then 2 @else 3 @endif
+@match 5 @case 1 @then "one" @case n @given n > 3 @then "big" @case _ @then "other" @endmatch
+@match "T-2000" @case "T-" ; y @then @call function\\from text(y) @endmatch
+@match "abc" @case "x" @then 1 @endmatch
+@define x = 5, y = x * 2 @then x + y @enddefine
+@define sq = @function(x) @then x * x @endfunction @then @call sq(12) @enddefine
+[1, "a"]
+x
+@call function\\nonexistent(1)
+@call function\\abs("x")
+@call function\\element([1], "a")
+tag\\Optional\None < @call tag\\Optional\Is(0)
+date{2020-02-29} < date{2020-03-01}
+time{9:12:03 PM}
+datetimezoned{2010-11-28 9:12:03 PM Asia/Jakarta}
+# Functions:
+@call function\\abs(-3.5)
+@call function\\abs(0)
+@call function\\abs(-9223372036854775808)
+@call function\\abs(-5{m})
+@call function\\add days(date{2020-02-28}, 1)
+@call function\\add days(date{2020-01-01}, 1.5)
+@call function\\add days(date{2020-01-01}, 1000000000000)
+@call function\\add days(date{2020-01-01}, -800000)
+@call function\\any([1, 2, 3], (? > 2))
+@call function\\all([1, 2, 3], (? > 0))
+@call function\\none([1, 2, 3], (? > 5))
+@call function\\as type(type{Number}, @call function\\from text("3.5"))
+@call function\\convert unit(unit{cm}, 3{m})
+@call function\\convert unit(unit{s}, 3{m})
+@call function\\convert unit(unit{inch}, 1{foot})
+@call function\\convert unit(unit{mile/hour}, 26.8224{m/s})
+@call function\\convert unit(unit{l/s}, 817684.876315{inch^3/minute})
+@call function\\combine([1, 2, 3, 4], (? + ?))
+@call function\\combine(["a", "b"], (? ; ?))
+@call function\\list length([1, 2, 3])
+@call function\\count where([1, 2, 3, 4], (? > 2))
+@call function\\days between(date{2020-01-01}, date{2021-03-01})
+@call function\\extract number("abc 1,234.5 def")
+@call function\\extract number("no numbers")
+@call function\\extract number("1 and 2")
+@call function\\extract number("x-5.25y")
+@call function\\extract number or none("costs 3,000")
+@call function\\extract number or none("1 and 2")
+@call function\\extract number or none("none")
+@call function\\element([1, 2, 3], 2)
+@call function\\element([1, 2, 3], 0)
+@call function\\element([1, 2, 3], 4)
+@call function\\element([1, 2, 3], 1.5)
+@call function\\element or([1, 2, 3], 5, 0)
+@call function\\element or([1, 2, 3], 3, 0)
+@call function\\get optional(@call tag\\Optional\Is(3))
+@call function\\get optional(@call function\\as type(type{@apply Optional(Number)}, tag\\Optional\None))
+@call function\\get optional or(@call function\\as type(type{@apply Optional(Number)}, tag\\Optional\None), 7)
+@call function\\get optionals from list([@call tag\\Optional\Is(1), tag\\Optional\None, @call tag\\Optional\Is(3)])
+@call function\\list contains([1, 2, 3], 2)
+@call function\\list contains(["a"], "b")
+@call function\\join lists([[1, 2], [], [3]])
+@call function\\element(@call function\\join lists([[1], [2]]), 3)
+@call function\\select([1, 2, 3, 4], (? > 2))
+@call function\\log(8, 2)
+@call function\\log(1000, 10)
+@call function\\log(100, 3)
+@call function\\log(0, 10)
+@call function\\log(-1, 2)
+@call function\\log(5, 1)
+@call function\\log(1, 0.5)
+@call function\\log(7, 7)
+@call function\\log(0.001, 10)
+@call function\\log(123456789, 2)
+@call function\\log natural(1)
+@call function\\log natural(2)
+@call function\\log natural(0.5)
+@call function\\log natural(10)
+@call function\\log natural(123456789.123456789)
+@call function\\log natural(0.000001)
+@call function\\log natural(0)
+@call function\\apply each([1, 2, 3], (? * 2))
+@call function\\maximum([3, 1, 2])
+@call function\\minimum(["b", "a"])
+@call function\\maximum(@call function\\as type(type{[Number]}, []))
+@call function\\maximum index([3, 7, 7])
+@call function\\minimum index([2, 1, 1])
+@call function\\average([1, 2, 3, 4])
+@call function\\average([1, 2, 2])
+@call function\\average(@call function\\as type(type{[Number]}, []))
+@call function\\not(true)
+@call function\\xor(true, false)
+@call function\\round(2.5)
+@call function\\round(-2.5)
+@call function\\round(3)
+@call function\\round(1.49999)
+@call function\\round decimal(3.14159, 2)
+@call function\\round decimal(1234.5678, -2)
+@call function\\round decimal(15, -1)
+@call function\\round decimal(2.5, 0)
+@call function\\round significant(3.14159, 2)
+@call function\\round significant(1234567, 4)
+@call function\\round significant(0.000123456, 2)
+@call function\\round significant(-987.65, 1)
+@call function\\seconds between(time{10:00}, time{12:30:15})
+@call function\\get single([5])
+@call function\\get single([1, 2])
+@call function\\join text(["a", "b"])
+@call function\\join text with(["a", "b", "c"], ", ")
+@call function\\text length("héllo")
+@call function\\text length("")
+@call function\\lower case("ÀBC Σ")
+@call function\\replace("a", "b", "banana")
+@call function\\replace("", "x", "abc")
+@call function\\replace("a", "$&", "banana")
+@call function\\replace many([(find: "a", replace: "b"), (find: "b", replace: "c")], "abc")
+@call function\\split text("a,b,,c,", ",")
+@call function\\split text("abc", "")
+@call function\\trim("  hi  ")
+@call function\\sum([1.5, 2.5, 3])
+@call function\\to text(3.50)
+@call function\\to text("a^qb")
+@call function\\to text([1, 2])
+@call function\\to text((a: 1, b: "x"))
+@call function\\to text(date{2020-01-01})
+@call function\\to text(@call tag\\Optional\Is(1.5))
+@call function\\type of(3)
+@call function\\years between(date{2000-02-29}, date{2021-03-01})
+@call function\\years between(date{2001-03-01}, date{2000-02-29})
+@call function\\from text to(type{Number}, " 3.5 ")
+@call function\\from text to(type{Number}, "3.5x")
+@call function\\from text to(type{Boolean}, "TRUE")
+@call function\\from text to(type{[Number]}, "[1, 2, 3]")
+@call function\\from text to(type{(a: Number, b: Text)}, "(b: ^q x^q, a: 2)")
+@call function\\from text to(type{Date}, "21 March 2004")
+@call function\\from text to(type{DateTimeZoned}, "2013-05-02 12:00 Europe/London")
+@call function\\from text to(type{@apply Optional(Number)}, "Is(3)")
+@call function\\from text to(type{Date}, "01/02/01")
+@call function\\lookup([1, 2, 3], 2, ["a", "b", "c"])
+@call function\\lookup([1, 2, 2], 2, ["a", "b", "c"])
+@call function\\lookup([1, 2], 5, ["a", "b"])
+@call function\\lookup([1], 1, ["a", "b"])
+@call function\\lookup all([1, 2, 2], 2, ["a", "b", "c"])
+@call function\\date from datetime(datetime{2020-01-01 10:00})
+@call function\\date from datetimezoned(datetimezoned{2020-01-01 10:00 Europe/London})
+@call function\\date from ymd(2020{year}, 2{month}, 30{day})
+@call function\\date from ymd(2020{year}, 13{month}, 1{day})
+@call function\\time from hms(1{hour}, 2{minute}, 3.5{s})
+@call function\\time from datetime(datetime{2020-01-01 10:00:01.5})
+@call function\\datetime from dt(date{2020-01-01}, time{10:00})
+@call function\\datetime from datetimezoned(datetimezoned{2020-01-01 10:00+05:00})
+@call function\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, "Europe/London")
+@call function\\dateym from date(date{2020-05-06})
+@call function\\dateym from ym(2020{year}, 5{month})
+# Known differences (see KNOWN_DIFFERENCES in FunctionsGolden.test.ts):
+@call function\\round decimal(1.5 * 10, -1)
+3{m} ^ (1 + 2)
+@call @unfinished "f"(1)

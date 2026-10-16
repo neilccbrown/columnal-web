@@ -1,0 +1,38 @@
+ @call function\\date from ymd(1998{year}, 07{month}, 10{day}) = (date{1998-07-10})
+ @call function\\date from ymd(2004{year}, 08{month}, 06{day}) = (@call function\\from text("6 August 2004"))
+
+== x//Date
+==== @match @call function\\to text(x) @case y ; "-" ; m ; "-" ; d @then @call function\\date from ymd(@call function\\from text(y), @call function\\from text(m), @call function\\from text(d)) @endmatch
+==== x
+ @call function\\time from hms(13{hour}, 31{minute}, 0{s}) = (time{13:31:00})
+
+== x//Time
+==== @match @call function\\to text(x) @case h ; ":" ; m ; ":" ; s @then @call function\\time from hms(@call function\\from text(h), @call function\\from text(m), @call function\\from text(s)) @endmatch
+==== x
+ @call function\\time from datetime(datetime{2001-03-04 06:54}) = (time{06:54})
+ @call function\\time from datetimezoned(datetimezoned{2001-03-04 06:54 UTC}) = (@call function\\from text("06:54"))
+ @call function\\date from datetime(datetime{2001-03-04 06:54}) = (date{2001-03-04})
+ @call function\\date from datetimezoned(datetimezoned{2001-03-04 06:54 UTC}) = (date{2001-03-04})
+ @call function\\datetime from datetimezoned(datetimezoned{2001-03-04 06:54 UTC}) = (datetime{2001-03-04 06:54})
+ @call function\\dateym from ym(1998{year}, 07{month}) = (dateym{1998-07})
+ @call function\\dateym from ym(2004{year}, 08{month}) = (dateym{2004-08})
+ @call function\\dateym from date(@call function\\from text("2001-03-04")) = (@call function\\from text("2001-03"))
+ @call function\\datetime from dt(@call function\\from text("2001-02-03"), @call function\\from text("04:56")) = (@call function\\from text("2001-02-03 04:56"))
+ @call function\\datetimezoned from dtz(@call function\\from text("2001-02-03"), @call function\\from text("04:56"), "America/Vancouver") = (@call function\\from text("2001-02-03 04:56 America/Vancouver"))
+ @call function\\years between(date{4 April 1999}, date{4 April 2000}) = (1{year})
+ @call function\\years between(date{4 April 1999}, date{5 April 2000}) = (1{year} + (1{year}/365))
+ @call function\\years between(date{4 February 1999}, date{5 February 2000}) = (1{year} + (1{year}/366))
+ @call function\\days between(@call function\\from text("7 May 2003"), @call function\\from text("16 October 2004")) = (528{day})
+
+== a//Date
+== b//Date
+==== @call function\\days between(a, b)
+==== -1 * @call function\\days between(b, a)
+ @call function\\add days(date{2002-11-01}, 28{day}) = (date{2002-11-29})
+!!!  @call function\\add days(date{2000-01-01}, 0.5{day})
+
+== date//Date
+== days//Number{day}//-999999//999999
+==== @call function\\days between(date, @call function\\add days(date, @call function\\round(days)))
+==== @call function\\round(days)
+ @call function\\seconds between(time{00:05:08}, time{00:05:29}) = (21{s})

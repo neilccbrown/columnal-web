@@ -53,8 +53,11 @@ export class JavaRandom
         const newHi = (this.seedHi * MULTIPLIER_LO + this.seedLo * MULTIPLIER_HI + carry) % TWO_24;
         this.seedHi = newHi;
         this.seedLo = newLo;
-        // (int)(seed >>> (48 - bits)):
-        return Math.floor((newHi * TWO_24 + newLo) / 2 ** (48 - bits)) | 0;
+        // (int)(seed >>> (48 - bits)), with shifts on the 24-bit halves (bits is 1 to 32):
+        const shift = 48 - bits;
+        if (shift >= 24)
+            return newHi >>> (shift - 24);
+        return (newHi << (24 - shift)) | (newLo >>> shift);
     }
 
     /** nextInt(): any Java int. nextInt(bound): in [0, bound). nextInt(origin, bound): in [origin, bound). */

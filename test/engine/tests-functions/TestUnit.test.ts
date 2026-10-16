@@ -1,14 +1,21 @@
 // Port of test.TestUnit (tests-functions).
-//
-// PORT-DEFERRED: testAs and testAsFail need the AsUnit function and the expression parts of
-// TFunctionUtil (Phase 4).
 import { beforeEach, describe, test } from "vitest";
+import { AsUnit } from "../../../src/engine/functions/transformations/function/core/AsUnit.js";
+import { Decimal, parseBigDecimal, toPlainString } from "../../../src/engine/java/JavaBigDecimal.js";
+import { DataType } from "../../../src/engine/types/data/datatype/DataType.js";
+import { DataTypeUtility } from "../../../src/engine/types/data/datatype/DataTypeUtility.js";
+import { NumberInfo } from "../../../src/engine/types/data/datatype/NumberInfo.js";
+import { Utility } from "../../../src/engine/utility/utility/Utility.js";
+import type { Value } from "../../../src/engine/utility/utility/Value.js";
+import { assertThat, type Matcher } from "../../support/hamcrest.js";
 import { Rational } from "../../../src/engine/java/Rational.js";
 import { Unit } from "../../../src/engine/types/data/unit/Unit.js";
 import { UnitManager } from "../../../src/engine/types/data/unit/UnitManager.js";
 import { Pair } from "../../../src/engine/utility-adt/utility/adt/Pair.js";
 import { UserException } from "../../../src/engine/utility-error/error/UserException.js";
-import { assertEquals, assertThrows } from "../../support/junit.js";
+import { assertEquals, assertNotNull, assertThrows } from "../../support/junit.js";
+import { TFunctionUtil } from "./fixtures/functions/TFunctionUtil.js";
+import { DummyManager } from "./fixtures/DummyManager.js";
 
 /**
  * Created by neil on 11/12/2016.
@@ -108,4 +115,69 @@ describe("TestUnit", () =>
         assertThrows(UserException, () => mgr.loadUse("m^0.5"));
         assertThrows(UserException, () => mgr.loadUse("m^-0.5"));
     });
+
+    test("testAs", () =>
+    {
+        testConvert("3.2808399", "foot", "1", "m");
+        testConvert("3.2808399", "foot", "100", "cm");
+        testConvert("3.2808399", "foot", "1000", "mm");
+        testConvert("6.63655303", "mile", "420492", "inch");
+        testConvert("26.8224", "m/s", "60", "mile/hour");
+        testConvert("2682.24", "cm*s^-1", "60", "mile/hour");
+        testConvert("45645.2419", "mile/hour^2", "5.6681247", "m/(s*s)");
+        testConvert("817684.876315", "inch^3/minute", "223.32424", "l/s");
+        testConvert("817684.876315", "inch^3/minute", "223324.24", "ml/s");
+        testConvert("817684.876315", "(inch*inch*inch)/minute", "223.32424", "l*s^-1");
+
+        //TODO add failure tests, like converting scalar to/from units, or unrelated units, or m/s to m/s^2 etc
+    });
+
+    test("testAsFail", () =>
+    {
+        assertThrows(UserException, () => test_("1", "m", "1", "s"));
+        assertThrows(UserException, () => test_("1", "mm", "1", "s"));
+        assertThrows(UserException, () => test_("1", "m", "1", "m/s"));
+        assertThrows(UserException, () => test_("1", "1", "1", "m/s"));
+        assertThrows(UserException, () => test_("1", "1", "1", "m"));
+        assertThrows(UserException, () => test_("1", "m", "1", "1"));
+    });
+
+    // Java: test(expected, destUnit, src, srcUnit)
+    function testConvert(expected: string, destUnit: string, src: string, srcUnit: string): void
+    {
+        test_(expected, destUnit, src, srcUnit);
+        test_(src, srcUnit, expected, destUnit);
+    }
+
+    function test_(expected: string, destUnit: string, src: string, srcUnit: string): void
+    {
+        // Java unwraps the cause of a RuntimeException; the ported code throws the cause directly.
+        const instance = TFunctionUtil.typeCheckFunction(new AsUnit(),
+            [
+                DummyManager.make().getTypeManager().unitGADTFor(mgr.loadUse(destUnit)),
+                DataType.number(new NumberInfo(mgr.loadUse(srcUnit))),
+            ]
+        );
+        assertNotNull(instance);
+        // Java passes null for the type argument, which isn't used:
+        const num = instance!.getFirst().call([null as unknown as Value, d(src)]);
+        assertThat(num, numberMatch(d(expected)));
+    }
+
+    function numberMatch(n: Decimal): Matcher<Value>
+    {
+        return {
+            describe: () => toPlainString(n),
+            matches(o: Value): boolean
+            {
+                const cmp = Utility.compareNumbers(o as Decimal, n);
+                return cmp === 0 || Utility.compareNumbers(cmp < 0 ? Utility.addSubtractNumbers(n, o as Decimal, false) : Utility.addSubtractNumbers(o as Decimal, n, false), d("0.0001")) < 0;
+            },
+        };
+    }
+
+    function d(s: string): Decimal
+    {
+        return DataTypeUtility.value(parseBigDecimal(s, false));
+    }
 });

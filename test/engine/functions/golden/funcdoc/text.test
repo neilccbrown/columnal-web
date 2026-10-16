@@ -1,0 +1,58 @@
+ @call function\\text length("hello") = (5)
+ @call function\\text length("a b.") = (4)
+ @call function\\text length("") = (0)
+ @call function\\replace("at", "og", "The cat in the hat") = ("The cog in the hog")
+ @call function\\replace("oo", "a", "Mooo!") = ("Mao!")
+ @call function\\replace("", "x", "Orange") = ("Orange")
+
+== x//Text
+==== @call function\\replace("", "foo", x)
+==== x
+ @call function\\replace many([(find: "at", replace: "og"), (find: "the", replace: "a")], "the cat in the hat") = ("a cog in a hog")
+ @call function\\replace many([(find: "ooo", replace: "eow"), (find: "oo", replace: "eh")], "Mooo moo mooo!") = ("Meow meh meow!")
+ @call function\\replace many([(find: "apple", replace: "pear")], "orange") = ("orange")
+ @call function\\replace many([], "original") = ("original")
+ @call function\\join text(["a", "b", "c"]) = ("abc")
+ @call function\\join text(["Hello", " ", "Moon"]) = ("Hello Moon")
+ @call function\\join text([]) = ("")
+
+== x//[Text]
+==== @call function\\join text(x)
+==== @call function\\join text with(x, "")
+
+== x//[Text]
+==== @call function\\join text(x)
+==== @call function\\combine(x, (? ; ?))
+ @call function\\join text with(["a", "b", "c"], "+") = ("a+b+c")
+ @call function\\join text with(["Blanks", "", "Count"], ";") = ("Blanks;;Count")
+ @call function\\join text with(["Hello", " ", "Moon"], "-") = ("Hello- -Moon")
+ @call function\\join text with(["Hi"], ",") = ("Hi")
+ @call function\\join text with([], ",") = ("")
+
+== x//[Text]
+==== @call function\\join text with(x, "")
+==== @call function\\join text(x)
+
+== x//[Text]
+== sep//Text
+==== @call function\\join text with(x, sep)
+==== @call function\\combine(x, (? ; sep ; ?))
+ @call function\\trim("No spaces  either side.") = ("No spaces  either side.")
+ @call function\\trim("  Several spaces    ") = ("Several spaces")
+ @call function\\trim("^t Tabs and newlines also removed.^n") = ("Tabs and newlines also removed.")
+
+== x//Text
+==== @call function\\trim(@call function\\trim(x))
+==== @call function\\trim(x)
+ @call function\\split text("The quick brown fox", " ") = (["The", "quick", "brown", "fox"])
+ @call function\\split text("6:08:32", ":") = (["6", "08", "32"])
+ @call function\\split text("*abc*", "*") = (["", "abc", ""])
+ @call function\\split text("Hello", "") = (["H", "e", "l", "l", "o"])
+
+== x//Text
+== y//Text
+==== @call function\\join text with(@call function\\split text(x, y), y)
+==== x
+ @call function\\lower case("HELLO") = ("hello")
+ @call function\\lower case("Paris") = ("paris")
+ @call function\\lower case("12345") = ("12345")

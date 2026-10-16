@@ -127,6 +127,8 @@ export class SourceOfRandomness
         if (min === max)
             return min;
         const range = max - min + 1n;
+        if (range <= 0x80000000n && min > -(1n << 52n) && max < (1n << 52n))
+            return BigInt(this.chooseSmall(Number(min), Number(range)));
         const LIMIT = 1n << 62n;
         if (max < LIMIT && min > -LIMIT)
         {
@@ -145,6 +147,26 @@ export class SourceOfRandomness
         let generated: bigint;
         do
             generated = this.nextBigInteger(bits);
+        while (generated >= range);
+        return generated + min;
+    }
+
+    // chooseLong for a range of at most 2^31, in exact number arithmetic (bigint arithmetic is
+    // slow, and the property tests make millions of these calls).  The same calls to the
+    // delegate give the same result as the bigint version: nextLong() is (next(32) << 32) +
+    // next(32), and only its sign and low bits matter here.
+    private chooseSmall(min: number, range: number): number
+    {
+        const mask = (range <= 1 ? 1 : 2 ** (32 - Math.clz32(range - 1))) - 1;
+        let generated: number;
+        do
+        {
+            const hi = this.delegate.nextInt();
+            const lo = this.delegate.nextInt();
+            const negative = hi < 0 || (hi === 0 && lo < 0);
+            // The low 32 bits of -l are those of -lo:
+            generated = (negative ? -lo : lo) & mask;
+        }
         while (generated >= range);
         return generated + min;
     }
@@ -221,6 +243,45 @@ export abstract class Generator<T>
     public doShrink(_random: SourceOfRandomness, _larger: T): T[]
     {
         return [];
+    }
+}
+
+/**
+ * junit-quickcheck's composite generator, for a parameter with several @From annotations:
+ * each value comes from one of the generators, chosen at random (all weights are 1, the
+ * default).  Shrinking asks every component; Java only asks those whose canShrink accepts
+ * the value, which component generators that need it check in doShrink instead.
+ */
+export class CompositeGenerator<T> extends Generator<T>
+{
+    constructor(private readonly components: readonly Generator<T>[])
+    {
+        super();
+    }
+
+    public override generate(random: SourceOfRandomness, status: GenerationStatus): T
+    {
+        const choice = random.nextInt(0, this.components.length - 1);
+        return this.components[choice]!.generate(random, status);
+    }
+
+    public override doShrink(random: SourceOfRandomness, larger: T): T[]
+    {
+        return this.components.flatMap(c => c.doShrink(random, larger));
+    }
+}
+
+/** junit-quickcheck's generator for an enum (and so @From(Ctor.class) of a class whose constructor takes one). */
+export class EnumGenerator<T> extends Generator<T>
+{
+    constructor(private readonly values: readonly T[])
+    {
+        super();
+    }
+
+    public override generate(random: SourceOfRandomness, _status: GenerationStatus): T
+    {
+        return this.values[random.nextInt(0, this.values.length - 1)]!;
     }
 }
 

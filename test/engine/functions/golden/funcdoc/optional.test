@@ -1,0 +1,6 @@
+ @call function\\get optional(@call tag\\Optional\Is(17)) = (17)
+!!!  @call function\\get optional(tag\\Optional\None)
+ @call function\\get optional or(@call tag\\Optional\Is(17), 12) = (17)
+ @call function\\get optional or(tag\\Optional\None, 12) = (12)
+ @call function\\get optionals from list([@call tag\\Optional\Is(17), tag\\Optional\None, @call tag\\Optional\Is(42), tag\\Optional\None]) = ([17, 42])
+ @call function\\get optionals from list([tag\\Optional\None]) = ([])

@@ -77,7 +77,7 @@ Tests:
 | Engine tests | JUnit 4 | **Vitest** (Node) | Decided. |
 | Property tests | junit-quickcheck | **fast-check**, plus a `SourceOfRandomness` shim | Generators are imperative (`gen(random, status)`), so we port them almost line by line behind `fc.integer().map(seed => gen(new SourceOfRandomness(seed)))`. Shrinking is lost, which is the same as now since the custom generators don't shrink either. |
 | Parsers | ANTLR 4 (Java target) | **antlr-ng** tool + **antlr4ng** runtime | Pure TypeScript, no Java needed at build time. Embedded Java actions and predicates (for example in `MainLexer2`/`MainParser2`) must be rewritten in TS. |
-| Numbers | `Long` or `BigDecimal` (which keeps its scale), `MathContext.DECIMAL128` | **Canonical decimals**: one `Decimal` type (decimal.js configured as DECIMAL128), with no significant trailing zeros | Decided in Phase 1. Java's scale only showed in how some computed results displayed (`2.50`); values, equality, ordering and files are unaffected. Java's `pow` algorithm is ported exactly. `big-math` (log, exp) is handled in Phase 4. See CONVENTIONS.md "Numbers". |
+| Numbers | `Long` or `BigDecimal` (which keeps its scale), `MathContext.DECIMAL128` | **Canonical decimals**: one `Decimal` type (decimal.js configured as DECIMAL128), with no significant trailing zeros | Decided in Phase 1. Java's scale only showed in how some computed results displayed (`2.50`); values, equality, ordering and files are unaffected. Java's `pow` algorithm is ported exactly, as is big-math's `log` (Phase 4). See CONVENTIONS.md "Numbers". |
 | Rationals | javaSMT `Rational` (only use of javaSMT) | port of that `Rational` over `bigint` | Used for unit exponents. Done in Phase 1. |
 | Dates/times | `java.time` | **js-joda** (a port of java.time), wrapped in `src/engine/java/time/JavaTime.ts` | Decided in Phase 2, instead of the originally planned Temporal: js-joda has java.time's classes, `DateTimeFormatterBuilder` and parse/resolve behaviour, so the date code ports line by line. Where it differs from Java (zone-name parsing, some printing), `JavaTime.ts` corrects it using tables extracted from the JDK, checked by golden tests. |
 | Immutable collections, equality | Guava `ImmutableList`/`Map`, `equals`/`hashCode` | arrays, JS `Map`/`Set` for primitive keys, and `HashMap`/`HashSet` (keyed by `equals`/`hashCode`) for object keys | JS `Map` uses identity, so any Java map keyed by values, identifiers or types needs `HashMap`. It iterates in insertion order, not Java's hash order: decided in Phase 1, with a check at each ported `HashMap` site for whether the order is observable. Where it is, `HashMap.javaOrder()` simulates Java's table to iterate in Java's order (Phase 2). |
@@ -247,16 +247,36 @@ date/value parts of `TBasicUtil`.
 and `PropFiles`, plus a cross-compatibility check that loads `.rec` files saved by the
 Java app.
 
-### Phase 4: Expressions and functions (L4), the semantic core
+### Phase 4: Expressions and functions (L4), the semantic core (done)
 - Port the Expression AST (about 75 classes), parser glue, the saver/loader, TypeState
   and type checking with error recording and quick-fix suggestions, evaluation, and
   ExpressionUtil.
 - Port all the built-in functions.
 - Write the funcdoc build script: XML → JSON for the in-app docs and completions, and the
   **example extractor that generates tests**.
+- Done: the whole `expressions` and `functions` modules.
+  - The expression, unit-expression and type-expression hierarchies load through barrel modules
+    (`Expressions.ts`, `UnitExpressions.ts`, `type/TypeExpressions.ts`).
+  - The function documentation is processed by `scripts/funcdoc/funcdoc.mjs`, a port of the two
+    XSLT stylesheets the Java build ran with Saxon. It generates the function details (types,
+    synonyms, parameter names) that `FunctionDefinition` loads, and extracts the example tests.
+    Its output is identical to Saxon's (`scripts/golden/funcdoc.sh`, `Funcdoc.test.ts`).
+  - The logarithm functions use big-math's `log`, which is not correctly rounded, so it is ported
+    exactly (`src/engine/java/BigDecimalMath.ts`, MIT licence, notice in the file).
+- Checked against the JVM (`scripts/golden/functions.sh`, `FunctionsGolden.test.ts`): 900
+  logarithms, digit for digit, and about 600 expressions (every function, the operators, type
+  errors, parse errors and random arithmetic), parsed, saved, type checked and evaluated by the
+  original classes. The only differences are the two listed in the test.
+- Fixed Java bugs, at the project owner's request (each marked with a `PORT-NOTE`):
+  `AddSubtractExpression.constantFold` used the wrong operators and threw
+  `IndexOutOfBoundsException` (so `3{m} ^ (1 + 2)` failed to type check), and
+  `CallExpression.check` threw `ClassCastException` for a call target that wasn't an identifier.
+  Also fixed: an off-by-one condition in `StringWithinIndex`, which is not in use.
+- Deferred to Phase 5: `PropRunExpression` (in `tests-tables`).
 
-**Tests:** all of `tests-functions`, including the `Backwards*` and `GenExpressionValue*`
-generators, and all 237 funcdoc example tests.
+**Tests:** all of `tests-functions` (`PropTypecheck`, `PropTypecheckIndividual`, the function
+tests, `TestUnit`'s `testAs`/`testAsFail`), including the `Backwards*` and `GenExpressionValue*`
+generators, and `TestFromDoc` (all the funcdoc examples).
 
 **Milestone:** the expression engine matches Java on every original property and
 example test.
@@ -389,7 +409,7 @@ of `tests-gui-central` that do not need expressions.
 1. **Numeric semantics.** Java BigDecimal has scale, and DECIMAL128 rounding plus the
    `long`/`BigDecimal` dual representation affect results and display. *Mitigation (done in
    Phase 1):* canonical decimals, and golden tests that run the original Java number methods
-   on the JVM. The transcendental functions (`big-math`) in Phase 4 need the same treatment.
+   on the JVM. The same was done for big-math's logarithms in Phase 4.
 2. **Value equality.** JS has no `equals`/`hashCode`, so code ported naively silently
    uses identity semantics. *Mitigation:* the equality protocol and `HashMap` from
    Phase 1, plus a lint rule against `Map`/`Set` keyed by domain objects.
@@ -435,9 +455,12 @@ Decided:
 - The UI framework is Vue 3. Solid is the fallback if the Phase 7 grid prototype shows
   performance problems.
 
+- Java bugs found during the port are reported to the project owner, who decides whether to
+  fix them (Phase 4). Fixed ones are marked with a `PORT-NOTE`, and the golden tests list them as
+  known differences.
+
 Open:
 - Reka UI vs. Ark UI for headless components (Phase 7).
-- Strict bug-for-bug compatibility with the Java, or fix bugs found during the port.
 - How to handle browser-reserved shortcuts.
 - Whether webR's download size is acceptable, or R support should be optional or
   deferred.

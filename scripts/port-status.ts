@@ -6,7 +6,8 @@
 //   <module>/src/main/java/xyz/columnal/<path>/X.java  -> src/engine/<module>/<path>/X.ts      (engine modules)
 //                                                       -> src/gui-logic/<module>/<path>/X.ts   (GUI modules: logic only)
 //   tests-x/src/test/java/test/<path>/X.java            -> test/engine/tests-x/<path>/X.test.ts (engine test modules)
-//                                                       -> test/gui/tests-x/<path>/X.spec.ts    (GUI test modules)
+//                                                       -> test/gui/tests-x/<path>/X.spec.ts    (GUI test modules,
+//                                                          except ENGINE_TESTS_IN_GUI_MODULES)
 //   tests-x/src/testFixtures/java/(test|xyz/columnal)/<path>/X.java -> test/(engine|gui)/tests-x/fixtures/<path>/X.ts
 // Test methods (@Test/@Property) count as ported when the TS test file has a test with the same name.
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
@@ -33,6 +34,12 @@ interface FileStatus
     skipped?: string;
     testMethods?: { total: string[]; ported: string[] };
 }
+
+// Tests in GUI test modules that don't use the GUI, which are ported as Vitest engine tests
+// (test/engine/tests-gui-x/<path>/X.test.ts) rather than Playwright specs:
+const ENGINE_TESTS_IN_GUI_MODULES = new Set([
+    "tests-gui-central/src/test/java/test/expressions/TestFromDoc.java",
+]);
 
 // Java files that are deliberately not ported (paths relative to reference/columnal):
 const SKIPPED = new Map<string, string>([
@@ -90,7 +97,8 @@ function mainFiles(module: string, tsRoot: string): FileStatus[]
 
 function javaTestMethods(file: string): string[]
 {
-    const src = readFileSync(file, "utf8");
+    // Test methods that are commented out don't count:
+    const src = readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
     const names: string[] = [];
     const re = /@(?:Test|Property)\b(?:\([^)]*\))?[\s\S]*?(?:public\s+)?(?:static\s+)?void\s+(\w+)\s*\(/g;
     for (let m = re.exec(src); m !== null; m = re.exec(src))
@@ -117,8 +125,9 @@ function testModuleFiles(module: string): FileStatus[]
     const testsRoot = join(reference, module, "src", "test", "java");
     for (const f of walk(testsRoot, ".java").filter(f => !isIgnoredJava(f)))
     {
-        const rel = stripPackageRoot(relative(testsRoot, f)).replace(/\.java$/, kind === "engine" ? ".test.ts" : ".spec.ts");
-        const tsPath = join(root, "test", kind, module, rel);
+        const fileKind = ENGINE_TESTS_IN_GUI_MODULES.has(relative(reference, f)) ? "engine" : kind;
+        const rel = stripPackageRoot(relative(testsRoot, f)).replace(/\.java$/, fileKind === "engine" ? ".test.ts" : ".spec.ts");
+        const tsPath = join(root, "test", fileKind, module, rel);
         const methods = javaTestMethods(f);
         const tsNames = tsTestNames(tsPath);
         result.push({

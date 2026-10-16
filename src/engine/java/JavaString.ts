@@ -1,4 +1,5 @@
 import { charToLowerCase, charToUpperCase } from "./JavaCharacter.js";
+import { IndexOutOfBoundsException } from "./JavaExceptions.js";
 
 // Helpers that reproduce the semantics of java.lang.String / Integer methods
 // where they differ from the JavaScript built-ins.  See docs/CONVENTIONS.md.
@@ -196,4 +197,47 @@ export function javaReplace(s: string, target: string, replacement: string): str
         return replacement + Array.from({ length: s.length }, (_, i) => s[i]! + replacement).join("");
     }
     return s.split(target).join(replacement);
+}
+
+/** Java's String.codePointCount(0, length()): an unpaired surrogate counts as one code point. */
+export function javaCodePointCount(s: string, beginIndex: number = 0, endIndex: number = s.length): number
+{
+    let count = 0;
+    for (let i = beginIndex; i < endIndex; i++)
+    {
+        const c = s.charCodeAt(i);
+        if (c >= 0xD800 && c <= 0xDBFF && i + 1 < endIndex)
+        {
+            const d = s.charCodeAt(i + 1);
+            if (d >= 0xDC00 && d <= 0xDFFF)
+                i += 1;
+        }
+        count += 1;
+    }
+    return count;
+}
+
+/**
+ * Java's String.offsetByCodePoints(index, codePointOffset) for a non-negative offset: the char
+ * index codePointOffset code points after index.  Throws IndexOutOfBoundsException if the
+ * string runs out first.
+ */
+export function javaOffsetByCodePoints(s: string, index: number, codePointOffset: number): number
+{
+    if (index < 0 || index > s.length || codePointOffset < 0)
+        throw new IndexOutOfBoundsException("offsetByCodePoints");
+    let x = index;
+    for (let i = 0; i < codePointOffset; i++)
+    {
+        if (x >= s.length)
+            throw new IndexOutOfBoundsException("offsetByCodePoints");
+        const c = s.charCodeAt(x++);
+        if (c >= 0xD800 && c <= 0xDBFF && x < s.length)
+        {
+            const d = s.charCodeAt(x);
+            if (d >= 0xDC00 && d <= 0xDFFF)
+                x += 1;
+        }
+    }
+    return x;
 }

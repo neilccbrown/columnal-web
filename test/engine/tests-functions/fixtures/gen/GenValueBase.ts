@@ -1,10 +1,9 @@
 // Port of test.gen.GenValueBase (tests-functions testFixtures).
-//
-// PORT-DEFERRED: values of function types need ValueFunction (expressions module, Phase 4).
 import type { ExpressionIdentifier } from "../../../../../src/engine/anns/Annotations.js";
-import { Decimal, fitsLong } from "../../../../../src/engine/java/JavaBigDecimal.js";
+import { ValueFunction } from "../../../../../src/engine/expressions/transformations/expression/function/ValueFunction.js";
+import { Decimal, doubleValue, fitsLong, longValue } from "../../../../../src/engine/java/JavaBigDecimal.js";
 import { YearMonth, ZonedDateTime, ZoneId } from "../../../../../src/engine/java/time/JavaTime.js";
-import type { DataType, TagType } from "../../../../../src/engine/types/data/datatype/DataType.js";
+import { DataType, ValueClass, type DataTypeVisitor, type TagType } from "../../../../../src/engine/types/data/datatype/DataType.js";
 import { DataTypeUtility } from "../../../../../src/engine/types/data/datatype/DataTypeUtility.js";
 import { DateTimeInfo } from "../../../../../src/engine/types/data/datatype/DateTimeInfo.js";
 import type { NumberInfo } from "../../../../../src/engine/types/data/datatype/NumberInfo.js";
@@ -103,9 +102,71 @@ export abstract class GenValueBase<T> extends Generator<T>
                 return DataTypeUtility.value(TBasicUtil.makeList(r, 1, 4, () => this.makeValue(innerFinal)));
             },
 
-            function: (_argTypes: readonly DataType[], _resultType: DataType): Value =>
+            function: (argTypes: readonly DataType[], resultType: DataType): Value =>
             {
-                // PORT-DEFERRED: Java makes simple predicates (ValueFunction) for functions returning Boolean.
+                if (resultType.equals(DataType.BOOLEAN) && argTypes.length === 1)
+                {
+                    const f = <V extends Value>(type: ValueClass<V>, predicate: (v: V) => boolean): ValueFunction =>
+                    {
+                        return new class extends ValueFunction
+                        {
+                            public override _call(): Value
+                            {
+                                return DataTypeUtility.value(predicate(this.arg(0, type)));
+                            }
+                        }();
+                    };
+                    const visitor: DataTypeVisitor<ValueFunction> = {
+                        number: (_numberInfo: NumberInfo): ValueFunction =>
+                        {
+                            return r.choose([
+                                f(ValueClass.NUMBER, n => doubleValue(n) > 0),
+                                f(ValueClass.NUMBER, n => longValue(n) <= 0n),
+                                f(ValueClass.NUMBER, n => Utility.isIntegral(n)),
+                            ]);
+                        },
+
+                        text: (): ValueFunction =>
+                        {
+                            return r.choose([
+                                f(ValueClass.STRING, s => s.length === 0),
+                                f(ValueClass.STRING, s => s.includes("a")),
+                            ]);
+                        },
+
+                        date: (_dateTimeInfo: DateTimeInfo): ValueFunction =>
+                        {
+                            return f(ValueClass.TEMPORAL, _t => true);
+                        },
+
+                        bool: (): ValueFunction =>
+                        {
+                            return r.choose([
+                                f(ValueClass.BOOLEAN, b => b),
+                                f(ValueClass.BOOLEAN, b => !b),
+                            ]);
+                        },
+
+                        tagged: (_typeName: TypeId, _typeVars: readonly Either<Unit, DataType>[], _tags: readonly TagType<DataType>[]): ValueFunction =>
+                        {
+                            return f(ValueClass.TAGGED, t => t.getTagIndex() === 0);
+                        },
+
+                        record: (fields: ReadonlyMap<ExpressionIdentifier, DataType>): ValueFunction =>
+                        {
+                            const entry = [...fields][0]!;
+                            // Choose once outside function invocation:
+                            const innerFunc = entry[1].apply(visitor);
+                            return f(ValueClass.RECORD, o => Utility.cast(innerFunc.call([o.getField(entry[0])]), Boolean));
+                        },
+
+                        array: (_inner: DataType): ValueFunction =>
+                        {
+                            return f(ValueClass.LIST, l => l.size() === 0);
+                        },
+                    };
+                    return ValueFunction.value(argTypes[0]!.apply(visitor));
+                }
                 throw new InternalException("We only support functions with Boolean return type for testing");
             },
         });

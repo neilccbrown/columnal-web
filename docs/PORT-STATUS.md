@@ -19,8 +19,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ utility | 14 / 14 | 4114 / 4114 (100%) |
 | ✅ types | 34 / 34 | 9637 / 9637 (100%) |
 | ✅ data | 48 / 48 | 8072 / 8072 (100%) |
-| expressions | 0 / 74 | 0 / 14567 (0%) |
-| functions | 0 / 65 | 0 / 5719 (0%) |
+| ✅ expressions | 74 / 74 | 14567 / 14567 (100%) |
+| ✅ functions | 65 / 65 | 5719 / 5719 (100%) |
 | r-interop | 0 / 13 | 0 / 3275 (0%) |
 | transformations | 0 / 18 | 0 / 5749 (0%) |
 | importers | 0 / 16 | 0 / 4433 (0%) |
@@ -262,80 +262,80 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `expressions/src/main/java/xyz/columnal/transformations/expression/AddSubtractExpression.java` | `src/engine/expressions/transformations/expression/AddSubtractExpression.ts` | 186 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/AndExpression.java` | `src/engine/expressions/transformations/expression/AndExpression.ts` | 111 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/ArrayExpression.java` | `src/engine/expressions/transformations/expression/ArrayExpression.ts` | 236 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/BinaryOpExpression.java` | `src/engine/expressions/transformations/expression/BinaryOpExpression.ts` | 252 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/BooleanLiteral.java` | `src/engine/expressions/transformations/expression/BooleanLiteral.ts` | 97 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/BracketedStatus.java` | `src/engine/expressions/transformations/expression/BracketedStatus.ts` | 30 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/CallExpression.java` | `src/engine/expressions/transformations/expression/CallExpression.ts` | 474 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/CanonicalSpan.java` | `src/engine/expressions/transformations/expression/CanonicalSpan.ts` | 110 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/ComparisonExpression.java` | `src/engine/expressions/transformations/expression/ComparisonExpression.ts` | 179 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/DefineExpression.java` | `src/engine/expressions/transformations/expression/DefineExpression.ts` | 347 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/DivideExpression.java` | `src/engine/expressions/transformations/expression/DivideExpression.ts` | 133 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/EqualExpression.java` | `src/engine/expressions/transformations/expression/EqualExpression.ts` | 195 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/ErrorAndTypeRecorder.java` | `src/engine/expressions/transformations/expression/ErrorAndTypeRecorder.ts` | 141 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/ErrorAndTypeRecorderStorer.java` | `src/engine/expressions/transformations/expression/ErrorAndTypeRecorderStorer.ts` | 97 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/EvaluateState.java` | `src/engine/expressions/transformations/expression/EvaluateState.ts` | 178 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/EvaluationException.java` | `src/engine/expressions/transformations/expression/EvaluationException.ts` | 107 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/Expression.java` | `src/engine/expressions/transformations/expression/Expression.ts` | 911 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/ExpressionUtil.java` | `src/engine/expressions/transformations/expression/ExpressionUtil.ts` | 1129 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/FieldAccessExpression.java` | `src/engine/expressions/transformations/expression/FieldAccessExpression.ts` | 247 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/HasTypeExpression.java` | `src/engine/expressions/transformations/expression/HasTypeExpression.ts` | 173 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/IdentExpression.java` | `src/engine/expressions/transformations/expression/IdentExpression.ts` | 944 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/IfThenElseExpression.java` | `src/engine/expressions/transformations/expression/IfThenElseExpression.ts` | 279 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/ImplicitLambdaArg.java` | `src/engine/expressions/transformations/expression/ImplicitLambdaArg.ts` | 214 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/InvalidIdentExpression.java` | `src/engine/expressions/transformations/expression/InvalidIdentExpression.ts` | 134 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/InvalidOperatorExpression.java` | `src/engine/expressions/transformations/expression/InvalidOperatorExpression.ts` | 170 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/InvalidOperatorUnitExpression.java` | `src/engine/expressions/transformations/expression/InvalidOperatorUnitExpression.ts` | 98 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/InvalidSingleUnitExpression.java` | `src/engine/expressions/transformations/expression/InvalidSingleUnitExpression.ts` | 104 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/LambdaExpression.java` | `src/engine/expressions/transformations/expression/LambdaExpression.ts` | 172 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/Literal.java` | `src/engine/expressions/transformations/expression/Literal.ts` | 78 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/MatchAnythingExpression.java` | `src/engine/expressions/transformations/expression/MatchAnythingExpression.ts` | 127 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/MatchExpression.java` | `src/engine/expressions/transformations/expression/MatchExpression.ts` | 522 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/NaryOpExpression.java` | `src/engine/expressions/transformations/expression/NaryOpExpression.ts` | 297 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/NaryOpShortCircuitExpression.java` | `src/engine/expressions/transformations/expression/NaryOpShortCircuitExpression.ts` | 53 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/NaryOpTotalExpression.java` | `src/engine/expressions/transformations/expression/NaryOpTotalExpression.ts` | 73 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/NonOperatorExpression.java` | `src/engine/expressions/transformations/expression/NonOperatorExpression.ts` | 30 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/NotEqualExpression.java` | `src/engine/expressions/transformations/expression/NotEqualExpression.ts` | 107 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/NumericLiteral.java` | `src/engine/expressions/transformations/expression/NumericLiteral.ts` | 182 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/OrExpression.java` | `src/engine/expressions/transformations/expression/OrExpression.ts` | 114 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/PlusMinusPatternExpression.java` | `src/engine/expressions/transformations/expression/PlusMinusPatternExpression.ts` | 117 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/QuickFix.java` | `src/engine/expressions/transformations/expression/QuickFix.ts` | 139 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/RaiseExpression.java` | `src/engine/expressions/transformations/expression/RaiseExpression.ts` | 149 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/RecordExpression.java` | `src/engine/expressions/transformations/expression/RecordExpression.ts` | 174 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/Replaceable.java` | `src/engine/expressions/transformations/expression/Replaceable.ts` | 28 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/SingleUnitExpression.java` | `src/engine/expressions/transformations/expression/SingleUnitExpression.ts` | 125 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/StringConcatExpression.java` | `src/engine/expressions/transformations/expression/StringConcatExpression.ts` | 206 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/StringLiteral.java` | `src/engine/expressions/transformations/expression/StringLiteral.ts` | 103 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/TemporalLiteral.java` | `src/engine/expressions/transformations/expression/TemporalLiteral.ts` | 154 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/TimesExpression.java` | `src/engine/expressions/transformations/expression/TimesExpression.ts` | 126 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/TypeLiteralExpression.java` | `src/engine/expressions/transformations/expression/TypeLiteralExpression.ts` | 198 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/TypeState.java` | `src/engine/expressions/transformations/expression/TypeState.ts` | 271 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitDivideExpression.java` | `src/engine/expressions/transformations/expression/UnitDivideExpression.ts` | 111 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitExpression.java` | `src/engine/expressions/transformations/expression/UnitExpression.ts` | 217 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitExpressionIntLiteral.java` | `src/engine/expressions/transformations/expression/UnitExpressionIntLiteral.ts` | 96 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitLiteralExpression.java` | `src/engine/expressions/transformations/expression/UnitLiteralExpression.ts` | 140 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitRaiseExpression.java` | `src/engine/expressions/transformations/expression/UnitRaiseExpression.ts` | 103 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitTimesExpression.java` | `src/engine/expressions/transformations/expression/UnitTimesExpression.ts` | 115 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/explanation/Explanation.java` | `src/engine/expressions/transformations/expression/explanation/Explanation.ts` | 209 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/explanation/ExplanationLocation.java` | `src/engine/expressions/transformations/expression/explanation/ExplanationLocation.ts` | 89 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/function/FunctionLookup.java` | `src/engine/expressions/transformations/expression/function/FunctionLookup.ts` | 37 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/function/StandardFunctionDefinition.java` | `src/engine/expressions/transformations/expression/function/StandardFunctionDefinition.ts` | 62 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/function/ValueFunction.java` | `src/engine/expressions/transformations/expression/function/ValueFunction.ts` | 196 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/IdentTypeExpression.java` | `src/engine/expressions/transformations/expression/type/IdentTypeExpression.ts` | 121 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/InvalidIdentTypeExpression.java` | `src/engine/expressions/transformations/expression/type/InvalidIdentTypeExpression.ts` | 123 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/InvalidOpTypeExpression.java` | `src/engine/expressions/transformations/expression/type/InvalidOpTypeExpression.ts` | 121 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/ListTypeExpression.java` | `src/engine/expressions/transformations/expression/type/ListTypeExpression.ts` | 116 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/NumberTypeExpression.java` | `src/engine/expressions/transformations/expression/type/NumberTypeExpression.ts` | 153 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/RecordTypeExpression.java` | `src/engine/expressions/transformations/expression/type/RecordTypeExpression.ts` | 137 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/TypeApplyExpression.java` | `src/engine/expressions/transformations/expression/type/TypeApplyExpression.ts` | 219 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/TypeExpression.java` | `src/engine/expressions/transformations/expression/type/TypeExpression.ts` | 451 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/TypePrimitiveLiteral.java` | `src/engine/expressions/transformations/expression/type/TypePrimitiveLiteral.ts` | 134 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/type/UnitLiteralTypeExpression.java` | `src/engine/expressions/transformations/expression/type/UnitLiteralTypeExpression.ts` | 108 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/visitor/ExpressionVisitor.java` | `src/engine/expressions/transformations/expression/visitor/ExpressionVisitor.ts` | 134 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/visitor/ExpressionVisitorFlat.java` | `src/engine/expressions/transformations/expression/visitor/ExpressionVisitorFlat.ts` | 264 | – |
-| `expressions/src/main/java/xyz/columnal/transformations/expression/visitor/ExpressionVisitorStream.java` | `src/engine/expressions/transformations/expression/visitor/ExpressionVisitorStream.ts` | 290 | – |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/AddSubtractExpression.java` | `src/engine/expressions/transformations/expression/AddSubtractExpression.ts` | 186 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/AndExpression.java` | `src/engine/expressions/transformations/expression/AndExpression.ts` | 111 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/ArrayExpression.java` | `src/engine/expressions/transformations/expression/ArrayExpression.ts` | 236 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/BinaryOpExpression.java` | `src/engine/expressions/transformations/expression/BinaryOpExpression.ts` | 252 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/BooleanLiteral.java` | `src/engine/expressions/transformations/expression/BooleanLiteral.ts` | 97 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/BracketedStatus.java` | `src/engine/expressions/transformations/expression/BracketedStatus.ts` | 30 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/CallExpression.java` | `src/engine/expressions/transformations/expression/CallExpression.ts` | 474 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/CanonicalSpan.java` | `src/engine/expressions/transformations/expression/CanonicalSpan.ts` | 110 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/ComparisonExpression.java` | `src/engine/expressions/transformations/expression/ComparisonExpression.ts` | 179 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/DefineExpression.java` | `src/engine/expressions/transformations/expression/DefineExpression.ts` | 347 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/DivideExpression.java` | `src/engine/expressions/transformations/expression/DivideExpression.ts` | 133 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/EqualExpression.java` | `src/engine/expressions/transformations/expression/EqualExpression.ts` | 195 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/ErrorAndTypeRecorder.java` | `src/engine/expressions/transformations/expression/ErrorAndTypeRecorder.ts` | 141 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/ErrorAndTypeRecorderStorer.java` | `src/engine/expressions/transformations/expression/ErrorAndTypeRecorderStorer.ts` | 97 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/EvaluateState.java` | `src/engine/expressions/transformations/expression/EvaluateState.ts` | 178 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/EvaluationException.java` | `src/engine/expressions/transformations/expression/EvaluationException.ts` | 107 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/Expression.java` | `src/engine/expressions/transformations/expression/Expression.ts` | 911 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/ExpressionUtil.java` | `src/engine/expressions/transformations/expression/ExpressionUtil.ts` | 1129 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/FieldAccessExpression.java` | `src/engine/expressions/transformations/expression/FieldAccessExpression.ts` | 247 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/HasTypeExpression.java` | `src/engine/expressions/transformations/expression/HasTypeExpression.ts` | 173 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/IdentExpression.java` | `src/engine/expressions/transformations/expression/IdentExpression.ts` | 944 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/IfThenElseExpression.java` | `src/engine/expressions/transformations/expression/IfThenElseExpression.ts` | 279 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/ImplicitLambdaArg.java` | `src/engine/expressions/transformations/expression/ImplicitLambdaArg.ts` | 214 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/InvalidIdentExpression.java` | `src/engine/expressions/transformations/expression/InvalidIdentExpression.ts` | 134 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/InvalidOperatorExpression.java` | `src/engine/expressions/transformations/expression/InvalidOperatorExpression.ts` | 170 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/InvalidOperatorUnitExpression.java` | `src/engine/expressions/transformations/expression/InvalidOperatorUnitExpression.ts` | 98 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/InvalidSingleUnitExpression.java` | `src/engine/expressions/transformations/expression/InvalidSingleUnitExpression.ts` | 104 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/LambdaExpression.java` | `src/engine/expressions/transformations/expression/LambdaExpression.ts` | 172 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/Literal.java` | `src/engine/expressions/transformations/expression/Literal.ts` | 78 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/MatchAnythingExpression.java` | `src/engine/expressions/transformations/expression/MatchAnythingExpression.ts` | 127 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/MatchExpression.java` | `src/engine/expressions/transformations/expression/MatchExpression.ts` | 522 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/NaryOpExpression.java` | `src/engine/expressions/transformations/expression/NaryOpExpression.ts` | 297 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/NaryOpShortCircuitExpression.java` | `src/engine/expressions/transformations/expression/NaryOpShortCircuitExpression.ts` | 53 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/NaryOpTotalExpression.java` | `src/engine/expressions/transformations/expression/NaryOpTotalExpression.ts` | 73 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/NonOperatorExpression.java` | `src/engine/expressions/transformations/expression/NonOperatorExpression.ts` | 30 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/NotEqualExpression.java` | `src/engine/expressions/transformations/expression/NotEqualExpression.ts` | 107 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/NumericLiteral.java` | `src/engine/expressions/transformations/expression/NumericLiteral.ts` | 182 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/OrExpression.java` | `src/engine/expressions/transformations/expression/OrExpression.ts` | 114 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/PlusMinusPatternExpression.java` | `src/engine/expressions/transformations/expression/PlusMinusPatternExpression.ts` | 117 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/QuickFix.java` | `src/engine/expressions/transformations/expression/QuickFix.ts` | 139 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/RaiseExpression.java` | `src/engine/expressions/transformations/expression/RaiseExpression.ts` | 149 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/RecordExpression.java` | `src/engine/expressions/transformations/expression/RecordExpression.ts` | 174 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/Replaceable.java` | `src/engine/expressions/transformations/expression/Replaceable.ts` | 28 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/SingleUnitExpression.java` | `src/engine/expressions/transformations/expression/SingleUnitExpression.ts` | 125 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/StringConcatExpression.java` | `src/engine/expressions/transformations/expression/StringConcatExpression.ts` | 206 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/StringLiteral.java` | `src/engine/expressions/transformations/expression/StringLiteral.ts` | 103 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/TemporalLiteral.java` | `src/engine/expressions/transformations/expression/TemporalLiteral.ts` | 154 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/TimesExpression.java` | `src/engine/expressions/transformations/expression/TimesExpression.ts` | 126 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/TypeLiteralExpression.java` | `src/engine/expressions/transformations/expression/TypeLiteralExpression.ts` | 198 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/TypeState.java` | `src/engine/expressions/transformations/expression/TypeState.ts` | 271 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitDivideExpression.java` | `src/engine/expressions/transformations/expression/UnitDivideExpression.ts` | 111 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitExpression.java` | `src/engine/expressions/transformations/expression/UnitExpression.ts` | 217 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitExpressionIntLiteral.java` | `src/engine/expressions/transformations/expression/UnitExpressionIntLiteral.ts` | 96 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitLiteralExpression.java` | `src/engine/expressions/transformations/expression/UnitLiteralExpression.ts` | 140 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitRaiseExpression.java` | `src/engine/expressions/transformations/expression/UnitRaiseExpression.ts` | 103 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/UnitTimesExpression.java` | `src/engine/expressions/transformations/expression/UnitTimesExpression.ts` | 115 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/explanation/Explanation.java` | `src/engine/expressions/transformations/expression/explanation/Explanation.ts` | 209 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/explanation/ExplanationLocation.java` | `src/engine/expressions/transformations/expression/explanation/ExplanationLocation.ts` | 89 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/function/FunctionLookup.java` | `src/engine/expressions/transformations/expression/function/FunctionLookup.ts` | 37 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/function/StandardFunctionDefinition.java` | `src/engine/expressions/transformations/expression/function/StandardFunctionDefinition.ts` | 62 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/function/ValueFunction.java` | `src/engine/expressions/transformations/expression/function/ValueFunction.ts` | 196 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/IdentTypeExpression.java` | `src/engine/expressions/transformations/expression/type/IdentTypeExpression.ts` | 121 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/InvalidIdentTypeExpression.java` | `src/engine/expressions/transformations/expression/type/InvalidIdentTypeExpression.ts` | 123 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/InvalidOpTypeExpression.java` | `src/engine/expressions/transformations/expression/type/InvalidOpTypeExpression.ts` | 121 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/ListTypeExpression.java` | `src/engine/expressions/transformations/expression/type/ListTypeExpression.ts` | 116 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/NumberTypeExpression.java` | `src/engine/expressions/transformations/expression/type/NumberTypeExpression.ts` | 153 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/RecordTypeExpression.java` | `src/engine/expressions/transformations/expression/type/RecordTypeExpression.ts` | 137 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/TypeApplyExpression.java` | `src/engine/expressions/transformations/expression/type/TypeApplyExpression.ts` | 219 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/TypeExpression.java` | `src/engine/expressions/transformations/expression/type/TypeExpression.ts` | 451 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/TypePrimitiveLiteral.java` | `src/engine/expressions/transformations/expression/type/TypePrimitiveLiteral.ts` | 134 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/type/UnitLiteralTypeExpression.java` | `src/engine/expressions/transformations/expression/type/UnitLiteralTypeExpression.ts` | 108 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/visitor/ExpressionVisitor.java` | `src/engine/expressions/transformations/expression/visitor/ExpressionVisitor.ts` | 134 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/visitor/ExpressionVisitorFlat.java` | `src/engine/expressions/transformations/expression/visitor/ExpressionVisitorFlat.ts` | 264 | ✅ |
+| `expressions/src/main/java/xyz/columnal/transformations/expression/visitor/ExpressionVisitorStream.java` | `src/engine/expressions/transformations/expression/visitor/ExpressionVisitorStream.ts` | 290 | ✅ |
 
 </details>
 
@@ -343,71 +343,71 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `functions/src/main/java/xyz/columnal/transformations/function/Absolute.java` | `src/engine/functions/transformations/function/Absolute.ts` | 66 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/FromString.java` | `src/engine/functions/transformations/function/FromString.ts` | 288 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/FunctionDefinition.java` | `src/engine/functions/transformations/function/FunctionDefinition.ts` | 319 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/FunctionList.java` | `src/engine/functions/transformations/function/FunctionList.ts` | 188 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/Mean.java` | `src/engine/functions/transformations/function/Mean.ts` | 71 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/Not.java` | `src/engine/functions/transformations/function/Not.ts` | 56 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/SingleNumericInOutFunction.java` | `src/engine/functions/transformations/function/SingleNumericInOutFunction.ts` | 48 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/SingleNumericSummaryFunction.java` | `src/engine/functions/transformations/function/SingleNumericSummaryFunction.ts` | 45 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/StringLeft.java` | `src/engine/functions/transformations/function/StringLeft.ts` | 66 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/StringLength.java` | `src/engine/functions/transformations/function/StringLength.ts` | 58 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/StringMid.java` | `src/engine/functions/transformations/function/StringMid.ts` | 78 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/StringRight.java` | `src/engine/functions/transformations/function/StringRight.ts` | 67 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/StringTrim.java` | `src/engine/functions/transformations/function/StringTrim.ts` | 60 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/StringWithin.java` | `src/engine/functions/transformations/function/StringWithin.ts` | 53 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/StringWithinIndex.java` | `src/engine/functions/transformations/function/StringWithinIndex.ts` | 98 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/Sum.java` | `src/engine/functions/transformations/function/Sum.ts` | 72 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ToDate.java` | `src/engine/functions/transformations/function/ToDate.ts` | 126 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ToDateTime.java` | `src/engine/functions/transformations/function/ToDateTime.ts` | 96 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ToDateTimeZone.java` | `src/engine/functions/transformations/function/ToDateTimeZone.ts` | 124 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ToString.java` | `src/engine/functions/transformations/function/ToString.ts` | 166 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ToTemporalFunction.java` | `src/engine/functions/transformations/function/ToTemporalFunction.ts` | 191 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ToTime.java` | `src/engine/functions/transformations/function/ToTime.ts` | 100 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ToYearMonth.java` | `src/engine/functions/transformations/function/ToYearMonth.ts` | 94 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ValueFunction1.java` | `src/engine/functions/transformations/function/ValueFunction1.ts` | 53 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/ValueFunction2.java` | `src/engine/functions/transformations/function/ValueFunction2.ts` | 55 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/Xor.java` | `src/engine/functions/transformations/function/Xor.ts` | 56 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/comparison/Max.java` | `src/engine/functions/transformations/function/comparison/Max.ts` | 75 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/comparison/MaxIndex.java` | `src/engine/functions/transformations/function/comparison/MaxIndex.ts` | 81 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/comparison/Min.java` | `src/engine/functions/transformations/function/comparison/Min.ts` | 75 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/comparison/MinIndex.java` | `src/engine/functions/transformations/function/comparison/MinIndex.ts` | 81 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/conversion/ExtractNumber.java` | `src/engine/functions/transformations/function/conversion/ExtractNumber.ts` | 112 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/conversion/ExtractNumberOrNone.java` | `src/engine/functions/transformations/function/conversion/ExtractNumberOrNone.ts` | 113 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/core/AsType.java` | `src/engine/functions/transformations/function/core/AsType.ts` | 62 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/core/AsUnit.java` | `src/engine/functions/transformations/function/core/AsUnit.ts` | 98 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/core/TypeOf.java` | `src/engine/functions/transformations/function/core/TypeOf.ts` | 63 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/datetime/AddDays.java` | `src/engine/functions/transformations/function/datetime/AddDays.ts` | 80 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/datetime/DaysBetween.java` | `src/engine/functions/transformations/function/datetime/DaysBetween.ts` | 62 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/datetime/SecondsBetween.java` | `src/engine/functions/transformations/function/datetime/SecondsBetween.ts` | 62 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/datetime/YearsBetween.java` | `src/engine/functions/transformations/function/datetime/YearsBetween.ts` | 72 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/AnyAllNone.java` | `src/engine/functions/transformations/function/list/AnyAllNone.ts` | 119 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/Combine.java` | `src/engine/functions/transformations/function/list/Combine.ts` | 69 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/Count.java` | `src/engine/functions/transformations/function/list/Count.ts` | 69 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/CountWhere.java` | `src/engine/functions/transformations/function/list/CountWhere.ts` | 69 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/GetElement.java` | `src/engine/functions/transformations/function/list/GetElement.ts` | 75 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/GetElementOrDefault.java` | `src/engine/functions/transformations/function/list/GetElementOrDefault.ts` | 80 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/InList.java` | `src/engine/functions/transformations/function/list/InList.ts` | 71 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/JoinLists.java` | `src/engine/functions/transformations/function/list/JoinLists.ts` | 100 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/KeepFunction.java` | `src/engine/functions/transformations/function/list/KeepFunction.ts` | 74 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/MapFunction.java` | `src/engine/functions/transformations/function/list/MapFunction.ts` | 68 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/list/Single.java` | `src/engine/functions/transformations/function/list/Single.ts` | 61 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/lookup/LookupFunctions.java` | `src/engine/functions/transformations/function/lookup/LookupFunctions.ts` | 161 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/math/Logarithm.java` | `src/engine/functions/transformations/function/math/Logarithm.ts` | 78 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/math/LogarithmNatural.java` | `src/engine/functions/transformations/function/math/LogarithmNatural.ts` | 71 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/number/Round.java` | `src/engine/functions/transformations/function/number/Round.ts` | 61 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/number/RoundDP.java` | `src/engine/functions/transformations/function/number/RoundDP.ts` | 62 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/number/RoundSF.java` | `src/engine/functions/transformations/function/number/RoundSF.ts` | 68 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/optional/GetOptionalOrDefault.java` | `src/engine/functions/transformations/function/optional/GetOptionalOrDefault.ts` | 64 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/optional/GetOptionalOrError.java` | `src/engine/functions/transformations/function/optional/GetOptionalOrError.ts` | 60 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/optional/GetOptionalsFromList.java` | `src/engine/functions/transformations/function/optional/GetOptionalsFromList.ts` | 72 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/text/StringJoin.java` | `src/engine/functions/transformations/function/text/StringJoin.ts` | 65 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/text/StringJoinWith.java` | `src/engine/functions/transformations/function/text/StringJoinWith.ts` | 68 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/text/StringLowerCase.java` | `src/engine/functions/transformations/function/text/StringLowerCase.ts` | 64 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/text/StringReplace.java` | `src/engine/functions/transformations/function/text/StringReplace.ts` | 62 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/text/StringReplaceMany.java` | `src/engine/functions/transformations/function/text/StringReplaceMany.ts` | 96 | – |
-| `functions/src/main/java/xyz/columnal/transformations/function/text/StringSplit.java` | `src/engine/functions/transformations/function/text/StringSplit.ts` | 82 | – |
+| `functions/src/main/java/xyz/columnal/transformations/function/Absolute.java` | `src/engine/functions/transformations/function/Absolute.ts` | 66 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/FromString.java` | `src/engine/functions/transformations/function/FromString.ts` | 288 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/FunctionDefinition.java` | `src/engine/functions/transformations/function/FunctionDefinition.ts` | 319 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/FunctionList.java` | `src/engine/functions/transformations/function/FunctionList.ts` | 188 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/Mean.java` | `src/engine/functions/transformations/function/Mean.ts` | 71 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/Not.java` | `src/engine/functions/transformations/function/Not.ts` | 56 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/SingleNumericInOutFunction.java` | `src/engine/functions/transformations/function/SingleNumericInOutFunction.ts` | 48 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/SingleNumericSummaryFunction.java` | `src/engine/functions/transformations/function/SingleNumericSummaryFunction.ts` | 45 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/StringLeft.java` | `src/engine/functions/transformations/function/StringLeft.ts` | 66 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/StringLength.java` | `src/engine/functions/transformations/function/StringLength.ts` | 58 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/StringMid.java` | `src/engine/functions/transformations/function/StringMid.ts` | 78 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/StringRight.java` | `src/engine/functions/transformations/function/StringRight.ts` | 67 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/StringTrim.java` | `src/engine/functions/transformations/function/StringTrim.ts` | 60 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/StringWithin.java` | `src/engine/functions/transformations/function/StringWithin.ts` | 53 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/StringWithinIndex.java` | `src/engine/functions/transformations/function/StringWithinIndex.ts` | 98 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/Sum.java` | `src/engine/functions/transformations/function/Sum.ts` | 72 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ToDate.java` | `src/engine/functions/transformations/function/ToDate.ts` | 126 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ToDateTime.java` | `src/engine/functions/transformations/function/ToDateTime.ts` | 96 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ToDateTimeZone.java` | `src/engine/functions/transformations/function/ToDateTimeZone.ts` | 124 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ToString.java` | `src/engine/functions/transformations/function/ToString.ts` | 166 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ToTemporalFunction.java` | `src/engine/functions/transformations/function/ToTemporalFunction.ts` | 191 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ToTime.java` | `src/engine/functions/transformations/function/ToTime.ts` | 100 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ToYearMonth.java` | `src/engine/functions/transformations/function/ToYearMonth.ts` | 94 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ValueFunction1.java` | `src/engine/functions/transformations/function/ValueFunction1.ts` | 53 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/ValueFunction2.java` | `src/engine/functions/transformations/function/ValueFunction2.ts` | 55 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/Xor.java` | `src/engine/functions/transformations/function/Xor.ts` | 56 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/comparison/Max.java` | `src/engine/functions/transformations/function/comparison/Max.ts` | 75 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/comparison/MaxIndex.java` | `src/engine/functions/transformations/function/comparison/MaxIndex.ts` | 81 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/comparison/Min.java` | `src/engine/functions/transformations/function/comparison/Min.ts` | 75 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/comparison/MinIndex.java` | `src/engine/functions/transformations/function/comparison/MinIndex.ts` | 81 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/conversion/ExtractNumber.java` | `src/engine/functions/transformations/function/conversion/ExtractNumber.ts` | 112 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/conversion/ExtractNumberOrNone.java` | `src/engine/functions/transformations/function/conversion/ExtractNumberOrNone.ts` | 113 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/core/AsType.java` | `src/engine/functions/transformations/function/core/AsType.ts` | 62 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/core/AsUnit.java` | `src/engine/functions/transformations/function/core/AsUnit.ts` | 98 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/core/TypeOf.java` | `src/engine/functions/transformations/function/core/TypeOf.ts` | 63 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/datetime/AddDays.java` | `src/engine/functions/transformations/function/datetime/AddDays.ts` | 80 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/datetime/DaysBetween.java` | `src/engine/functions/transformations/function/datetime/DaysBetween.ts` | 62 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/datetime/SecondsBetween.java` | `src/engine/functions/transformations/function/datetime/SecondsBetween.ts` | 62 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/datetime/YearsBetween.java` | `src/engine/functions/transformations/function/datetime/YearsBetween.ts` | 72 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/AnyAllNone.java` | `src/engine/functions/transformations/function/list/AnyAllNone.ts` | 119 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/Combine.java` | `src/engine/functions/transformations/function/list/Combine.ts` | 69 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/Count.java` | `src/engine/functions/transformations/function/list/Count.ts` | 69 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/CountWhere.java` | `src/engine/functions/transformations/function/list/CountWhere.ts` | 69 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/GetElement.java` | `src/engine/functions/transformations/function/list/GetElement.ts` | 75 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/GetElementOrDefault.java` | `src/engine/functions/transformations/function/list/GetElementOrDefault.ts` | 80 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/InList.java` | `src/engine/functions/transformations/function/list/InList.ts` | 71 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/JoinLists.java` | `src/engine/functions/transformations/function/list/JoinLists.ts` | 100 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/KeepFunction.java` | `src/engine/functions/transformations/function/list/KeepFunction.ts` | 74 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/MapFunction.java` | `src/engine/functions/transformations/function/list/MapFunction.ts` | 68 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/list/Single.java` | `src/engine/functions/transformations/function/list/Single.ts` | 61 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/lookup/LookupFunctions.java` | `src/engine/functions/transformations/function/lookup/LookupFunctions.ts` | 161 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/math/Logarithm.java` | `src/engine/functions/transformations/function/math/Logarithm.ts` | 78 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/math/LogarithmNatural.java` | `src/engine/functions/transformations/function/math/LogarithmNatural.ts` | 71 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/number/Round.java` | `src/engine/functions/transformations/function/number/Round.ts` | 61 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/number/RoundDP.java` | `src/engine/functions/transformations/function/number/RoundDP.ts` | 62 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/number/RoundSF.java` | `src/engine/functions/transformations/function/number/RoundSF.ts` | 68 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/optional/GetOptionalOrDefault.java` | `src/engine/functions/transformations/function/optional/GetOptionalOrDefault.ts` | 64 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/optional/GetOptionalOrError.java` | `src/engine/functions/transformations/function/optional/GetOptionalOrError.ts` | 60 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/optional/GetOptionalsFromList.java` | `src/engine/functions/transformations/function/optional/GetOptionalsFromList.ts` | 72 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/text/StringJoin.java` | `src/engine/functions/transformations/function/text/StringJoin.ts` | 65 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/text/StringJoinWith.java` | `src/engine/functions/transformations/function/text/StringJoinWith.ts` | 68 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/text/StringLowerCase.java` | `src/engine/functions/transformations/function/text/StringLowerCase.ts` | 64 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/text/StringReplace.java` | `src/engine/functions/transformations/function/text/StringReplace.ts` | 62 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/text/StringReplaceMany.java` | `src/engine/functions/transformations/function/text/StringReplaceMany.ts` | 96 | ✅ |
+| `functions/src/main/java/xyz/columnal/transformations/function/text/StringSplit.java` | `src/engine/functions/transformations/function/text/StringSplit.ts` | 82 | ✅ |
 
 </details>
 
@@ -716,17 +716,17 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Module | Files | Lines | Test methods |
 |---|---|---|---|
 | ✅ tests-basic | 17 / 17 | 1783 / 1783 (100%) | 9 / 9 (100%) |
-| tests-functions | 12 / 43 | 2201 / 8812 (25%) | 7 / 78 (9%) |
+| ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
 | tests-gui-base | 0 / 26 | 0 / 4004 (0%) |  |
 | tests-gui-cell-rw | 0 / 1 | 0 / 353 (0%) | 0 / 4 (0%) |
-| tests-gui-central | 0 / 21 | 0 / 3623 (0%) | 0 / 47 (0%) |
+| tests-gui-central | 1 / 21 | 361 / 3623 (10%) | 1 / 47 (2%) |
 | tests-gui-dtf | 0 / 1 | 0 / 397 (0%) | 0 / 4 (0%) |
 | tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 0 / 68 (0%) |
 | tests-gui-expression-editor-delete | 0 / 1 | 0 / 372 (0%) | 0 / 20 (0%) |
 | tests-gui-expression-editor-further | 0 / 8 | 0 / 1600 (0%) | 0 / 130 (0%) |
 | tests-gui-expression-editor-position | 0 / 1 | 0 / 618 (0%) | 0 / 34 (0%) |
 | tests-gui-format | 0 / 4 | 0 / 920 (0%) | 0 / 6 (0%) |
-| tests-gui-grid | 0 / 4 | 0 / 1049 (0%) | 0 / 15 (0%) |
+| tests-gui-grid | 0 / 4 | 0 / 1049 (0%) | 0 / 14 (0%) |
 | tests-gui-numbers | 0 / 1 | 0 / 380 (0%) | 0 / 14 (0%) |
 | tests-gui-r | 0 / 4 | 0 / 1147 (0%) | 0 / 27 (0%) |
 | tests-gui-side | 0 / 2 | 0 / 645 (0%) | 0 / 8 (0%) |
@@ -734,7 +734,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | tests-gui-transformations | 0 / 8 | 0 / 2251 (0%) | 0 / 22 (0%) |
 | tests-gui-transformations-create-edit | 0 / 1 | 0 / 651 (0%) | 0 / 2 (0%) |
 | tests-gui-type-editor | 0 / 4 | 0 / 954 (0%) | 0 / 57 (0%) |
-| tests-tables | 12 / 28 | 1446 / 3385 (43%) | 9 / 19 (47%) |
+| tests-tables | 12 / 28 | 1446 / 3385 (43%) | 9 / 18 (50%) |
 
 <details><summary>tests-basic</summary>
 
@@ -764,45 +764,45 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-functions/src/test/java/test/PropTypecheck.java` | `test/engine/tests-functions/PropTypecheck.test.ts` | 304 | – (0/11 tests) |
-| `tests-functions/src/test/java/test/PropTypecheckIndividual.java` | `test/engine/tests-functions/PropTypecheckIndividual.test.ts` | 669 | – (0/35 tests) |
+| `tests-functions/src/test/java/test/PropTypecheck.java` | `test/engine/tests-functions/PropTypecheck.test.ts` | 304 | ✅ (11/11 tests) |
+| `tests-functions/src/test/java/test/PropTypecheckIndividual.java` | `test/engine/tests-functions/PropTypecheckIndividual.test.ts` | 669 | ✅ (35/35 tests) |
 | `tests-functions/src/test/java/test/PropUnit.java` | `test/engine/tests-functions/PropUnit.test.ts` | 168 | ✅ (2/2 tests) |
 | `tests-functions/src/test/java/test/TestGenDataType.java` | `test/engine/tests-functions/TestGenDataType.test.ts` | 156 | ✅ (1/1 tests) |
-| `tests-functions/src/test/java/test/TestUnit.java` | `test/engine/tests-functions/TestUnit.test.ts` | 243 | – (4/6 tests) |
-| `tests-functions/src/test/java/test/functions/PropDateFunctions.java` | `test/engine/tests-functions/functions/PropDateFunctions.test.ts` | 249 | – (0/5 tests) |
-| `tests-functions/src/test/java/test/functions/PropListFunctions.java` | `test/engine/tests-functions/functions/PropListFunctions.test.ts` | 193 | – (0/4 tests) |
-| `tests-functions/src/test/java/test/functions/PropNumericFunctions.java` | `test/engine/tests-functions/functions/PropNumericFunctions.test.ts` | 193 | – (0/4 tests) |
-| `tests-functions/src/test/java/test/functions/PropStringFunctions.java` | `test/engine/tests-functions/functions/PropStringFunctions.test.ts` | 313 | – (0/8 tests) |
-| `tests-functions/src/test/java/test/functions/TestBooleanFunctions.java` | `test/engine/tests-functions/functions/TestBooleanFunctions.test.ts` | 99 | – (0/2 tests) |
+| `tests-functions/src/test/java/test/TestUnit.java` | `test/engine/tests-functions/TestUnit.test.ts` | 243 | ✅ (6/6 tests) |
+| `tests-functions/src/test/java/test/functions/PropDateFunctions.java` | `test/engine/tests-functions/functions/PropDateFunctions.test.ts` | 249 | ✅ (5/5 tests) |
+| `tests-functions/src/test/java/test/functions/PropListFunctions.java` | `test/engine/tests-functions/functions/PropListFunctions.test.ts` | 193 | ✅ (4/4 tests) |
+| `tests-functions/src/test/java/test/functions/PropNumericFunctions.java` | `test/engine/tests-functions/functions/PropNumericFunctions.test.ts` | 193 | ✅ (4/4 tests) |
+| `tests-functions/src/test/java/test/functions/PropStringFunctions.java` | `test/engine/tests-functions/functions/PropStringFunctions.test.ts` | 313 | ✅ (4/4 tests) |
+| `tests-functions/src/test/java/test/functions/TestBooleanFunctions.java` | `test/engine/tests-functions/functions/TestBooleanFunctions.test.ts` | 99 | ✅ (2/2 tests) |
 | `tests-functions/src/testFixtures/java/test/DummyManager.java` | `test/engine/tests-functions/fixtures/DummyManager.ts` | 82 | ✅ (parts deferred) |
-| `tests-functions/src/testFixtures/java/test/SingleTableLookup.java` | `test/engine/tests-functions/fixtures/SingleTableLookup.ts` | 119 | – |
-| `tests-functions/src/testFixtures/java/test/functions/TFunctionUtil.java` | `test/engine/tests-functions/fixtures/functions/TFunctionUtil.ts` | 496 | ✅ (parts deferred) |
-| `tests-functions/src/testFixtures/java/test/gen/ExpressionValue.java` | `test/engine/tests-functions/fixtures/gen/ExpressionValue.ts` | 78 | – |
+| `tests-functions/src/testFixtures/java/test/SingleTableLookup.java` | `test/engine/tests-functions/fixtures/SingleTableLookup.ts` | 119 | ✅ |
+| `tests-functions/src/testFixtures/java/test/functions/TFunctionUtil.java` | `test/engine/tests-functions/fixtures/functions/TFunctionUtil.ts` | 496 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/ExpressionValue.java` | `test/engine/tests-functions/fixtures/gen/ExpressionValue.ts` | 78 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/GenColumn.java` | `test/engine/tests-functions/fixtures/gen/GenColumn.ts` | 100 | ✅ |
-| `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueBackwards.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueBackwards.ts` | 175 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueBase.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueBase.ts` | 129 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueForwards.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueForwards.ts` | 1002 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenTaggedTypeDefinition.java` | `test/engine/tests-functions/fixtures/gen/GenTaggedTypeDefinition.ts` | 94 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenTypecheckFail.java` | `test/engine/tests-functions/fixtures/gen/GenTypecheckFail.ts` | 284 | – |
+| `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueBackwards.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueBackwards.ts` | 175 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueBase.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueBase.ts` | 129 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/GenExpressionValueForwards.java` | `test/engine/tests-functions/fixtures/gen/GenExpressionValueForwards.ts` | 1002 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/GenTaggedTypeDefinition.java` | `test/engine/tests-functions/fixtures/gen/GenTaggedTypeDefinition.ts` | 94 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/GenTypecheckFail.java` | `test/engine/tests-functions/fixtures/gen/GenTypecheckFail.ts` | 284 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/GenUnitDefinition.java` | `test/engine/tests-functions/fixtures/gen/GenUnitDefinition.ts` | 137 | ✅ |
-| `tests-functions/src/testFixtures/java/test/gen/GenValueBase.java` | `test/engine/tests-functions/fixtures/gen/GenValueBase.ts` | 259 | ✅ (parts deferred) |
-| `tests-functions/src/testFixtures/java/test/gen/GenValueBaseE.java` | `test/engine/tests-functions/fixtures/gen/GenValueBaseE.ts` | 143 | – |
-| `tests-functions/src/testFixtures/java/test/gen/GenValueList.java` | `test/engine/tests-functions/fixtures/gen/GenValueList.ts` | 99 | – |
+| `tests-functions/src/testFixtures/java/test/gen/GenValueBase.java` | `test/engine/tests-functions/fixtures/gen/GenValueBase.ts` | 259 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/GenValueBaseE.java` | `test/engine/tests-functions/fixtures/gen/GenValueBaseE.ts` | 143 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/GenValueList.java` | `test/engine/tests-functions/fixtures/gen/GenValueList.ts` | 99 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/GenValueSpecifiedType.java` | `test/engine/tests-functions/fixtures/gen/GenValueSpecifiedType.ts` | 58 | ✅ |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsBooleans.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsBooleans.ts` | 244 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsColumnRef.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsColumnRef.ts` | 147 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsFixType.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsFixType.ts` | 60 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsFromText.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsFromText.ts` | 70 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsFunction.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsFunction.ts` | 211 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsLiteral.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsLiteral.ts` | 232 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsMatch.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsMatch.ts` | 536 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsNumbers.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsNumbers.ts` | 157 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsProvider.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsProvider.ts` | 62 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsRecord.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsRecord.ts` | 81 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsTemporal.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsTemporal.ts` | 245 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsText.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsText.ts` | 78 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/ExpressionMaker.java` | `test/engine/tests-functions/fixtures/gen/backwards/ExpressionMaker.ts` | 56 | – |
-| `tests-functions/src/testFixtures/java/test/gen/backwards/RequestBackwardsExpression.java` | `test/engine/tests-functions/fixtures/gen/backwards/RequestBackwardsExpression.ts` | 46 | – |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsBooleans.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsBooleans.ts` | 244 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsColumnRef.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsColumnRef.ts` | 147 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsFixType.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsFixType.ts` | 60 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsFromText.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsFromText.ts` | 70 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsFunction.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsFunction.ts` | 211 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsLiteral.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsLiteral.ts` | 232 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsMatch.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsMatch.ts` | 536 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsNumbers.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsNumbers.ts` | 157 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsProvider.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsProvider.ts` | 62 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsRecord.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsRecord.ts` | 81 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsTemporal.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsTemporal.ts` | 245 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/BackwardsText.java` | `test/engine/tests-functions/fixtures/gen/backwards/BackwardsText.ts` | 78 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/ExpressionMaker.java` | `test/engine/tests-functions/fixtures/gen/backwards/ExpressionMaker.ts` | 56 | ✅ |
+| `tests-functions/src/testFixtures/java/test/gen/backwards/RequestBackwardsExpression.java` | `test/engine/tests-functions/fixtures/gen/backwards/RequestBackwardsExpression.ts` | 46 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/type/GenDataType.java` | `test/engine/tests-functions/fixtures/gen/type/GenDataType.ts` | 100 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/type/GenDataTypeMaker.java` | `test/engine/tests-functions/fixtures/gen/type/GenDataTypeMaker.ts` | 241 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/type/GenJellyTypeMaker.java` | `test/engine/tests-functions/fixtures/gen/type/GenJellyTypeMaker.ts` | 287 | ✅ |
@@ -863,7 +863,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-central/src/test/java/test/expressions/PropReplaceExpression.java` | `test/gui/tests-gui-central/expressions/PropReplaceExpression.spec.ts` | 75 | – (0/4 tests) |
 | `tests-gui-central/src/test/java/test/expressions/TestDisambiguate.java` | `test/gui/tests-gui-central/expressions/TestDisambiguate.spec.ts` | 115 | – (0/2 tests) |
 | `tests-gui-central/src/test/java/test/expressions/TestExpressionExplanation.java` | `test/gui/tests-gui-central/expressions/TestExpressionExplanation.spec.ts` | 424 | – (0/4 tests) |
-| `tests-gui-central/src/test/java/test/expressions/TestFromDoc.java` | `test/gui/tests-gui-central/expressions/TestFromDoc.spec.ts` | 361 | – (0/1 tests) |
+| `tests-gui-central/src/test/java/test/expressions/TestFromDoc.java` | `test/engine/tests-gui-central/expressions/TestFromDoc.test.ts` | 361 | ✅ (1/1 tests) |
 | `tests-gui-central/src/test/java/test/expressions/TestLoadSaveExpression.java` | `test/gui/tests-gui-central/expressions/TestLoadSaveExpression.spec.ts` | 144 | – (0/3 tests) |
 | `tests-gui-central/src/test/java/test/gen/GenDateTime.java` | `test/gui/tests-gui-central/gen/GenDateTime.spec.ts` | 46 | – |
 | `tests-gui-central/src/test/java/test/gen/GenDateTimeZoned.java` | `test/gui/tests-gui-central/gen/GenDateTimeZoned.spec.ts` | 46 | – |
@@ -944,7 +944,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-grid/src/test/java/test/gen/GenGridAreaList.java` | `test/gui/tests-gui-grid/gen/GenGridAreaList.spec.ts` | 105 | – |
 | `tests-gui-grid/src/test/java/test/gui/PropGridOverlap.java` | `test/gui/tests-gui-grid/gui/PropGridOverlap.spec.ts` | 147 | – (0/3 tests) |
 | `tests-gui-grid/src/test/java/test/gui/TestKeyboardMovement.java` | `test/gui/tests-gui-grid/gui/TestKeyboardMovement.spec.ts` | 210 | – (0/2 tests) |
-| `tests-gui-grid/src/test/java/test/gui/TestVirtualGridLayout.java` | `test/gui/tests-gui-grid/gui/TestVirtualGridLayout.spec.ts` | 587 | – (0/10 tests) |
+| `tests-gui-grid/src/test/java/test/gui/TestVirtualGridLayout.java` | `test/gui/tests-gui-grid/gui/TestVirtualGridLayout.spec.ts` | 587 | – (0/9 tests) |
 
 </details>
 
@@ -1027,7 +1027,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-tables/src/test/java/test/PropLoadSaveData.java` | `test/engine/tests-tables/PropLoadSaveData.test.ts` | 158 | ✅ (2/2 tests) |
 | `tests-tables/src/test/java/test/PropLoadSaveTransformation.java` | `test/engine/tests-tables/PropLoadSaveTransformation.test.ts` | 101 | – (0/1 tests) |
 | `tests-tables/src/test/java/test/PropNumericStorage.java` | `test/engine/tests-tables/PropNumericStorage.test.ts` | 140 | ✅ (4/4 tests) |
-| `tests-tables/src/test/java/test/PropRunTransformation.java` | `test/engine/tests-tables/PropRunTransformation.test.ts` | 495 | – (0/8 tests) |
+| `tests-tables/src/test/java/test/PropRunTransformation.java` | `test/engine/tests-tables/PropRunTransformation.test.ts` | 495 | – (0/7 tests) |
 | `tests-tables/src/test/java/test/TestSetValue.java` | `test/engine/tests-tables/TestSetValue.test.ts` | 106 | ✅ (1/1 tests) |
 | `tests-tables/src/test/java/test/data/PropFiles.java` | `test/engine/tests-tables/data/PropFiles.test.ts` | 60 | ✅ (1/1 tests) |
 | `tests-tables/src/test/java/test/data/TestTextFileColumn.java` | `test/engine/tests-tables/data/TestTextFileColumn.test.ts` | 140 | ✅ (1/1 tests) |

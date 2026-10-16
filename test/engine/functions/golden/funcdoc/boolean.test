@@ -1,0 +1,22 @@
+ @call function\\not(true) = (false)
+ @call function\\not(false) = (true)
+
+== x//Boolean
+==== @call function\\not(@call function\\not(x))
+==== x
+
+== x//Boolean
+==== @call function\\not(x)
+==== x = false
+
+== x//Boolean
+==== @call function\\not(x)
+==== x <> true
+ @call function\\xor(true, true) = (false)
+ @call function\\xor(true, false) = (true)
+ @call function\\xor(false, true) = (true)
+ @call function\\xor(false, false) = (false)
+
+== x//Boolean
+==== @call function\\xor(x, true)
+==== @call function\\not(x)

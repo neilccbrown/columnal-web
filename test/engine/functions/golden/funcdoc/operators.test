@@ -1,0 +1,41 @@
+((1 / 3) =~ (0.333 ± 0.001)) = (true)
+(3 <> 6) = (true)
+
+==* t//Equatable
+== x//@typevar t
+== y//@typevar t
+==== x <> y
+==== @call function\\not(x = y)
+(5 / 2) = (2.5)
+(@call function\\round decimal((100{m} / 9.58{s}), 2)) = (10.44{m/s})
+(1 + 2 + 3) = (6)
+(10 - 2 - 3 + 1) = (6)
+("a" ; "b" ; "c") = ("abc")
+(@match "T-2000" @case "T-" ; y @then @call function\\from text(y) @endmatch) = (2000)
+(1 = 2) = (false)
+(@call function\\from text("1") = 1) = (true)
+((2/2)=1=(2-1)) = (true)
+("$50" =~ ("$" ; _)) = (true)
+(50.0006 =~ (50 ± 0.01)) = (true)
+(["Hi", "there"] =~ ["", _]) = (false)
+((low:2, high:4) =~ (low:x, high:(x + 2))) = (true)
+(["Bye", "Bye"] =~ [s, s]) = (true)
+
+==* t//Equatable
+== x//@typevar t
+== y//@typevar t
+== z//@typevar t
+==== x = y = z
+==== (x = y) & (y = z) & (x = y)
+((@call function\\list length([6, 7]) >= 2) & (@call function\\element([6, 7], 2) = 5)) = (false)
+(("a" = "a") & ("a" <> "b")) = (true)
+(true & true & false) = (false)
+((@call function\\list length([6, 7]) >= 2) & (@call function\\element([6, 7], 2) = 5)) = (false)
+(("a" = "b") | ("a" <> "b")) = (true)
+(true | true | false) = (true)
+(1 < @call function\\abs(-2) < 3) = (true)
+(false < true) = (true)
+("mud" < "muddle") = (true)
+(@call function\\as type(type{DateTimeZoned}, @call function\\from text("2013-05-02 12:00 Europe/London")) < @call function\\from text("2013-05-02 11:37 America/Toronto")) = (true)
+(tag\\Optional\None < @call tag\\Optional\Is(0)) = (true)
+((a:0, b:5) < (a:1, b:3)) = (true)

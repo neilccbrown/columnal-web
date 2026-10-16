@@ -28,6 +28,8 @@ const CONFIG = {
 /** Columnal's number type: canonical decimals with DECIMAL128 arithmetic. */
 export const Decimal = DecimalJs.clone(CONFIG);
 export type Decimal = DecimalJs;
+/** A decimal.js rounding mode, such as Decimal.ROUND_HALF_UP */
+export type Rounding = DecimalJs.Rounding;
 
 export const ZERO: Decimal = new Decimal(0);
 export const ONE: Decimal = new Decimal(1);
@@ -142,6 +144,27 @@ export function toPlainString(d: Decimal): string
 export function toBigInteger(d: Decimal): bigint
 {
     return BigInt(d.trunc().toFixed());
+}
+
+/**
+ * BigDecimal.setScale(newScale, roundingMode): rounds to newScale decimal places, or for a
+ * negative newScale, to a multiple of 10^-newScale.  The rounding mode is a decimal.js one
+ * (Decimal.ROUND_HALF_UP is Java's RoundingMode.HALF_UP).  Not limited to 34 digits, like Java's.
+ */
+export function setScale(d: Decimal, newScale: number, rounding: Rounding): Decimal
+{
+    if (newScale >= 0)
+        return canonical(d.toDecimalPlaces(newScale, rounding));
+    return canonical(shiftPowerOfTen(shiftPowerOfTen(d, newScale).toDecimalPlaces(0, rounding), -newScale));
+}
+
+// d * 10^n, exactly (decimal.js arithmetic would round to 34 digits)
+function shiftPowerOfTen(d: Decimal, n: number): Decimal
+{
+    if (d.isZero())
+        return d;
+    const [mantissa, exponent] = d.toExponential().split("e") as [string, string];
+    return new Decimal(mantissa + "e" + (Number(exponent) + n));
 }
 
 /** BigDecimal.longValue() / Number.longValue(): the integer part, wrapped to 64 bits as Java does. */

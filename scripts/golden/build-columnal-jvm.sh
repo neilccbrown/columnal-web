@@ -11,7 +11,7 @@ REF="$ROOT/reference/columnal"
 JARS="$ROOT/reference/jars"
 OUT="$ROOT/reference/jvm"
 # The engine modules built so far, in dependency order:
-MODULES="utility-error utility-functional utility-adt parsers identifiers utility types data"
+MODULES="utility-error utility-functional utility-adt parsers identifiers utility types data expressions functions"
 
 fetch() # group/artifact/version file
 {
@@ -38,6 +38,7 @@ fetch info/debatty/java-string-similarity/2.0.0 java-string-similarity-2.0.0.jar
 fetch org/apache/logging/log4j/log4j-api/2.19.0 log4j-api-2.19.0.jar
 fetch org/apache/logging/log4j/log4j-core/2.19.0 log4j-core-2.19.0.jar
 fetch de/uni-freiburg/informatik/ultimate/smtinterpol/2.5-1242-g5c50fb6d smtinterpol-2.5-1242-g5c50fb6d.jar
+fetch ch/obermuhlner/big-math/2.3.0 big-math-2.3.0.jar
 # JavaFX classes used by the engine (StyledString, some utilities); the platform does not
 # matter, as the engine never starts the JavaFX toolkit:
 fetch org/openjfx/javafx-base/17.0.2 javafx-base-17.0.2-linux.jar
@@ -74,5 +75,8 @@ javac -nowarn -encoding UTF-8 -proc:none -d "$OUT/classes" -cp "$LIBS" @"$OUT/so
 [ -f "$OUT/classes/xyz/columnal/data/datatype/DataType.class" ] || { echo "Compilation failed" >&2; exit 1; }
 # Resources (e.g. builtin_units.txt):
 cp "$REF/data/src/main/resources/builtin_units.txt" "$OUT/classes/"
+# The function details, which the Java build generated from the funcdoc XML with Saxon
+# (scripts/golden/funcdoc.sh), loaded by FunctionDefinition as resource bundles:
+cp "$ROOT"/test/engine/functions/golden/funcdoc/function_*_en.properties "$OUT/classes/"
 echo "$OUT/classes:$LIBS" > "$OUT/classpath.txt"
 echo "Built; classpath in $OUT/classpath.txt"

@@ -26,10 +26,14 @@ reviewed side by side with the Java. Refactoring comes after a module works and 
   Directories named `tests-*` contain only ported tests.
 - `src/engine/java/` is a TypeScript-only module of Java standard library equivalents, and of the
   small third-party Java classes Columnal used (`Rational` from javaSMT, `Damerau` from
-  java-string-similarity). Any module may use it. It contains `JavaObject` (equals/hashCode/compareTo),
+  java-string-similarity, and the logarithms of big-math's `BigDecimalMath`). Any module may use it. It contains `JavaObject` (equals/hashCode/compareTo),
   `HashMap`/`HashSet`, `TreeMap`/`TreeSet`, `JavaBigDecimal` (numbers), `JavaString`, `JavaDouble`,
   `JavaCharacter`, `JavaRandom`, `JavaCollections`, `JavaProperties`, `JavaEnum`, `JavaExceptions`,
   and `time/` (java.time, see "Dates and times" below).
+- Files generated at build time are not committed: the ANTLR parsers (`src/engine/parsers/generated/`)
+  and the function details (`src/engine/functions/generated/`, from the funcdoc XML by
+  `scripts/gen-funcdoc.mjs`). `npm run gen` makes both, and runs on install and before dev,
+  build, test and typecheck.
 - `src/engine/anns/` holds type aliases for the Java Checker Framework qualifiers
   (`ExpressionIdentifier`, `TableDataRowIndex`, ...), which document ported signatures.
 - `npm run depcheck` enforces the layering: the engine never imports `src/gui` or `src/gui-logic`,
@@ -47,8 +51,8 @@ reviewed side by side with the Java. Refactoring comes after a module works and 
 
 Whenever ported code deliberately behaves differently from the Java, or a Java bug is preserved,
 mark it with a `// PORT-NOTE:` comment explaining why, so differences can be found with `grep`.
-Whether bugs are preserved or fixed is still an open decision (PLAN.md §6). Until then, preserve
-them and mark them.
+A Java bug found during the port is preserved and marked, and reported to the project owner, who
+decides whether to fix it (PLAN.md §6). A fixed bug's `PORT-NOTE` starts "bug fix".
 
 Members of a ported class that can't be ported yet (usually because they need a later phase) are
 listed in a `// PORT-DEFERRED:` comment. `npm run port-status` reports files containing one as
@@ -217,7 +221,9 @@ exists, and fails. So:
 
 - Such a hierarchy is loaded through a **barrel module** that exports the base class first, then the
   subclasses (`typeExp/TypeExps.ts`, `jellytype/JellyTypes.ts`, `data/data/DataSources.ts`,
-  `data/data/columntype/ColumnTypes.ts`). Every module, including the base and
+  `data/data/columntype/ColumnTypes.ts`, and in `expressions`, `Expressions.ts`,
+  `UnitExpressions.ts` and `type/TypeExpressions.ts`). Intermediate base classes
+  (`NaryOpExpression`, ...) come before their subclasses, and can't be loaded first either. Every module, including the base and
   subclass modules themselves, imports these classes' values from the barrel. Type-only imports may
   name the class files directly. The dependency-cruiser rules `via-barrel-*` enforce this; add new
   hierarchies to `HIERARCHY_BARRELS` in `.dependency-cruiser.cjs`.
@@ -298,6 +304,12 @@ install and before `dev`, `build`, `test` and `typecheck`.
   - **Pitfall:** `SourceOfRandomness.nextInt(min, max)` includes `max`, while
     `JavaRandom.nextInt(origin, bound)` (java.util.Random) excludes `bound`. The Java tests use both forms.
   - `Assume.*` inside a property discards the trial (`fc.pre`).
+  - A parameter with several `@From` generators uses `new CompositeGenerator([...])`, which picks
+    one at random for each value, and junit-quickcheck's enum generator (also used for
+    `@From(Ctor.class)` of a class built from an enum) is `EnumGenerator`.
+- A test in a GUI test module that doesn't use the GUI (such as `TestFromDoc`) is ported as a
+  Vitest test under `test/engine/tests-gui-x/`, and listed in `ENGINE_TESTS_IN_GUI_MODULES` in
+  `scripts/port-status.ts`.
 - `java.util.Random` is `JavaRandom`, which is bit-for-bit compatible. So tests with fixed seeds generate
   the same data as on the JVM.
 - **Golden values:** where Java behaviour is subtle, generate expected values from the real JVM rather
@@ -308,7 +320,7 @@ install and before `dev`, `build`, `test` and `typecheck`.
   utilities, 4,000 cases), `java-lang.sh` and `grammar-utility.sh`. Known, deliberate differences are
   listed explicitly in the test, with their `PORT-NOTE`.
 - For whole classes, `scripts/golden/build-columnal-jvm.sh` compiles the original engine modules
-  (so far up to `data`) into `reference/jvm/classes`: it downloads the Maven dependencies (checking
+  (so far up to `functions`) into `reference/jvm/classes`: it downloads the Maven dependencies (checking
   their SHA-1s), generates the Java parsers with ANTLR 4.11, and strips the Checker Framework
   annotations. A harness such as `scripts/golden/java/TypesHarness.java` then calls the real classes,
   printing `section|input|output` lines that a test replays (`test/engine/types/TypesGolden.test.ts`).

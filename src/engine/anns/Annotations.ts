@@ -33,3 +33,9 @@ export const RawInputLocation = { ZERO: 0, ONE: 1 } as const;
 
 /** A one-based index, as entered by the user (annotation.units.UserIndex). */
 export type UserIndex = number;
+
+/** A position in an expression's canonical (saved) text (annotation.units.CanonicalLocation). */
+export type CanonicalLocation = number;
+
+/** A key into the function documentation (annotation.funcdoc.qual.FuncDocKey). */
+export type FuncDocKey = string;

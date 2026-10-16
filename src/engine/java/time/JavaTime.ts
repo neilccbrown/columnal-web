@@ -17,6 +17,7 @@ import {
     DateTimeFormatter,
     DateTimeFormatterBuilder,
     DateTimeParseException,
+    Month,
     ParsePosition,
     TemporalAccessor,
     TemporalQueries,
@@ -351,6 +352,11 @@ export function javaMessage(e: Error): string
         if (message.endsWith(suffix))
             message = message.substring(0, message.length - suffix.length);
     }
+    // LocalDate.of with a day beyond the end of the month: js-joda gives the numbers, Java
+    // gives the month's name and the day, such as "Invalid date 'APRIL 31'":
+    const invalidDate = /^Invalid date '-?\d+' '(\d+)' '(\d+)'$/u.exec(message);
+    if (invalidDate !== null)
+        message = "Invalid date '" + Month.of(Number(invalidDate[1])).name() + " " + invalidDate[2] + "'";
     return message;
 }
 

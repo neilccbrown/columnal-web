@@ -1,0 +1,58 @@
+// Port of xyz.columnal.transformations.function.comparison.MaxIndex (functions module).
+import { Decimal } from "../../../../java/JavaBigDecimal.js";
+import { ValueFunction } from "../../../../expressions/transformations/expression/function/ValueFunction.js";
+import { ValueClass, type DataType } from "../../../../types/data/datatype/DataType.js";
+import { DataTypeUtility } from "../../../../types/data/datatype/DataTypeUtility.js";
+import type { TypeManager } from "../../../../types/data/datatype/TypeManager.js";
+import type { Unit } from "../../../../types/data/unit/Unit.js";
+import type { Either } from "../../../../utility-adt/utility/adt/Either.js";
+import { UserException } from "../../../../utility-error/error/UserException.js";
+import { Utility } from "../../../../utility/utility/Utility.js";
+import type { Value } from "../../../../utility/utility/Value.js";
+import { FunctionDefinition } from "../FunctionDefinition.js";
+
+export class MaxIndex extends FunctionDefinition
+{
+    public static readonly NAME = "maximum index";
+
+    public constructor()
+    {
+        super("comparison:maximum index");
+    }
+
+    public override getInstance(_typeManager: TypeManager, _paramTypes: (s: string) => Either<Unit, DataType>): ValueFunction
+    {
+        return new MaxIndex.Instance();
+    }
+}
+
+export namespace MaxIndex
+{
+    export class Instance extends ValueFunction
+    {
+        public override _call(): Value
+        {
+            const list = this.arg(0, ValueClass.LIST);
+            if (list.size() === 0)
+            {
+                throw new UserException("Cannot take maximum of empty list");
+            }
+            else
+            {
+                let max = list.get(0);
+                let zeroIndexMax = 0;
+                for (let i = 1; i < list.size(); i++)
+                {
+                    const val = list.get(i);
+                    if (Utility.compareValues(max, val) < 0)
+                    {
+                        max = val;
+                        zeroIndexMax = i;
+                    }
+                }
+                // Add one to make it one-based:
+                return DataTypeUtility.value(new Decimal(zeroIndexMax + 1));
+            }
+        }
+    }
+}

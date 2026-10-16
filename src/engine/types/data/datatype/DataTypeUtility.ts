@@ -6,6 +6,7 @@ import { Decimal, fitsLong, intValue, longValue, toBigInteger, toJavaString, toP
 import { javaStringCompare, type Comparable, type Comparator } from "../../../java/JavaObject.js";
 import { HashSet } from "../../../java/HashMap.js";
 import { javaListGet } from "../../../java/JavaCollections.js";
+import { IndexOutOfBoundsException } from "../../../java/JavaExceptions.js";
 import {
     isDateTimeException,
     LocalDate,
@@ -451,13 +452,29 @@ export class DataTypeUtility
         // Updated char position and return value:
         const possibles: Pair<number, TemporalAccessor>[] = [];
         const wrapped = Utility.wrapPreprocessDate(src.getParseProgress().src, src.getParseProgress().curCharIndex);
+        // PORT-NOTE: Java passes the wrapped CharSequence to the formatter, which reads it lazily;
+        // js-joda needs a string.  The wrapper's length() can count a final character whose
+        // charAt throws (in Java too), when the text ends with punctuation, as in "[2020-07-21)]".
+        // Java's formatters don't read that far after a date, so the string stops before it.
+        let wrappedText = "";
+        const wrappedLength = wrapped.length();
+        try
+        {
+            for (let i = 0; i < wrappedLength; i++)
+                wrappedText += wrapped.charAt(i);
+        }
+        catch (e)
+        {
+            if (!(e instanceof IndexOutOfBoundsException))
+                throw e;
+        }
         const possibleFormatters: DateTimeFormatter[] = [];
         for (const formatter of formatters)
         {
             try
             {
                 const position = new ParsePosition(src.getParseProgress().curCharIndex);
-                const temporalAccessor = parseFromPosition(formatter, wrapped.toString(), position);
+                const temporalAccessor = parseFromPosition(formatter, wrappedText, position);
                 const value = DataTypeUtility.value(dateTimeInfo, temporalAccessor);
                 if (value !== null)
                 {

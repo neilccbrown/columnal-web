@@ -1,7 +1,8 @@
 // Port of xyz.columnal.transformations.function.ToYearMonth (functions module).
 import type { FuncDocKey } from "../../../anns/Annotations.js";
 import { ValueFunction } from "../../../expressions/transformations/expression/function/ValueFunction.js";
-import { YearMonth, type TemporalAccessor as JsJodaTemporalAccessor } from "../../../java/time/JavaTime.js";
+import { isDateTimeException, javaMessage, YearMonth, type TemporalAccessor as JsJodaTemporalAccessor } from "../../../java/time/JavaTime.js";
+import { UserException } from "../../../utility-error/error/UserException.js";
 import type { TemporalAccessor } from "../../../java/time/TemporalAccessor.js";
 import type { DataType } from "../../../types/data/datatype/DataType.js";
 import { DateTimeInfo } from "../../../types/data/datatype/DateTimeInfo.js";
@@ -53,9 +54,20 @@ export namespace ToYearMonth
     {
         public override _call(): Value
         {
-            // PORT-NOTE: as in Java, YearMonth.of throws DateTimeException (not a UserException) for
-            // an out-of-range month.
-            return YearMonth.of(this.intArg(0), this.intArg(1)) as unknown as TemporalAccessor;
+            const year = this.intArg(0);
+            const month = this.intArg(1);
+            try
+            {
+                return YearMonth.of(year, month) as unknown as TemporalAccessor;
+            }
+            catch (e)
+            {
+                // PORT-NOTE: bug fix.  Java let the DateTimeException through (a crash rather than
+                // an error for the user) for an out-of-range year or month.
+                if (!isDateTimeException(e))
+                    throw e;
+                throw new UserException("Invalid year and month: " + year + ", " + month + " " + javaMessage(e), e);
+            }
         }
     }
 }

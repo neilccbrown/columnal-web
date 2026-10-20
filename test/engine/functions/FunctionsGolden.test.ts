@@ -70,6 +70,14 @@ const KNOWN_DIFFERENCES = new Map<string, string>([
     ["@call function\\\\round decimal(1.5 * 10, -1)", "@call function\\\\round decimal(1.5 * 10, -1) :: Number = 15"],
     // AddSubtractExpression.constantFold: bug fix (Java threw IndexOutOfBoundsException).
     ["3{m} ^ (1 + 2)", "3{m} ^ (1 + 2) :: Number{m^3} = 27"],
+    // Bug fixes: Java let a DateTimeException through (a crash) where the port gives a UserException.
+    ["@call function\\\\years between(date{2000-02-29}, date{2021-03-01})", "@call function\\\\years between(date{2000-02-29}, date{2021-03-01}) :: Number{year} = !EvaluationException: Cannot calculate years between 2000-02-29 and 2021-03-01: Invalid date 'February 29' as '2021' is not a leap year"],
+    ["@call function\\\\time from hms(25{hour}, 0{minute}, 0{s})", "@call function\\\\time from hms(25{hour}, 0{minute}, 0{s}) :: Time = !EvaluationException: Invalid time: 25, 0, 0 Invalid value for HourOfDay (valid values 0 - 23): 25"],
+    ["@call function\\\\time from hms(1{hour}, 2{minute}, -3{s})", "@call function\\\\time from hms(1{hour}, 2{minute}, -3{s}) :: Time = !EvaluationException: Invalid time: 1, 2, -3 Invalid value for SecondOfMinute (valid values 0 - 59): -3"],
+    ["@call function\\\\dateym from ym(2020{year}, 13{month})", "@call function\\\\dateym from ym(2020{year}, 13{month}) :: DateYM = !EvaluationException: Invalid year and month: 2020, 13 Invalid value for MonthOfYear (valid values 1 - 12): 13"],
+    ["@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, \"Not/AZone\")", "@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, \"Not/AZone\") :: DateTimeZoned = !EvaluationException: Invalid time zone: Unknown time-zone ID: Not/AZone"],
+    ["@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, \"+25:00\")", "@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, \"+25:00\") :: DateTimeZoned = !EvaluationException: Invalid time zone: Zone offset hours not in valid range: value 25 is not in the range -18 to 18"],
+    ["@call function\\\\years between(date{2020-02-29}, date{2023-05-01})", "@call function\\\\years between(date{2020-02-29}, date{2023-05-01}) :: Number{year} = !EvaluationException: Cannot calculate years between 2020-02-29 and 2023-05-01: Invalid date 'February 29' as '2023' is not a leap year"],
 ]);
 
 // Java shows a computed number with its scale (2.50); the port's numbers have no trailing zeros

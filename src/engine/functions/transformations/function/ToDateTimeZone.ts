@@ -1,6 +1,7 @@
 // Port of xyz.columnal.transformations.function.ToDateTimeZone (functions module).
 import { ValueFunction } from "../../../expressions/transformations/expression/function/ValueFunction.js";
-import { LocalDate, LocalDateTime, LocalTime, ZonedDateTime, ZoneId, type TemporalAccessor as JsJodaTemporalAccessor } from "../../../java/time/JavaTime.js";
+import { isDateTimeException, javaMessage, LocalDate, LocalDateTime, LocalTime, ZonedDateTime, ZoneId, type TemporalAccessor as JsJodaTemporalAccessor } from "../../../java/time/JavaTime.js";
+import { UserException } from "../../../utility-error/error/UserException.js";
 import type { TemporalAccessor } from "../../../java/time/TemporalAccessor.js";
 import { ValueClass, type DataType } from "../../../types/data/datatype/DataType.js";
 import { DataTypeUtility } from "../../../types/data/datatype/DataTypeUtility.js";
@@ -49,8 +50,20 @@ export namespace ToDateTimeZone
     {
         public override _call(): Value
         {
-            // PORT-NOTE: as in Java, ZoneId.of throws (not a UserException) for an unknown zone.
-            return DataTypeUtility.valueZonedDateTime(ZonedDateTime.of(LocalDateTime.of(temporalArg(this.arg(0), LocalDate), temporalArg(this.arg(1), LocalTime)), ZoneId.of(this.arg(2, ValueClass.STRING))));
+            let zone: ZoneId;
+            try
+            {
+                zone = ZoneId.of(this.arg(2, ValueClass.STRING));
+            }
+            catch (e)
+            {
+                // PORT-NOTE: bug fix.  Java let the DateTimeException through (a crash rather than
+                // an error for the user) for an unknown or invalid zone.
+                if (!isDateTimeException(e))
+                    throw e;
+                throw new UserException("Invalid time zone: " + javaMessage(e), e);
+            }
+            return DataTypeUtility.valueZonedDateTime(ZonedDateTime.of(LocalDateTime.of(temporalArg(this.arg(0), LocalDate), temporalArg(this.arg(1), LocalTime)), zone));
         }
     }
 }

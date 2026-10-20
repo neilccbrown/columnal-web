@@ -326,5 +326,6 @@ describe("TestFromDoc", () =>
                 }
             }
         }
-    }, { trials: 100 });
+    // Each trial runs every documentation example (29 seconds on CI, so it needs longer than the default):
+    }, { trials: 100, timeout: 180_000 });
 });

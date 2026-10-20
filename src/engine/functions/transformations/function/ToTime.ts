@@ -1,7 +1,8 @@
 // Port of xyz.columnal.transformations.function.ToTime (functions module).
 import type { FuncDocKey } from "../../../anns/Annotations.js";
 import { ValueFunction } from "../../../expressions/transformations/expression/function/ValueFunction.js";
-import { LocalTime, type TemporalAccessor as JsJodaTemporalAccessor } from "../../../java/time/JavaTime.js";
+import { toJavaString } from "../../../java/JavaBigDecimal.js";
+import { isDateTimeException, javaMessage, LocalTime, type TemporalAccessor as JsJodaTemporalAccessor } from "../../../java/time/JavaTime.js";
 import type { TemporalAccessor } from "../../../java/time/TemporalAccessor.js";
 import { ValueClass, type DataType } from "../../../types/data/datatype/DataType.js";
 import { DataTypeUtility } from "../../../types/data/datatype/DataTypeUtility.js";
@@ -10,6 +11,7 @@ import type { TypeManager } from "../../../types/data/datatype/TypeManager.js";
 import type { Unit } from "../../../types/data/unit/Unit.js";
 import type { UnitManager } from "../../../types/data/unit/UnitManager.js";
 import type { Either } from "../../../utility-adt/utility/adt/Either.js";
+import { UserException } from "../../../utility-error/error/UserException.js";
 import { Utility } from "../../../utility/utility/Utility.js";
 import type { Value } from "../../../utility/utility/Value.js";
 import { FunctionDefinition } from "./FunctionDefinition.js";
@@ -58,10 +60,20 @@ export namespace ToTime
             const hour = DataTypeUtility.requireInteger(this.arg(0));
             const minute = DataTypeUtility.requireInteger(this.arg(1));
             const second = this.arg(2, ValueClass.NUMBER);
-            // PORT-NOTE: as in Java, LocalTime.of throws DateTimeException (not a UserException) for
-            // an out-of-range hour, minute or second.
-            // Java: getFracPart(second, 9).intValue(), of a BigInteger
-            return DataTypeUtility.valueTime(LocalTime.of(hour, minute, DataTypeUtility.requireInteger(Utility.getIntegerPart(second)), Number(BigInt.asIntN(32, Utility.getFracPart(second, 9)))));
+            const wholeSecond = DataTypeUtility.requireInteger(Utility.getIntegerPart(second));
+            try
+            {
+                // Java: getFracPart(second, 9).intValue(), of a BigInteger
+                return DataTypeUtility.valueTime(LocalTime.of(hour, minute, wholeSecond, Number(BigInt.asIntN(32, Utility.getFracPart(second, 9)))));
+            }
+            catch (e)
+            {
+                // PORT-NOTE: bug fix.  Java let the DateTimeException through (a crash rather than
+                // an error for the user) for an out-of-range hour, minute or second.
+                if (!isDateTimeException(e))
+                    throw e;
+                throw new UserException("Invalid time: " + hour + ", " + minute + ", " + toJavaString(second) + " " + javaMessage(e), e);
+            }
         }
     }
 }

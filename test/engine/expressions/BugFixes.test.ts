@@ -9,6 +9,8 @@ import { Rational } from "../../../src/engine/java/Rational.js";
 import { TypeManager } from "../../../src/engine/types/data/datatype/TypeManager.js";
 import { UnitManager } from "../../../src/engine/types/data/unit/UnitManager.js";
 import { ListEx } from "../../../src/engine/utility/utility/Utility.js";
+import { UserException } from "../../../src/engine/utility-error/error/UserException.js";
+import { assertThrows } from "../../support/junit.js";
 import { TFunctionUtil } from "../tests-functions/fixtures/functions/TFunctionUtil.js";
 
 const ADD = AddSubtractExpression.AddSubtractOp.ADD;
@@ -46,5 +48,17 @@ describe("Java bug fixes", () =>
         const result = f.call(["a", "banana"]) as ListEx;
         expect(result.get(1)).toEqual(new Decimal(3));
         expect(result.size()).toBe(3);
+    });
+
+    // Java let a DateTimeException through from these functions: a crash, rather than an error
+    // for the user.
+    test.each([
+        "@call function\\\\years between(date{2020-02-29}, date{2023-05-01})",
+        "@call function\\\\time from hms(25{hour}, 0{minute}, 0{s})",
+        "@call function\\\\dateym from ym(2020{year}, 13{month})",
+        "@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, \"Not/AZone\")",
+    ])("user error from %s", src =>
+    {
+        assertThrows(UserException, () => TFunctionUtil.runExpression(src));
     });
 });

@@ -271,6 +271,9 @@ Java app.
   `AddSubtractExpression.constantFold` used the wrong operators and threw
   `IndexOutOfBoundsException` (so `3{m} ^ (1 + 2)` failed to type check), and
   `CallExpression.check` threw `ClassCastException` for a call target that wasn't an identifier.
+  `years between` (from 29 February into a non-leap year), `time from hms`, `dateym from ym` and
+  `datetimezoned from dtz` let a `DateTimeException` through for invalid input, which crashed
+  the evaluation; they now give the user an error.
   Also fixed: an off-by-one condition in `StringWithinIndex`, which is not in use.
 - Deferred to Phase 5: `PropRunExpression` (in `tests-tables`).
 

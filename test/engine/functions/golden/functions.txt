@@ -1194,6 +1194,11 @@ expr|@call function\\\\dateym from ym(2020{year}, 13{month})|@call function\\\\d
 expr|@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, "Not/AZone")|@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, "Not/AZone") :: DateTimeZoned = !ZoneRulesException: Unknown time-zone ID: Not/AZone
 expr|@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, "+25:00")|@call function\\\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, "+25:00") :: DateTimeZoned = !DateTimeException: Zone offset hours not in valid range: value 25 is not in the range -18 to 18
 expr|@call function\\\\years between(date{2020-02-29}, date{2023-05-01})|@call function\\\\years between(date{2020-02-29}, date{2023-05-01}) :: Number{year} = !DateTimeException: Invalid date 'February 29' as '2023' is not a leap year
+expr|@call function\\\\maximum([(? + 1), (? * 2)])|@call function\\\\maximum([? + 1, ? * 2]) :: (Number) -> Number = !InternalException: Uncomparable types: class xyz.columnal.transformations.expression.ImplicitLambdaArg$1 class xyz.columnal.transformations.expression.ImplicitLambdaArg$1
+expr|@call function\\\\list contains([(? + 1)], (? * 2))|@call function\\\\list contains([? + 1], ? * 2) :: Boolean = !InternalException: Uncomparable types: class xyz.columnal.transformations.expression.ImplicitLambdaArg$1 class xyz.columnal.transformations.expression.ImplicitLambdaArg$1
+expr|@call function\\\\to text((? + 1))|@call function\\\\to text(? + 1) :: Text = !InternalException: Functions are unsupported, plain data values expected
+expr|@call function\\\\round decimal(1234, -2)|@call function\\\\round decimal(1234, -2) :: Number = 1234
+expr|@call function\\\\round decimal(15, 0.5)|@call function\\\\round decimal(15, 0.5) :: Number = 15
 expr|(((22.1085 * 2.38964) - ((-9.85059) / 727)) ^ -1)|((22.1085 * 2.38964) - (-9.85059 / 727)) ^ -1 :: Number = 0.01892329996580967695019517482888347
 expr|(((-0.0497454) + 657) * (258.113 + (-3332.30)))|(-0.0497454 + 657) * (258.113 + -3332.3) :: Number = -2019587.9323380102
 expr|(-0.104161)|-0.104161 :: Number = -0.104161

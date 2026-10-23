@@ -202,3 +202,8 @@ datetimezoned{2010-11-28 9:12:03 PM Asia/Jakarta}
 @call function\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, "Not/AZone")
 @call function\\datetimezoned from dtz(date{2020-01-01}, time{10:00}, "+25:00")
 @call function\\years between(date{2020-02-29}, date{2023-05-01})
+@call function\\maximum([(? + 1), (? * 2)])
+@call function\\list contains([(? + 1)], (? * 2))
+@call function\\to text((? + 1))
+@call function\\round decimal(1234, -2)
+@call function\\round decimal(15, 0.5)

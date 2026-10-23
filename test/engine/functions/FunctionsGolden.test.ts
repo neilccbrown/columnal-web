@@ -64,10 +64,17 @@ function run(f: () => string): string
 
 // Known, deliberate differences from the Java (see the PORT-NOTEs), giving the port's output:
 const KNOWN_DIFFERENCES = new Map<string, string>([
-    // RoundDP: Java rounded a whole number held as a BigDecimal (1.5 * 10 is 15.0) to tens, but
-    // returned one held as a Long (such as 15) unchanged; with one kind of number, the port always
-    // does the latter.
-    ["@call function\\\\round decimal(1.5 * 10, -1)", "@call function\\\\round decimal(1.5 * 10, -1) :: Number = 15"],
+    // RoundDP: bug fix.  Java returned a whole number held as a Long unchanged (ignoring the
+    // number of places), but rounded one held as a BigDecimal (so 1.5 * 10 gave 20); the port
+    // rounds every number.
+    ["@call function\\\\round decimal(15, -1)", "@call function\\\\round decimal(15, -1) :: Number = 20"],
+    ["@call function\\\\round decimal(1234, -2)", "@call function\\\\round decimal(1234, -2) :: Number = 1200"],
+    ["@call function\\\\round decimal(15, 0.5)", "@call function\\\\round decimal(15, 0.5) :: Number = !EvaluationException: Number not an integer or too large: 0.5"],
+    // FunctionDefinition: bug fix.  Java ignored the type requirements from the function
+    // documentation, so these type checked and then failed at run time with internal errors.
+    ["@call function\\\\maximum([(? + 1), (? * 2)])", "@call function\\\\maximum([? + 1, ? * 2]) :: !Function(Number{_u?})(Number{_u?}) is not Comparable"],
+    ["@call function\\\\list contains([(? + 1)], (? * 2))", "@call function\\\\list contains([? + 1], ? * 2) :: !Function(_t?[=Number{_u?}])(Number{_u?}) is not Equatable / Function(_t?[=Number{_u?}])(Number{_u?}) is not Equatable"],
+    ["@call function\\\\to text((? + 1))", "@call function\\\\to text(? + 1) :: !Function(_t?[=Number{_u?}])(Number{_u?}) is not Showable"],
     // AddSubtractExpression.constantFold: bug fix (Java threw IndexOutOfBoundsException).
     ["3{m} ^ (1 + 2)", "3{m} ^ (1 + 2) :: Number{m^3} = 27"],
     // Bug fixes: Java let a DateTimeException through (a crash) where the port gives a UserException.

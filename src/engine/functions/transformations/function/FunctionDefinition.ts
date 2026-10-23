@@ -149,8 +149,6 @@ export abstract class FunctionDefinition implements StandardFunctionDefinition
                 const typeVars = new Map<string, Either<MutUnitVar, MutVar>>();
                 for (const typeArg of typeArgs)
                 {
-                    // PORT-NOTE: as in Java, the requirements are worked out but not used: the
-                    // type variable is made without them.
                     let typeClassRequirements = TypeClassRequirements.empty();
                     for (const constraint of constraints)
                     {
@@ -161,7 +159,10 @@ export abstract class FunctionDefinition implements StandardFunctionDefinition
                         }
                     }
 
-                    typeVars.set(typeArg, Either.right(new MutVar(null)));
+                    // PORT-NOTE: bug fix.  Java worked out the requirements but made the type variable
+                    // without them, so (for example) maximum of a list of functions type checked,
+                    // then failed at run time with an internal error.
+                    typeVars.set(typeArg, Either.right(new MutVar(null, typeClassRequirements)));
                 }
                 for (const unitArg of unitArgs)
                 {

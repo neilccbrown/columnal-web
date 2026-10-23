@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import type { ExpressionIdentifier } from "../../../src/engine/anns/Annotations.js";
 import { ErrorAndTypeRecorderStorer } from "../../../src/engine/expressions/transformations/expression/ErrorAndTypeRecorderStorer.js";
 import { AddSubtractExpression, CallExpression, IdentExpression, LambdaExpression, NumericLiteral, type Expression } from "../../../src/engine/expressions/transformations/expression/Expressions.js";
+import { FunctionList } from "../../../src/engine/functions/transformations/function/FunctionList.js";
 import { StringWithinIndex } from "../../../src/engine/functions/transformations/function/StringWithinIndex.js";
 import { Decimal } from "../../../src/engine/java/JavaBigDecimal.js";
 import { Rational } from "../../../src/engine/java/Rational.js";
@@ -60,5 +61,38 @@ describe("Java bug fixes", () =>
     ])("user error from %s", src =>
     {
         assertThrows(UserException, () => TFunctionUtil.runExpression(src));
+    });
+
+    // Java ignored the type requirements in the function documentation (Comparable, Equatable,
+    // Showable, Readable), so these type checked and then failed at run time with internal errors.
+    test.each([
+        ["@call function\\\\maximum([(? + 1), (? * 2)])", "is not Comparable"],
+        ["@call function\\\\list contains([(? + 1)], (? * 2))", "is not Equatable"],
+        ["@call function\\\\to text((? + 1))", "is not Showable"],
+    ])("type error from %s", (src, error) =>
+    {
+        const mgr = TFunctionUtil.managerWithTestTypes().getFirst();
+        const expression = TFunctionUtil.parseExpression(src, mgr.getTypeManager(), FunctionList.getFunctionLookup(mgr.getUnitManager()));
+        const errors = new ErrorAndTypeRecorderStorer();
+        expect(expression.checkExpression(TFunctionUtil.dummyColumnLookup(), TFunctionUtil.createTypeState(mgr.getTypeManager()), errors)).toBeNull();
+        expect(errors.getAllErrors().map(e => e.toPlain()).join(" / ")).toContain(error);
+    });
+
+    // Java's round decimal returned a whole number held as a Long unchanged, without looking at
+    // the number of places.
+    test.each([
+        ["@call function\\\\round decimal(15, -1)", "20"],
+        ["@call function\\\\round decimal(1.5 * 10, -1)", "20"],
+        ["@call function\\\\round decimal(1234, -2)", "1200"],
+        ["@call function\\\\round decimal(1234.5, -2)", "1200"],
+        ["@call function\\\\round decimal(7, 2)", "7"],
+    ])("%s is %s", (src, expected) =>
+    {
+        expect((TFunctionUtil.runExpression(src) as Decimal).eq(new Decimal(expected))).toBe(true);
+    });
+
+    test("round decimal with places that aren't a whole number", () =>
+    {
+        assertThrows(UserException, () => TFunctionUtil.runExpression("@call function\\\\round decimal(15, 0.5)"));
     });
 });

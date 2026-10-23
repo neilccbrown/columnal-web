@@ -266,14 +266,18 @@ Java app.
 - Checked against the JVM (`scripts/golden/functions.sh`, `FunctionsGolden.test.ts`): 900
   logarithms, digit for digit, and about 600 expressions (every function, the operators, type
   errors, parse errors and random arithmetic), parsed, saved, type checked and evaluated by the
-  original classes. The only differences are the two listed in the test.
+  original classes. The only differences are the bug fixes listed in the test.
 - Fixed Java bugs, at the project owner's request (each marked with a `PORT-NOTE`):
   `AddSubtractExpression.constantFold` used the wrong operators and threw
   `IndexOutOfBoundsException` (so `3{m} ^ (1 + 2)` failed to type check), and
   `CallExpression.check` threw `ClassCastException` for a call target that wasn't an identifier.
   `years between` (from 29 February into a non-leap year), `time from hms`, `dateym from ym` and
   `datetimezoned from dtz` let a `DateTimeException` through for invalid input, which crashed
-  the evaluation; they now give the user an error.
+  the evaluation; they now give the user an error. `FunctionDefinition` ignored the type
+  requirements in the function documentation (such as Comparable for `maximum`), so a list of
+  functions type checked and then failed at run time; they are now applied. `round decimal`
+  returned a whole number held as a Java `Long` unchanged, whatever the number of places, but
+  rounded one held as a `BigDecimal`; it now rounds every number (`round decimal(15, -1)` is 20).
   Also fixed: an off-by-one condition in `StringWithinIndex`, which is not in use.
 - Deferred to Phase 5: `PropRunExpression` (in `tests-tables`).
 

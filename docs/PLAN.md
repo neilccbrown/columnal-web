@@ -298,6 +298,27 @@ example test.
 
 **Tests:** all of `tests-tables`, and RDS parsing against the `.rds`/`.Rdata` fixtures.
 
+Carried over from Phase 4:
+- **Fix the relative-tolerance comparison when porting `PropRunExpression`** (agreed with the
+  project owner). `Utility.compareNumbers` with `EpsilonType.RELATIVE` computes |a−b|/a − 1 (and the
+  same with b) rather than |a−b|/|a|, so it says every pair of numbers is equal. Only
+  `PropRunExpression` uses it, so that test's numeric check could never fail in Java; fixing it may
+  show up failures that the Java test hid.
+- `PropRunExpression` (in `tests-tables`) was deferred from Phase 4: it needs the transformations.
+- Remove the `PORT-DEFERRED` in `test/engine/tests-functions/fixtures/DummyManager.ts`: it should
+  pass `TransformationManager` as the transformation loader.
+- Add `transformations` and `r-interop` to `MODULES` in `scripts/golden/build-columnal-jvm.sh` for
+  any golden tests of these modules.
+- Open offers to the project owner, not yet answered: make `years between` from 29 February into a
+  non-leap year give an answer (treating it as 28 February) rather than the current error; and add
+  the full MIT licence notice to `src/engine/java/Damerau.ts` (it only names the licence).
+- Minor: `javaClassName` gives an empty class name for anonymous classes, so an internal error
+  such as "Uncomparable types" shows `class ` where Java shows the class name. Only internal-error
+  messages are affected.
+- Some `tests-gui-central` tests may be engine-level, like `TestFromDoc` (for example parts of
+  `TestExpressionExplanation` and `TestLoadSaveExpression`). Check each when its phase comes; a
+  test that doesn't use the GUI goes in `ENGINE_TESTS_IN_GUI_MODULES` in `scripts/port-status.ts`.
+
 ### Phase 6: Import/export engines and GUI logic (L6 and gui-logic)
 - Port GuessFormat, TextImporter, HTMLImporter (`DOMParser`), ExcelImporter (SheetJS),
   RImporter, and the CSV, HTML, Excel and R exporters.

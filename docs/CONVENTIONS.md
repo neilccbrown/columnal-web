@@ -363,7 +363,12 @@ install and before `dev`, `build`, `test` and `typecheck`.
   Columnal methods: `extract-java-methods.py` copies them out of `reference/columnal` (from
   `npm run fetch-reference`) into a single-file Java program. Examples: `numbers.sh` (the number
   utilities, 4,000 cases), `java-lang.sh` and `grammar-utility.sh`. Known, deliberate differences are
-  listed explicitly in the test, with their `PORT-NOTE`.
+  listed explicitly in the test, with their `PORT-NOTE`. Where a golden file is a whole output per
+  input and a bug fix changes it (as in `ImportersGolden.test.ts`), the test lists the inputs and
+  bugs in `KNOWN_DIFFERENCES` and checks the port against `golden/port-*.txt`: the port's output
+  (written with `DUMP_PORT_OUTPUT=<dir>`), each changed line reviewed as coming from a fix. A fix
+  can change other inputs' outputs too, so review every changed golden file, not just the case that
+  found the bug.
 - For whole classes, `scripts/golden/build-columnal-jvm.sh` compiles the original engine modules
   (so far up to `transformations`, with a stand-in for the one GUI method `transformations` uses) into `reference/jvm/classes`: it downloads the Maven dependencies (checking
   their SHA-1s), generates the Java parsers with ANTLR 4.11, and strips the Checker Framework

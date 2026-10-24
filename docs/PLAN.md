@@ -439,6 +439,31 @@ recompute everything and export it, and the results can be compared against Java
 outputs on real-world files.
 
 Carried over from Phase 6:
+- For the GUI phases: what `src/gui-logic` and the engine leave for the GUI to provide (see "GUI
+  logic" in CONVENTIONS.md):
+  - Hooks to set: `NumberColumnFormatter.measureDigitSizes` (from the real font's digit widths;
+    the tests use `DigitSizes(9.6, 8, 4)`), `RecogniserDocument.showErrorAlert`, `DocWindow.setShow`,
+    `EditorDisplay.setOpenFurtherDetails` and `ExpressionLexer.getStylesheet`.
+  - Interfaces to implement: `VirtualGrid.Display` (Phase 8: the grid's layout, selection, keyboard
+    actions and column widths are already in `stf/gui/grid/VirtualGrid.ts`) and `ImporterDialogs`
+    (Phase 11: the import choices, and picking an HTML table, R tables or an importer).
+  - Phase 10: the editor logic is ready for CodeMirror to sit on: `EditorContent` (text, caret,
+    re-lexing, undo), `EditorDisplay.keyTyped`/`keyPressed`/`showCompletions`/`focusChanged`, and the
+    completion list's model (`LexAutoComplete`, `LexAutoCompleteWindow`, `LexCompletionList`).
+    `TopLevelEditor`'s caret listener (show the completions at the caret unless the move was a
+    forced save; gather the errors touching the caret and their fixes) is reproduced in
+    `test/gui-logic/lex-editor/EditorHarness.ts` and `typeAndApplyFix`.
+  - `app`'s `UndoManager` (backups of each saved file, for undoing a save) isn't ported; it goes with
+    saving files (Phase 9, in OPFS/IndexedDB).
+- GUI tests already ported at the logic level (in `test/gui-logic/`): all of `tests-gui-type-editor`,
+  `PropGridOverlap`, and four test classes of `tests-gui-expression-editor-further`; parts of
+  `TestNumberColumnDisplay`, `TestCellReadWrite`, `TestDocumentTextField`, `TestVirtualGridLayout` and
+  `TestKeyboardMovement` are in `test/gui-logic/stf/`. Their screen checks (popups, positions,
+  rendering) are still to do as Playwright specs in their phases; port-status counts the four
+  ported classes and `tests-gui-type-editor` as done.
+- Test data for the Phase 7 grid prototype: `test/engine/transformations/golden/input-01.rec` has a
+  join of 190,512 rows (`npm run cli -- --max-rows 20 <file> <dir>` loads and exports any saved file
+  in Node, with `register-resources.mjs` letting Node run engine code outside Vite).
 - The rest of the expression editor tests, which need typing a generated expression
   (`EnterExpressionTrait`), the clipboard or the screen, are left for Phase 10: `TestExpressionEditor`,
   `…Delete`, `…Position`, `…Resolution`, `…Invalid` and `PropExpressionEditor`. The ported editor tests

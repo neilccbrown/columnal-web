@@ -53,7 +53,10 @@ reviewed side by side with the Java. Refactoring comes after a module works and 
 Whenever ported code deliberately behaves differently from the Java, or a Java bug is preserved,
 mark it with a `// PORT-NOTE:` comment explaining why, so differences can be found with `grep`.
 A Java bug found during the port is preserved and marked, and reported to the project owner, who
-decides whether to fix it (PLAN.md §6). A fixed bug's `PORT-NOTE` starts "bug fix".
+decides whether to fix it (PLAN.md §6). A fixed bug's `PORT-NOTE` starts "bug fix", and the fix gets
+a test that fails without it, in the module's `BugFixes.test.ts` (for example
+`test/engine/transformations/BugFixes.test.ts`); where a JVM golden test covers the case, the port's
+output is also listed in that test's known differences.
 
 Members of a ported class that can't be ported yet (usually because they need a later phase) are
 listed in a `// PORT-DEFERRED:` comment. `npm run port-status` reports files containing one as

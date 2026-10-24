@@ -36,7 +36,8 @@ export abstract class RecordSet
     protected listener: RecordSet.RecordSetListener | null = null;
 
     // Java has two constructors: () and (List<SimulationFunction<RecordSet, C>> columns).
-    protected constructor(columns?: readonly SimulationFunction<RecordSet, Column>[])
+    // (Public, unlike Java's protected (), so that anonymous subclasses can be made in other modules; the class is abstract.)
+    public constructor(columns?: readonly SimulationFunction<RecordSet, Column>[])
     {
         this.columns = [];
         if (columns === undefined)

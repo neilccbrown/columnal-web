@@ -1,0 +1,131 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN GTR
+GTR "Test 1"
+GTR FORMAT @BEGIN
+GTR @COLUMN GenCol 153 @TYPE Number {m^3/s^3} @DEFAULT 100
+GTR @COLUMN GenCol 154 @TYPE Date @DEFAULT 1525-08-01
+GTR @COLUMN GenCol 155 @TYPE A @DEFAULT Single
+GTR @COLUMN GenCol 156 @TYPE [ ( a : Number , nested : ( num num : Number , the text 0 item : Text ) ) ] @DEFAULT [ ( "a" : -32768 , "nested" : ( "num num" : 22393 , "the text 0 item" : "j" ) ) ]
+GTR @COLUMN GenCol 157 @TYPE DateTimeZoned @DEFAULT 1556-12-09 14:27:20 Australia/Tasmania
+GTR @COLUMN GenCol 158 @TYPE B @DEFAULT Single
+GTR @COLUMN GenCol 159 @TYPE A @DEFAULT Single
+GTR @COLUMN GenCol 160 @TYPE Number @DEFAULT -2147483648
+GTR @END FORMAT
+GTR VALUES @BEGIN
+GTR   0.655213 , 1990-12-28 , Single , [ ( "a" : 9223372036854775807 , "nested" : ( "num num" : -32767 , "the text 0 item" : "JvHh" ) ) ] , 1983-06-02 07:30:58 America/Jamaica , Single , Single , 127
+GTR @END VALUES
+GTR DISPLAY @BEGIN
+GTR POSITION 1 1
+GTR SHOWCOLUMNS ALL
+GTR @END DISPLAY
+@END GTR DATA
+
+TRANSFORMATION @BEGIN WME
+WME "Trans 1"
+WME calculate
+WME SOURCE "Test 1"
+WME @BEGIN
+WME CALCULATE "GenCol 157" @EXPRESSION column\\GenCol 160 = @call function\\list\element(table\\Test 1#GenCol 160, 1)
+WME CALCULATE "New 2" @EXPRESSION column\\GenCol 159 <> column\\GenCol 154
+WME CALCULATE "New 1" @EXPRESSION @call function\\boolean\not(column\\GenCol 160)
+WME @END
+WME DISPLAY @BEGIN
+WME POSITION 1 1
+WME SHOWCOLUMNS ALL
+WME @END DISPLAY
+@END WME TRANSFORMATION
+
+TRANSFORMATION @BEGIN FOC
+FOC "Trans 3"
+FOC sort
+FOC SOURCE "Trans 1"
+FOC @BEGIN
+FOC ASCENDING "GenCol 160"
+FOC DESCENDING "GenCol 153"
+FOC DESCENDING "GenCol 160"
+FOC @END
+FOC DISPLAY @BEGIN
+FOC POSITION 1 1
+FOC SHOWCOLUMNS ALL
+FOC @END DISPLAY
+@END FOC TRANSFORMATION
+
+TRANSFORMATION @BEGIN ETY
+ETY "Trans 4"
+ETY concatenate
+ETY SOURCE "Test 1" "Test 1" "Trans 3"
+ETY @BEGIN
+ETY @INCOMPLETE OMIT SOURCE 
+ETY @END
+ETY DISPLAY @BEGIN
+ETY POSITION 1 1
+ETY SHOWCOLUMNS ALL
+ETY @END DISPLAY
+@END ETY TRANSFORMATION
+
+TRANSFORMATION @BEGIN RWK
+RWK "Trans 5"
+RWK calculate
+RWK SOURCE "Test 1"
+RWK @BEGIN
+RWK CALCULATE "New 2" @EXPRESSION column\\GenCol 154 <> column\\GenCol 157
+RWK CALCULATE "GenCol 156" @EXPRESSION @call function\\list\list length(table\\Test 1#GenCol 154)
+RWK @END
+RWK DISPLAY @BEGIN
+RWK POSITION 1 1
+RWK SHOWCOLUMNS ALL
+RWK @END DISPLAY
+@END RWK TRANSFORMATION
+
+TRANSFORMATION @BEGIN JKE
+JKE "Trans 2"
+JKE aggregate
+JKE SOURCE "Trans 1"
+JKE @BEGIN
+JKE SUMMARY "Sum 0" @EXPRESSION @call function\\comparison\minimum(column\\GenCol 156)
+JKE @END
+JKE DISPLAY @BEGIN
+JKE POSITION 1 1
+JKE SHOWCOLUMNS ALL
+JKE @END DISPLAY
+@END JKE TRANSFORMATION
+
+DATA @BEGIN PYK
+PYK "Test 0"
+PYK FORMAT @BEGIN
+PYK @COLUMN GenCol 150 @TYPE Number {m} @DEFAULT 32767
+PYK @COLUMN GenCol 151 @TYPE Boolean @DEFAULT true
+PYK @COLUMN GenCol 152 @TYPE Number {m^3/s^3} @DEFAULT 32767
+PYK @END FORMAT
+PYK VALUES @BEGIN
+PYK   3571 , false , 0
+PYK   2353865982 , false , -2147483647
+PYK   3 , true , 1
+PYK   548 , true , -2147483648
+PYK   32767 , true , -2147483647
+PYK   253251400 , true , 152
+PYK   -2147483648 , false , 91493
+PYK   0 , true , 2147483647
+PYK @END VALUES
+PYK DISPLAY @BEGIN
+PYK POSITION 1 1
+PYK SHOWCOLUMNS ALL
+PYK @END DISPLAY
+@END PYK DATA
+

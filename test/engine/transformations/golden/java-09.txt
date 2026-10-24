@@ -1,0 +1,91 @@
+TABLE Test 0
+LENGTH 2
+COLUMN GenCol 33 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+COLUMN GenCol 34 : Number{m^3/s^3}
+  0: -32768
+  1: 0.349187
+COLUMN GenCol 35 : Number{m^2}
+  0: 45
+  1: 532495200
+COLUMN GenCol 36 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+  0: Right(-128)
+  1: Left(0.950724)
+COLUMN GenCol 37 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: Right(0.383592)
+  1: Right(0.060729)
+COLUMN GenCol 38 : Number{m^3/s^3}
+  0: 32767
+  1: !InvalidImmediateValueException: Invalid value: #1774749523
+TABLE Trans 1
+LENGTH 2
+COLUMN GenCol 33 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+COLUMN GenCol 34 : Number{m^3/s^3}
+  0: -32768
+  1: 0.349187
+COLUMN GenCol 35 : Number{m^2}
+  0: 45
+  1: 532495200
+COLUMN GenCol 36 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+  0: Right(-128)
+  1: Left(0.950724)
+COLUMN GenCol 37 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: Right(0.060729)
+  1: Right(0.060729)
+COLUMN GenCol 38 : Number{m^3/s^3}
+  0: 32767
+  1: !InvalidImmediateValueException: Invalid value: #1774749523
+TABLE Trans 2
+LENGTH 2
+COLUMN Source : Text
+  0: "Trans 1"
+  1: "Trans 1"
+COLUMN GenCol 33 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+COLUMN GenCol 34 : Number{m^3/s^3}
+  0: -32768
+  1: 0.349187
+COLUMN GenCol 35 : Number{m^2}
+  0: 45
+  1: 532495200
+COLUMN GenCol 36 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+  0: Right(-128)
+  1: Left(0.950724)
+COLUMN GenCol 37 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: Right(0.060729)
+  1: Right(0.060729)
+COLUMN GenCol 38 : Number{m^3/s^3}
+  0: 32767
+  1: !InvalidImmediateValueException: Invalid value: #1774749523
+TABLE Trans 3
+LENGTH 0
+TABLE Trans 4
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Attempting to access beyond end of concatenated tables: index4 but only length 2
+TABLE Trans 5
+LENGTH 1
+COLUMN result : Boolean
+  0: true
+TABLE Trans 6
+LENGTH 2
+COLUMN GenCol 33 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+COLUMN GenCol 34 : Number{m^3/s^3}
+  0: -32768
+  1: 0.349187
+COLUMN GenCol 35 : Number{m^2}
+  0: 45
+  1: 532495200
+COLUMN GenCol 38 : Number{m^3/s^3}
+  0: 32767
+  1: !InvalidImmediateValueException: Invalid value: #1774749523
+TABLE Trans 7
+LENGTH 1
+COLUMN result : Boolean
+  0: false

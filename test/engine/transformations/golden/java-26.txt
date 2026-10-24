@@ -1,0 +1,117 @@
+TABLE Test 0
+LENGTH 8
+COLUMN GenCol 150 : Number{m}
+  0: 3571
+  1: 2353865982
+  2: 3
+  3: 548
+  4: 32767
+  5: 253251400
+  6: -2147483648
+  7: 0
+COLUMN GenCol 151 : Boolean
+  0: false
+  1: false
+  2: true
+  3: true
+  4: true
+  5: true
+  6: false
+  7: true
+COLUMN GenCol 152 : Number{m^3/s^3}
+  0: 0
+  1: -2147483647
+  2: 1
+  3: -2147483648
+  4: -2147483647
+  5: 152
+  6: 91493
+  7: 2147483647
+TABLE Test 1
+LENGTH 1
+COLUMN GenCol 153 : Number{m^3/s^3}
+  0: 0.655213
+COLUMN GenCol 154 : Date
+  0: 1990-12-28
+COLUMN GenCol 155 : A <Single>
+  0: Single
+COLUMN GenCol 156 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 9223372036854775807, nested: (num num: -32767, the text 0 item: "JvHh"))]
+COLUMN GenCol 157 : DateTimeZoned
+  0: 1983-06-02 07:30:58 America/Jamaica
+COLUMN GenCol 158 : B <Single>
+  0: Single
+COLUMN GenCol 159 : A <Single>
+  0: Single
+COLUMN GenCol 160 : Number
+  0: 127
+TABLE Trans 1
+LENGTH 1
+COLUMN GenCol 153 : Number{m^3/s^3}
+  0: 0.655213
+COLUMN GenCol 154 : Date
+  0: 1990-12-28
+COLUMN GenCol 155 : A <Single>
+  0: Single
+COLUMN GenCol 156 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 9223372036854775807, nested: (num num: -32767, the text 0 item: "JvHh"))]
+COLUMN GenCol 157 : Boolean
+  0: true
+COLUMN GenCol 158 : B <Single>
+  0: Single
+COLUMN GenCol 159 : A <Single>
+  0: Single
+COLUMN GenCol 160 : Number
+  0: 127
+COLUMN New 2 : Void <>
+  0: !UserException: Error in New 2 expression: Type mismatch: A versus Date
+COLUMN New 1 : Void <>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus Number{1}
+TABLE Trans 2
+LENGTH 1
+COLUMN Sum 0 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 9223372036854775807, nested: (num num: -32767, the text 0 item: "JvHh"))]
+TABLE Trans 3
+LENGTH 1
+COLUMN GenCol 153 : Number{m^3/s^3}
+  0: 0.655213
+COLUMN GenCol 154 : Date
+  0: 1990-12-28
+COLUMN GenCol 155 : A <Single>
+  0: Single
+COLUMN GenCol 156 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 9223372036854775807, nested: (num num: -32767, the text 0 item: "JvHh"))]
+COLUMN GenCol 157 : Boolean
+  0: true
+COLUMN GenCol 158 : B <Single>
+  0: Single
+COLUMN GenCol 159 : A <Single>
+  0: Single
+COLUMN GenCol 160 : Number
+  0: 127
+COLUMN New 2 : Void <>
+  0: !UserException: Error in New 2 expression: Type mismatch: A versus Date
+COLUMN New 1 : Void <>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus Number{1}
+TABLE Trans 4
+!UserException: Column GenCol 157 has differing types in the source tables: [DateTimeZoned, Boolean]
+TABLE Trans 5
+LENGTH 1
+COLUMN GenCol 153 : Number{m^3/s^3}
+  0: 0.655213
+COLUMN GenCol 154 : Date
+  0: 1990-12-28
+COLUMN GenCol 155 : A <Single>
+  0: Single
+COLUMN GenCol 156 : Number
+  0: 1
+COLUMN GenCol 157 : DateTimeZoned
+  0: 1983-06-02 07:30:58 America/Jamaica
+COLUMN GenCol 158 : B <Single>
+  0: Single
+COLUMN GenCol 159 : A <Single>
+  0: Single
+COLUMN GenCol 160 : Number
+  0: 127
+COLUMN New 2 : Void <>
+  0: !UserException: Error in New 2 expression: Type mismatch: Date versus DateTimeZoned

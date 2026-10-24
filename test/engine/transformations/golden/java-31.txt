@@ -1,0 +1,694 @@
+TABLE Test 0
+LENGTH 297
+COLUMN GenCol 198 : Number{cm}
+  0: -2147483647
+  1: 122
+  2: 14891432700107
+  3: 0
+  4: -1
+  5: -9223372036854775808
+  6: -128
+  7: 0.410607
+  8: 2147483648
+  9: 127
+  10: 3
+  11: 24170
+  12: -2147483647
+  13: 17382187934424715
+  14: 2461296923
+  15: -9223372036854775809
+  16: -32768
+  17: -9223372036854775807
+  18: 97
+  19: -32768
+COLUMN GenCol 199 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "Number", t 2: -2147483649), z: 542)
+  1: (inner: (t 1: "U_'=", t 2: -127), z: -32767)
+  2: (inner: (t 1: "𪀽q,", t 2: 0.790978), z: 9223372036854775807)
+  3: (inner: (t 1: "zaa", t 2: -32768), z: 32767)
+  4: (inner: (t 1: "TRANSFORMATION", t 2: 4), z: 0.02565)
+  5: (inner: (t 1: "4:k_ꉷ()h!H𔉹", t 2: 679), z: 1)
+  6: (inner: (t 1: "&", t 2: 119958251), z: 654542)
+  7: (inner: (t 1: "a", t 2: -127), z: 125977267)
+  8: (inner: (t 1: "INCOMPLETE", t 2: 130), z: -1)
+  9: (inner: (t 1: "fa aZra", t 2: 0), z: 0.351719)
+  10: (inner: (t 1: "j 090aa9ZnZ", t 2: 286235490), z: 5)
+  11: (inner: (t 1: "v 9", t 2: 15), z: -9223372036854775809)
+  12: (inner: (t 1: "50`Hjn𮮈ayD&VM󹅟NX", t 2: -2147483649), z: 0)
+  13: (inner: (t 1: "🅁(Z􂦳Rx", t 2: -127), z: 898)
+  14: (inner: (t 1: "q3􎕃*Z𔃯|/", t 2: 2147483648), z: 0.237374)
+  15: (inner: (t 1: "𥖮𭫉10", t 2: 32767), z: -9223372036854775809)
+  16: (inner: (t 1: "", t 2: 2764), z: 0.651368)
+  17: (inner: (t 1: "Number", t 2: 9223372036854775807), z: 0.621828)
+  18: (inner: (t 1: "jna99a9 90", t 2: 0.607778), z: 351976)
+  19: (inner: (t 1: "q𮰡X/", t 2: 28802534802000157), z: 2147483648)
+COLUMN GenCol 200 : DateYM
+  0: 6281-07
+  1: 4850-12
+  2: 0728-01
+  3: 2450-09
+  4: 2671-02
+  5: 9482-04
+  6: 9821-03
+  7: 8840-05
+  8: 5533-07
+  9: 9687-12
+  10: 7723-08
+  11: 2514-09
+  12: 7147-03
+  13: 7632-12
+  14: 4956-08
+  15: 3927-06
+  16: 8975-09
+  17: 3553-11
+  18: 9512-03
+  19: 5463-08
+COLUMN GenCol 201 : Number{m^3/s^3}
+  0: -1
+  1: 107835
+  2: 330937219
+  3: 1
+  4: -128
+  5: -9223372036854775809
+  6: 0.007818
+  7: 9223372036854775808
+  8: 1
+  9: 9223372036854775808
+  10: 231
+  11: 3783078594
+  12: 0.835861
+  13: 0.766597
+  14: -32767
+  15: 6607525446980051
+  16: -2147483649
+  17: -2147483649
+  18: -32768
+  19: 127
+COLUMN GenCol 202 : Text
+  0: "apply"
+  1: "鞄"
+  2: "ga0r9Z9"
+  3: "M𤥵"
+  4: "􂊴:l-S"
+  5: "iZaZZ0a"
+  6: "i90Z00"
+  7: "&𮒟HAA\"
+  8: "br r aZ"
+  9: "􇬞"
+  10: "䖃"
+  11: "%"
+  12: "trn"
+  13: "lZn999Z9r"
+  14: "􀊊"
+  15: "COLUMN"
+  16: "Z"
+  17: "o Zn0n Z"
+  18: "na0rnn9Z9"
+  19: "|^a𖼞YFp"
+COLUMN GenCol 203 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: Single
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 204 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 1246, nested: (num num: 2147483648, the text 0 item: "END")), (a: 2147483648, nested: (num num: 1, the text 0 item: "Date"))]
+  1: [(a: -128, nested: (num num: 0.045417, the text 0 item: "saZ")), (a: -9223372036854775807, nested: (num num: 0.764285, the text 0 item: "C'tVไNB𥟇~"))]
+  2: [(a: 1085, nested: (num num: -9223372036854775809, the text 0 item: "􀧖𲲑")), (a: 106, nested: (num num: 0.461593, the text 0 item: "rZ")), (a: 11744, nested: (num num: -2147483649, the text 0 item: "Q7*"))]
+  3: [(a: -9223372036854775807, nested: (num num: 229, the text 0 item: "􍔊u􍲒瘤;􏠡U")), (a: -2147483647, nested: (num num: 27, the text 0 item: "CONTENT")), (a: -2147483649, nested: (num num: 0.592234, the text 0 item: "􅰐kj"))]
+  4: [(a: 1256358, nested: (num num: 0.450945, the text 0 item: "DISPLAY"))]
+  5: [(a: 13, nested: (num num: 7, the text 0 item: "􄸐 I_"))]
+  6: [(a: -32767, nested: (num num: 345325, the text 0 item: ")'B")), (a: -9223372036854775807, nested: (num num: 2147483648, the text 0 item: "a"))]
+  7: [(a: 0.070725, nested: (num num: 465079368, the text 0 item: "S")), (a: 826, nested: (num num: 25744225497279386, the text 0 item: "􈩾g")), (a: 919, nested: (num num: 90, the text 0 item: "8"))]
+  8: [(a: 16, nested: (num num: 32767, the text 0 item: "Ei")), (a: 17, nested: (num num: 13348165184640351780, the text 0 item: "dn99ZrZn")), (a: 244, nested: (num num: 19027, the text 0 item: "􊢢")), (a: 0.4048, nested: (num num: -32768, the text 0 item: "u Z"))]
+  9: [(a: 46, nested: (num num: 127, the text 0 item: "e 00raa a")), (a: 2147483648, nested: (num num: 32767, the text 0 item: "FORMAT")), (a: -9223372036854775807, nested: (num num: 0.843475, the text 0 item: "hZ9Z0rnnZ")), (a: 12751, nested: (num num: 44108538727934, the text 0 item: "e{碃]嵢𢅐+co"))]
+  10: [(a: 2147483647, nested: (num num: 2147483647, the text 0 item: "𠢽")), (a: -2147483648, nested: (num num: 1, the text 0 item: "n9aZn")), (a: 7683522125, nested: (num num: 127, the text 0 item: "BIm;"))]
+  11: [(a: 25789, nested: (num num: 9, the text 0 item: "yr n9Z90n")), (a: 3, nested: (num num: 279, the text 0 item: "bA꧐+"))]
+  12: [(a: 0.764176, nested: (num num: 27, the text 0 item: "a")), (a: 2982458312, nested: (num num: -9223372036854775809, the text 0 item: "Number")), (a: 2147483647, nested: (num num: 32767, the text 0 item: "A茸z聥[<P"))]
+  13: [(a: 2147483648, nested: (num num: -2147483648, the text 0 item: "har9Z")), (a: 2136243791, nested: (num num: -9223372036854775807, the text 0 item: "br0 0nZ9nn"))]
+  14: [(a: 0, nested: (num num: 61956689, the text 0 item: "5!")), (a: -9223372036854775807, nested: (num num: -127, the text 0 item: "𩾭𱺉$􀰯k"))]
+  15: [(a: 252, nested: (num num: 2147483647, the text 0 item: "sana 0")), (a: -32768, nested: (num num: -9223372036854775809, the text 0 item: "COLUMNAL")), (a: 2023255, nested: (num num: 3088, the text 0 item: "b􆛷<}!𱐅")), (a: -127, nested: (num num: -32767, the text 0 item: "t9na0na 0aZ"))]
+  16: [(a: -32768, nested: (num num: 3201024836295796, the text 0 item: "󽟪𭴼:_"))]
+  17: [(a: 1, nested: (num num: -2147483649, the text 0 item: "DISPLAY"))]
+  18: [(a: 6, nested: (num num: -2147483647, the text 0 item: "VERSION")), (a: 319, nested: (num num: 28, the text 0 item: "㉦5􉑤y'睐􇊬#"))]
+  19: [(a: 2147483648, nested: (num num: 14955, the text 0 item: "e"))]
+COLUMN GenCol 205 : Date
+  0: 7444-02-23
+  1: 2050-11-27
+  2: 1939-01-01
+  3: 1977-10-12
+  4: 4278-02-23
+  5: 2041-12-11
+  6: 2009-04-08
+  7: 7944-04-25
+  8: 0783-11-06
+  9: 2016-09-11
+  10: 2026-11-13
+  11: 1954-01-24
+  12: 2016-12-13
+  13: 1986-03-24
+  14: 1923-06-10
+  15: 3692-06-22
+  16: 2010-05-17
+  17: 1901-03-31
+  18: 8350-02-15
+  19: 2043-07-16
+COLUMN GenCol 206 : Boolean
+  0: false
+  1: true
+  2: false
+  3: false
+  4: true
+  5: false
+  6: true
+  7: true
+  8: true
+  9: true
+  10: false
+  11: false
+  12: true
+  13: false
+  14: false
+  15: true
+  16: true
+  17: false
+  18: false
+  19: false
+TABLE Trans 1
+LENGTH 1
+COLUMN result : Boolean
+  0: false
+TABLE Trans 2
+LENGTH 595
+COLUMN Source : Text
+  0: "Test 0"
+  1: "Test 0"
+  2: "Test 0"
+  3: "Test 0"
+  4: "Test 0"
+  5: "Test 0"
+  6: "Test 0"
+  7: "Test 0"
+  8: "Test 0"
+  9: "Test 0"
+  10: "Test 0"
+  11: "Test 0"
+  12: "Test 0"
+  13: "Test 0"
+  14: "Test 0"
+  15: "Test 0"
+  16: "Test 0"
+  17: "Test 0"
+  18: "Test 0"
+  19: "Test 0"
+COLUMN GenCol 198 : Optional(Number{cm}) <None | Is:Number{cm}>
+  0: Is(-2147483647)
+  1: Is(122)
+  2: Is(14891432700107)
+  3: Is(0)
+  4: Is(-1)
+  5: Is(-9223372036854775808)
+  6: Is(-128)
+  7: Is(0.410607)
+  8: Is(2147483648)
+  9: Is(127)
+  10: Is(3)
+  11: Is(24170)
+  12: Is(-2147483647)
+  13: Is(17382187934424715)
+  14: Is(2461296923)
+  15: Is(-9223372036854775809)
+  16: Is(-32768)
+  17: Is(-9223372036854775807)
+  18: Is(97)
+  19: Is(-32768)
+COLUMN GenCol 199 : Optional((inner: (t 1: Text, t 2: Number), z: Number)) <None | Is:(inner: (t 1: Text, t 2: Number), z: Number)>
+  0: Is(inner: (t 1: "Number", t 2: -2147483649), z: 542)
+  1: Is(inner: (t 1: "U_'=", t 2: -127), z: -32767)
+  2: Is(inner: (t 1: "𪀽q,", t 2: 0.790978), z: 9223372036854775807)
+  3: Is(inner: (t 1: "zaa", t 2: -32768), z: 32767)
+  4: Is(inner: (t 1: "TRANSFORMATION", t 2: 4), z: 0.02565)
+  5: Is(inner: (t 1: "4:k_ꉷ()h!H𔉹", t 2: 679), z: 1)
+  6: Is(inner: (t 1: "&", t 2: 119958251), z: 654542)
+  7: Is(inner: (t 1: "a", t 2: -127), z: 125977267)
+  8: Is(inner: (t 1: "INCOMPLETE", t 2: 130), z: -1)
+  9: Is(inner: (t 1: "fa aZra", t 2: 0), z: 0.351719)
+  10: Is(inner: (t 1: "j 090aa9ZnZ", t 2: 286235490), z: 5)
+  11: Is(inner: (t 1: "v 9", t 2: 15), z: -9223372036854775809)
+  12: Is(inner: (t 1: "50`Hjn𮮈ayD&VM󹅟NX", t 2: -2147483649), z: 0)
+  13: Is(inner: (t 1: "🅁(Z􂦳Rx", t 2: -127), z: 898)
+  14: Is(inner: (t 1: "q3􎕃*Z𔃯|/", t 2: 2147483648), z: 0.237374)
+  15: Is(inner: (t 1: "𥖮𭫉10", t 2: 32767), z: -9223372036854775809)
+  16: Is(inner: (t 1: "", t 2: 2764), z: 0.651368)
+  17: Is(inner: (t 1: "Number", t 2: 9223372036854775807), z: 0.621828)
+  18: Is(inner: (t 1: "jna99a9 90", t 2: 0.607778), z: 351976)
+  19: Is(inner: (t 1: "q𮰡X/", t 2: 28802534802000157), z: 2147483648)
+COLUMN GenCol 200 : Optional(DateYM) <None | Is:DateYM>
+  0: Is(6281-07)
+  1: Is(4850-12)
+  2: Is(0728-01)
+  3: Is(2450-09)
+  4: Is(2671-02)
+  5: Is(9482-04)
+  6: Is(9821-03)
+  7: Is(8840-05)
+  8: Is(5533-07)
+  9: Is(9687-12)
+  10: Is(7723-08)
+  11: Is(2514-09)
+  12: Is(7147-03)
+  13: Is(7632-12)
+  14: Is(4956-08)
+  15: Is(3927-06)
+  16: Is(8975-09)
+  17: Is(3553-11)
+  18: Is(9512-03)
+  19: Is(5463-08)
+COLUMN GenCol 201 : Optional(Number{m^3/s^3}) <None | Is:Number{m^3/s^3}>
+  0: Is(-1)
+  1: Is(107835)
+  2: Is(330937219)
+  3: Is(1)
+  4: Is(-128)
+  5: Is(-9223372036854775809)
+  6: Is(0.007818)
+  7: Is(9223372036854775808)
+  8: Is(1)
+  9: Is(9223372036854775808)
+  10: Is(231)
+  11: Is(3783078594)
+  12: Is(0.835861)
+  13: Is(0.766597)
+  14: Is(-32767)
+  15: Is(6607525446980051)
+  16: Is(-2147483649)
+  17: Is(-2147483649)
+  18: Is(-32768)
+  19: Is(127)
+COLUMN GenCol 202 : Optional(Text) <None | Is:Text>
+  0: Is("apply")
+  1: Is("鞄")
+  2: Is("ga0r9Z9")
+  3: Is("M𤥵")
+  4: Is("􂊴:l-S")
+  5: Is("iZaZZ0a")
+  6: Is("i90Z00")
+  7: Is("&𮒟HAA\")
+  8: Is("br r aZ")
+  9: Is("􇬞")
+  10: Is("䖃")
+  11: Is("%")
+  12: Is("trn")
+  13: Is("lZn999Z9r")
+  14: Is("􀊊")
+  15: Is("COLUMN")
+  16: Is("Z")
+  17: Is("o Zn0n Z")
+  18: Is("na0rnn9Z9")
+  19: Is("|^a𖼞YFp")
+COLUMN GenCol 203 : Optional(A <Single>) <None | Is:A <Single>>
+  0: Is(Single)
+  1: Is(Single)
+  2: Is(Single)
+  3: Is(Single)
+  4: Is(Single)
+  5: Is(Single)
+  6: Is(Single)
+  7: Is(Single)
+  8: Is(Single)
+  9: Is(Single)
+  10: Is(Single)
+  11: Is(Single)
+  12: Is(Single)
+  13: Is(Single)
+  14: Is(Single)
+  15: Is(Single)
+  16: Is(Single)
+  17: Is(Single)
+  18: Is(Single)
+  19: Is(Single)
+COLUMN GenCol 204 : Optional([(a: Number, nested: (num num: Number, the text 0 item: Text))]) <None | Is:[(a: Number, nested: (num num: Number, the text 0 item: Text))]>
+  0: Is([(a: 1246, nested: (num num: 2147483648, the text 0 item: "END")), (a: 2147483648, nested: (num num: 1, the text 0 item: "Date"))])
+  1: Is([(a: -128, nested: (num num: 0.045417, the text 0 item: "saZ")), (a: -9223372036854775807, nested: (num num: 0.764285, the text 0 item: "C'tVไNB𥟇~"))])
+  2: Is([(a: 1085, nested: (num num: -9223372036854775809, the text 0 item: "􀧖𲲑")), (a: 106, nested: (num num: 0.461593, the text 0 item: "rZ")), (a: 11744, nested: (num num: -2147483649, the text 0 item: "Q7*"))])
+  3: Is([(a: -9223372036854775807, nested: (num num: 229, the text 0 item: "􍔊u􍲒瘤;􏠡U")), (a: -2147483647, nested: (num num: 27, the text 0 item: "CONTENT")), (a: -2147483649, nested: (num num: 0.592234, the text 0 item: "􅰐kj"))])
+  4: Is([(a: 1256358, nested: (num num: 0.450945, the text 0 item: "DISPLAY"))])
+  5: Is([(a: 13, nested: (num num: 7, the text 0 item: "􄸐 I_"))])
+  6: Is([(a: -32767, nested: (num num: 345325, the text 0 item: ")'B")), (a: -9223372036854775807, nested: (num num: 2147483648, the text 0 item: "a"))])
+  7: Is([(a: 0.070725, nested: (num num: 465079368, the text 0 item: "S")), (a: 826, nested: (num num: 25744225497279386, the text 0 item: "􈩾g")), (a: 919, nested: (num num: 90, the text 0 item: "8"))])
+  8: Is([(a: 16, nested: (num num: 32767, the text 0 item: "Ei")), (a: 17, nested: (num num: 13348165184640351780, the text 0 item: "dn99ZrZn")), (a: 244, nested: (num num: 19027, the text 0 item: "􊢢")), (a: 0.4048, nested: (num num: -32768, the text 0 item: "u Z"))])
+  9: Is([(a: 46, nested: (num num: 127, the text 0 item: "e 00raa a")), (a: 2147483648, nested: (num num: 32767, the text 0 item: "FORMAT")), (a: -9223372036854775807, nested: (num num: 0.843475, the text 0 item: "hZ9Z0rnnZ")), (a: 12751, nested: (num num: 44108538727934, the text 0 item: "e{碃]嵢𢅐+co"))])
+  10: Is([(a: 2147483647, nested: (num num: 2147483647, the text 0 item: "𠢽")), (a: -2147483648, nested: (num num: 1, the text 0 item: "n9aZn")), (a: 7683522125, nested: (num num: 127, the text 0 item: "BIm;"))])
+  11: Is([(a: 25789, nested: (num num: 9, the text 0 item: "yr n9Z90n")), (a: 3, nested: (num num: 279, the text 0 item: "bA꧐+"))])
+  12: Is([(a: 0.764176, nested: (num num: 27, the text 0 item: "a")), (a: 2982458312, nested: (num num: -9223372036854775809, the text 0 item: "Number")), (a: 2147483647, nested: (num num: 32767, the text 0 item: "A茸z聥[<P"))])
+  13: Is([(a: 2147483648, nested: (num num: -2147483648, the text 0 item: "har9Z")), (a: 2136243791, nested: (num num: -9223372036854775807, the text 0 item: "br0 0nZ9nn"))])
+  14: Is([(a: 0, nested: (num num: 61956689, the text 0 item: "5!")), (a: -9223372036854775807, nested: (num num: -127, the text 0 item: "𩾭𱺉$􀰯k"))])
+  15: Is([(a: 252, nested: (num num: 2147483647, the text 0 item: "sana 0")), (a: -32768, nested: (num num: -9223372036854775809, the text 0 item: "COLUMNAL")), (a: 2023255, nested: (num num: 3088, the text 0 item: "b􆛷<}!𱐅")), (a: -127, nested: (num num: -32767, the text 0 item: "t9na0na 0aZ"))])
+  16: Is([(a: -32768, nested: (num num: 3201024836295796, the text 0 item: "󽟪𭴼:_"))])
+  17: Is([(a: 1, nested: (num num: -2147483649, the text 0 item: "DISPLAY"))])
+  18: Is([(a: 6, nested: (num num: -2147483647, the text 0 item: "VERSION")), (a: 319, nested: (num num: 28, the text 0 item: "㉦5􉑤y'睐􇊬#"))])
+  19: Is([(a: 2147483648, nested: (num num: 14955, the text 0 item: "e"))])
+COLUMN GenCol 205 : Optional(Date) <None | Is:Date>
+  0: Is(7444-02-23)
+  1: Is(2050-11-27)
+  2: Is(1939-01-01)
+  3: Is(1977-10-12)
+  4: Is(4278-02-23)
+  5: Is(2041-12-11)
+  6: Is(2009-04-08)
+  7: Is(7944-04-25)
+  8: Is(0783-11-06)
+  9: Is(2016-09-11)
+  10: Is(2026-11-13)
+  11: Is(1954-01-24)
+  12: Is(2016-12-13)
+  13: Is(1986-03-24)
+  14: Is(1923-06-10)
+  15: Is(3692-06-22)
+  16: Is(2010-05-17)
+  17: Is(1901-03-31)
+  18: Is(8350-02-15)
+  19: Is(2043-07-16)
+COLUMN GenCol 206 : Optional(Boolean) <None | Is:Boolean>
+  0: Is(false)
+  1: Is(true)
+  2: Is(false)
+  3: Is(false)
+  4: Is(true)
+  5: Is(false)
+  6: Is(true)
+  7: Is(true)
+  8: Is(true)
+  9: Is(true)
+  10: Is(false)
+  11: Is(false)
+  12: Is(true)
+  13: Is(false)
+  14: Is(false)
+  15: Is(true)
+  16: Is(true)
+  17: Is(false)
+  18: Is(false)
+  19: Is(false)
+COLUMN result : Optional(Boolean) <None | Is:Boolean>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+TABLE Trans 3
+LENGTH 1
+COLUMN result : Number
+  0: 1
+COLUMN New 2 : Boolean
+  0: true
+COLUMN New 3 : Boolean
+  0: true
+TABLE Trans 4
+LENGTH 1
+COLUMN result : Boolean
+  0: false
+TABLE Trans 5
+LENGTH 595
+COLUMN Source : Text
+  0: "Test 0"
+  1: "Test 0"
+  2: "Test 0"
+  3: "Test 0"
+  4: "Test 0"
+  5: "Test 0"
+  6: "Test 0"
+  7: "Test 0"
+  8: "Test 0"
+  9: "Test 0"
+  10: "Test 0"
+  11: "Test 0"
+  12: "Test 0"
+  13: "Test 0"
+  14: "Test 0"
+  15: "Test 0"
+  16: "Test 0"
+  17: "Test 0"
+  18: "Test 0"
+  19: "Test 0"
+COLUMN GenCol 198 : Optional(Number{cm}) <None | Is:Number{cm}>
+  0: Is(-2147483647)
+  1: Is(122)
+  2: Is(14891432700107)
+  3: Is(0)
+  4: Is(-1)
+  5: Is(-9223372036854775808)
+  6: Is(-128)
+  7: Is(0.410607)
+  8: Is(2147483648)
+  9: Is(127)
+  10: Is(3)
+  11: Is(24170)
+  12: Is(-2147483647)
+  13: Is(17382187934424715)
+  14: Is(2461296923)
+  15: Is(-9223372036854775809)
+  16: Is(-32768)
+  17: Is(-9223372036854775807)
+  18: Is(97)
+  19: Is(-32768)
+COLUMN GenCol 199 : Optional((inner: (t 1: Text, t 2: Number), z: Number)) <None | Is:(inner: (t 1: Text, t 2: Number), z: Number)>
+  0: Is(inner: (t 1: "Number", t 2: -2147483649), z: 542)
+  1: Is(inner: (t 1: "U_'=", t 2: -127), z: -32767)
+  2: Is(inner: (t 1: "𪀽q,", t 2: 0.790978), z: 9223372036854775807)
+  3: Is(inner: (t 1: "zaa", t 2: -32768), z: 32767)
+  4: Is(inner: (t 1: "TRANSFORMATION", t 2: 4), z: 0.02565)
+  5: Is(inner: (t 1: "4:k_ꉷ()h!H𔉹", t 2: 679), z: 1)
+  6: Is(inner: (t 1: "&", t 2: 119958251), z: 654542)
+  7: Is(inner: (t 1: "a", t 2: -127), z: 125977267)
+  8: Is(inner: (t 1: "INCOMPLETE", t 2: 130), z: -1)
+  9: Is(inner: (t 1: "fa aZra", t 2: 0), z: 0.351719)
+  10: Is(inner: (t 1: "j 090aa9ZnZ", t 2: 286235490), z: 5)
+  11: Is(inner: (t 1: "v 9", t 2: 15), z: -9223372036854775809)
+  12: Is(inner: (t 1: "50`Hjn𮮈ayD&VM󹅟NX", t 2: -2147483649), z: 0)
+  13: Is(inner: (t 1: "🅁(Z􂦳Rx", t 2: -127), z: 898)
+  14: Is(inner: (t 1: "q3􎕃*Z𔃯|/", t 2: 2147483648), z: 0.237374)
+  15: Is(inner: (t 1: "𥖮𭫉10", t 2: 32767), z: -9223372036854775809)
+  16: Is(inner: (t 1: "", t 2: 2764), z: 0.651368)
+  17: Is(inner: (t 1: "Number", t 2: 9223372036854775807), z: 0.621828)
+  18: Is(inner: (t 1: "jna99a9 90", t 2: 0.607778), z: 351976)
+  19: Is(inner: (t 1: "q𮰡X/", t 2: 28802534802000157), z: 2147483648)
+COLUMN GenCol 200 : Optional(DateYM) <None | Is:DateYM>
+  0: Is(6281-07)
+  1: Is(4850-12)
+  2: Is(0728-01)
+  3: Is(2450-09)
+  4: Is(2671-02)
+  5: Is(9482-04)
+  6: Is(9821-03)
+  7: Is(8840-05)
+  8: Is(5533-07)
+  9: Is(9687-12)
+  10: Is(7723-08)
+  11: Is(2514-09)
+  12: Is(7147-03)
+  13: Is(7632-12)
+  14: Is(4956-08)
+  15: Is(3927-06)
+  16: Is(8975-09)
+  17: Is(3553-11)
+  18: Is(9512-03)
+  19: Is(5463-08)
+COLUMN GenCol 201 : Optional(Number{m^3/s^3}) <None | Is:Number{m^3/s^3}>
+  0: Is(-1)
+  1: Is(107835)
+  2: Is(330937219)
+  3: Is(1)
+  4: Is(-128)
+  5: Is(-9223372036854775809)
+  6: Is(0.007818)
+  7: Is(9223372036854775808)
+  8: Is(1)
+  9: Is(9223372036854775808)
+  10: Is(231)
+  11: Is(3783078594)
+  12: Is(0.835861)
+  13: Is(0.766597)
+  14: Is(-32767)
+  15: Is(6607525446980051)
+  16: Is(-2147483649)
+  17: Is(-2147483649)
+  18: Is(-32768)
+  19: Is(127)
+COLUMN GenCol 202 : Optional(Text) <None | Is:Text>
+  0: Is("apply")
+  1: Is("鞄")
+  2: Is("ga0r9Z9")
+  3: Is("M𤥵")
+  4: Is("􂊴:l-S")
+  5: Is("iZaZZ0a")
+  6: Is("i90Z00")
+  7: Is("&𮒟HAA\")
+  8: Is("br r aZ")
+  9: Is("􇬞")
+  10: Is("䖃")
+  11: Is("%")
+  12: Is("trn")
+  13: Is("lZn999Z9r")
+  14: Is("􀊊")
+  15: Is("COLUMN")
+  16: Is("Z")
+  17: Is("o Zn0n Z")
+  18: Is("na0rnn9Z9")
+  19: Is("|^a𖼞YFp")
+COLUMN GenCol 203 : Optional(A <Single>) <None | Is:A <Single>>
+  0: Is(Single)
+  1: Is(Single)
+  2: Is(Single)
+  3: Is(Single)
+  4: Is(Single)
+  5: Is(Single)
+  6: Is(Single)
+  7: Is(Single)
+  8: Is(Single)
+  9: Is(Single)
+  10: Is(Single)
+  11: Is(Single)
+  12: Is(Single)
+  13: Is(Single)
+  14: Is(Single)
+  15: Is(Single)
+  16: Is(Single)
+  17: Is(Single)
+  18: Is(Single)
+  19: Is(Single)
+COLUMN GenCol 204 : Optional([(a: Number, nested: (num num: Number, the text 0 item: Text))]) <None | Is:[(a: Number, nested: (num num: Number, the text 0 item: Text))]>
+  0: Is([(a: 1246, nested: (num num: 2147483648, the text 0 item: "END")), (a: 2147483648, nested: (num num: 1, the text 0 item: "Date"))])
+  1: Is([(a: -128, nested: (num num: 0.045417, the text 0 item: "saZ")), (a: -9223372036854775807, nested: (num num: 0.764285, the text 0 item: "C'tVไNB𥟇~"))])
+  2: Is([(a: 1085, nested: (num num: -9223372036854775809, the text 0 item: "􀧖𲲑")), (a: 106, nested: (num num: 0.461593, the text 0 item: "rZ")), (a: 11744, nested: (num num: -2147483649, the text 0 item: "Q7*"))])
+  3: Is([(a: -9223372036854775807, nested: (num num: 229, the text 0 item: "􍔊u􍲒瘤;􏠡U")), (a: -2147483647, nested: (num num: 27, the text 0 item: "CONTENT")), (a: -2147483649, nested: (num num: 0.592234, the text 0 item: "􅰐kj"))])
+  4: Is([(a: 1256358, nested: (num num: 0.450945, the text 0 item: "DISPLAY"))])
+  5: Is([(a: 13, nested: (num num: 7, the text 0 item: "􄸐 I_"))])
+  6: Is([(a: -32767, nested: (num num: 345325, the text 0 item: ")'B")), (a: -9223372036854775807, nested: (num num: 2147483648, the text 0 item: "a"))])
+  7: Is([(a: 0.070725, nested: (num num: 465079368, the text 0 item: "S")), (a: 826, nested: (num num: 25744225497279386, the text 0 item: "􈩾g")), (a: 919, nested: (num num: 90, the text 0 item: "8"))])
+  8: Is([(a: 16, nested: (num num: 32767, the text 0 item: "Ei")), (a: 17, nested: (num num: 13348165184640351780, the text 0 item: "dn99ZrZn")), (a: 244, nested: (num num: 19027, the text 0 item: "􊢢")), (a: 0.4048, nested: (num num: -32768, the text 0 item: "u Z"))])
+  9: Is([(a: 46, nested: (num num: 127, the text 0 item: "e 00raa a")), (a: 2147483648, nested: (num num: 32767, the text 0 item: "FORMAT")), (a: -9223372036854775807, nested: (num num: 0.843475, the text 0 item: "hZ9Z0rnnZ")), (a: 12751, nested: (num num: 44108538727934, the text 0 item: "e{碃]嵢𢅐+co"))])
+  10: Is([(a: 2147483647, nested: (num num: 2147483647, the text 0 item: "𠢽")), (a: -2147483648, nested: (num num: 1, the text 0 item: "n9aZn")), (a: 7683522125, nested: (num num: 127, the text 0 item: "BIm;"))])
+  11: Is([(a: 25789, nested: (num num: 9, the text 0 item: "yr n9Z90n")), (a: 3, nested: (num num: 279, the text 0 item: "bA꧐+"))])
+  12: Is([(a: 0.764176, nested: (num num: 27, the text 0 item: "a")), (a: 2982458312, nested: (num num: -9223372036854775809, the text 0 item: "Number")), (a: 2147483647, nested: (num num: 32767, the text 0 item: "A茸z聥[<P"))])
+  13: Is([(a: 2147483648, nested: (num num: -2147483648, the text 0 item: "har9Z")), (a: 2136243791, nested: (num num: -9223372036854775807, the text 0 item: "br0 0nZ9nn"))])
+  14: Is([(a: 0, nested: (num num: 61956689, the text 0 item: "5!")), (a: -9223372036854775807, nested: (num num: -127, the text 0 item: "𩾭𱺉$􀰯k"))])
+  15: Is([(a: 252, nested: (num num: 2147483647, the text 0 item: "sana 0")), (a: -32768, nested: (num num: -9223372036854775809, the text 0 item: "COLUMNAL")), (a: 2023255, nested: (num num: 3088, the text 0 item: "b􆛷<}!𱐅")), (a: -127, nested: (num num: -32767, the text 0 item: "t9na0na 0aZ"))])
+  16: Is([(a: -32768, nested: (num num: 3201024836295796, the text 0 item: "󽟪𭴼:_"))])
+  17: Is([(a: 1, nested: (num num: -2147483649, the text 0 item: "DISPLAY"))])
+  18: Is([(a: 6, nested: (num num: -2147483647, the text 0 item: "VERSION")), (a: 319, nested: (num num: 28, the text 0 item: "㉦5􉑤y'睐􇊬#"))])
+  19: Is([(a: 2147483648, nested: (num num: 14955, the text 0 item: "e"))])
+COLUMN GenCol 205 : Optional(Date) <None | Is:Date>
+  0: Is(7444-02-23)
+  1: Is(2050-11-27)
+  2: Is(1939-01-01)
+  3: Is(1977-10-12)
+  4: Is(4278-02-23)
+  5: Is(2041-12-11)
+  6: Is(2009-04-08)
+  7: Is(7944-04-25)
+  8: Is(0783-11-06)
+  9: Is(2016-09-11)
+  10: Is(2026-11-13)
+  11: Is(1954-01-24)
+  12: Is(2016-12-13)
+  13: Is(1986-03-24)
+  14: Is(1923-06-10)
+  15: Is(3692-06-22)
+  16: Is(2010-05-17)
+  17: Is(1901-03-31)
+  18: Is(8350-02-15)
+  19: Is(2043-07-16)
+COLUMN GenCol 206 : Optional(Boolean) <None | Is:Boolean>
+  0: Is(false)
+  1: Is(true)
+  2: Is(false)
+  3: Is(false)
+  4: Is(true)
+  5: Is(false)
+  6: Is(true)
+  7: Is(true)
+  8: Is(true)
+  9: Is(true)
+  10: Is(false)
+  11: Is(false)
+  12: Is(true)
+  13: Is(false)
+  14: Is(false)
+  15: Is(true)
+  16: Is(true)
+  17: Is(false)
+  18: Is(false)
+  19: Is(false)
+COLUMN result : Optional(Boolean) <None | Is:Boolean>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN New 1 : Number
+  0: 595
+  1: 595
+  2: 595
+  3: 595
+  4: 595
+  5: 595
+  6: 595
+  7: 595
+  8: 595
+  9: 595
+  10: 595
+  11: 595
+  12: 595
+  13: 595
+  14: 595
+  15: 595
+  16: 595
+  17: 595
+  18: 595
+  19: 595

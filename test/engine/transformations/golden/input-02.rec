@@ -1,0 +1,125 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN DMK
+DMK "Test 0"
+DMK FORMAT @BEGIN
+DMK @COLUMN GenCol 6 @TYPE DateYM @DEFAULT 0958-07
+DMK @COLUMN GenCol 7 @TYPE @apply   EitherNumUnit {1} {m} @DEFAULT Right ( 9223372036854775807 )
+DMK @COLUMN GenCol 8 @TYPE [ Text ] @DEFAULT [ "v" , "apply" , "a" ]
+DMK @COLUMN GenCol 9 @TYPE ( Text : Text , bool : Boolean , c : C , dtz : DateTimeZoned ) @DEFAULT ( "Text" : "DATA" , "bool" : false , "c" : Blank , "dtz" : 1767-06-24 08:14:30.774112372 +08:52 )
+DMK @COLUMN GenCol 10 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT Is ( Is ( "S" ) )
+DMK @END FORMAT
+DMK VALUES @BEGIN
+DMK   1261-01 , Right ( 86 ) , [ "􉚊c樴V*K#}r2" ] , ( "Text" : "R" , "bool" : false , "c" : Num ( 127 ) , "dtz" : 3549-05-03 17:24:00 -00:16 ) , Is ( Is ( "Z" ) )
+DMK   1763-03 , Left ( 3 ) , [ "DateTime" ] , ( "Text" : "}숭" , "bool" : false , "c" : Blank , "dtz" : 0757-08-09 01:32:00 America/Anchorage ) , Is ( Is ( "CONTENT" ) )
+DMK   1568-12 , Left ( 0 ) , [ "mnr9Za9an9n" ] , ( "Text" : "幟" , "bool" : true , "c" : Blank , "dtz" : 1982-07-11 01:38:48 +06:19 ) , None
+DMK   5766-05 , Left ( -128 ) , [ "BEGIN" ] , ( "Text" : "l𢄴h" , "bool" : true , "c" : Num ( 2 ) , "dtz" : 2017-09-09 09:40:05.236251535 -05:37 ) , Is ( None )
+DMK   2117-09 , Right ( -2147483648 ) , [ "𲑯nW9" , "$y" , "?(!N" , "ana9n9nrr" ] , ( "Text" : "8S𘬬w2e" , "bool" : false , "c" : Blank , "dtz" : 1981-06-22 06:48:21 -02:56 ) , None
+DMK   6777-10 , Right ( -2147483647 ) , [ "yZn" , "u Z9anZ Z" ] , ( "Text" : "U" , "bool" : false , "c" : Num ( 32767 ) , "dtz" : 1980-01-24 17:36:34.851322933 +03:12 ) , None
+DMK   5698-03 , Right ( 157151384 ) , [ "END" ] , ( "Text" : "n" , "bool" : false , "c" : Blank , "dtz" : 1910-10-26 19:59:15.333967503 -07:40 ) , None
+DMK   5309-10 , Right ( 9223372036854775808 ) , [ "F" , "HYHUJ" , "o00" ] , ( "Text" : "ur9 0 a9na" , "bool" : false , "c" : Blank , "dtz" : 2000-12-02 03:10:43 -05:48 ) , Is ( Is ( "d9Zr09 r" ) )
+DMK   9223-05 , Right ( 9223372036854775807 ) , [ "0M" , "d9 rn" ] , ( "Text" : "✼" , "bool" : false , "c" : Num ( 27484 ) , "dtz" : 8472-12-07 06:26:00 +04:24 ) , Is ( None )
+DMK   7268-02 , Right ( 684 ) , [ "𢎦>􉸢󴘲Qt" , "􀤤qs" ] , ( "Text" : "j 9rZn0" , "bool" : false , "c" : Blank , "dtz" : 1997-09-25 17:52:00 America/Danmarkshavn ) , None
+DMK @END VALUES
+DMK DISPLAY @BEGIN
+DMK POSITION 1 1
+DMK SHOWCOLUMNS ALL
+DMK @END DISPLAY
+@END DMK DATA
+
+TRANSFORMATION @BEGIN NHH
+NHH "Trans 4"
+NHH sort
+NHH SOURCE "Test 0"
+NHH @BEGIN
+NHH DESCENDING Missing
+NHH ASCENDING "GenCol 10"
+NHH @END
+NHH DISPLAY @BEGIN
+NHH POSITION 1 1
+NHH SHOWCOLUMNS ALL
+NHH @END DISPLAY
+@END NHH TRANSFORMATION
+
+TRANSFORMATION @BEGIN DZD
+DZD "Trans 5"
+DZD check
+DZD SOURCE "Test 0"
+DZD @BEGIN
+DZD CHECK NOROWS @EXPRESSION column\\GenCol 9 >= @call function\\list\element(table\\Test 0#GenCol 9, 2)
+DZD @END
+DZD DISPLAY @BEGIN
+DZD POSITION 1 1
+DZD SHOWCOLUMNS ALL
+DZD @END DISPLAY
+@END DZD TRANSFORMATION
+
+TRANSFORMATION @BEGIN ADN
+ADN "Trans 2"
+ADN "drop.columns"
+ADN SOURCE "Test 0"
+ADN @BEGIN
+ADN HIDE "GenCol 7"
+ADN HIDE "GenCol 8"
+ADN @END
+ADN DISPLAY @BEGIN
+ADN POSITION 1 1
+ADN SHOWCOLUMNS ALL
+ADN @END DISPLAY
+@END ADN TRANSFORMATION
+
+TRANSFORMATION @BEGIN RHY
+RHY "Trans 6"
+RHY concatenate
+RHY SOURCE "Trans 2" "Trans 5" "Trans 4"
+RHY @BEGIN
+RHY @INCOMPLETE OMIT SOURCE 
+RHY @END
+RHY DISPLAY @BEGIN
+RHY POSITION 1 1
+RHY SHOWCOLUMNS ALL
+RHY @END DISPLAY
+@END RHY TRANSFORMATION
+
+TRANSFORMATION @BEGIN ULJ
+ULJ "Trans 3"
+ULJ "drop.columns"
+ULJ SOURCE "Trans 2"
+ULJ @BEGIN
+ULJ HIDE "GenCol 9"
+ULJ HIDE Missing
+ULJ @END
+ULJ DISPLAY @BEGIN
+ULJ POSITION 1 1
+ULJ SHOWCOLUMNS ALL
+ULJ @END DISPLAY
+@END ULJ TRANSFORMATION
+
+TRANSFORMATION @BEGIN MUW
+MUW "Trans 1"
+MUW filter
+MUW SOURCE "Test 0"
+MUW @BEGIN
+MUW KEEPIF column\\GenCol 10 < @call function\\list\element(table\\Test 0#GenCol 10, 2)
+MUW @END
+MUW DISPLAY @BEGIN
+MUW POSITION 1 1
+MUW SHOWCOLUMNS ALL
+MUW @END DISPLAY
+@END MUW TRANSFORMATION
+

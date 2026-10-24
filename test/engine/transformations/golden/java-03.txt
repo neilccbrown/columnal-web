@@ -1,0 +1,484 @@
+TABLE Test 0
+LENGTH 272
+COLUMN GenCol 11 : [Text]
+  0: !InvalidImmediateValueException: Invalid value: #1767665612
+  1: ["𲡪"]
+  2: ["typevar", ",𥲥𳃁", "*󽐇"]
+  3: ["gaa0rn rZ n", "Text", "rar Zn"]
+  4: ["TRANSFORMATION", ":"]
+  5: ["r aa99Z", ")(", "z", "g"]
+  6: ["pgUn2􁍜h", "r Za ra"]
+  7: ["󿂾`", "Q"]
+  8: ["T>pvd", "a"]
+  9: ["UNITS", "a", "a"]
+  10: !InvalidImmediateValueException: Invalid value: #598707165
+  11: !InvalidImmediateValueException: Invalid value: #995143874
+  12: ["TRANSFORMATION", "Q􌳜", "DateTimeZoned", "R􇢑>a󰩵8"]
+  13: ["w na r", "zZ99rZ", "hn r", "mrZ90r9 n"]
+  14: ["ksI"]
+  15: ["SKIP", "warn0rrn", "zZnn09", "kZaaa"]
+  16: ["Date", "i", "!Z鿹y"]
+  17: ["󶽖~", "^a", "COLUMN", "<sG🯭"]
+  18: ["a", "Boolean"]
+  19: ["raar0Za90Z"]
+COLUMN GenCol 12 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: !InvalidImmediateValueException: Invalid value: #-1723363762
+  5: Single
+  6: Single
+  7: Single
+  8: !InvalidImmediateValueException: Invalid value: #-1610047879
+  9: Single
+  10: Single
+  11: Single
+  12: Single
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 13 : Number{(USD*m)/s^2}
+  0: -2147483647
+  1: 9223372036854775807
+  2: 9223372036854775807
+  3: -127
+  4: !InvalidImmediateValueException: Invalid value: #1745752519
+  5: -1
+  6: 127
+  7: -128
+  8: -9223372036854775809
+  9: 217312923215310
+  10: 2147483647
+  11: -32768
+  12: 0.018948
+  13: 7344127481871503518544
+  14: -2147483648
+  15: -9223372036854775807
+  16: 1
+  17: 2147483647
+  18: -32768
+  19: !InvalidImmediateValueException: Invalid value: #2076233498
+COLUMN GenCol 14 : [Number]
+  0: !InvalidImmediateValueException: Invalid value: #1356428247
+  1: [127, -1, 151, -2147483649]
+  2: [-1, -9223372036854775808]
+  3: !InvalidImmediateValueException: Invalid value: #864075629
+  4: [2147483647]
+  5: [1]
+  6: [-9223372036854775808, 2503, 0.109556, 403]
+  7: [-1]
+  8: !InvalidImmediateValueException: Invalid value: #16143450
+  9: !InvalidImmediateValueException: Invalid value: #-1337018194
+  10: [9223372036854775807, -32767, 5275448, 127]
+  11: [0.920285, 1784296745750864, 0]
+  12: [9223372036854775807]
+  13: [0]
+  14: !InvalidImmediateValueException: Invalid value: #1782826844
+  15: [-1, -9223372036854775809, 0.894237, 222]
+  16: [-2147483648, 10375582341101, -9223372036854775809]
+  17: [127, 1, 1]
+  18: [35, 2147483647]
+  19: [-9223372036854775809, 172046434, 0]
+COLUMN GenCol 15 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: Single
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 16 : [Number]
+  0: [2147483648, 127, -1]
+  1: [1]
+  2: [1, 127, 176147943331]
+  3: !InvalidImmediateValueException: Invalid value: #-545462180
+  4: [-32767]
+  5: [-9223372036854775807, -32767]
+  6: [-9223372036854775808, 85, 55195]
+  7: [-9223372036854775809]
+  8: [9223372036854775807, -2147483649, 2147483647]
+  9: [51740698873]
+  10: [-9223372036854775809]
+  11: [0.860099]
+  12: [72608124759126, 47250, -2147483649]
+  13: [-2147483648, 0.610484, 9, -32768]
+  14: [2147483647, 0.21067]
+  15: [0, -1]
+  16: [0, -127, 0.185673]
+  17: [14037]
+  18: [-1]
+  19: [32767]
+COLUMN GenCol 17 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 24416296, nested: (num num: 2147483647, the text 0 item: "}I6𡩌C[dm1󶕇2^c󼣺")), (a: 0.476069, nested: (num num: 839, the text 0 item: "t9rn")), (a: 20, nested: (num num: -32767, the text 0 item: "u9 Z9aZ"))]
+  1: [(a: 0.921412, nested: (num num: -2147483647, the text 0 item: "na")), (a: 1619, nested: (num num: -9223372036854775808, the text 0 item: "JW")), (a: 3, nested: (num num: -128, the text 0 item: "s9n99a")), (a: -1, nested: (num num: 9223372036854775807, the text 0 item: "/3󼼻𤕏􇩛"))]
+  2: [(a: 6624799, nested: (num num: -2147483648, the text 0 item: "a𮭟N𩿷  "))]
+  3: [(a: -2147483647, nested: (num num: -9223372036854775809, the text 0 item: "DateYM")), (a: -9223372036854775808, nested: (num num: 892, the text 0 item: "DateTimeZoned")), (a: 4, nested: (num num: 32767, the text 0 item: "vr9Za"))]
+  4: [(a: 92, nested: (num num: 14862740706, the text 0 item: "INCOMPLETE")), (a: 2147483648, nested: (num num: 5, the text 0 item: "COMMENT")), (a: 9223372036854775807, nested: (num num: -32768, the text 0 item: ":ࡲ􆿈Q")), (a: 0.523348, nested: (num num: 767, the text 0 item: "qZ"))]
+  5: [(a: 2147483648, nested: (num num: -1, the text 0 item: "a")), (a: 3420073012, nested: (num num: 127, the text 0 item: "4b"))]
+  6: [(a: 1566, nested: (num num: 2147483648, the text 0 item: "UNITS")), (a: 2703364972616, nested: (num num: 127, the text 0 item: "INCOMPLETE")), (a: 1, nested: (num num: -1, the text 0 item: "bGY"))]
+  7: [(a: 32767, nested: (num num: 98, the text 0 item: "/]􉠎#G󿶑h眒spॸ􀔶wPF)G")), (a: 131, nested: (num num: 1778, the text 0 item: "🬹󷗴𦙞")), (a: 2147483647, nested: (num num: -32768, the text 0 item: "f둱")), (a: 0.315476, nested: (num num: 151, the text 0 item: "F𢏮U]𰊠"))]
+  8: [(a: -9223372036854775807, nested: (num num: 3, the text 0 item: "v 0 90a")), (a: -2147483647, nested: (num num: -2147483647, the text 0 item: "F𮠊")), (a: -9223372036854775807, nested: (num num: -32767, the text 0 item: "TEXTFILE"))]
+  9: [(a: 33341244315, nested: (num num: -1, the text 0 item: "LINKED")), (a: 2493921, nested: (num num: 8305592, the text 0 item: "=cYfS"))]
+  10: [(a: 0, nested: (num num: 14626881, the text 0 item: "M")), (a: 6, nested: (num num: 2147483648, the text 0 item: "ma arn"))]
+  11: [(a: 0.116885, nested: (num num: 0, the text 0 item: "!_􃮤G㐲-")), (a: 11259891, nested: (num num: 0, the text 0 item: "􌖤P$"))]
+  12: [(a: 3, nested: (num num: -128, the text 0 item: "DateTime")), (a: -9223372036854775809, nested: (num num: 966, the text 0 item: "g90 9r0ZZ"))]
+  13: [(a: -2147483647, nested: (num num: 18, the text 0 item: "X|𘍭"))]
+  14: [(a: -2147483649, nested: (num num: 127271973, the text 0 item: "unitvar")), (a: 761226, nested: (num num: 3875701192338992, the text 0 item: "DateTime")), (a: 5, nested: (num num: -9223372036854775807, the text 0 item: "󻅲")), (a: 34924627422, nested: (num num: 637837, the text 0 item: "TRANSFORMATION"))]
+  15: [(a: 2147483647, nested: (num num: -127, the text 0 item: "DateYM"))]
+  16: [(a: 0, nested: (num num: 9223372036854775807, the text 0 item: "yZ")), (a: 2147483647, nested: (num num: 2147483648, the text 0 item: "􁹣􂗶S𗝜𨡚0=r P5󳒷ci")), (a: 9223372036854775807, nested: (num num: -1, the text 0 item: "~xT"))]
+  17: [(a: 0, nested: (num num: 20, the text 0 item: "1BS")), (a: -9223372036854775808, nested: (num num: -9223372036854775808, the text 0 item: "𫧕")), (a: -2147483648, nested: (num num: 11266612, the text 0 item: ""))]
+  18: [(a: 1474918967, nested: (num num: 1656, the text 0 item: "􌳙' :𰇳")), (a: -32768, nested: (num num: 793, the text 0 item: "a"))]
+  19: [(a: -2147483649, nested: (num num: 101, the text 0 item: "DISPLAY")), (a: 2147483648, nested: (num num: 117052, the text 0 item: "nZ rZZr")), (a: -2147483649, nested: (num num: -32768, the text 0 item: "br9an 0 r")), (a: -2147483647, nested: (num num: 2147483648, the text 0 item: "=䖄𪦝󷾪𠕋"))]
+TABLE Trans 1
+LENGTH 272
+COLUMN GenCol 11 : [Text]
+  0: ["DEFAULT", "YY9󱲣𰶖", "nZr", ";󷫱𪖾"]
+  1: ["k0ra9900", "5", "p0Z0a9Zr9", "TRANSFORMATION"]
+  2: ["g Z99rZ 0", "쇾c", ":9", "Irc"]
+  3: ["Date", "gnZ0 9 r"]
+  4: ["𗇠_`S G')AGU", "tn0r9 n"]
+  5: ["wp󷷰􈄇"]
+  6: ["z9Z09rn9", "v?K`", "Y"]
+  7: ["SKIP", "DateTime"]
+  8: ["b n", "unitvar", "jM,K=󾤮m", "􍪝iG"]
+  9: ["DateYM", "i0aaar9aa", "tagged", "Date"]
+  10: ["DateTime", "END", "W", "wan0 nr"]
+  11: ["􌀀\􁤦", "cx󼡷"]
+  12: ["END", "DATA"]
+  13: ["qn900an0", "a"]
+  14: ["invalidtypeops", "SOURCE", "h0rra09", "y9 n"]
+  15: ["S#r+l8"]
+  16: ["d9n 9909a", "CONTENT"]
+  17: ["a", ".4Np?", "𘟺`􇱦􌷩&󸄉>vj2%H", "ᇓn{DH?3R+"]
+  18: ["􋴫ed'[^c[𩋋憘!鎭𤦼 v󼫖"]
+  19: ["U󷡞", "6", "ia9r", "$󹄉"]
+COLUMN GenCol 12 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: !InvalidImmediateValueException: Invalid value: #-261760682
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: Single
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 13 : Number{(USD*m)/s^2}
+  0: -127
+  1: -9223372036854775808
+  2: 0
+  3: 0
+  4: 13485
+  5: -2147483648
+  6: 297
+  7: 13226793470874592
+  8: -127
+  9: !InvalidImmediateValueException: Invalid value: #-372347969
+  10: -9223372036854775808
+  11: 2
+  12: 0.77071
+  13: -32768
+  14: 2147483648
+  15: 0.23896
+  16: 75339511933
+  17: 3383
+  18: 0
+  19: 1520938520034
+COLUMN GenCol 14 : [Number]
+  0: !InvalidImmediateValueException: Invalid value: #319328211
+  1: [0, 21]
+  2: [0.666798, 0.179871, 9223372036854775807]
+  3: [33153266, -127]
+  4: [2147483648]
+  5: [-9223372036854775808, 0.208391, -128]
+  6: [6, 114563, 2147483647]
+  7: [-9223372036854775809, -2147483647]
+  8: [106]
+  9: [-1]
+  10: [-9223372036854775809, -9223372036854775809, 1302994040277]
+  11: [-9223372036854775808, 5, -1]
+  12: [5688829, 258965711907460552]
+  13: [9223372036854775808, 860131300, 0, -2147483648]
+  14: [-9223372036854775809, 4449009]
+  15: [33202247210, 127]
+  16: [1441, 32767]
+  17: [415]
+  18: [0.83513]
+  19: !InvalidImmediateValueException: Invalid value: #-1447655836
+COLUMN GenCol 15 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: Single
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 16 : [Number]
+  0: [-32767]
+  1: !InvalidImmediateValueException: Invalid value: #1532093287
+  2: [-2147483648]
+  3: [2101248]
+  4: !InvalidImmediateValueException: Invalid value: #169613964
+  5: [-128, 0, 217421, -128]
+  6: [16557499430653, 216, 15, 28]
+  7: [2147483648]
+  8: [0.099104, 1682]
+  9: [2147483648, 1835472, 2137]
+  10: [9223372036854775807, 9223372036854775807]
+  11: [2483036]
+  12: [726571896681, 0.26593]
+  13: [9223372036854775808]
+  14: [2147483647, 32767]
+  15: [0, 8339148453, 9223372036854775808]
+  16: [2147483647]
+  17: [1, 2147483648]
+  18: [488]
+  19: [127, 0]
+COLUMN GenCol 17 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: !InvalidImmediateValueException: Invalid value: #-1085836672
+  1: !InvalidImmediateValueException: Invalid value: #-1144723013
+  2: !InvalidImmediateValueException: Invalid value: #-130188541
+  3: !InvalidImmediateValueException: Invalid value: #-1434012507
+  4: !InvalidImmediateValueException: Invalid value: #-1482532181
+  5: !InvalidImmediateValueException: Invalid value: #-151178899
+  6: !InvalidImmediateValueException: Invalid value: #-1530251793
+  7: !InvalidImmediateValueException: Invalid value: #-1605177974
+  8: !InvalidImmediateValueException: Invalid value: #-1651604471
+  9: !InvalidImmediateValueException: Invalid value: #-1653139980
+  10: !InvalidImmediateValueException: Invalid value: #-1723161964
+  11: !InvalidImmediateValueException: Invalid value: #-1743934881
+  12: !InvalidImmediateValueException: Invalid value: #-177263880
+  13: !InvalidImmediateValueException: Invalid value: #-1847816688
+  14: !InvalidImmediateValueException: Invalid value: #-1881002045
+  15: !InvalidImmediateValueException: Invalid value: #-1885033198
+  16: !InvalidImmediateValueException: Invalid value: #-209935256
+  17: !InvalidImmediateValueException: Invalid value: #-308580973
+  18: !InvalidImmediateValueException: Invalid value: #-32535178
+  19: !InvalidImmediateValueException: Invalid value: #-411816860
+TABLE Trans 2
+!InvalidImmediateValueException: Invalid value: #1767665612
+TABLE Trans 3
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Invalid value: #1767665612
+TABLE Trans 4
+LENGTH 272
+COLUMN GenCol 11 : [Text]
+  0: !InvalidImmediateValueException: Invalid value: #1767665612
+  1: ["𲡪"]
+  2: ["typevar", ",𥲥𳃁", "*󽐇"]
+  3: ["gaa0rn rZ n", "Text", "rar Zn"]
+  4: ["TRANSFORMATION", ":"]
+  5: ["r aa99Z", ")(", "z", "g"]
+  6: ["pgUn2􁍜h", "r Za ra"]
+  7: ["󿂾`", "Q"]
+  8: ["T>pvd", "a"]
+  9: ["UNITS", "a", "a"]
+  10: !InvalidImmediateValueException: Invalid value: #598707165
+  11: !InvalidImmediateValueException: Invalid value: #995143874
+  12: ["TRANSFORMATION", "Q􌳜", "DateTimeZoned", "R􇢑>a󰩵8"]
+  13: ["w na r", "zZ99rZ", "hn r", "mrZ90r9 n"]
+  14: ["ksI"]
+  15: ["SKIP", "warn0rrn", "zZnn09", "kZaaa"]
+  16: ["Date", "i", "!Z鿹y"]
+  17: ["󶽖~", "^a", "COLUMN", "<sG🯭"]
+  18: ["a", "Boolean"]
+  19: ["raar0Za90Z"]
+COLUMN GenCol 12 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: !InvalidImmediateValueException: Invalid value: #-1723363762
+  5: Single
+  6: Single
+  7: Single
+  8: !InvalidImmediateValueException: Invalid value: #-1610047879
+  9: Single
+  10: Single
+  11: Single
+  12: Single
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 13 : Number{(USD*m)/s^2}
+  0: -2147483647
+  1: 9223372036854775807
+  2: 9223372036854775807
+  3: -127
+  4: !InvalidImmediateValueException: Invalid value: #1745752519
+  5: -1
+  6: 127
+  7: -128
+  8: -9223372036854775809
+  9: 217312923215310
+  10: 2147483647
+  11: -32768
+  12: 0.018948
+  13: 7344127481871503518544
+  14: -2147483648
+  15: -9223372036854775807
+  16: 1
+  17: 2147483647
+  18: -32768
+  19: !InvalidImmediateValueException: Invalid value: #2076233498
+COLUMN GenCol 14 : [Number]
+  0: !InvalidImmediateValueException: Invalid value: #1356428247
+  1: [127, -1, 151, -2147483649]
+  2: [-1, -9223372036854775808]
+  3: !InvalidImmediateValueException: Invalid value: #864075629
+  4: [2147483647]
+  5: [1]
+  6: [-9223372036854775808, 2503, 0.109556, 403]
+  7: [-1]
+  8: !InvalidImmediateValueException: Invalid value: #16143450
+  9: !InvalidImmediateValueException: Invalid value: #-1337018194
+  10: [9223372036854775807, -32767, 5275448, 127]
+  11: [0.920285, 1784296745750864, 0]
+  12: [9223372036854775807]
+  13: [0]
+  14: !InvalidImmediateValueException: Invalid value: #1782826844
+  15: [-1, -9223372036854775809, 0.894237, 222]
+  16: [-2147483648, 10375582341101, -9223372036854775809]
+  17: [127, 1, 1]
+  18: [35, 2147483647]
+  19: [-9223372036854775809, 172046434, 0]
+COLUMN GenCol 15 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: Single
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 16 : [Number]
+  0: [2147483648, 127, -1]
+  1: [1]
+  2: [1, 127, 176147943331]
+  3: !InvalidImmediateValueException: Invalid value: #-545462180
+  4: [-32767]
+  5: [-9223372036854775807, -32767]
+  6: [-9223372036854775808, 85, 55195]
+  7: [-9223372036854775809]
+  8: [9223372036854775807, -2147483649, 2147483647]
+  9: [51740698873]
+  10: [-9223372036854775809]
+  11: [0.860099]
+  12: [72608124759126, 47250, -2147483649]
+  13: [-2147483648, 0.610484, 9, -32768]
+  14: [2147483647, 0.21067]
+  15: [0, -1]
+  16: [0, -127, 0.185673]
+  17: [14037]
+  18: [-1]
+  19: [32767]
+COLUMN GenCol 17 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 24416296, nested: (num num: 2147483647, the text 0 item: "}I6𡩌C[dm1󶕇2^c󼣺")), (a: 0.476069, nested: (num num: 839, the text 0 item: "t9rn")), (a: 20, nested: (num num: -32767, the text 0 item: "u9 Z9aZ"))]
+  1: [(a: 0.921412, nested: (num num: -2147483647, the text 0 item: "na")), (a: 1619, nested: (num num: -9223372036854775808, the text 0 item: "JW")), (a: 3, nested: (num num: -128, the text 0 item: "s9n99a")), (a: -1, nested: (num num: 9223372036854775807, the text 0 item: "/3󼼻𤕏􇩛"))]
+  2: [(a: 6624799, nested: (num num: -2147483648, the text 0 item: "a𮭟N𩿷  "))]
+  3: [(a: -2147483647, nested: (num num: -9223372036854775809, the text 0 item: "DateYM")), (a: -9223372036854775808, nested: (num num: 892, the text 0 item: "DateTimeZoned")), (a: 4, nested: (num num: 32767, the text 0 item: "vr9Za"))]
+  4: [(a: 92, nested: (num num: 14862740706, the text 0 item: "INCOMPLETE")), (a: 2147483648, nested: (num num: 5, the text 0 item: "COMMENT")), (a: 9223372036854775807, nested: (num num: -32768, the text 0 item: ":ࡲ􆿈Q")), (a: 0.523348, nested: (num num: 767, the text 0 item: "qZ"))]
+  5: [(a: 2147483648, nested: (num num: -1, the text 0 item: "a")), (a: 3420073012, nested: (num num: 127, the text 0 item: "4b"))]
+  6: [(a: 1566, nested: (num num: 2147483648, the text 0 item: "UNITS")), (a: 2703364972616, nested: (num num: 127, the text 0 item: "INCOMPLETE")), (a: 1, nested: (num num: -1, the text 0 item: "bGY"))]
+  7: [(a: 32767, nested: (num num: 98, the text 0 item: "/]􉠎#G󿶑h眒spॸ􀔶wPF)G")), (a: 131, nested: (num num: 1778, the text 0 item: "🬹󷗴𦙞")), (a: 2147483647, nested: (num num: -32768, the text 0 item: "f둱")), (a: 0.315476, nested: (num num: 151, the text 0 item: "F𢏮U]𰊠"))]
+  8: [(a: -9223372036854775807, nested: (num num: 3, the text 0 item: "v 0 90a")), (a: -2147483647, nested: (num num: -2147483647, the text 0 item: "F𮠊")), (a: -9223372036854775807, nested: (num num: -32767, the text 0 item: "TEXTFILE"))]
+  9: [(a: 33341244315, nested: (num num: -1, the text 0 item: "LINKED")), (a: 2493921, nested: (num num: 8305592, the text 0 item: "=cYfS"))]
+  10: [(a: 0, nested: (num num: 14626881, the text 0 item: "M")), (a: 6, nested: (num num: 2147483648, the text 0 item: "ma arn"))]
+  11: [(a: 0.116885, nested: (num num: 0, the text 0 item: "!_􃮤G㐲-")), (a: 11259891, nested: (num num: 0, the text 0 item: "􌖤P$"))]
+  12: [(a: 3, nested: (num num: -128, the text 0 item: "DateTime")), (a: -9223372036854775809, nested: (num num: 966, the text 0 item: "g90 9r0ZZ"))]
+  13: [(a: -2147483647, nested: (num num: 18, the text 0 item: "X|𘍭"))]
+  14: [(a: -2147483649, nested: (num num: 127271973, the text 0 item: "unitvar")), (a: 761226, nested: (num num: 3875701192338992, the text 0 item: "DateTime")), (a: 5, nested: (num num: -9223372036854775807, the text 0 item: "󻅲")), (a: 34924627422, nested: (num num: 637837, the text 0 item: "TRANSFORMATION"))]
+  15: [(a: 2147483647, nested: (num num: -127, the text 0 item: "DateYM"))]
+  16: [(a: 0, nested: (num num: 9223372036854775807, the text 0 item: "yZ")), (a: 2147483647, nested: (num num: 2147483648, the text 0 item: "􁹣􂗶S𗝜𨡚0=r P5󳒷ci")), (a: 9223372036854775807, nested: (num num: -1, the text 0 item: "~xT"))]
+  17: [(a: 0, nested: (num num: 20, the text 0 item: "1BS")), (a: -9223372036854775808, nested: (num num: -9223372036854775808, the text 0 item: "𫧕")), (a: -2147483648, nested: (num num: 11266612, the text 0 item: ""))]
+  18: [(a: 1474918967, nested: (num num: 1656, the text 0 item: "􌳙' :𰇳")), (a: -32768, nested: (num num: 793, the text 0 item: "a"))]
+  19: [(a: -2147483649, nested: (num num: 101, the text 0 item: "DISPLAY")), (a: 2147483648, nested: (num num: 117052, the text 0 item: "nZ rZZr")), (a: -2147483649, nested: (num num: -32768, the text 0 item: "br9an 0 r")), (a: -2147483647, nested: (num num: 2147483648, the text 0 item: "=䖄𪦝󷾪𠕋"))]
+COLUMN New 1 : Void <>
+  0: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  1: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  2: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  3: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  4: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  5: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  6: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  7: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  8: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  9: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  10: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  11: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  12: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  13: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  14: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  15: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  16: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  17: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  18: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+  19: !UserException: Error in New 1 expression: Type mismatch: List(Number{1}) versus B
+TABLE Trans 5
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Invalid value: #-545462180
+TABLE Trans 6
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Invalid value: #1767665612
+TABLE Trans 7
+!InvalidImmediateValueException: Invalid value: #1767665612

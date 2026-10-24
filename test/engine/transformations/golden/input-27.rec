@@ -1,0 +1,152 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN OUA
+OUA "Test 0"
+OUA FORMAT @BEGIN
+OUA @COLUMN GenCol 161 @TYPE [ [ ( key : Number , value : ( a : Text , c : Number ) ) ] ] @DEFAULT [ [ ( "key" : 32767 , "value" : ( "a" : "km㶏a," , "c" : 9223372036854775807 ) ) ] ]
+OUA @COLUMN GenCol 162 @TYPE DateTimeZoned @DEFAULT 2012-08-10 17:29:00 America/Regina
+OUA @COLUMN GenCol 163 @TYPE DateTimeZoned @DEFAULT 6727-10-09 05:22:36 America/Curacao
+OUA @COLUMN GenCol 164 @TYPE [ Text ] @DEFAULT [ ";7I" , "&𬂑" , "j" , "DEFAULT" ]
+OUA @COLUMN GenCol 165 @TYPE B @DEFAULT Single
+OUA @COLUMN GenCol 166 @TYPE ( inner : ( t 1 : Text , t 2 : Number ) , z : Number ) @DEFAULT ( "inner" : ( "t 1" : "tna90arn" , "t 2" : 92 ) , "z" : 180733091373889 )
+OUA @COLUMN GenCol 167 @TYPE Date @DEFAULT 1957-10-25
+OUA @COLUMN GenCol 168 @TYPE Number {(USD*m)/s^2} @DEFAULT 0
+OUA @COLUMN GenCol 169 @TYPE ( inner : ( t 1 : Text , t 2 : Number ) , z : Number ) @DEFAULT ( "inner" : ( "t 1" : "a" , "t 2" : 32767 ) , "z" : 2147483647 )
+OUA @COLUMN GenCol 170 @TYPE B @DEFAULT Single
+OUA @END FORMAT
+OUA VALUES @BEGIN
+OUA   [ [ ( "key" : 1 , "value" : ( "a" : "k9n0" , "c" : 127 ) ) , ( "key" : 0 , "value" : ( "a" : "􍱯=13" , "c" : -32767 ) ) , ( "key" : -2147483648 , "value" : ( "a" : "w0n" , "c" : -9223372036854775808 ) ) , ( "key" : -128 , "value" : ( "a" : ":4)" , "c" : 0.470114 ) ) ] ] , 2000-08-07 12:11:00 +05:26 , 0940-02-08 03:26:20.206220687 -02:34 , [ "a Zaa" , "-[" , "L" , "M" ] , Single , ( "inner" : ( "t 1" : "&a*k" , "t 2" : -2147483649 ) , "z" : 7028 ) , 7592-10-01 , 11118 , ( "inner" : ( "t 1" : "o9aZa9Z9Z0" , "t 2" : 2 ) , "z" : 23375276434 ) , Single
+OUA   [ [ ( "key" : 6 , "value" : ( "a" : ",.=]" , "c" : 50 ) ) , ( "key" : 0 , "value" : ( "a" : ";^c󿍸" , "c" : 128 ) ) , ( "key" : -2147483649 , "value" : ( "a" : "a" , "c" : -127 ) ) ] ] , @INVALID "#923527491" , 1661-11-16 14:03:47 -02:05 , [ "invalidtypeops" ] , Single , ( "inner" : ( "t 1" : "CONTENT" , "t 2" : 9223372036854775807 ) , "z" : 0 ) , 1927-09-26 , 2147483647 , ( "inner" : ( "t 1" : "Jt𤳓6>󠄭􌝥􏦄F" , "t 2" : 70090828679 ) , "z" : -127 ) , Single
+OUA   [ [ ( "key" : 9223372036854775808 , "value" : ( "a" : "W}􍜍+" , "c" : 146 ) ) ] , [ ( "key" : 1216971194 , "value" : ( "a" : "╚S{Pt" , "c" : 137 ) ) , ( "key" : 9223372036854775808 , "value" : ( "a" : "--u" , "c" : 2147483648 ) ) ] , [ ( "key" : 0.719224 , "value" : ( "a" : "𡋧4=2" , "c" : 0.190329 ) ) ] , [ ( "key" : 0.169634 , "value" : ( "a" : "p9 9Zn" , "c" : 1322608059445921 ) ) , ( "key" : -127 , "value" : ( "a" : "􏚐So𦇔yQ.󸫼N" , "c" : -2147483649 ) ) , ( "key" : 100 , "value" : ( "a" : "-C梇X\𥌋W?𛈟h" , "c" : 1 ) ) ] ] , 2006-08-24 02:22:06.430673164 -10:38 , 2039-05-15 07:11:42.70194254 Asia/Almaty , [ "W𦉜Km" , "D𡝦𧄚9𩸊0 H~킯" , "UNITS" ] , @INVALID "#1931465508" , ( "inner" : ( "t 1" : "DISPLAY" , "t 2" : 0 ) , "z" : 531966239 ) , 2022-01-01 , 32767 , ( "inner" : ( "t 1" : "𝁇" , "t 2" : 0.514279 ) , "z" : 1 ) , Single
+OUA   [ [ ( "key" : 3 , "value" : ( "a" : "a" , "c" : -9223372036854775808 ) ) ] , [ ( "key" : 127 , "value" : ( "a" : "FORMAT" , "c" : 9 ) ) , ( "key" : 248297135 , "value" : ( "a" : "仜[7" , "c" : 0.008327 ) ) ] , [ ( "key" : 394284 , "value" : ( "a" : "s0n9r r9" , "c" : 9223372036854775808 ) ) , ( "key" : 127 , "value" : ( "a" : "B" , "c" : 2147483648 ) ) , ( "key" : 2147483647 , "value" : ( "a" : "[ l`$tJ" , "c" : -2147483648 ) ) , ( "key" : 127 , "value" : ( "a" : "COLUMN" , "c" : 1 ) ) ] , [ ( "key" : 1 , "value" : ( "a" : "QoD=" , "c" : 0.642391 ) ) , ( "key" : 28 , "value" : ( "a" : "a" , "c" : 1 ) ) , ( "key" : 272912084813 , "value" : ( "a" : "SKIP" , "c" : 663922093 ) ) , ( "key" : -32767 , "value" : ( "a" : "invalidtypeops" , "c" : 15 ) ) ] ] , 1941-11-20 07:52:02 -09:07 , 9785-10-08 11:49:58.058395563 America/Argentina/Jujuy , [ "VERSION" , "[" , "a" , "dZ Zr00rnZ" ] , Single , ( "inner" : ( "t 1" : "invalidtypeops" , "t 2" : 0.057903 ) , "z" : 2599970 ) , 1973-02-05 , 1 , @INVALID "#148199053" , Single
+OUA @END VALUES
+OUA DISPLAY @BEGIN
+OUA POSITION 1 1
+OUA SHOWCOLUMNS ALL
+OUA @END DISPLAY
+@END OUA DATA
+
+DATA @BEGIN TSG
+TSG "Test 1"
+TSG FORMAT @BEGIN
+TSG @COLUMN GenCol 171 @TYPE [ [ ( key : Number , value : ( a : Text , c : Number ) ) ] ] @DEFAULT [ [ ( "key" : 2147483647 , "value" : ( "a" : "\f8?m憈;㛸" , "c" : 1 ) ) , ( "key" : 0.328772 , "value" : ( "a" : "󰛺" , "c" : 2 ) ) ] , [ ( "key" : 537 , "value" : ( "a" : "􂔸" , "c" : 35 ) ) , ( "key" : 137 , "value" : ( "a" : "^a" , "c" : 1634750842 ) ) , ( "key" : -2147483649 , "value" : ( "a" : "SKIP" , "c" : 5451140 ) ) , ( "key" : 10927 , "value" : ( "a" : "x" , "c" : 1399691853004 ) ) ] , [ ( "key" : -128 , "value" : ( "a" : "s9aa 0r" , "c" : 0.819662 ) ) , ( "key" : 2825 , "value" : ( "a" : "x90n 9Zn00" , "c" : -2147483649 ) ) , ( "key" : -32767 , "value" : ( "a" : "DateTime" , "c" : 1 ) ) , ( "key" : -127 , "value" : ( "a" : "iZ" , "c" : 3374294322920182322 ) ) ] ]
+TSG @COLUMN GenCol 172 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT None
+TSG @COLUMN GenCol 173 @TYPE A @DEFAULT Single
+TSG @COLUMN GenCol 174 @TYPE A @DEFAULT Single
+TSG @COLUMN GenCol 175 @TYPE Number @DEFAULT 24
+TSG @COLUMN GenCol 176 @TYPE [ Number ] @DEFAULT [ 9223372036854775807 ]
+TSG @COLUMN GenCol 177 @TYPE Number {cm} @DEFAULT 21638
+TSG @END FORMAT
+TSG VALUES @BEGIN
+TSG   [ [ ( "key" : 0.66087 , "value" : ( "a" : "R<L􎆚" , "c" : 9223372036854775808 ) ) , ( "key" : 1737 , "value" : ( "a" : "l 9909 a" , "c" : 0.660661 ) ) ] ] , None , @INVALID "#-1523849951" , Single , 8150 , [ -1 , 9223372036854775808 , 2147483648 ] , -32768
+TSG   @INVALID "#-532701175" , Is ( None ) , Single , Single , 31853804684 , [ 48 , 241 , 182 , 0.468799 ] , 32767
+TSG   [ [ ( "key" : 768 , "value" : ( "a" : "O?" , "c" : 127 ) ) , ( "key" : 7 , "value" : ( "a" : "sa9" , "c" : -9223372036854775807 ) ) ] , [ ( "key" : -2147483648 , "value" : ( "a" : "UCG𡓢zRTk" , "c" : 50476036894 ) ) , ( "key" : 6483 , "value" : ( "a" : "Boolean" , "c" : 2147483648 ) ) , ( "key" : 2147483647 , "value" : ( "a" : "l r" , "c" : 0.523552 ) ) ] ] , @INVALID "#-1370960331" , Single , Single , -2147483647 , [ 9223372036854775808 , 2147483647 ] , @INVALID "#1804022182"
+TSG   [ [ ( "key" : 7934674 , "value" : ( "a" : "j" , "c" : 9223372036854775807 ) ) , ( "key" : 32767 , "value" : ( "a" : "?" , "c" : 9223372036854775808 ) ) ] , [ ( "key" : 310434761 , "value" : ( "a" : "xa9Z" , "c" : 2147483647 ) ) , ( "key" : 0.041219 , "value" : ( "a" : "mn r09a9" , "c" : -2147483647 ) ) ] , [ ( "key" : 44687218 , "value" : ( "a" : "DEFAULT" , "c" : 3066931849 ) ) , ( "key" : 6376233 , "value" : ( "a" : "uZ9na" , "c" : 127 ) ) , ( "key" : 28089528 , "value" : ( "a" : "onrZnrZn ar" , "c" : -9223372036854775807 ) ) , ( "key" : -9223372036854775808 , "value" : ( "a" : "b0" , "c" : 1 ) ) ] ] , None , Single , Single , 2147483647 , [ 2 , 1 ] , 651
+TSG   [ [ ( "key" : -32767 , "value" : ( "a" : "e0a9" , "c" : 36027458606431 ) ) , ( "key" : 31483650673 , "value" : ( "a" : "h0000aZ 9" , "c" : 196 ) ) , ( "key" : 5 , "value" : ( "a" : "uan ar n9" , "c" : 0 ) ) ] , [ ( "key" : 8126 , "value" : ( "a" : "Jq" , "c" : -1 ) ) ] , [ ( "key" : 127 , "value" : ( "a" : "2" , "c" : 1 ) ) , ( "key" : 30 , "value" : ( "a" : "|🞲/ 0􌏀2X]crp󾤤" , "c" : 72 ) ) ] ] , Is ( Is ( "o" ) ) , Single , Single , -1 , @INVALID "#-939514597" , 0.403047
+TSG   @INVALID "#1215029735" , Is ( Is ( "CONTENT" ) ) , Single , Single , 32767 , [ 241 , -9223372036854775808 , 27 ] , -128
+TSG   @INVALID "#1473901798" , Is ( Is ( "v0aaa" ) ) , Single , Single , -2147483647 , [ 67964 ] , 2147483647
+TSG   [ [ ( "key" : 1340556 , "value" : ( "a" : "L" , "c" : 1 ) ) , ( "key" : 2147483648 , "value" : ( "a" : "BEGIN" , "c" : -9223372036854775807 ) ) , ( "key" : 2147483648 , "value" : ( "a" : "~2)Ⲟ)0}" , "c" : 1152 ) ) ] , [ ( "key" : -2147483648 , "value" : ( "a" : "s䟢e_rC󶀳b!}" , "c" : 7269403 ) ) , ( "key" : -2147483648 , "value" : ( "a" : "lKcwW^a`C~T|𑰝" , "c" : 1401507051 ) ) , ( "key" : 32767 , "value" : ( "a" : "QaL" , "c" : 0 ) ) ] , [ ( "key" : -9223372036854775807 , "value" : ( "a" : "TEXTFILE" , "c" : 32767 ) ) , ( "key" : -2147483648 , "value" : ( "a" : "_'i+s`!" , "c" : -128 ) ) , ( "key" : -2147483648 , "value" : ( "a" : "kzፔq$󾮅Jᩄh=zOw" , "c" : 187 ) ) ] , [ ( "key" : 9223372036854775807 , "value" : ( "a" : "1" , "c" : 0.482489 ) ) , ( "key" : -1 , "value" : ( "a" : "0l" , "c" : 2147483647 ) ) , ( "key" : -2147483647 , "value" : ( "a" : "􋓹AlDb" , "c" : 0.286189 ) ) , ( "key" : -9223372036854775807 , "value" : ( "a" : "_N" , "c" : 9223372036854775807 ) ) ] ] , Is ( Is ( "𲪍𦬛j^c" ) ) , Single , Single , 70 , [ 6 , 526162874051953 , 201302 ] , 0
+TSG   [ [ ( "key" : -9223372036854775809 , "value" : ( "a" : "(" , "c" : 1 ) ) , ( "key" : -9223372036854775807 , "value" : ( "a" : "oAo" , "c" : 488755 ) ) ] , [ ( "key" : -32767 , "value" : ( "a" : "FORMAT" , "c" : 20011466 ) ) , ( "key" : -2147483649 , "value" : ( "a" : "g9 ara9a" , "c" : 2147483647 ) ) , ( "key" : 0.225932 , "value" : ( "a" : ".qd" , "c" : 2147483648 ) ) ] ] , Is ( None ) , Single , Single , -9223372036854775809 , [ 366584 , 12510 , 157077727101272920 ] , 1
+TSG   [ [ ( "key" : 0.151918 , "value" : ( "a" : "c9r9" , "c" : -2147483647 ) ) ] , [ ( "key" : 9223372036854775808 , "value" : ( "a" : "Z" , "c" : 0.658072 ) ) ] , [ ( "key" : 800 , "value" : ( "a" : "1W%A󸾶" , "c" : -32767 ) ) ] ] , None , @INVALID "#-828918192" , Single , -32768 , [ -9223372036854775807 , 1 ] , 1
+TSG @END VALUES
+TSG DISPLAY @BEGIN
+TSG POSITION 1 1
+TSG SHOWCOLUMNS ALL
+TSG @END DISPLAY
+@END TSG DATA
+
+TRANSFORMATION @BEGIN MBZ
+MBZ "Trans 1"
+MBZ concatenate
+MBZ SOURCE "Test 1" "Test 0"
+MBZ @BEGIN
+MBZ @INCOMPLETE WRAPMAYBE
+MBZ @END
+MBZ DISPLAY @BEGIN
+MBZ POSITION 1 1
+MBZ SHOWCOLUMNS ALL
+MBZ @END DISPLAY
+@END MBZ TRANSFORMATION
+
+TRANSFORMATION @BEGIN NJP
+NJP "Trans 3"
+NJP calculate
+NJP SOURCE "Trans 1"
+NJP @BEGIN
+NJP CALCULATE "New 2" @EXPRESSION var\\row
+NJP CALCULATE "New 1" @EXPRESSION column\\GenCol 165 <> column\\GenCol 174
+NJP @END
+NJP DISPLAY @BEGIN
+NJP POSITION 1 1
+NJP SHOWCOLUMNS ALL
+NJP @END DISPLAY
+@END NJP TRANSFORMATION
+
+TRANSFORMATION @BEGIN UMA
+UMA "Trans 6"
+UMA join
+UMA SOURCE "Trans 3" "Test 1"
+UMA @BEGIN
+UMA LEFTJOIN
+UMA @END
+UMA DISPLAY @BEGIN
+UMA POSITION 1 1
+UMA SHOWCOLUMNS ALL
+UMA @END DISPLAY
+@END UMA TRANSFORMATION
+
+TRANSFORMATION @BEGIN YVR
+YVR "Trans 4"
+YVR sort
+YVR SOURCE "Trans 3"
+YVR @BEGIN
+YVR ASCENDING "GenCol 171"
+YVR ASCENDING "GenCol 166"
+YVR @END
+YVR DISPLAY @BEGIN
+YVR POSITION 1 1
+YVR SHOWCOLUMNS ALL
+YVR @END DISPLAY
+@END YVR TRANSFORMATION
+
+TRANSFORMATION @BEGIN VME
+VME "Trans 5"
+VME sort
+VME SOURCE "Test 1"
+VME @BEGIN
+VME ASCENDING "GenCol 174"
+VME @END
+VME DISPLAY @BEGIN
+VME POSITION 1 1
+VME SHOWCOLUMNS ALL
+VME @END DISPLAY
+@END VME TRANSFORMATION
+
+TRANSFORMATION @BEGIN MEK
+MEK "Trans 2"
+MEK calculate
+MEK SOURCE "Trans 1"
+MEK @BEGIN
+MEK CALCULATE "New 1" @EXPRESSION @call function\\conversion\to text(column\\GenCol 162)
+MEK @END
+MEK DISPLAY @BEGIN
+MEK POSITION 1 1
+MEK SHOWCOLUMNS ALL
+MEK @END DISPLAY
+@END MEK TRANSFORMATION
+

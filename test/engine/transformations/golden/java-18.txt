@@ -1,0 +1,203 @@
+TABLE Test 0
+LENGTH 390
+COLUMN GenCol 79 : DateTime
+  0: 8953-02-25 03:12:00
+  1: 9304-08-20 16:15:45.229329008
+  2: 1944-10-29 04:47:52.020302993
+  3: 4314-04-09 12:22:27
+  4: 1984-09-19 03:04:49.097025728
+  5: 1975-02-14 16:06:07.574304069
+  6: 2041-08-04 15:15:53
+  7: 1916-12-02 20:17:21.506191792
+  8: 1928-03-08 17:37:53
+  9: 9212-10-22 09:56:00
+  10: !InvalidImmediateValueException: Invalid value: #1158702014
+  11: 2045-02-24 09:24:52
+  12: 7112-03-03 12:35:00
+  13: 2002-09-05 18:38:59.856196824
+  14: 2032-10-21 19:52:27.876011293
+  15: !InvalidImmediateValueException: Invalid value: #-1991013237
+  16: !InvalidImmediateValueException: Invalid value: #1143456879
+  17: !InvalidImmediateValueException: Invalid value: #904935403
+  18: 2733-03-06 23:18:37.435615744
+  19: 1947-08-13 11:34:03
+TABLE Test 1
+LENGTH 7
+COLUMN GenCol 80 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: !InvalidImmediateValueException: Invalid value: #-725735070
+  1: Left(833661476061)
+  2: Left(7)
+  3: Right(3561)
+  4: Left(0)
+  5: !InvalidImmediateValueException: Invalid value: #-1731625229
+  6: Left(4114708895088849282)
+COLUMN GenCol 81 : Number
+  0: 0
+  1: 9223372036854775807
+  2: 32767
+  3: 27
+  4: -9223372036854775807
+  5: 546138
+  6: 2
+COLUMN GenCol 82 : Time
+  0: 14:51:31.314401364
+  1: !InvalidImmediateValueException: Invalid value: #1535878188
+  2: 18:20:17.925271096
+  3: 13:09:00
+  4: 03:02:12
+  5: 13:25:11.10154194
+  6: 22:50:18.194555096
+COLUMN GenCol 83 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: !InvalidImmediateValueException: Invalid value: #-359568079
+  6: Single
+COLUMN GenCol 84 : DateTimeZoned
+  0: 1953-07-28 17:31:23.275283459 Africa/Douala
+  1: 1908-11-06 01:07:44.583581481 -04:11
+  2: 1919-08-01 03:14:23.974812782 +02:12
+  3: 1973-08-03 15:59:46.818193647 Pacific/Tongatapu
+  4: 1922-01-09 04:01:00 Asia/Pyongyang
+  5: !InvalidImmediateValueException: Invalid value: #-930397166
+  6: 1959-04-21 14:24:08 Atlantic/South_Georgia
+COLUMN GenCol 85 : Number{cm}
+  0: -9223372036854775808
+  1: 43772727735396733453
+  2: -32768
+  3: 0
+  4: -2147483649
+  5: -2147483647
+  6: 127
+COLUMN GenCol 86 : C <Blank | Num:Number>
+  0: Blank
+  1: Blank
+  2: Num(-2147483647)
+  3: !InvalidImmediateValueException: Invalid value: #1445753131
+  4: Num(1)
+  5: Blank
+  6: Blank
+COLUMN GenCol 87 : DateTimeZoned
+  0: 1971-07-25 18:20:39.80492786 Africa/Addis_Ababa
+  1: 1987-08-23 07:27:26 Etc/GMT-0
+  2: 2044-01-28 18:26:30.789674281 Asia/Hong_Kong
+  3: 1962-12-16 00:39:40.530124064 America/Araguaina
+  4: 3227-05-28 16:07:21.962250566 -10:40
+  5: 1991-12-18 21:49:50 +05:15
+  6: 2002-03-01 10:18:00 Canada/Mountain
+TABLE Trans 1
+!UserException: Duplicate column names found: Test 0 GenCol 79, Test 0 GenCol 79
+TABLE Trans 2
+LENGTH 7
+COLUMN GenCol 80 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: !InvalidImmediateValueException: Invalid value: #-725735070
+  1: Left(833661476061)
+  2: Left(7)
+  3: Right(3561)
+  4: Left(0)
+  5: !InvalidImmediateValueException: Invalid value: #-1731625229
+  6: Left(4114708895088849282)
+COLUMN GenCol 81 : Number
+  0: 0
+  1: 9223372036854775807
+  2: 32767
+  3: 27
+  4: -9223372036854775807
+  5: 546138
+  6: 2
+COLUMN GenCol 82 : Time
+  0: 14:51:31.314401364
+  1: !InvalidImmediateValueException: Invalid value: #1535878188
+  2: 18:20:17.925271096
+  3: 13:09:00
+  4: 03:02:12
+  5: 13:25:11.10154194
+  6: 22:50:18.194555096
+COLUMN GenCol 83 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: !InvalidImmediateValueException: Invalid value: #-359568079
+  6: Single
+COLUMN GenCol 84 : DateTimeZoned
+  0: 1953-07-28 17:31:23.275283459 Africa/Douala
+  1: 1908-11-06 01:07:44.583581481 -04:11
+  2: 1919-08-01 03:14:23.974812782 +02:12
+  3: 1973-08-03 15:59:46.818193647 Pacific/Tongatapu
+  4: 1922-01-09 04:01:00 Asia/Pyongyang
+  5: !InvalidImmediateValueException: Invalid value: #-930397166
+  6: 1959-04-21 14:24:08 Atlantic/South_Georgia
+COLUMN GenCol 85 : Number{cm}
+  0: -9223372036854775808
+  1: 43772727735396733453
+  2: -32768
+  3: 0
+  4: -2147483649
+  5: -2147483647
+  6: 127
+COLUMN GenCol 86 : C <Blank | Num:Number>
+  0: Blank
+  1: Blank
+  2: Num(-2147483647)
+  3: !InvalidImmediateValueException: Invalid value: #1445753131
+  4: Num(1)
+  5: Blank
+  6: Blank
+COLUMN GenCol 87 : DateTimeZoned
+  0: 1971-07-25 18:20:39.80492786 Africa/Addis_Ababa
+  1: 1987-08-23 07:27:26 Etc/GMT-0
+  2: 2044-01-28 18:26:30.789674281 Asia/Hong_Kong
+  3: 1962-12-16 00:39:40.530124064 America/Araguaina
+  4: 3227-05-28 16:07:21.962250566 -10:40
+  5: 1991-12-18 21:49:50 +05:15
+  6: 2002-03-01 10:18:00 Canada/Mountain
+TABLE Trans 3
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Invalid value: #-359568079
+TABLE Trans 4
+LENGTH 7
+COLUMN GenCol 82 : Time
+  0: 14:51:31.314401364
+  1: !InvalidImmediateValueException: Invalid value: #1535878188
+  2: 18:20:17.925271096
+  3: 13:09:00
+  4: 03:02:12
+  5: 13:25:11.10154194
+  6: 22:50:18.194555096
+COLUMN GenCol 83 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: !InvalidImmediateValueException: Invalid value: #-359568079
+  6: Single
+COLUMN GenCol 84 : DateTimeZoned
+  0: 1953-07-28 17:31:23.275283459 Africa/Douala
+  1: 1908-11-06 01:07:44.583581481 -04:11
+  2: 1919-08-01 03:14:23.974812782 +02:12
+  3: 1973-08-03 15:59:46.818193647 Pacific/Tongatapu
+  4: 1922-01-09 04:01:00 Asia/Pyongyang
+  5: !InvalidImmediateValueException: Invalid value: #-930397166
+  6: 1959-04-21 14:24:08 Atlantic/South_Georgia
+COLUMN GenCol 85 : Number{cm}
+  0: -9223372036854775808
+  1: 43772727735396733453
+  2: -32768
+  3: 0
+  4: -2147483649
+  5: -2147483647
+  6: 127
+COLUMN GenCol 86 : C <Blank | Num:Number>
+  0: Blank
+  1: Blank
+  2: Num(-2147483647)
+  3: !InvalidImmediateValueException: Invalid value: #1445753131
+  4: Num(1)
+  5: Blank
+  6: Blank

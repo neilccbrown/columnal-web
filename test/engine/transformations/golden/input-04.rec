@@ -1,0 +1,30 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+TRANSFORMATION @BEGIN AJC
+AJC Number
+AJC filter
+AJC SOURCE in
+AJC @BEGIN
+AJC KEEPIF 1239566587879871670457057939646320000000000000000{lb^4}
+AJC @END
+AJC DISPLAY @BEGIN
+AJC POSITION 1 1
+AJC SHOWCOLUMNS ALL
+AJC @END DISPLAY
+@END AJC TRANSFORMATION
+

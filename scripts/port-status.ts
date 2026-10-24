@@ -39,6 +39,8 @@ interface FileStatus
 // (test/engine/tests-gui-x/<path>/X.test.ts) rather than Playwright specs:
 const ENGINE_TESTS_IN_GUI_MODULES = new Set([
     "tests-gui-central/src/test/java/test/expressions/TestFromDoc.java",
+    "tests-gui-r/src/test/java/test/importExport/TestRLoadSave.java",
+    "tests-gui-r/src/test/java/test/importExport/GenRCompatibleRecordSet.java",
 ]);
 
 // Java files that are deliberately not ported (paths relative to reference/columnal):
@@ -126,9 +128,10 @@ function testModuleFiles(module: string): FileStatus[]
     for (const f of walk(testsRoot, ".java").filter(f => !isIgnoredJava(f)))
     {
         const fileKind = ENGINE_TESTS_IN_GUI_MODULES.has(relative(reference, f)) ? "engine" : kind;
-        const rel = stripPackageRoot(relative(testsRoot, f)).replace(/\.java$/, fileKind === "engine" ? ".test.ts" : ".spec.ts");
-        const tsPath = join(root, "test", fileKind, module, rel);
         const methods = javaTestMethods(f);
+        // A helper class with no test methods (such as a generator) is a plain module, not a test file:
+        const rel = stripPackageRoot(relative(testsRoot, f)).replace(/\.java$/, methods.length === 0 ? ".ts" : fileKind === "engine" ? ".test.ts" : ".spec.ts");
+        const tsPath = join(root, "test", fileKind, module, rel);
         const tsNames = tsTestNames(tsPath);
         result.push({
             javaPath: relative(reference, f), tsPath: relative(root, tsPath), lines: lineCount(f),

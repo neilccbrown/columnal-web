@@ -1,0 +1,552 @@
+TABLE Test 0
+LENGTH 8
+COLUMN GenCol 68 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "p99na r0Zaa", t 2: 0), z: 127)
+  1: (inner: (t 1: "s09", t 2: 200433093), z: -128)
+  2: (inner: (t 1: "Date", t 2: -128), z: 0.018493)
+  3: (inner: (t 1: "nZ9rZr", t 2: 0), z: -127)
+  4: (inner: (t 1: "Dd󾖵fu", t 2: 1), z: 0)
+  5: (inner: (t 1: "q", t 2: 92), z: 32767)
+  6: (inner: (t 1: "-f", t 2: -2147483649), z: 103)
+  7: (inner: (t 1: "D$", t 2: 0.685645), z: -2147483648)
+COLUMN GenCol 69 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+COLUMN GenCol 70 : Number{GBP}
+  0: -2147483648
+  1: 0.980765
+  2: 0.203463
+  3: -127
+  4: 0.612923
+  5: 0.7571
+  6: -32768
+  7: -2147483648
+COLUMN GenCol 71 : Number
+  0: 255
+  1: -127
+  2: 32767
+  3: -9223372036854775807
+  4: 23246067381
+  5: 7
+  6: 2147483648
+  7: 111552059962747
+COLUMN GenCol 72 : DateYM
+  0: 5707-12
+  1: 5321-01
+  2: 2700-07
+  3: 3455-05
+  4: 4736-02
+  5: 5014-05
+  6: 3931-06
+  7: 3354-03
+COLUMN GenCol 73 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+  2: Is(None)
+  3: None
+  4: None
+  5: Is(Is(")M"))
+  6: None
+  7: None
+COLUMN GenCol 74 : Number{m}
+  0: 0
+  1: 7
+  2: -2147483648
+  3: 0.643856
+  4: 2147483647
+  5: 41672629385
+  6: 5298
+  7: -128
+COLUMN GenCol 75 : [Text]
+  0: ["ua Z", ">;󾨺"]
+  1: ["a"]
+  2: ["dr", "VERSION", "TYPE"]
+  3: ["SOURCE"]
+  4: ["a"]
+  5: ["*f", "u"]
+  6: ["eZ00rZn90", "typevar", "𨚺", "𤴓"]
+  7: ["1", "c"]
+COLUMN GenCol 76 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 3, nested: (num num: 0.224485, the text 0 item: "磲")), (a: 0.078457, nested: (num num: -32767, the text 0 item: "똥s_}뭙"))]
+  1: [(a: 2147483647, nested: (num num: 5, the text 0 item: "e09Z")), (a: 729724463, nested: (num num: -1, the text 0 item: "C󲌷")), (a: 997501, nested: (num num: 1, the text 0 item: "ua0")), (a: -128, nested: (num num: 38817, the text 0 item: "􉧻LCL􊞫S#HR"))]
+  2: [(a: -32767, nested: (num num: -9223372036854775808, the text 0 item: "a")), (a: 3091, nested: (num num: -2147483648, the text 0 item: "e 9Zr r9")), (a: 127, nested: (num num: 1, the text 0 item: "LINKED"))]
+  3: [(a: 2572, nested: (num num: 33615, the text 0 item: "b"))]
+  4: [(a: 127, nested: (num num: 395727675174334518, the text 0 item: "Y")), (a: 0, nested: (num num: -9223372036854775807, the text 0 item: "qr nan")), (a: 1, nested: (num num: 8866584220177797894, the text 0 item: "ga0aZr9"))]
+  5: [(a: 4241932226, nested: (num num: 0.884601, the text 0 item: "z9 n9")), (a: 7, nested: (num num: 32767, the text 0 item: "~")), (a: 45, nested: (num num: -127, the text 0 item: "!B􌑲^c"))]
+  6: [(a: 0, nested: (num num: 49, the text 0 item: "􁤕8"))]
+  7: [(a: 3540011, nested: (num num: 1124606610373361, the text 0 item: "pA")), (a: -9223372036854775808, nested: (num num: 2147483647, the text 0 item: "𬼕")), (a: 704502, nested: (num num: 190373493, the text 0 item: "invalidtypeops")), (a: 79, nested: (num num: 16, the text 0 item: "a"))]
+COLUMN GenCol 77 : DateYM
+  0: 0576-06
+  1: 5613-07
+  2: 8261-11
+  3: 3440-11
+  4: 1190-08
+  5: 1853-04
+  6: 7982-06
+  7: 5790-09
+TABLE Test 1
+LENGTH 2
+COLUMN GenCol 78 : Number{m^3/s^3}
+  0: -128
+  1: 4150670
+TABLE Trans 1
+LENGTH 8
+COLUMN GenCol 68 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "p99na r0Zaa", t 2: 0), z: 127)
+  1: (inner: (t 1: "s09", t 2: 200433093), z: -128)
+  2: (inner: (t 1: "Date", t 2: -128), z: 0.018493)
+  3: (inner: (t 1: "nZ9rZr", t 2: 0), z: -127)
+  4: (inner: (t 1: "Dd󾖵fu", t 2: 1), z: 0)
+  5: (inner: (t 1: "q", t 2: 92), z: 32767)
+  6: (inner: (t 1: "-f", t 2: -2147483649), z: 103)
+  7: (inner: (t 1: "D$", t 2: 0.685645), z: -2147483648)
+COLUMN GenCol 69 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+COLUMN GenCol 70 : Number{GBP}
+  0: -2147483648
+  1: 0.980765
+  2: 0.203463
+  3: -127
+  4: 0.612923
+  5: 0.7571
+  6: -32768
+  7: -2147483648
+COLUMN GenCol 71 : Number
+  0: 255
+  1: -127
+  2: 32767
+  3: -9223372036854775807
+  4: 23246067381
+  5: 7
+  6: 2147483648
+  7: 111552059962747
+COLUMN GenCol 72 : DateYM
+  0: 5707-12
+  1: 5321-01
+  2: 2700-07
+  3: 3455-05
+  4: 4736-02
+  5: 5014-05
+  6: 3931-06
+  7: 3354-03
+COLUMN GenCol 73 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+  2: Is(None)
+  3: None
+  4: None
+  5: Is(Is(")M"))
+  6: None
+  7: None
+COLUMN GenCol 74 : Number{m}
+  0: 0
+  1: -2147483648
+  2: 0
+  3: 0.643856
+  4: 2147483647
+  5: 41672629385
+  6: 5298
+  7: 5298
+COLUMN GenCol 75 : [Text]
+  0: ["ua Z", ">;󾨺"]
+  1: ["a"]
+  2: ["dr", "VERSION", "TYPE"]
+  3: ["SOURCE"]
+  4: ["a"]
+  5: ["*f", "u"]
+  6: ["eZ00rZn90", "typevar", "𨚺", "𤴓"]
+  7: ["1", "c"]
+COLUMN GenCol 76 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 3, nested: (num num: 0.224485, the text 0 item: "磲")), (a: 0.078457, nested: (num num: -32767, the text 0 item: "똥s_}뭙"))]
+  1: [(a: 2147483647, nested: (num num: 5, the text 0 item: "e09Z")), (a: 729724463, nested: (num num: -1, the text 0 item: "C󲌷")), (a: 997501, nested: (num num: 1, the text 0 item: "ua0")), (a: -128, nested: (num num: 38817, the text 0 item: "􉧻LCL􊞫S#HR"))]
+  2: [(a: -32767, nested: (num num: -9223372036854775808, the text 0 item: "a")), (a: 3091, nested: (num num: -2147483648, the text 0 item: "e 9Zr r9")), (a: 127, nested: (num num: 1, the text 0 item: "LINKED"))]
+  3: [(a: 2572, nested: (num num: 33615, the text 0 item: "b"))]
+  4: [(a: 127, nested: (num num: 395727675174334518, the text 0 item: "Y")), (a: 0, nested: (num num: -9223372036854775807, the text 0 item: "qr nan")), (a: 1, nested: (num num: 8866584220177797894, the text 0 item: "ga0aZr9"))]
+  5: [(a: 4241932226, nested: (num num: 0.884601, the text 0 item: "z9 n9")), (a: 7, nested: (num num: 32767, the text 0 item: "~")), (a: 45, nested: (num num: -127, the text 0 item: "!B􌑲^c"))]
+  6: [(a: 0, nested: (num num: 49, the text 0 item: "􁤕8"))]
+  7: [(a: 3540011, nested: (num num: 1124606610373361, the text 0 item: "pA")), (a: -9223372036854775808, nested: (num num: 2147483647, the text 0 item: "𬼕")), (a: 704502, nested: (num num: 190373493, the text 0 item: "invalidtypeops")), (a: 79, nested: (num num: 16, the text 0 item: "a"))]
+COLUMN GenCol 77 : DateYM
+  0: 0576-06
+  1: 5613-07
+  2: 8261-11
+  3: 3440-11
+  4: 1190-08
+  5: 1853-04
+  6: 7982-06
+  7: 5790-09
+TABLE Trans 2
+LENGTH 8
+COLUMN GenCol 69 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+COLUMN GenCol 70 : Number{GBP}
+  0: -2147483648
+  1: 0.980765
+  2: 0.203463
+  3: -127
+  4: 0.612923
+  5: 0.7571
+  6: -32768
+  7: -2147483648
+COLUMN GenCol 71 : Number
+  0: 255
+  1: -127
+  2: 32767
+  3: -9223372036854775807
+  4: 23246067381
+  5: 7
+  6: 2147483648
+  7: 111552059962747
+COLUMN GenCol 72 : DateYM
+  0: 5707-12
+  1: 5321-01
+  2: 2700-07
+  3: 3455-05
+  4: 4736-02
+  5: 5014-05
+  6: 3931-06
+  7: 3354-03
+COLUMN GenCol 75 : [Text]
+  0: ["ua Z", ">;󾨺"]
+  1: ["a"]
+  2: ["dr", "VERSION", "TYPE"]
+  3: ["SOURCE"]
+  4: ["a"]
+  5: ["*f", "u"]
+  6: ["eZ00rZn90", "typevar", "𨚺", "𤴓"]
+  7: ["1", "c"]
+COLUMN GenCol 76 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 3, nested: (num num: 0.224485, the text 0 item: "磲")), (a: 0.078457, nested: (num num: -32767, the text 0 item: "똥s_}뭙"))]
+  1: [(a: 2147483647, nested: (num num: 5, the text 0 item: "e09Z")), (a: 729724463, nested: (num num: -1, the text 0 item: "C󲌷")), (a: 997501, nested: (num num: 1, the text 0 item: "ua0")), (a: -128, nested: (num num: 38817, the text 0 item: "􉧻LCL􊞫S#HR"))]
+  2: [(a: -32767, nested: (num num: -9223372036854775808, the text 0 item: "a")), (a: 3091, nested: (num num: -2147483648, the text 0 item: "e 9Zr r9")), (a: 127, nested: (num num: 1, the text 0 item: "LINKED"))]
+  3: [(a: 2572, nested: (num num: 33615, the text 0 item: "b"))]
+  4: [(a: 127, nested: (num num: 395727675174334518, the text 0 item: "Y")), (a: 0, nested: (num num: -9223372036854775807, the text 0 item: "qr nan")), (a: 1, nested: (num num: 8866584220177797894, the text 0 item: "ga0aZr9"))]
+  5: [(a: 4241932226, nested: (num num: 0.884601, the text 0 item: "z9 n9")), (a: 7, nested: (num num: 32767, the text 0 item: "~")), (a: 45, nested: (num num: -127, the text 0 item: "!B􌑲^c"))]
+  6: [(a: 0, nested: (num num: 49, the text 0 item: "􁤕8"))]
+  7: [(a: 3540011, nested: (num num: 1124606610373361, the text 0 item: "pA")), (a: -9223372036854775808, nested: (num num: 2147483647, the text 0 item: "𬼕")), (a: 704502, nested: (num num: 190373493, the text 0 item: "invalidtypeops")), (a: 79, nested: (num num: 16, the text 0 item: "a"))]
+COLUMN GenCol 77 : DateYM
+  0: 0576-06
+  1: 5613-07
+  2: 8261-11
+  3: 3440-11
+  4: 1190-08
+  5: 1853-04
+  6: 7982-06
+  7: 5790-09
+TABLE Trans 3
+LENGTH 10
+COLUMN Source : Text
+  0: "Test 1"
+  1: "Test 1"
+  2: "Test 0"
+  3: "Test 0"
+  4: "Test 0"
+  5: "Test 0"
+  6: "Test 0"
+  7: "Test 0"
+  8: "Test 0"
+  9: "Test 0"
+TABLE Trans 4
+LENGTH 16
+COLUMN Source : Text
+  0: "Test 0"
+  1: "Test 0"
+  2: "Test 0"
+  3: "Test 0"
+  4: "Test 0"
+  5: "Test 0"
+  6: "Test 0"
+  7: "Test 0"
+  8: "Trans 2"
+  9: "Trans 2"
+  10: "Trans 2"
+  11: "Trans 2"
+  12: "Trans 2"
+  13: "Trans 2"
+  14: "Trans 2"
+  15: "Trans 2"
+COLUMN GenCol 68 : Optional((inner: (t 1: Text, t 2: Number), z: Number)) <None | Is:(inner: (t 1: Text, t 2: Number), z: Number)>
+  0: Is(inner: (t 1: "p99na r0Zaa", t 2: 0), z: 127)
+  1: Is(inner: (t 1: "s09", t 2: 200433093), z: -128)
+  2: Is(inner: (t 1: "Date", t 2: -128), z: 0.018493)
+  3: Is(inner: (t 1: "nZ9rZr", t 2: 0), z: -127)
+  4: Is(inner: (t 1: "Dd󾖵fu", t 2: 1), z: 0)
+  5: Is(inner: (t 1: "q", t 2: 92), z: 32767)
+  6: Is(inner: (t 1: "-f", t 2: -2147483649), z: 103)
+  7: Is(inner: (t 1: "D$", t 2: 0.685645), z: -2147483648)
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+COLUMN GenCol 69 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: Single
+  13: Single
+  14: Single
+  15: Single
+COLUMN GenCol 70 : Number{GBP}
+  0: -2147483648
+  1: 0.980765
+  2: 0.203463
+  3: -127
+  4: 0.612923
+  5: 0.7571
+  6: -32768
+  7: -2147483648
+  8: -2147483648
+  9: 0.980765
+  10: 0.203463
+  11: -127
+  12: 0.612923
+  13: 0.7571
+  14: -32768
+  15: -2147483648
+COLUMN GenCol 71 : Number
+  0: 255
+  1: -127
+  2: 32767
+  3: -9223372036854775807
+  4: 23246067381
+  5: 7
+  6: 2147483648
+  7: 111552059962747
+  8: 255
+  9: -127
+  10: 32767
+  11: -9223372036854775807
+  12: 23246067381
+  13: 7
+  14: 2147483648
+  15: 111552059962747
+COLUMN GenCol 72 : DateYM
+  0: 5707-12
+  1: 5321-01
+  2: 2700-07
+  3: 3455-05
+  4: 4736-02
+  5: 5014-05
+  6: 3931-06
+  7: 3354-03
+  8: 5707-12
+  9: 5321-01
+  10: 2700-07
+  11: 3455-05
+  12: 4736-02
+  13: 5014-05
+  14: 3931-06
+  15: 3354-03
+COLUMN GenCol 73 : Optional(Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>) <None | Is:Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>>
+  0: Is(None)
+  1: Is(None)
+  2: Is(Is(None))
+  3: Is(None)
+  4: Is(None)
+  5: Is(Is(Is(")M")))
+  6: Is(None)
+  7: Is(None)
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+COLUMN GenCol 74 : Optional(Number{m}) <None | Is:Number{m}>
+  0: Is(0)
+  1: Is(7)
+  2: Is(-2147483648)
+  3: Is(0.643856)
+  4: Is(2147483647)
+  5: Is(41672629385)
+  6: Is(5298)
+  7: Is(-128)
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+COLUMN GenCol 75 : [Text]
+  0: ["ua Z", ">;󾨺"]
+  1: ["a"]
+  2: ["dr", "VERSION", "TYPE"]
+  3: ["SOURCE"]
+  4: ["a"]
+  5: ["*f", "u"]
+  6: ["eZ00rZn90", "typevar", "𨚺", "𤴓"]
+  7: ["1", "c"]
+  8: ["ua Z", ">;󾨺"]
+  9: ["a"]
+  10: ["dr", "VERSION", "TYPE"]
+  11: ["SOURCE"]
+  12: ["a"]
+  13: ["*f", "u"]
+  14: ["eZ00rZn90", "typevar", "𨚺", "𤴓"]
+  15: ["1", "c"]
+COLUMN GenCol 76 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 3, nested: (num num: 0.224485, the text 0 item: "磲")), (a: 0.078457, nested: (num num: -32767, the text 0 item: "똥s_}뭙"))]
+  1: [(a: 2147483647, nested: (num num: 5, the text 0 item: "e09Z")), (a: 729724463, nested: (num num: -1, the text 0 item: "C󲌷")), (a: 997501, nested: (num num: 1, the text 0 item: "ua0")), (a: -128, nested: (num num: 38817, the text 0 item: "􉧻LCL􊞫S#HR"))]
+  2: [(a: -32767, nested: (num num: -9223372036854775808, the text 0 item: "a")), (a: 3091, nested: (num num: -2147483648, the text 0 item: "e 9Zr r9")), (a: 127, nested: (num num: 1, the text 0 item: "LINKED"))]
+  3: [(a: 2572, nested: (num num: 33615, the text 0 item: "b"))]
+  4: [(a: 127, nested: (num num: 395727675174334518, the text 0 item: "Y")), (a: 0, nested: (num num: -9223372036854775807, the text 0 item: "qr nan")), (a: 1, nested: (num num: 8866584220177797894, the text 0 item: "ga0aZr9"))]
+  5: [(a: 4241932226, nested: (num num: 0.884601, the text 0 item: "z9 n9")), (a: 7, nested: (num num: 32767, the text 0 item: "~")), (a: 45, nested: (num num: -127, the text 0 item: "!B􌑲^c"))]
+  6: [(a: 0, nested: (num num: 49, the text 0 item: "􁤕8"))]
+  7: [(a: 3540011, nested: (num num: 1124606610373361, the text 0 item: "pA")), (a: -9223372036854775808, nested: (num num: 2147483647, the text 0 item: "𬼕")), (a: 704502, nested: (num num: 190373493, the text 0 item: "invalidtypeops")), (a: 79, nested: (num num: 16, the text 0 item: "a"))]
+  8: [(a: 3, nested: (num num: 0.224485, the text 0 item: "磲")), (a: 0.078457, nested: (num num: -32767, the text 0 item: "똥s_}뭙"))]
+  9: [(a: 2147483647, nested: (num num: 5, the text 0 item: "e09Z")), (a: 729724463, nested: (num num: -1, the text 0 item: "C󲌷")), (a: 997501, nested: (num num: 1, the text 0 item: "ua0")), (a: -128, nested: (num num: 38817, the text 0 item: "􉧻LCL􊞫S#HR"))]
+  10: [(a: -32767, nested: (num num: -9223372036854775808, the text 0 item: "a")), (a: 3091, nested: (num num: -2147483648, the text 0 item: "e 9Zr r9")), (a: 127, nested: (num num: 1, the text 0 item: "LINKED"))]
+  11: [(a: 2572, nested: (num num: 33615, the text 0 item: "b"))]
+  12: [(a: 127, nested: (num num: 395727675174334518, the text 0 item: "Y")), (a: 0, nested: (num num: -9223372036854775807, the text 0 item: "qr nan")), (a: 1, nested: (num num: 8866584220177797894, the text 0 item: "ga0aZr9"))]
+  13: [(a: 4241932226, nested: (num num: 0.884601, the text 0 item: "z9 n9")), (a: 7, nested: (num num: 32767, the text 0 item: "~")), (a: 45, nested: (num num: -127, the text 0 item: "!B􌑲^c"))]
+  14: [(a: 0, nested: (num num: 49, the text 0 item: "􁤕8"))]
+  15: [(a: 3540011, nested: (num num: 1124606610373361, the text 0 item: "pA")), (a: -9223372036854775808, nested: (num num: 2147483647, the text 0 item: "𬼕")), (a: 704502, nested: (num num: 190373493, the text 0 item: "invalidtypeops")), (a: 79, nested: (num num: 16, the text 0 item: "a"))]
+COLUMN GenCol 77 : DateYM
+  0: 0576-06
+  1: 5613-07
+  2: 8261-11
+  3: 3440-11
+  4: 1190-08
+  5: 1853-04
+  6: 7982-06
+  7: 5790-09
+  8: 0576-06
+  9: 5613-07
+  10: 8261-11
+  11: 3440-11
+  12: 1190-08
+  13: 1853-04
+  14: 7982-06
+  15: 5790-09
+TABLE Trans 5
+LENGTH 8
+COLUMN GenCol 68 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "p99na r0Zaa", t 2: 0), z: 127)
+  1: (inner: (t 1: "s09", t 2: 200433093), z: -128)
+  2: (inner: (t 1: "Date", t 2: -128), z: 0.018493)
+  3: (inner: (t 1: "nZ9rZr", t 2: 0), z: -127)
+  4: (inner: (t 1: "Dd󾖵fu", t 2: 1), z: 0)
+  5: (inner: (t 1: "q", t 2: 92), z: 32767)
+  6: (inner: (t 1: "-f", t 2: -2147483649), z: 103)
+  7: (inner: (t 1: "D$", t 2: 0.685645), z: -2147483648)
+COLUMN GenCol 69 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+  7: Single
+COLUMN GenCol 70 : Number{GBP}
+  0: -2147483648
+  1: 0.980765
+  2: -127
+  3: -127
+  4: 0.612923
+  5: 0.7571
+  6: -32768
+  7: -2147483648
+COLUMN GenCol 71 : Number
+  0: 255
+  1: -127
+  2: 32767
+  3: -9223372036854775807
+  4: 23246067381
+  5: 7
+  6: 2147483648
+  7: 111552059962747
+COLUMN GenCol 72 : DateYM
+  0: 5707-12
+  1: 5321-01
+  2: 2700-07
+  3: 3455-05
+  4: 4736-02
+  5: 5014-05
+  6: 3931-06
+  7: 3354-03
+COLUMN GenCol 73 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+  2: Is(None)
+  3: None
+  4: None
+  5: Is(Is(")M"))
+  6: None
+  7: None
+COLUMN GenCol 74 : Number{m}
+  0: 0
+  1: -2147483648
+  2: 0
+  3: 0.643856
+  4: 2147483647
+  5: 41672629385
+  6: 5298
+  7: 5298
+COLUMN GenCol 75 : [Text]
+  0: ["ua Z", ">;󾨺"]
+  1: ["dr", "VERSION", "TYPE"]
+  2: ["dr", "VERSION", "TYPE"]
+  3: ["SOURCE"]
+  4: ["a"]
+  5: ["*f", "u"]
+  6: ["eZ00rZn90", "typevar", "𨚺", "𤴓"]
+  7: !InvalidImmediateValueException: #bad 1
+COLUMN GenCol 76 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 3, nested: (num num: 0.224485, the text 0 item: "磲")), (a: 0.078457, nested: (num num: -32767, the text 0 item: "똥s_}뭙"))]
+  1: [(a: 2147483647, nested: (num num: 5, the text 0 item: "e09Z")), (a: 729724463, nested: (num num: -1, the text 0 item: "C󲌷")), (a: 997501, nested: (num num: 1, the text 0 item: "ua0")), (a: -128, nested: (num num: 38817, the text 0 item: "􉧻LCL􊞫S#HR"))]
+  2: [(a: -32767, nested: (num num: -9223372036854775808, the text 0 item: "a")), (a: 3091, nested: (num num: -2147483648, the text 0 item: "e 9Zr r9")), (a: 127, nested: (num num: 1, the text 0 item: "LINKED"))]
+  3: [(a: 2572, nested: (num num: 33615, the text 0 item: "b"))]
+  4: [(a: 127, nested: (num num: 395727675174334518, the text 0 item: "Y")), (a: 0, nested: (num num: -9223372036854775807, the text 0 item: "qr nan")), (a: 1, nested: (num num: 8866584220177797894, the text 0 item: "ga0aZr9"))]
+  5: [(a: 4241932226, nested: (num num: 0.884601, the text 0 item: "z9 n9")), (a: 7, nested: (num num: 32767, the text 0 item: "~")), (a: 45, nested: (num num: -127, the text 0 item: "!B􌑲^c"))]
+  6: [(a: 0, nested: (num num: 49, the text 0 item: "􁤕8"))]
+  7: [(a: 3540011, nested: (num num: 1124606610373361, the text 0 item: "pA")), (a: -9223372036854775808, nested: (num num: 2147483647, the text 0 item: "𬼕")), (a: 704502, nested: (num num: 190373493, the text 0 item: "invalidtypeops")), (a: 79, nested: (num num: 16, the text 0 item: "a"))]
+COLUMN GenCol 77 : DateYM
+  0: 0576-06
+  1: 5613-07
+  2: 8261-11
+  3: 3440-11
+  4: 1190-08
+  5: 1853-04
+  6: 7982-06
+  7: 5790-09
+TABLE Trans 6
+LENGTH 1
+COLUMN result : Boolean
+  0: false

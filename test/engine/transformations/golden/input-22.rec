@@ -1,0 +1,165 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN OGQ
+OGQ "Test 0"
+OGQ FORMAT @BEGIN
+OGQ @COLUMN GenCol 106 @TYPE [ [ ( key : Number , value : ( a : Text , c : Number ) ) ] ] @DEFAULT [ [ ( "key" : 0.849526 , "value" : ( "a" : "$-g&J?" , "c" : 0 ) ) , ( "key" : 9223372036854775808 , "value" : ( "a" : "퍚=󷗝.!" , "c" : -2147483647 ) ) ] , [ ( "key" : 2419827798941 , "value" : ( "a" : "🔔沴," , "c" : 2147483647 ) ) ] , [ ( "key" : 0.795938 , "value" : ( "a" : "=T􆌨󾊗S|" , "c" : 32767 ) ) , ( "key" : 15055 , "value" : ( "a" : "jrrZa 0900" , "c" : 32767 ) ) , ( "key" : -128 , "value" : ( "a" : "9" , "c" : -9223372036854775807 ) ) , ( "key" : 76395 , "value" : ( "a" : "𡉶" , "c" : -127 ) ) ] ]
+OGQ @COLUMN GenCol 107 @TYPE A @DEFAULT Single
+OGQ @COLUMN GenCol 108 @TYPE A @DEFAULT Single
+OGQ @COLUMN GenCol 109 @TYPE A @DEFAULT Single
+OGQ @COLUMN GenCol 110 @TYPE C @DEFAULT Num ( 127 )
+OGQ @COLUMN GenCol 111 @TYPE Number @DEFAULT 2288427791
+OGQ @COLUMN GenCol 112 @TYPE C @DEFAULT Blank
+OGQ @COLUMN GenCol 113 @TYPE ( Text : Text , bool : Boolean , c : C , dtz : DateTimeZoned ) @DEFAULT ( "Text" : "F" , "bool" : false , "c" : Blank , "dtz" : 2043-04-19 17:11:09.550638877 -09:00 )
+OGQ @COLUMN GenCol 114 @TYPE Number {cm} @DEFAULT -32768
+OGQ @COLUMN GenCol 115 @TYPE Number @DEFAULT 127
+OGQ @COLUMN GenCol 116 @TYPE [ Number ] @DEFAULT [ -128 ]
+OGQ @COLUMN GenCol 117 @TYPE Number {m} @DEFAULT 286496601
+OGQ @END FORMAT
+OGQ VALUES @BEGIN
+OGQ   [ [ ( "key" : -9223372036854775809 , "value" : ( "a" : ":" , "c" : 43768202484157983 ) ) , ( "key" : 1 , "value" : ( "a" : "INCOMPLETE" , "c" : -32768 ) ) ] ] , Single , Single , Single , Num ( 611413058441430970 ) , 36364433 , Blank , ( "Text" : "CONTENT" , "bool" : true , "c" : Blank , "dtz" : 1923-05-26 21:13:56.837000457 -00:11 ) , 0 , 13469 , [ -9223372036854775808 ] , 1
+OGQ   [ [ ( "key" : 2147483648 , "value" : ( "a" : "FORMAT" , "c" : -127 ) ) , ( "key" : 1 , "value" : ( "a" : "*졃𬊲V" , "c" : 0.795986 ) ) , ( "key" : -32768 , "value" : ( "a" : "|T" , "c" : -32768 ) ) ] ] , Single , Single , Single , Blank , 9223372036854775808 , Blank , ( "Text" : "a 90r" , "bool" : false , "c" : Num ( 1 ) , "dtz" : 1960-04-28 15:36:22.876635601 America/Punta_Arenas ) , 113 , 258 , [ 428 , 0 ] , 0.836874
+OGQ   [ [ ( "key" : 9223372036854775807 , "value" : ( "a" : "kr00nZ 90" , "c" : 6 ) ) , ( "key" : -9223372036854775808 , "value" : ( "a" : "q" , "c" : -127 ) ) , ( "key" : 593089853549 , "value" : ( "a" : "oaaa9 n0nn" , "c" : 11490803817 ) ) , ( "key" : -127 , "value" : ( "a" : "o" , "c" : 4 ) ) ] , [ ( "key" : 0.837346 , "value" : ( "a" : "0" , "c" : 2147483647 ) ) , ( "key" : 9223372036854775807 , "value" : ( "a" : "s" , "c" : 127 ) ) , ( "key" : 1 , "value" : ( "a" : "r 0n0" , "c" : -127 ) ) , ( "key" : 0.510417 , "value" : ( "a" : "rr999a 0Z9" , "c" : 433 ) ) ] ] , Single , Single , Single , Blank , 1 , Blank , ( "Text" : "xZZZZn" , "bool" : true , "c" : Num ( 32767 ) , "dtz" : 2040-06-27 13:38:00 -01:54 ) , -1 , 32767 , [ -9223372036854775808 , -32767 , 14 ] , 3380524050
+OGQ   [ [ ( "key" : 951013 , "value" : ( "a" : "􎐞􍟀􆖚󷷓6󴶷1^a" , "c" : -2147483649 ) ) ] , [ ( "key" : -2147483647 , "value" : ( "a" : "#)" , "c" : 1 ) ) , ( "key" : 12 , "value" : ( "a" : "FORMAT" , "c" : 927051 ) ) , ( "key" : 9223372036854775808 , "value" : ( "a" : "Boolean" , "c" : 170 ) ) , ( "key" : 6756897947 , "value" : ( "a" : "UO" , "c" : 996951791263 ) ) ] , [ ( "key" : 0.711423 , "value" : ( "a" : "tr an09ZrZ" , "c" : -32768 ) ) , ( "key" : -32767 , "value" : ( "a" : "j n99Z0" , "c" : 0 ) ) , ( "key" : 32767 , "value" : ( "a" : "|/{B󻁞w􅃢Xyp(d4S'" , "c" : 2900452 ) ) , ( "key" : -128 , "value" : ( "a" : "{\r𠔐" , "c" : -2147483648 ) ) ] ] , Single , Single , Single , Blank , 0 , Num ( 6 ) , ( "Text" : "%?" , "bool" : true , "c" : Blank , "dtz" : 1899-09-27 08:21:25.039504739 -07:54 ) , 9223372036854775808 , 2147483647 , [ 3 ] , 32767
+OGQ   [ [ ( "key" : 46 , "value" : ( "a" : "Kq" , "c" : 14 ) ) ] , [ ( "key" : -128 , "value" : ( "a" : "COMMENT" , "c" : 0.928966 ) ) ] , [ ( "key" : 0 , "value" : ( "a" : "䁆" , "c" : 992020 ) ) ] , [ ( "key" : 0.132612 , "value" : ( "a" : "𓧻(" , "c" : 10480786 ) ) , ( "key" : -32767 , "value" : ( "a" : "bzs4􁊧rz" , "c" : 118386 ) ) , ( "key" : 1 , "value" : ( "a" : "oa90n0ar0r9" , "c" : -9223372036854775809 ) ) , ( "key" : 2147483647 , "value" : ( "a" : "SOURCE" , "c" : 0 ) ) ] ] , Single , Single , Single , Num ( 2147483647 ) , 0.075753 , Blank , ( "Text" : "l Za aZrZ 9" , "bool" : true , "c" : Num ( 0.4681 ) , "dtz" : 2040-03-27 06:08:31.962805774 Australia/Tasmania ) , -1 , 16 , [ 2147483647 , 469923880 , -9223372036854775807 , 225967 ] , 3
+OGQ   [ [ ( "key" : 32767 , "value" : ( "a" : ":𫦌" , "c" : -127 ) ) ] ] , Single , Single , Single , Blank , 2147483647 , Blank , ( "Text" : "ja 0nna090a" , "bool" : true , "c" : Num ( -9223372036854775808 ) , "dtz" : 4222-09-04 20:00:58.105160276 America/Indiana/Marengo ) , 32767 , -2147483649 , [ 238279 , -2147483647 , 1 ] , 103
+OGQ   [ [ ( "key" : 2 , "value" : ( "a" : "k000" , "c" : 1 ) ) , ( "key" : -9223372036854775809 , "value" : ( "a" : "ca09" , "c" : 1113 ) ) , ( "key" : -128 , "value" : ( "a" : "S􉍬" , "c" : 2147483647 ) ) , ( "key" : -127 , "value" : ( "a" : "?-B" , "c" : -9223372036854775809 ) ) ] , [ ( "key" : 0 , "value" : ( "a" : "wZ9ZZa" , "c" : 5 ) ) , ( "key" : -1 , "value" : ( "a" : "􎳅eCӴHk" , "c" : 159 ) ) , ( "key" : -32768 , "value" : ( "a" : "BEGIN" , "c" : 9223372036854775808 ) ) , ( "key" : 8916753602 , "value" : ( "a" : "Yu$e" , "c" : 32767 ) ) ] , [ ( "key" : -9223372036854775808 , "value" : ( "a" : "i눨e" , "c" : 22 ) ) ] ] , Single , Single , Single , Blank , 727389292107 , Blank , ( "Text" : "v" , "bool" : true , "c" : Num ( 0.121859 ) , "dtz" : 1532-10-03 17:15:07.348134997 America/Montserrat ) , 0 , -128 , [ 69606719244615 , 5845492242 , 52134 , 1141 ] , 0
+OGQ @END VALUES
+OGQ DISPLAY @BEGIN
+OGQ POSITION 1 1
+OGQ SHOWCOLUMNS ALL
+OGQ @END DISPLAY
+@END OGQ DATA
+
+TRANSFORMATION @BEGIN TTK
+TTK "Trans 1"
+TTK correct
+TTK SOURCE "Test 0"
+TTK @BEGIN
+TTK EDIT "GenCol 111" @TYPE Number
+TTK EDITCOLUMN "GenCol 108" @TYPE A
+TTK REPLACEMENT @VALUE  36364433 @ENDVALUE  @INVALIDVALUE  "#bad 1"  @ENDVALUE
+TTK EDITCOLUMN "GenCol 106" @TYPE [ [ ( key : Number , value : ( a : Text , c : Number ) ) ] ]
+TTK REPLACEMENT @VALUE  727389292107 @ENDVALUE  @VALUE  [ [ ( "key" : -9223372036854775809 , "value" : ( "a" : ":" , "c" : 43768202484157983 ) ) , ( "key" : 1 , "value" : ( "a" : "INCOMPLETE" , "c" : -32768 ) ) ] ]  @ENDVALUE
+TTK @END
+TTK DISPLAY @BEGIN
+TTK POSITION 1 1
+TTK SHOWCOLUMNS ALL
+TTK @END DISPLAY
+@END TTK TRANSFORMATION
+
+TRANSFORMATION @BEGIN PPU
+PPU "Trans 4"
+PPU sort
+PPU SOURCE "Trans 1"
+PPU @BEGIN
+PPU ASCENDING Missing
+PPU DESCENDING "GenCol 115"
+PPU DESCENDING "GenCol 116"
+PPU @END
+PPU DISPLAY @BEGIN
+PPU POSITION 1 1
+PPU SHOWCOLUMNS ALL
+PPU @END DISPLAY
+@END PPU TRANSFORMATION
+
+TRANSFORMATION @BEGIN UKD
+UKD "Trans 6"
+UKD correct
+UKD SOURCE "Trans 4"
+UKD @BEGIN
+UKD EDIT "GenCol 114" @TYPE Number {cm}
+UKD @END
+UKD DISPLAY @BEGIN
+UKD POSITION 1 1
+UKD SHOWCOLUMNS ALL
+UKD @END DISPLAY
+@END UKD TRANSFORMATION
+
+TRANSFORMATION @BEGIN FSY
+FSY "Trans 3"
+FSY "drop.columns"
+FSY SOURCE "Test 0"
+FSY @BEGIN
+FSY HIDE "GenCol 106"
+FSY HIDE "GenCol 109"
+FSY HIDE "GenCol 110"
+FSY HIDE "GenCol 114"
+FSY HIDE "GenCol 115"
+FSY @END
+FSY DISPLAY @BEGIN
+FSY POSITION 1 1
+FSY SHOWCOLUMNS ALL
+FSY @END DISPLAY
+@END FSY TRANSFORMATION
+
+TRANSFORMATION @BEGIN JLK
+JLK "Trans 5"
+JLK calculate
+JLK SOURCE "Trans 3"
+JLK @BEGIN
+JLK CALCULATE "GenCol 116" @EXPRESSION @call function\\boolean\not(column\\GenCol 112)
+JLK CALCULATE "New 2" @EXPRESSION column\\GenCol 111 <> column\\GenCol 117
+JLK CALCULATE "New 1" @EXPRESSION column\\GenCol 108 = @call function\\list\element(table\\Trans 3#GenCol 108, 1)
+JLK @END
+JLK DISPLAY @BEGIN
+JLK POSITION 1 1
+JLK SHOWCOLUMNS ALL
+JLK @END DISPLAY
+@END JLK TRANSFORMATION
+
+TRANSFORMATION @BEGIN OLW
+OLW "Trans 2"
+OLW aggregate
+OLW SOURCE "Test 0"
+OLW @BEGIN
+OLW SUMMARY "Sum 0" @EXPRESSION var\\group count
+OLW SUMMARY "Sum 1" @EXPRESSION var\\group count
+OLW @END
+OLW DISPLAY @BEGIN
+OLW POSITION 1 1
+OLW SHOWCOLUMNS ALL
+OLW @END DISPLAY
+@END OLW TRANSFORMATION
+
+DATA @BEGIN THE
+THE "Test 1"
+THE FORMAT @BEGIN
+THE @COLUMN GenCol 118 @TYPE Number {GBP} @DEFAULT 9223372036854775808
+THE @COLUMN GenCol 119 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT None
+THE @COLUMN GenCol 120 @TYPE [ [ ( key : Number , value : ( a : Text , c : Number ) ) ] ] @DEFAULT [ [ ( "key" : -2147483647 , "value" : ( "a" : "i􆆈" , "c" : 0.419246 ) ) , ( "key" : 47693968 , "value" : ( "a" : "yaan9rar 9" , "c" : -9223372036854775809 ) ) ] , [ ( "key" : 0 , "value" : ( "a" : "g Z9" , "c" : 0.442097 ) ) ] , [ ( "key" : 0 , "value" : ( "a" : "u'􊲈'" , "c" : 0 ) ) , ( "key" : 2147483647 , "value" : ( "a" : "􀼋𰊑hC鸞" , "c" : -128 ) ) , ( "key" : 0 , "value" : ( "a" : "XS" , "c" : 24444 ) ) ] ]
+THE @COLUMN GenCol 121 @TYPE ( a : Number , b : Number ) @DEFAULT ( "a" : -9223372036854775808 , "b" : -9223372036854775809 )
+THE @END FORMAT
+THE VALUES @BEGIN
+THE   -1 , None , [ [ ( "key" : 0.386213 , "value" : ( "a" : "mn0r" , "c" : 4067 ) ) , ( "key" : -32767 , "value" : ( "a" : "COLUMNAL" , "c" : 113015 ) ) , ( "key" : 5364819271 , "value" : ( "a" : "i 00nZr" , "c" : 11303 ) ) , ( "key" : 0 , "value" : ( "a" : "nn" , "c" : -2147483649 ) ) ] , [ ( "key" : 57304723 , "value" : ( "a" : "na0ZZ" , "c" : 1 ) ) ] , [ ( "key" : -2147483647 , "value" : ( "a" : "𨥠d#" , "c" : 0 ) ) , ( "key" : 0 , "value" : ( "a" : "d0rnr00Z0" , "c" : 32767 ) ) , ( "key" : -127 , "value" : ( "a" : "lr a9" , "c" : 32767 ) ) , ( "key" : -2147483649 , "value" : ( "a" : "an" , "c" : -2147483648 ) ) ] , [ ( "key" : 0 , "value" : ( "a" : "굂h𲠹Q&Z㋨%" , "c" : 32767 ) ) , ( "key" : -9223372036854775807 , "value" : ( "a" : "nZr0a00n" , "c" : 0 ) ) ] ] , ( "a" : 2147483647 , "b" : 0.142659 )
+THE   -9223372036854775807 , None , [ [ ( "key" : -32768 , "value" : ( "a" : "􌂯`e" , "c" : 2147483647 ) ) ] , [ ( "key" : -32768 , "value" : ( "a" : "CONTENT" , "c" : 32767 ) ) , ( "key" : 17891804705096671 , "value" : ( "a" : "vr0nr n0Z" , "c" : -32768 ) ) ] ] , ( "a" : -128 , "b" : 5 )
+THE   -9223372036854775807 , Is ( Is ( "Hf}z" ) ) , [ [ ( "key" : -2147483648 , "value" : ( "a" : "󾵞]uVx󶤐ꇨ|" , "c" : -2147483648 ) ) , ( "key" : 50 , "value" : ( "a" : "kn" , "c" : -32767 ) ) , ( "key" : -9223372036854775807 , "value" : ( "a" : "x9rrr9 n" , "c" : 32640 ) ) , ( "key" : -127 , "value" : ( "a" : "􁉨I<dA" , "c" : 849131206763894098579 ) ) ] , [ ( "key" : 5072 , "value" : ( "a" : "" , "c" : -9223372036854775809 ) ) , ( "key" : -1 , "value" : ( "a" : "a" , "c" : 15 ) ) ] ] , ( "a" : -127 , "b" : 2556220835119 )
+THE   -9223372036854775809 , None , [ [ ( "key" : -127 , "value" : ( "a" : "rnrZrannr9" , "c" : 357050266 ) ) ] , [ ( "key" : -32767 , "value" : ( "a" : "䷙!]\H" , "c" : 28025 ) ) , ( "key" : 0.633519 , "value" : ( "a" : "r&jS" , "c" : 32767 ) ) , ( "key" : -9223372036854775808 , "value" : ( "a" : "v0r0rr" , "c" : 10407469540074774 ) ) ] , [ ( "key" : -2147483648 , "value" : ( "a" : "𪊢p" , "c" : 0.353799 ) ) , ( "key" : 98 , "value" : ( "a" : "l00" , "c" : 4467278682830 ) ) , ( "key" : 2064557780217 , "value" : ( "a" : "uံJ}]Yk" , "c" : 0 ) ) ] , [ ( "key" : -1 , "value" : ( "a" : "\" , "c" : 22670539 ) ) , ( "key" : 16542103 , "value" : ( "a" : "a09aZZ90aZ" , "c" : 2147483648 ) ) , ( "key" : 0.84485 , "value" : ( "a" : "jn 009a9Zn" , "c" : 1736 ) ) , ( "key" : 441312 , "value" : ( "a" : "pa9arnaZZ0n" , "c" : 9223372036854775807 ) ) ] ] , ( "a" : -9223372036854775807 , "b" : -1 )
+THE   0 , None , [ [ ( "key" : 63 , "value" : ( "a" : "a0" , "c" : -127 ) ) ] , [ ( "key" : 3974 , "value" : ( "a" : "󸘔𩽬𧀖닅" , "c" : 11418 ) ) , ( "key" : 0 , "value" : ( "a" : "🩆" , "c" : -2147483647 ) ) ] ] , ( "a" : -127 , "b" : 2147483647 )
+THE   -9223372036854775809 , Is ( None ) , [ [ ( "key" : 8853132555 , "value" : ( "a" : "c90" , "c" : 1 ) ) , ( "key" : 127 , "value" : ( "a" : "mZn0Z" , "c" : 39037316868 ) ) , ( "key" : -127 , "value" : ( "a" : ")" , "c" : -128 ) ) ] ] , ( "a" : 2147483647 , "b" : 13096981876 )
+THE   1933 , None , [ [ ( "key" : 109788435631537815 , "value" : ( "a" : "COMMENT" , "c" : -32767 ) ) , ( "key" : 2147483648 , "value" : ( "a" : "Boolean" , "c" : 9223372036854775808 ) ) ] , [ ( "key" : -32768 , "value" : ( "a" : "apply" , "c" : 0.355438 ) ) , ( "key" : 0.023783 , "value" : ( "a" : "nZa aZnn" , "c" : -127 ) ) , ( "key" : -127 , "value" : ( "a" : "hz>K;" , "c" : 0.228456 ) ) ] ] , ( "a" : 8 , "b" : 1 )
+THE   3426037880623796756837 , None , [ [ ( "key" : -1 , "value" : ( "a" : "󾤡B" , "c" : 2147483647 ) ) ] ] , ( "a" : 2437 , "b" : 50 )
+THE   792 , None , [ [ ( "key" : -32768 , "value" : ( "a" : "r" , "c" : 0.946794 ) ) ] , [ ( "key" : 32767 , "value" : ( "a" : "r3" , "c" : -9223372036854775809 ) ) , ( "key" : -2147483649 , "value" : ( "a" : "z0aZZn09a0r" , "c" : -32768 ) ) , ( "key" : 8710719260760 , "value" : ( "a" : "g" , "c" : 0.818344 ) ) ] , [ ( "key" : 886523 , "value" : ( "a" : "E" , "c" : 5091 ) ) ] ] , ( "a" : -32767 , "b" : -32768 )
+THE   -1 , Is ( None ) , [ [ ( "key" : 127 , "value" : ( "a" : "ca0n0" , "c" : 0 ) ) ] , [ ( "key" : 349073615 , "value" : ( "a" : "󲕫" , "c" : 10 ) ) , ( "key" : 0.958116 , "value" : ( "a" : "d𭐭8~" , "c" : 11 ) ) , ( "key" : 3 , "value" : ( "a" : "􂢖f" , "c" : 14909 ) ) , ( "key" : 0 , "value" : ( "a" : "󺮮b" , "c" : 337 ) ) ] , [ ( "key" : 8650 , "value" : ( "a" : "LINKED" , "c" : -9223372036854775807 ) ) , ( "key" : 3 , "value" : ( "a" : "Number" , "c" : 0.598297 ) ) , ( "key" : 121 , "value" : ( "a" : "UNITS" , "c" : 17752 ) ) ] ] , ( "a" : 1 , "b" : 22925182 )
+THE @END VALUES
+THE DISPLAY @BEGIN
+THE POSITION 1 1
+THE SHOWCOLUMNS ALL
+THE @END DISPLAY
+@END THE DATA
+

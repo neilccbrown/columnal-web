@@ -241,3 +241,12 @@ export function javaOffsetByCodePoints(s: string, index: number, codePointOffset
     }
     return x;
 }
+
+/**
+ * Java's s.getBytes(StandardCharsets.UTF_8).  TextEncoder writes a lone surrogate as U+FFFD,
+ * where Java writes '?'.
+ */
+export function javaUtf8Bytes(s: string): Uint8Array
+{
+    return new TextEncoder().encode(s.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, "?"));
+}

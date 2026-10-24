@@ -1,0 +1,209 @@
+TABLE Test 0
+LENGTH 3
+COLUMN GenCol 23 : Boolean
+  0: true
+  1: true
+  2: false
+COLUMN GenCol 24 : Boolean
+  0: true
+  1: !InvalidImmediateValueException: Invalid value: #297617465
+  2: true
+COLUMN GenCol 25 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "a", t 2: 75934694129), z: -128)
+  1: (inner: (t 1: "h9 9 9", t 2: 1), z: 2)
+  2: !InvalidImmediateValueException: Invalid value: #1933904172
+COLUMN GenCol 26 : (a: Number, b: Number)
+  0: (a: -9223372036854775807, b: 9223372036854775807)
+  1: (a: 883, b: 127)
+  2: (a: 470, b: -9223372036854775809)
+COLUMN GenCol 27 : DateTime
+  0: 1995-07-28 08:40:18
+  1: 1936-06-07 13:41:44
+  2: 2018-11-24 18:55:00
+COLUMN GenCol 28 : Nested <A:A <Single> | C:C <Blank | Num:Number>>
+  0: A(Single)
+  1: C(Num(0.63935))
+  2: A(Single)
+COLUMN GenCol 29 : DateTime
+  0: 5737-06-01 02:50:58.712256397
+  1: 1970-10-04 00:20:00
+  2: 3932-02-24 07:13:16
+COLUMN GenCol 30 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+TABLE Trans 1
+LENGTH 2
+COLUMN GenCol 23 : Boolean
+  0: true
+  1: true
+COLUMN GenCol 24 : Boolean
+  0: true
+  1: !InvalidImmediateValueException: Invalid value: #297617465
+COLUMN GenCol 25 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "a", t 2: 75934694129), z: -128)
+  1: (inner: (t 1: "h9 9 9", t 2: 1), z: 2)
+COLUMN GenCol 26 : (a: Number, b: Number)
+  0: (a: -9223372036854775807, b: 9223372036854775807)
+  1: (a: 883, b: 127)
+COLUMN GenCol 27 : DateTime
+  0: 1995-07-28 08:40:18
+  1: 1936-06-07 13:41:44
+COLUMN GenCol 28 : Nested <A:A <Single> | C:C <Blank | Num:Number>>
+  0: A(Single)
+  1: C(Num(0.63935))
+COLUMN GenCol 29 : DateTime
+  0: 5737-06-01 02:50:58.712256397
+  1: 1970-10-04 00:20:00
+COLUMN GenCol 30 : B <Single>
+  0: Single
+  1: Single
+TABLE Trans 2
+LENGTH 3
+COLUMN GenCol 23 : Boolean
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 24 : Boolean
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 25 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 26 : (a: Number, b: Number)
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 27 : DateTime
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 28 : Nested <A:A <Single> | C:C <Blank | Num:Number>>
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 29 : DateTime
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 30 : B <Single>
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+TABLE Trans 3
+LENGTH 9
+COLUMN GenCol 23 : Boolean
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+  3: !UserException: Trying to access zero-based element 4 but only have 3
+  4: !UserException: Trying to access zero-based element 4 but only have 3
+  5: !UserException: Trying to access zero-based element 4 but only have 3
+  6: !UserException: Trying to access zero-based element 4 but only have 3
+  7: !UserException: Trying to access zero-based element 4 but only have 3
+  8: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 24 : Boolean
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+  3: !UserException: Trying to access zero-based element 4 but only have 3
+  4: !UserException: Trying to access zero-based element 4 but only have 3
+  5: !UserException: Trying to access zero-based element 4 but only have 3
+  6: !UserException: Trying to access zero-based element 4 but only have 3
+  7: !UserException: Trying to access zero-based element 4 but only have 3
+  8: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 25 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+  3: !UserException: Trying to access zero-based element 4 but only have 3
+  4: !UserException: Trying to access zero-based element 4 but only have 3
+  5: !UserException: Trying to access zero-based element 4 but only have 3
+  6: !UserException: Trying to access zero-based element 4 but only have 3
+  7: !UserException: Trying to access zero-based element 4 but only have 3
+  8: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 26 : (a: Number, b: Number)
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+  3: !UserException: Trying to access zero-based element 4 but only have 3
+  4: !UserException: Trying to access zero-based element 4 but only have 3
+  5: !UserException: Trying to access zero-based element 4 but only have 3
+  6: !UserException: Trying to access zero-based element 4 but only have 3
+  7: !UserException: Trying to access zero-based element 4 but only have 3
+  8: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 27 : DateTime
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+  3: !UserException: Trying to access zero-based element 4 but only have 3
+  4: !UserException: Trying to access zero-based element 4 but only have 3
+  5: !UserException: Trying to access zero-based element 4 but only have 3
+  6: !UserException: Trying to access zero-based element 4 but only have 3
+  7: !UserException: Trying to access zero-based element 4 but only have 3
+  8: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 28 : Nested <A:A <Single> | C:C <Blank | Num:Number>>
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+  3: !UserException: Trying to access zero-based element 4 but only have 3
+  4: !UserException: Trying to access zero-based element 4 but only have 3
+  5: !UserException: Trying to access zero-based element 4 but only have 3
+  6: !UserException: Trying to access zero-based element 4 but only have 3
+  7: !UserException: Trying to access zero-based element 4 but only have 3
+  8: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 29 : DateTime
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+  3: !UserException: Trying to access zero-based element 4 but only have 3
+  4: !UserException: Trying to access zero-based element 4 but only have 3
+  5: !UserException: Trying to access zero-based element 4 but only have 3
+  6: !UserException: Trying to access zero-based element 4 but only have 3
+  7: !UserException: Trying to access zero-based element 4 but only have 3
+  8: !UserException: Trying to access zero-based element 4 but only have 3
+COLUMN GenCol 30 : B <Single>
+  0: !UserException: Trying to access zero-based element 4 but only have 3
+  1: !UserException: Trying to access zero-based element 4 but only have 3
+  2: !UserException: Trying to access zero-based element 4 but only have 3
+  3: !UserException: Trying to access zero-based element 4 but only have 3
+  4: !UserException: Trying to access zero-based element 4 but only have 3
+  5: !UserException: Trying to access zero-based element 4 but only have 3
+  6: !UserException: Trying to access zero-based element 4 but only have 3
+  7: !UserException: Trying to access zero-based element 4 but only have 3
+  8: !UserException: Trying to access zero-based element 4 but only have 3
+TABLE Trans 4
+LENGTH 1
+COLUMN result : Boolean
+  0: false
+TABLE Trans 5
+LENGTH 2
+COLUMN GenCol 23 : Boolean
+  0: true
+  1: true
+COLUMN GenCol 24 : Boolean
+  0: true
+  1: !InvalidImmediateValueException: Invalid value: #297617465
+COLUMN GenCol 25 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "a", t 2: 75934694129), z: -128)
+  1: (inner: (t 1: "h9 9 9", t 2: 1), z: 2)
+COLUMN GenCol 26 : (a: Number, b: Number)
+  0: (a: -9223372036854775807, b: 9223372036854775807)
+  1: (a: 883, b: 127)
+COLUMN GenCol 27 : DateTime
+  0: 1995-07-28 08:40:18
+  1: 1936-06-07 13:41:44
+COLUMN GenCol 28 : Nested <A:A <Single> | C:C <Blank | Num:Number>>
+  0: A(Single)
+  1: C(Num(0.63935))
+COLUMN GenCol 29 : DateTime
+  0: 5737-06-01 02:50:58.712256397
+  1: 1970-10-04 00:20:00
+COLUMN GenCol 30 : B <Single>
+  0: Single
+  1: Single
+COLUMN New 1 : Void <>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus Nested
+  1: !UserException: Error in New 1 expression: Type mismatch: Boolean versus Nested

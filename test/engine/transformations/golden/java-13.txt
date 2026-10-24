@@ -1,0 +1,153 @@
+TABLE Test 0
+LENGTH 327
+COLUMN GenCol 55 : [Number]
+  0: [1]
+  1: [7114, 32767, 0.11043]
+  2: [352]
+  3: [243]
+  4: [66046885614, 31002661511885, 2147483647]
+  5: [-9223372036854775809, 76, 2147483647]
+  6: [32767]
+  7: [-32767, -2147483648, 255]
+  8: [22061168346271, 1, 2147483647, 1954]
+  9: [111151]
+  10: [2147483647, 14290732]
+  11: [6204584, -2147483648, 0.617391]
+  12: [1, 0.149081, -2147483647]
+  13: [-1, -128]
+  14: [6, 42]
+  15: [856, 2147483647, 9223372036854775807]
+  16: [-2147483649]
+  17: [-2147483647, -32768, -32768]
+  18: [32767, 14, -32767]
+  19: [-2147483649, -9223372036854775809]
+COLUMN GenCol 56 : C <Blank | Num:Number>
+  0: Blank
+  1: Blank
+  2: Num(2147483648)
+  3: Blank
+  4: Blank
+  5: Num(2147483647)
+  6: Blank
+  7: Num(0.539866)
+  8: Num(0.506923)
+  9: Blank
+  10: Num(-9223372036854775809)
+  11: Num(1)
+  12: Num(14)
+  13: Blank
+  14: Num(-128)
+  15: Blank
+  16: Blank
+  17: Num(3)
+  18: Blank
+  19: Blank
+COLUMN GenCol 57 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: Is(Is("gZ 0nn n"))
+  2: Is(None)
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: Is(None)
+  9: Is(None)
+  10: Is(Is("󱥬"))
+  11: None
+  12: Is(None)
+  13: Is(Is(",𮠋K"))
+  14: Is(None)
+  15: Is(Is("k9arrra"))
+  16: None
+  17: Is(Is("7"))
+  18: None
+  19: Is(Is("S~"))
+COLUMN GenCol 58 : Boolean
+  0: false
+  1: true
+  2: true
+  3: false
+  4: true
+  5: true
+  6: false
+  7: false
+  8: false
+  9: true
+  10: true
+  11: true
+  12: false
+  13: true
+  14: false
+  15: false
+  16: true
+  17: false
+  18: true
+  19: false
+COLUMN GenCol 59 : Number{cm}
+  0: -9223372036854775807
+  1: 0.817192
+  2: 1547
+  3: 9223372036854775808
+  4: 2909769094615
+  5: 0.293794
+  6: -2147483647
+  7: 2147483648
+  8: 38
+  9: 31076
+  10: 185160972537
+  11: 32767
+  12: -127
+  13: 0
+  14: -2147483648
+  15: 0.885562
+  16: -32767
+  17: 90567981
+  18: -32767
+  19: 1
+COLUMN GenCol 60 : DateTimeZoned
+  0: 1954-06-01 04:03:36.030855528 +05:35
+  1: 1959-02-09 04:39:00 Asia/Rangoon
+  2: 4777-04-24 06:31:39.987923756 -00:12
+  3: 4557-02-15 03:37:46.686426431 -00:22
+  4: 1909-08-02 11:36:00 -11:36
+  5: 1909-08-02 23:35:02.205255593 America/Indiana/Petersburg
+  6: 1907-07-28 05:03:00 +01:13
+  7: 1962-01-22 09:01:00 +09:43
+  8: 9805-06-03 18:13:18.736342847 ROK
+  9: 1935-08-04 19:27:45.982390792 -01:16
+  10: 8325-07-30 14:56:00 Africa/Douala
+  11: 7764-06-02 18:25:12 Europe/Rome
+  12: 1941-04-07 00:16:31 -07:03
+  13: 2005-09-15 01:08:25.896641476 Pacific/Rarotonga
+  14: 3115-08-02 04:29:24.281804584 +01:35
+  15: 7521-10-05 16:40:49 Europe/Zagreb
+  16: 2000-08-19 18:11:35.043065945 +01:58
+  17: 0520-09-06 11:46:52.431660881 +05:11
+  18: 2038-05-10 10:27:30.033883092 +07:33
+  19: 1951-08-11 08:19:16.501134661 +01:32
+COLUMN GenCol 61 : DateYM
+  0: 0294-07
+  1: 4846-02
+  2: 5221-06
+  3: 5257-08
+  4: 6103-06
+  5: 2171-02
+  6: 7947-07
+  7: 9124-11
+  8: 1322-07
+  9: 5253-11
+  10: 3816-01
+  11: 1550-08
+  12: 1999-07
+  13: 6884-05
+  14: 0652-01
+  15: 3509-06
+  16: 3099-05
+  17: 5568-02
+  18: 2691-02
+  19: 9697-05
+TABLE Trans 1
+!UserException: Duplicate column names found: Test 0 GenCol 55, Test 0 GenCol 56, Test 0 GenCol 57, Test 0 GenCol 58, Test 0 GenCol 59, Test 0 GenCol 60, Test 0 GenCol 61, Test 0 GenCol 55, Test 0 GenCol 56, Test 0 GenCol 57, Test 0 GenCol 58, Test 0 GenCol 59, Test 0 GenCol 60, Test 0 GenCol 61
+TABLE Trans 2
+!UserException: Duplicate column names found: Test 0 GenCol 55, Test 0 GenCol 56, Test 0 GenCol 57, Test 0 GenCol 58, Test 0 GenCol 59, Test 0 GenCol 60, Test 0 GenCol 61, Test 0 GenCol 55, Test 0 GenCol 56, Test 0 GenCol 57, Test 0 GenCol 58, Test 0 GenCol 59, Test 0 GenCol 60, Test 0 GenCol 61

@@ -1,0 +1,576 @@
+TABLE Test 0
+LENGTH 7
+COLUMN GenCol 106 : [[(key: Number, value: (a: Text, c: Number))]]
+  0: [[(key: -9223372036854775809, value: (a: ":", c: 43768202484157983)), (key: 1, value: (a: "INCOMPLETE", c: -32768))]]
+  1: [[(key: 2147483648, value: (a: "FORMAT", c: -127)), (key: 1, value: (a: "*졃𬊲V", c: 0.795986)), (key: -32768, value: (a: "|T", c: -32768))]]
+  2: [[(key: 9223372036854775807, value: (a: "kr00nZ 90", c: 6)), (key: -9223372036854775808, value: (a: "q", c: -127)), (key: 593089853549, value: (a: "oaaa9 n0nn", c: 11490803817)), (key: -127, value: (a: "o", c: 4))], [(key: 0.837346, value: (a: "0", c: 2147483647)), (key: 9223372036854775807, value: (a: "s", c: 127)), (key: 1, value: (a: "r 0n0", c: -127)), (key: 0.510417, value: (a: "rr999a 0Z9", c: 433))]]
+  3: [[(key: 951013, value: (a: "􎐞􍟀􆖚󷷓6󴶷1^a", c: -2147483649))], [(key: -2147483647, value: (a: "#)", c: 1)), (key: 12, value: (a: "FORMAT", c: 927051)), (key: 9223372036854775808, value: (a: "Boolean", c: 170)), (key: 6756897947, value: (a: "UO", c: 996951791263))], [(key: 0.711423, value: (a: "tr an09ZrZ", c: -32768)), (key: -32767, value: (a: "j n99Z0", c: 0)), (key: 32767, value: (a: "|/{B󻁞w􅃢Xyp(d4S'", c: 2900452)), (key: -128, value: (a: "{\r𠔐", c: -2147483648))]]
+  4: [[(key: 46, value: (a: "Kq", c: 14))], [(key: -128, value: (a: "COMMENT", c: 0.928966))], [(key: 0, value: (a: "䁆", c: 992020))], [(key: 0.132612, value: (a: "𓧻(", c: 10480786)), (key: -32767, value: (a: "bzs4􁊧rz", c: 118386)), (key: 1, value: (a: "oa90n0ar0r9", c: -9223372036854775809)), (key: 2147483647, value: (a: "SOURCE", c: 0))]]
+  5: [[(key: 32767, value: (a: ":𫦌", c: -127))]]
+  6: [[(key: 2, value: (a: "k000", c: 1)), (key: -9223372036854775809, value: (a: "ca09", c: 1113)), (key: -128, value: (a: "S􉍬", c: 2147483647)), (key: -127, value: (a: "?-B", c: -9223372036854775809))], [(key: 0, value: (a: "wZ9ZZa", c: 5)), (key: -1, value: (a: "􎳅eCӴHk", c: 159)), (key: -32768, value: (a: "BEGIN", c: 9223372036854775808)), (key: 8916753602, value: (a: "Yu$e", c: 32767))], [(key: -9223372036854775808, value: (a: "i눨e", c: 22))]]
+COLUMN GenCol 107 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 108 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 109 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 110 : C <Blank | Num:Number>
+  0: Num(611413058441430970)
+  1: Blank
+  2: Blank
+  3: Blank
+  4: Num(2147483647)
+  5: Blank
+  6: Blank
+COLUMN GenCol 111 : Number
+  0: 36364433
+  1: 9223372036854775808
+  2: 1
+  3: 0
+  4: 0.075753
+  5: 2147483647
+  6: 727389292107
+COLUMN GenCol 112 : C <Blank | Num:Number>
+  0: Blank
+  1: Blank
+  2: Blank
+  3: Num(6)
+  4: Blank
+  5: Blank
+  6: Blank
+COLUMN GenCol 113 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "CONTENT", bool: true, c: Blank, dtz: 1923-05-26 21:13:56.837000457 -00:11)
+  1: (Text: "a 90r", bool: false, c: Num(1), dtz: 1960-04-28 15:36:22.876635601 America/Punta_Arenas)
+  2: (Text: "xZZZZn", bool: true, c: Num(32767), dtz: 2040-06-27 13:38:00 -01:54)
+  3: (Text: "%?", bool: true, c: Blank, dtz: 1899-09-27 08:21:25.039504739 -07:54)
+  4: (Text: "l Za aZrZ 9", bool: true, c: Num(0.4681), dtz: 2040-03-27 06:08:31.962805774 Australia/Tasmania)
+  5: (Text: "ja 0nna090a", bool: true, c: Num(-9223372036854775808), dtz: 4222-09-04 20:00:58.105160276 America/Indiana/Marengo)
+  6: (Text: "v", bool: true, c: Num(0.121859), dtz: 1532-10-03 17:15:07.348134997 America/Montserrat)
+COLUMN GenCol 114 : Number{cm}
+  0: 0
+  1: 113
+  2: -1
+  3: 9223372036854775808
+  4: -1
+  5: 32767
+  6: 0
+COLUMN GenCol 115 : Number
+  0: 13469
+  1: 258
+  2: 32767
+  3: 2147483647
+  4: 16
+  5: -2147483649
+  6: -128
+COLUMN GenCol 116 : [Number]
+  0: [-9223372036854775808]
+  1: [428, 0]
+  2: [-9223372036854775808, -32767, 14]
+  3: [3]
+  4: [2147483647, 469923880, -9223372036854775807, 225967]
+  5: [238279, -2147483647, 1]
+  6: [69606719244615, 5845492242, 52134, 1141]
+COLUMN GenCol 117 : Number{m}
+  0: 1
+  1: 0.836874
+  2: 3380524050
+  3: 32767
+  4: 3
+  5: 103
+  6: 0
+TABLE Test 1
+LENGTH 10
+COLUMN GenCol 118 : Number{GBP}
+  0: -1
+  1: -9223372036854775807
+  2: -9223372036854775807
+  3: -9223372036854775809
+  4: 0
+  5: -9223372036854775809
+  6: 1933
+  7: 3426037880623796756837
+  8: 792
+  9: -1
+COLUMN GenCol 119 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+  2: Is(Is("Hf}z"))
+  3: None
+  4: None
+  5: Is(None)
+  6: None
+  7: None
+  8: None
+  9: Is(None)
+COLUMN GenCol 120 : [[(key: Number, value: (a: Text, c: Number))]]
+  0: [[(key: 0.386213, value: (a: "mn0r", c: 4067)), (key: -32767, value: (a: "COLUMNAL", c: 113015)), (key: 5364819271, value: (a: "i 00nZr", c: 11303)), (key: 0, value: (a: "nn", c: -2147483649))], [(key: 57304723, value: (a: "na0ZZ", c: 1))], [(key: -2147483647, value: (a: "𨥠d#", c: 0)), (key: 0, value: (a: "d0rnr00Z0", c: 32767)), (key: -127, value: (a: "lr a9", c: 32767)), (key: -2147483649, value: (a: "an", c: -2147483648))], [(key: 0, value: (a: "굂h𲠹Q&Z㋨%", c: 32767)), (key: -9223372036854775807, value: (a: "nZr0a00n", c: 0))]]
+  1: [[(key: -32768, value: (a: "􌂯`e", c: 2147483647))], [(key: -32768, value: (a: "CONTENT", c: 32767)), (key: 17891804705096671, value: (a: "vr0nr n0Z", c: -32768))]]
+  2: [[(key: -2147483648, value: (a: "󾵞]uVx󶤐ꇨ|", c: -2147483648)), (key: 50, value: (a: "kn", c: -32767)), (key: -9223372036854775807, value: (a: "x9rrr9 n", c: 32640)), (key: -127, value: (a: "􁉨I<dA", c: 849131206763894098579))], [(key: 5072, value: (a: "", c: -9223372036854775809)), (key: -1, value: (a: "a", c: 15))]]
+  3: [[(key: -127, value: (a: "rnrZrannr9", c: 357050266))], [(key: -32767, value: (a: "䷙!]\H", c: 28025)), (key: 0.633519, value: (a: "r&jS", c: 32767)), (key: -9223372036854775808, value: (a: "v0r0rr", c: 10407469540074774))], [(key: -2147483648, value: (a: "𪊢p", c: 0.353799)), (key: 98, value: (a: "l00", c: 4467278682830)), (key: 2064557780217, value: (a: "uံJ}]Yk", c: 0))], [(key: -1, value: (a: "\", c: 22670539)), (key: 16542103, value: (a: "a09aZZ90aZ", c: 2147483648)), (key: 0.84485, value: (a: "jn 009a9Zn", c: 1736)), (key: 441312, value: (a: "pa9arnaZZ0n", c: 9223372036854775807))]]
+  4: [[(key: 63, value: (a: "a0", c: -127))], [(key: 3974, value: (a: "󸘔𩽬𧀖닅", c: 11418)), (key: 0, value: (a: "🩆", c: -2147483647))]]
+  5: [[(key: 8853132555, value: (a: "c90", c: 1)), (key: 127, value: (a: "mZn0Z", c: 39037316868)), (key: -127, value: (a: ")", c: -128))]]
+  6: [[(key: 109788435631537815, value: (a: "COMMENT", c: -32767)), (key: 2147483648, value: (a: "Boolean", c: 9223372036854775808))], [(key: -32768, value: (a: "apply", c: 0.355438)), (key: 0.023783, value: (a: "nZa aZnn", c: -127)), (key: -127, value: (a: "hz>K;", c: 0.228456))]]
+  7: [[(key: -1, value: (a: "󾤡B", c: 2147483647))]]
+  8: [[(key: -32768, value: (a: "r", c: 0.946794))], [(key: 32767, value: (a: "r3", c: -9223372036854775809)), (key: -2147483649, value: (a: "z0aZZn09a0r", c: -32768)), (key: 8710719260760, value: (a: "g", c: 0.818344))], [(key: 886523, value: (a: "E", c: 5091))]]
+  9: [[(key: 127, value: (a: "ca0n0", c: 0))], [(key: 349073615, value: (a: "󲕫", c: 10)), (key: 0.958116, value: (a: "d𭐭8~", c: 11)), (key: 3, value: (a: "􂢖f", c: 14909)), (key: 0, value: (a: "󺮮b", c: 337))], [(key: 8650, value: (a: "LINKED", c: -9223372036854775807)), (key: 3, value: (a: "Number", c: 0.598297)), (key: 121, value: (a: "UNITS", c: 17752))]]
+COLUMN GenCol 121 : (a: Number, b: Number)
+  0: (a: 2147483647, b: 0.142659)
+  1: (a: -128, b: 5)
+  2: (a: -127, b: 2556220835119)
+  3: (a: -9223372036854775807, b: -1)
+  4: (a: -127, b: 2147483647)
+  5: (a: 2147483647, b: 13096981876)
+  6: (a: 8, b: 1)
+  7: (a: 2437, b: 50)
+  8: (a: -32767, b: -32768)
+  9: (a: 1, b: 22925182)
+TABLE Trans 1
+LENGTH 7
+COLUMN GenCol 106 : [[(key: Number, value: (a: Text, c: Number))]]
+  0: [[(key: -9223372036854775809, value: (a: ":", c: 43768202484157983)), (key: 1, value: (a: "INCOMPLETE", c: -32768))]]
+  1: [[(key: 2147483648, value: (a: "FORMAT", c: -127)), (key: 1, value: (a: "*졃𬊲V", c: 0.795986)), (key: -32768, value: (a: "|T", c: -32768))]]
+  2: [[(key: 9223372036854775807, value: (a: "kr00nZ 90", c: 6)), (key: -9223372036854775808, value: (a: "q", c: -127)), (key: 593089853549, value: (a: "oaaa9 n0nn", c: 11490803817)), (key: -127, value: (a: "o", c: 4))], [(key: 0.837346, value: (a: "0", c: 2147483647)), (key: 9223372036854775807, value: (a: "s", c: 127)), (key: 1, value: (a: "r 0n0", c: -127)), (key: 0.510417, value: (a: "rr999a 0Z9", c: 433))]]
+  3: [[(key: 951013, value: (a: "􎐞􍟀􆖚󷷓6󴶷1^a", c: -2147483649))], [(key: -2147483647, value: (a: "#)", c: 1)), (key: 12, value: (a: "FORMAT", c: 927051)), (key: 9223372036854775808, value: (a: "Boolean", c: 170)), (key: 6756897947, value: (a: "UO", c: 996951791263))], [(key: 0.711423, value: (a: "tr an09ZrZ", c: -32768)), (key: -32767, value: (a: "j n99Z0", c: 0)), (key: 32767, value: (a: "|/{B󻁞w􅃢Xyp(d4S'", c: 2900452)), (key: -128, value: (a: "{\r𠔐", c: -2147483648))]]
+  4: [[(key: 46, value: (a: "Kq", c: 14))], [(key: -128, value: (a: "COMMENT", c: 0.928966))], [(key: 0, value: (a: "䁆", c: 992020))], [(key: 0.132612, value: (a: "𓧻(", c: 10480786)), (key: -32767, value: (a: "bzs4􁊧rz", c: 118386)), (key: 1, value: (a: "oa90n0ar0r9", c: -9223372036854775809)), (key: 2147483647, value: (a: "SOURCE", c: 0))]]
+  5: [[(key: 32767, value: (a: ":𫦌", c: -127))]]
+  6: [[(key: -9223372036854775809, value: (a: ":", c: 43768202484157983)), (key: 1, value: (a: "INCOMPLETE", c: -32768))]]
+COLUMN GenCol 107 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 108 : A <Single>
+  0: !InvalidImmediateValueException: #bad 1
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 109 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 110 : C <Blank | Num:Number>
+  0: Num(611413058441430970)
+  1: Blank
+  2: Blank
+  3: Blank
+  4: Num(2147483647)
+  5: Blank
+  6: Blank
+COLUMN GenCol 111 : Number
+  0: 36364433
+  1: 9223372036854775808
+  2: 1
+  3: 0
+  4: 0.075753
+  5: 2147483647
+  6: 727389292107
+COLUMN GenCol 112 : C <Blank | Num:Number>
+  0: Blank
+  1: Blank
+  2: Blank
+  3: Num(6)
+  4: Blank
+  5: Blank
+  6: Blank
+COLUMN GenCol 113 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "CONTENT", bool: true, c: Blank, dtz: 1923-05-26 21:13:56.837000457 -00:11)
+  1: (Text: "a 90r", bool: false, c: Num(1), dtz: 1960-04-28 15:36:22.876635601 America/Punta_Arenas)
+  2: (Text: "xZZZZn", bool: true, c: Num(32767), dtz: 2040-06-27 13:38:00 -01:54)
+  3: (Text: "%?", bool: true, c: Blank, dtz: 1899-09-27 08:21:25.039504739 -07:54)
+  4: (Text: "l Za aZrZ 9", bool: true, c: Num(0.4681), dtz: 2040-03-27 06:08:31.962805774 Australia/Tasmania)
+  5: (Text: "ja 0nna090a", bool: true, c: Num(-9223372036854775808), dtz: 4222-09-04 20:00:58.105160276 America/Indiana/Marengo)
+  6: (Text: "v", bool: true, c: Num(0.121859), dtz: 1532-10-03 17:15:07.348134997 America/Montserrat)
+COLUMN GenCol 114 : Number{cm}
+  0: 0
+  1: 113
+  2: -1
+  3: 9223372036854775808
+  4: -1
+  5: 32767
+  6: 0
+COLUMN GenCol 115 : Number
+  0: 13469
+  1: 258
+  2: 32767
+  3: 2147483647
+  4: 16
+  5: -2147483649
+  6: -128
+COLUMN GenCol 116 : [Number]
+  0: [-9223372036854775808]
+  1: [428, 0]
+  2: [-9223372036854775808, -32767, 14]
+  3: [3]
+  4: [2147483647, 469923880, -9223372036854775807, 225967]
+  5: [238279, -2147483647, 1]
+  6: [69606719244615, 5845492242, 52134, 1141]
+COLUMN GenCol 117 : Number{m}
+  0: 1
+  1: 0.836874
+  2: 3380524050
+  3: 32767
+  4: 3
+  5: 103
+  6: 0
+TABLE Trans 2
+LENGTH 1
+COLUMN Sum 0 : Number
+  0: 7
+COLUMN Sum 1 : Number
+  0: 7
+TABLE Trans 3
+LENGTH 7
+COLUMN GenCol 107 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 108 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 111 : Number
+  0: 36364433
+  1: 9223372036854775808
+  2: 1
+  3: 0
+  4: 0.075753
+  5: 2147483647
+  6: 727389292107
+COLUMN GenCol 112 : C <Blank | Num:Number>
+  0: Blank
+  1: Blank
+  2: Blank
+  3: Num(6)
+  4: Blank
+  5: Blank
+  6: Blank
+COLUMN GenCol 113 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "CONTENT", bool: true, c: Blank, dtz: 1923-05-26 21:13:56.837000457 -00:11)
+  1: (Text: "a 90r", bool: false, c: Num(1), dtz: 1960-04-28 15:36:22.876635601 America/Punta_Arenas)
+  2: (Text: "xZZZZn", bool: true, c: Num(32767), dtz: 2040-06-27 13:38:00 -01:54)
+  3: (Text: "%?", bool: true, c: Blank, dtz: 1899-09-27 08:21:25.039504739 -07:54)
+  4: (Text: "l Za aZrZ 9", bool: true, c: Num(0.4681), dtz: 2040-03-27 06:08:31.962805774 Australia/Tasmania)
+  5: (Text: "ja 0nna090a", bool: true, c: Num(-9223372036854775808), dtz: 4222-09-04 20:00:58.105160276 America/Indiana/Marengo)
+  6: (Text: "v", bool: true, c: Num(0.121859), dtz: 1532-10-03 17:15:07.348134997 America/Montserrat)
+COLUMN GenCol 116 : [Number]
+  0: [-9223372036854775808]
+  1: [428, 0]
+  2: [-9223372036854775808, -32767, 14]
+  3: [3]
+  4: [2147483647, 469923880, -9223372036854775807, 225967]
+  5: [238279, -2147483647, 1]
+  6: [69606719244615, 5845492242, 52134, 1141]
+COLUMN GenCol 117 : Number{m}
+  0: 1
+  1: 0.836874
+  2: 3380524050
+  3: 32767
+  4: 3
+  5: 103
+  6: 0
+TABLE Trans 4
+LENGTH 7
+COLUMN GenCol 106 : [[(key: Number, value: (a: Text, c: Number))]]
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 107 : A <Single>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 108 : A <Single>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 109 : A <Single>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 110 : C <Blank | Num:Number>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 111 : Number
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 112 : C <Blank | Num:Number>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 113 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 114 : Number{cm}
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 115 : Number
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 116 : [Number]
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 117 : Number{m}
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+TABLE Trans 5
+LENGTH 7
+COLUMN GenCol 107 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 108 : A <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: Single
+  6: Single
+COLUMN GenCol 111 : Number
+  0: 36364433
+  1: 9223372036854775808
+  2: 1
+  3: 0
+  4: 0.075753
+  5: 2147483647
+  6: 727389292107
+COLUMN GenCol 112 : C <Blank | Num:Number>
+  0: Blank
+  1: Blank
+  2: Blank
+  3: Num(6)
+  4: Blank
+  5: Blank
+  6: Blank
+COLUMN GenCol 113 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "CONTENT", bool: true, c: Blank, dtz: 1923-05-26 21:13:56.837000457 -00:11)
+  1: (Text: "a 90r", bool: false, c: Num(1), dtz: 1960-04-28 15:36:22.876635601 America/Punta_Arenas)
+  2: (Text: "xZZZZn", bool: true, c: Num(32767), dtz: 2040-06-27 13:38:00 -01:54)
+  3: (Text: "%?", bool: true, c: Blank, dtz: 1899-09-27 08:21:25.039504739 -07:54)
+  4: (Text: "l Za aZrZ 9", bool: true, c: Num(0.4681), dtz: 2040-03-27 06:08:31.962805774 Australia/Tasmania)
+  5: (Text: "ja 0nna090a", bool: true, c: Num(-9223372036854775808), dtz: 4222-09-04 20:00:58.105160276 America/Indiana/Marengo)
+  6: (Text: "v", bool: true, c: Num(0.121859), dtz: 1532-10-03 17:15:07.348134997 America/Montserrat)
+COLUMN GenCol 116 : Void <>
+  0: !UserException: Error in GenCol 116 expression: Type mismatch: Boolean versus C
+  1: !UserException: Error in GenCol 116 expression: Type mismatch: Boolean versus C
+  2: !UserException: Error in GenCol 116 expression: Type mismatch: Boolean versus C
+  3: !UserException: Error in GenCol 116 expression: Type mismatch: Boolean versus C
+  4: !UserException: Error in GenCol 116 expression: Type mismatch: Boolean versus C
+  5: !UserException: Error in GenCol 116 expression: Type mismatch: Boolean versus C
+  6: !UserException: Error in GenCol 116 expression: Type mismatch: Boolean versus C
+COLUMN GenCol 117 : Number{m}
+  0: 1
+  1: 0.836874
+  2: 3380524050
+  3: 32767
+  4: 3
+  5: 103
+  6: 0
+COLUMN New 2 : Void <>
+  0: !UserException: Error in New 2 expression: Type mismatch: Number{1} versus Number{m}
+  1: !UserException: Error in New 2 expression: Type mismatch: Number{1} versus Number{m}
+  2: !UserException: Error in New 2 expression: Type mismatch: Number{1} versus Number{m}
+  3: !UserException: Error in New 2 expression: Type mismatch: Number{1} versus Number{m}
+  4: !UserException: Error in New 2 expression: Type mismatch: Number{1} versus Number{m}
+  5: !UserException: Error in New 2 expression: Type mismatch: Number{1} versus Number{m}
+  6: !UserException: Error in New 2 expression: Type mismatch: Number{1} versus Number{m}
+COLUMN New 1 : Boolean
+  0: true
+  1: true
+  2: true
+  3: true
+  4: true
+  5: true
+  6: true
+TABLE Trans 6
+LENGTH 7
+COLUMN GenCol 106 : [[(key: Number, value: (a: Text, c: Number))]]
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 107 : A <Single>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 108 : A <Single>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 109 : A <Single>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 110 : C <Blank | Num:Number>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 111 : Number
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 112 : C <Blank | Num:Number>
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 113 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 114 : Number{cm}
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 115 : Number
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 116 : [Number]
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+COLUMN GenCol 117 : Number{m}
+  0: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, ASCENDING)"

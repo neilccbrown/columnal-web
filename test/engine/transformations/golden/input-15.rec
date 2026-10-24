@@ -1,0 +1,398 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN YYT
+YYT "Test 0"
+YYT FORMAT @BEGIN
+YYT @COLUMN GenCol 66 @TYPE [ Text ] @DEFAULT [ "a" , "l⏆" ]
+YYT @COLUMN GenCol 67 @TYPE ( a : Number , b : Number ) @DEFAULT ( "a" : -128 , "b" : -9223372036854775807 )
+YYT @END FORMAT
+YYT VALUES @BEGIN
+YYT   [ "xn0r99" , "y99nn00Z9" , "HlyIi" , "q0ZZ0 0n0" ] , ( "a" : 1 , "b" : 127 )
+YYT   [ "qnr09Zra0a" , "􋁦" , "덳" ] , ( "a" : -32768 , "b" : 0.450139 )
+YYT   @INVALID "#885526409" , ( "a" : 35150 , "b" : -9223372036854775807 )
+YYT   [ "𪵂n" ] , ( "a" : 478 , "b" : 5146509438830650414 )
+YYT   [ "qZ ZZ9ZraaZ" ] , @INVALID "#2003974037"
+YYT   [ "VZ" , "k" ] , ( "a" : 0 , "b" : -2147483648 )
+YYT   [ ",􌡌^cQ" ] , @INVALID "#-925113464"
+YYT   [ "yn00a9Z" , " " ] , @INVALID "#838729532"
+YYT   [ "UNITS" ] , ( "a" : 5 , "b" : -2147483649 )
+YYT   @INVALID "#-1813339168" , ( "a" : 9223372036854775807 , "b" : 76200 )
+YYT   [ "*+u" ] , ( "a" : 72638659544 , "b" : 9223372036854775808 )
+YYT   [ "X" ] , ( "a" : -2147483647 , "b" : -2147483648 )
+YYT   [ "1" , "#󰻺4󷹘)fb𧕎" , "SOURCE" ] , @INVALID "#973186756"
+YYT   [ "]w" , "Time" , "gaaa" , "krn" ] , ( "a" : 8 , "b" : 2627 )
+YYT   [ "{Z^c ," , "s 990ZZ Z0" , "enZ0ra909n" , "4𪫱`" ] , ( "a" : -9223372036854775809 , "b" : 1 )
+YYT   [ "rn09" , "tagged" , "mr nnZ nZr" ] , ( "a" : 141585030991 , "b" : -2147483648 )
+YYT   [ ";U|𓕺 N󽂰􍆆]W_uI" , "=e!p" , "験x" ] , ( "a" : 9223372036854775808 , "b" : 6972 )
+YYT   [ "UA" ] , ( "a" : 2147483648 , "b" : 226 )
+YYT   [ "󳄥Le􄞢" ] , ( "a" : 32767 , "b" : -128 )
+YYT   [ "TYPE" , "nG" ] , ( "a" : 1 , "b" : 32767 )
+YYT   [ "]eBz" , "tagged" , "f0n Zr9anr" ] , ( "a" : 11104394902706345613700 , "b" : 1 )
+YYT   [ "0" , "Ruc􇒶" , "nZa09aa r" , "TRANSFORMATION" ] , ( "a" : 715 , "b" : 117114 )
+YYT   [ "BEGIN" ] , ( "a" : 22 , "b" : -2147483647 )
+YYT   [ "?^a" ] , ( "a" : -32767 , "b" : 4 )
+YYT   [ "a" , "(" , "fr 00" , "Time" ] , ( "a" : 13846 , "b" : 92280 )
+YYT   [ "DEFAULT" , "K󳊣^a" ] , ( "a" : 2147483648 , "b" : 932406496 )
+YYT   [ "TYPE" , "d 0arr" , "[!" , "xn" ] , ( "a" : -32768 , "b" : 7 )
+YYT   [ "cr Zr nr" , "lran" , "SKIP" ] , ( "a" : 134 , "b" : 32767 )
+YYT   [ "q𣶐" , "*恬;" , "ᨫ]X9|𲀟w" , "w Z 099Z" ] , @INVALID "#1380486665"
+YYT   [ "hZr09nnZ 0n" ] , ( "a" : -127 , "b" : 1 )
+YYT   [ "ga09" , "/P" ] , ( "a" : 29 , "b" : 8 )
+YYT   @INVALID "#875176422" , ( "a" : 195920 , "b" : 377476 )
+YYT   [ "W􁻷}􈙧g" ] , ( "a" : -9223372036854775807 , "b" : 9223372036854775807 )
+YYT   [ "%𥓝t" ] , ( "a" : 1 , "b" : -2147483649 )
+YYT   [ "i" , "Uu|" , "UNITS" , "nmI6oj𔔄GrP" ] , ( "a" : -128 , "b" : -2147483648 )
+YYT   [ "f0rZn" , "R" ] , ( "a" : 87779 , "b" : -9223372036854775808 )
+YYT   [ "DISPLAY" , "TRANSFORMATION" ] , ( "a" : 2 , "b" : 0 )
+YYT   [ "u Z" , "COLUMN" , "z" ] , ( "a" : 9223372036854775808 , "b" : 9223372036854775808 )
+YYT   @INVALID "#-779655192" , ( "a" : -2147483648 , "b" : -32768 )
+YYT   [ "xZ9" , "1F'Sk􃆬" , "apply" , "END" ] , ( "a" : 258 , "b" : 9223372036854775807 )
+YYT   [ "il𡻜" , "bnaa" , "a" , "a" ] , ( "a" : 283254924556612655 , "b" : 167862737243 )
+YYT   [ "u9r0a ar00" , "󲘶x𢡿ꬼl;" ] , ( "a" : 0.969572 , "b" : 9223372036854775808 )
+YYT   [ "DateTime" , "END" , "DATA" ] , ( "a" : 1 , "b" : 0.838031 )
+YYT   [ "N[swp㙐8oZ" ] , ( "a" : 9223372036854775808 , "b" : -32768 )
+YYT   [ "󳦖" , "," , "a" ] , ( "a" : 350458 , "b" : 0.90592 )
+YYT   [ "󶼄Q" , "a" ] , ( "a" : 2147483647 , "b" : -32767 )
+YYT   [ "3mH" , "󺑼󰣽W󲍤" ] , ( "a" : 210749296852 , "b" : 903863265137 )
+YYT   [ ";茪" , "sna a" , "h0nZ 00" ] , ( "a" : -2147483648 , "b" : 10530 )
+YYT   [ "," , "DateTime" ] , ( "a" : 3835 , "b" : 2147483647 )
+YYT   [ "'󷬘🯞􇒣逊57鿂w7He::7𖄕rb柰x#^c]" , "Q" , "UHW{DH𦶬od𔄁𝧑" , "COMMENT" ] , ( "a" : -32767 , "b" : 9223372036854775808 )
+YYT   [ "b099na0r" , "jrr0ZaaaZ" , "i00 naZaraZ" , "㗜Z" ] , ( "a" : 2009 , "b" : -2147483648 )
+YYT   [ "fY)# *-|􅾴" , "Z" , "u9 9ra9" , "r" ] , ( "a" : 9223372036854775808 , "b" : -1 )
+YYT   [ "LINKED" ] , ( "a" : 58 , "b" : -1 )
+YYT   @INVALID "#954948125" , ( "a" : 24 , "b" : 19 )
+YYT   @INVALID "#1316123896" , ( "a" : 41 , "b" : 2147483647 )
+YYT   [ "􋚍" , ".蠕V" , "C" , "J󵺤􌺃op" ] , @INVALID "#1010441922"
+YYT   [ "wk" ] , ( "a" : -9223372036854775808 , "b" : 32767 )
+YYT   [ "DateTime" , "invalidtypeops" ] , ( "a" : 1688468777470 , "b" : -9223372036854775807 )
+YYT   [ "E󿅱Oj%QX󹸟G𫢂𣢂fBM#+%8􅕲zv븰I𪥽HV􂄓" , "􏬕E𢆽" , "􋺌" ] , ( "a" : 47 , "b" : 229084 )
+YYT   @INVALID "#1976196287" , ( "a" : 11105750 , "b" : 127 )
+YYT   @INVALID "#-1226570505" , ( "a" : -2147483648 , "b" : 0.065458 )
+YYT   [ "_.𪬰)" , "#" ] , ( "a" : 9223372036854775808 , "b" : 0 )
+YYT   [ "V:1慆o𝑏" ] , ( "a" : 101585821215573415894 , "b" : 0.273472 )
+YYT   [ "invalidtypeops" , "𪿠I" , "u􅻰44;8𳍻" ] , ( "a" : 52 , "b" : 0 )
+YYT   [ "𩸬w" , "/" ] , ( "a" : 2147483648 , "b" : 0.704799 )
+YYT   @INVALID "#219707489" , ( "a" : -32767 , "b" : 91 )
+YYT   @INVALID "#172208153" , @INVALID "#913811761"
+YYT   [ "G!" ] , ( "a" : -127 , "b" : -9223372036854775807 )
+YYT   [ "zar9" , "𝐤𮕟" , "%~-" , "{" ] , ( "a" : 0 , "b" : 238 )
+YYT   [ "X|&f)" , "a" , "𥍇" , "$" ] , ( "a" : 81 , "b" : 2 )
+YYT   [ "p&" , "J𰩖-G𫲎" ] , ( "a" : -128 , "b" : -2147483648 )
+YYT   [ ".zn5" , "vj𪸻:" , "𔈂3" ] , ( "a" : 2147483647 , "b" : 18 )
+YYT   [ "𭕍" , "y9nr9" , "Boolean" , "DISPLAY" ] , ( "a" : 1 , "b" : 59790538062 )
+YYT   [ "F" , "N􇎗{4j<}}i" ] , ( "a" : -32768 , "b" : 182 )
+YYT   [ "END" , "fX<" , "t" , "*􈃓" ] , ( "a" : 9223372036854775807 , "b" : 163 )
+YYT   [ ":" , "^cMr" ] , ( "a" : 0.44865 , "b" : 41507135340365 )
+YYT   [ "Text" ] , ( "a" : -2147483649 , "b" : 5495 )
+YYT   [ "" , "㐆" , "z" , ".]+?𱰬" ] , ( "a" : -9223372036854775808 , "b" : 1 )
+YYT   [ "w9" , "u" ] , ( "a" : -32767 , "b" : 19 )
+YYT   [ "𝩴" , "COLUMNAL" , "invalidtypeops" ] , ( "a" : -32767 , "b" : 248840916 )
+YYT   [ "LZ-'" , "y009 Zrr" , "eanZ0Z0Z" , "END" ] , ( "a" : 0 , "b" : 210 )
+YYT   [ "r0" , "={,󹢊!Fp0" , "t9" ] , ( "a" : 2047 , "b" : 0.047502 )
+YYT   [ "􍙖+𩷅r𣜭r󴊾𥍉" ] , ( "a" : 2148 , "b" : 127 )
+YYT   @INVALID "#-1931762815" , ( "a" : 9223372036854775807 , "b" : 15885695 )
+YYT   [ "𒆤>㌇" , ")􂆹;" ] , ( "a" : -9223372036854775807 , "b" : 12012092 )
+YYT   [ "COMMENT" , "卭~" ] , ( "a" : -2147483649 , "b" : 11655764298377 )
+YYT   [ "b" ] , ( "a" : -32768 , "b" : -2147483649 )
+YYT   [ "[𘍽j" , "A" ] , ( "a" : 0 , "b" : 32767 )
+YYT   [ "cr0 Z" ] , ( "a" : -9223372036854775809 , "b" : 3768 )
+YYT   [ "xa9" , "g0n" , "tr rra" ] , ( "a" : 127 , "b" : -2147483647 )
+YYT   [ "􀯻 #Ɯe0h􊍶,k$" , "jZr9" , "TRANSFORMATION" ] , ( "a" : 2203501688946 , "b" : -9223372036854775809 )
+YYT   [ "$a.t" ] , ( "a" : 9223372036854775808 , "b" : 107163760969505 )
+YYT   [ "𬐔" , "q0 9rZra" , "%" , "B&2Bmk" ] , @INVALID "#1987302822"
+YYT   [ "TRANSFORMATION" , "a" ] , @INVALID "#-1854771846"
+YYT   [ "drr0r 0nr0" , "a" , "(h[T乷fZ" , "oႇta稢!A" ] , ( "a" : 33036384 , "b" : 32 )
+YYT   [ "~EM𫲜𦀔\" , "*-3T0I􁤥2𗅝􏥘." , "󺗤릖𣞪)𫒒m9" , "*󹇜=" ] , ( "a" : 362698 , "b" : 491056 )
+YYT   [ "BEGIN" ] , ( "a" : 10926228424458 , "b" : -2147483648 )
+YYT   [ "m󿔢a" , "􁭿" ] , @INVALID "#-2034888789"
+YYT   [ "COLUMNAL" , "Time" , "sZZ0rn" , "i" ] , ( "a" : -32768 , "b" : 1495062 )
+YYT   [ "END" , "󶅝󿑸􌝌𔕳/􃪌" , "bLS" ] , ( "a" : -1 , "b" : -9223372036854775807 )
+YYT   [ "5󱡭ꃋ" , "?" ] , ( "a" : 2147483647 , "b" : 0.713908 )
+YYT   [ "xhz" , "𲰥" ] , ( "a" : 127 , "b" : 51991223615 )
+YYT   @INVALID "#-920760380" , ( "a" : 5198889252 , "b" : 0.037485 )
+YYT   [ "s0r0 9" ] , ( "a" : 1004 , "b" : -9223372036854775807 )
+YYT   @INVALID "#140984120" , ( "a" : 2147483647 , "b" : -2147483649 )
+YYT   [ "9𣸕%5􏄼󻋟" ] , @INVALID "#-1388266628"
+YYT   [ "A" , "KR" ] , ( "a" : 0 , "b" : 127 )
+YYT   [ "|d,/󼚒L" , "jnrn9rrr" , "s9nr0ZZ0Zn9" , "ta00an9nr99" ] , ( "a" : 0.071414 , "b" : 36 )
+YYT   [ "far r" , "] " , "nnrnr" , "3Q8/CovDd6" ] , ( "a" : 0.946215 , "b" : 2147483647 )
+YYT   [ "END" , "TEXTFILE" ] , ( "a" : 32767 , "b" : -9223372036854775807 )
+YYT   @INVALID "#-108800933" , ( "a" : 451529284401710581463 , "b" : 11119962602 )
+YYT   [ "s" , "m[7=󰒭b𣼫LAA" , "𮨭{" , "%7_𒔌" ] , ( "a" : 8831419532 , "b" : 0.620537 )
+YYT   @INVALID "#-415304051" , ( "a" : 0.2315 , "b" : 832 )
+YYT   [ "a" ] , ( "a" : -1 , "b" : 32767 )
+YYT   [ "w Z0aa 0" ] , @INVALID "#-862919991"
+YYT   [ "a" , "b0n" ] , @INVALID "#59268274"
+YYT   [ "tan n" , "DISPLAY" ] , ( "a" : -128 , "b" : 0.601855 )
+YYT   [ "` 8" ] , ( "a" : -1 , "b" : 0.247899 )
+YYT   [ "Ff" , "',?􅇰􁤐J𑬄ẋ｢" , "DateTime" , "􏦸Z`77O派U𞛩" ] , @INVALID "#-483256507"
+YYT   [ "z0nZ rZ" , "y0" , "a" ] , ( "a" : 39780208714 , "b" : 9223372036854775808 )
+YYT   [ "UNITS" , "L4T啑 " , "ba" ] , ( "a" : -2147483648 , "b" : -32768 )
+YYT   [ "W" , "" ] , ( "a" : 191 , "b" : 0 )
+YYT   [ "vZ" , "GgJw󿺚3" , "TEXTFILE" ] , ( "a" : -1 , "b" : 22600668188503 )
+YYT   [ "aZr9na9" , "s Z" ] , ( "a" : 8921 , "b" : 26 )
+YYT   [ "z r anr" , "0󸸻" , "Kꬕ50𧘃𥻊󵂶eS:~V'zQI뺰𞸶YVsK" ] , ( "a" : -1 , "b" : -127 )
+YYT   [ "_" ] , ( "a" : 1 , "b" : 108899748 )
+YYT   [ "iZZ0Zna0" , "fL+Dᨇw" , "VERSION" ] , ( "a" : 857 , "b" : 3976 )
+YYT   [ "􇝻" , ".7󻄺:" ] , ( "a" : 8283069 , "b" : -9223372036854775807 )
+YYT   [ "𣹬" ] , ( "a" : 37 , "b" : -127 )
+YYT   @INVALID "#-1701339424" , ( "a" : 0.564061 , "b" : 870335 )
+YYT   [ "x ra99rr" , "sa" , "T^a" , "z뗆桉􈈐^a~𝃀?钞\" ] , ( "a" : 1 , "b" : 113 )
+YYT   [ "󳰞⪋9p" , "+xgQh􀼐" , "v-" ] , @INVALID "#1816985355"
+YYT   [ "􉓗?" , "X^a4𫷟𥖜%Z" ] , ( "a" : 810325955860 , "b" : 33917330650385315362554 )
+YYT   [ "v6W}0vQ^cP" , "Tx" ] , @INVALID "#1351473205"
+YYT   [ "hZ r" , "a" ] , ( "a" : 32767 , "b" : 983 )
+YYT   [ "X" , "jr" , "ln" , "a" ] , ( "a" : 0 , "b" : -9223372036854775809 )
+YYT   @INVALID "#-2066711411" , ( "a" : 32767 , "b" : 18250019370 )
+YYT   @INVALID "#-73775961" , ( "a" : 1 , "b" : -128 )
+YYT   [ "Time" ] , ( "a" : -9223372036854775809 , "b" : 9223372036854775807 )
+YYT   [ "m" , "ga 9" ] , ( "a" : 9223372036854775808 , "b" : 0.337189 )
+YYT   [ "*" , "DateTime" , "W^a𱧧>h6" , "1" ] , ( "a" : -9223372036854775807 , "b" : 268 )
+YYT   [ "n" , "X𗭊🯶^a𪶃^cEe" , "t羅+t1hO]Q󳛣4rD~" ] , @INVALID "#-948536916"
+YYT   [ "𡓂" , "yna0na" , "a&搲/kVB" , "𥴥~*BT" ] , ( "a" : -9223372036854775809 , "b" : 2935 )
+YYT   [ "apply" ] , ( "a" : -2147483647 , "b" : 754 )
+YYT   [ "M" , "ba Z 0 ZZ" , "jZ" , "p r9" ] , ( "a" : 0 , "b" : 2 )
+YYT   [ "a" ] , ( "a" : 1305 , "b" : 1 )
+YYT   [ "r9Z09na" , "a" ] , ( "a" : 0 , "b" : 236 )
+YYT   [ "a" ] , ( "a" : 641 , "b" : 79 )
+YYT   [ "Z^c1l" , "u09 rnaaa0a" ] , ( "a" : -128 , "b" : -9223372036854775807 )
+YYT   [ "kZr9 0nZ" ] , ( "a" : 21241 , "b" : 9223372036854775808 )
+YYT   @INVALID "#-58384017" , ( "a" : 9223372036854775808 , "b" : 70712005749 )
+YYT   [ "0" , "dan0a" ] , ( "a" : 2147483647 , "b" : -32768 )
+YYT   [ "lra" ] , ( "a" : 32767 , "b" : -2147483649 )
+YYT   @INVALID "#-371521687" , ( "a" : -127 , "b" : 0.018163 )
+YYT   [ "Z" ] , ( "a" : 30168 , "b" : 9223372036854775808 )
+YYT   [ "F􋓞yPnsd&*#" ] , ( "a" : 7998863822 , "b" : -32767 )
+YYT   @INVALID "#810547098" , ( "a" : 232 , "b" : 21 )
+YYT   [ "ijS2􅬸8Oy" , "楬N􂽆G𡉖i󳥗*_kBUZ\" , "U" ] , ( "a" : 22945 , "b" : -2147483647 )
+YYT   [ "0F󿁛􉛖?<" , "unitvar" , "a" , "Time" ] , ( "a" : -2147483649 , "b" : 0 )
+YYT   @INVALID "#-1697337519" , ( "a" : 500713888969 , "b" : 0.021224 )
+YYT   [ "L8FPPIAxyc;z)2魍z(" ] , ( "a" : 2 , "b" : 0.384397 )
+YYT   [ "hra9" , "Boolean" , "?#󴸓R􌉠}p􈖄m!Gn" ] , ( "a" : 9223372036854775807 , "b" : 315334862348 )
+YYT   [ "ov" , "1g" , "Time" , "fP^c7{$녘dkl4+g`s" ] , ( "a" : -2147483648 , "b" : -9223372036854775809 )
+YYT   [ "讉" ] , ( "a" : 127 , "b" : -9223372036854775809 )
+YYT   [ "r r0 n 0an" ] , ( "a" : 2147483648 , "b" : 32767 )
+YYT   [ "cs𥄸\-句_" , "핛" , "f09000 Z" , "CN2𭜝!" ] , ( "a" : -2147483649 , "b" : -127 )
+YYT   [ "[" , "t" , "󴻷" ] , ( "a" : 46810 , "b" : 0 )
+YYT   [ "rnn0" ] , ( "a" : 32767 , "b" : 9223372036854775808 )
+YYT   [ "er" , "DateYM" , " mPN" , "typevar" ] , ( "a" : 0.309477 , "b" : 0 )
+YYT   [ "COMMENT" , "BEGIN" , "FR~󶴒Wsn-" ] , ( "a" : 12 , "b" : 1619936653147 )
+YYT   [ "a" , "DEFAULT" ] , ( "a" : 2147483648 , "b" : 2147483647 )
+YYT   [ ">\" , "a" , "END" , "q9nn" ] , ( "a" : 1425956 , "b" : 2 )
+YYT   [ "invalidtypeops" , "X" , "􀋓VY{󽝠䰮𡷟𢌤Mml𣲥U" ] , ( "a" : -9223372036854775808 , "b" : 403050612 )
+YYT   [ "TYPES" , "is" ] , @INVALID "#634911031"
+YYT   [ "2" , "lna0n a" , "TYPES" ] , ( "a" : 0.548206 , "b" : -9223372036854775808 )
+YYT   [ "h n" , "2_" ] , ( "a" : 2147483648 , "b" : -32768 )
+YYT   [ "'l" , "sZ" , "𔉌\" , "TYPE" ] , @INVALID "#1368844182"
+YYT   [ "a" , "(yE$|" ] , ( "a" : 15526173613998956 , "b" : 9223372036854775808 )
+YYT   [ "l2o}L" , "𮎁_ZP𪴏dTVd𲎞􍵻" , "jX]%" ] , @INVALID "#632707219"
+YYT   [ "vZ99naa9a9" ] , ( "a" : 9 , "b" : 0.353087 )
+YYT   @INVALID "#-1417368224" , ( "a" : -128 , "b" : -2147483647 )
+YYT   [ "9 𥤦e" , "f9na" ] , ( "a" : 13576616649669672387 , "b" : -2147483649 )
+YYT   [ "nZaarZ a" , "a" , "𘱎;" , "qZ0" ] , ( "a" : 0.052711 , "b" : -9223372036854775809 )
+YYT   [ "㐞𝢴뭿􈤯g󼺘&𥔼" , "􏏑󶊸𨐌." , "*'TQ$|" , "oZ 9ZZnZZr" ] , ( "a" : 32767 , "b" : 969 )
+YYT   [ "b(Q󰑶?" , "LINKED" , "VERSION" , "{󹫦" ] , ( "a" : 9223372036854775808 , "b" : -2147483647 )
+YYT   [ "5" , "XbB" , "$*" ] , ( "a" : -32767 , "b" : 2147483648 )
+YYT   [ "O(𭜓G" , "2^aEw󸛺" , "kna00ra9Z" ] , ( "a" : 0 , "b" : 0 )
+YYT   [ "END" , "un9n" , "ta" ] , ( "a" : 182453079729 , "b" : -32767 )
+YYT   [ "Date" , "DateTime" ] , ( "a" : 17613 , "b" : 397191717656760 )
+YYT   [ "oZZZ90 rnrZ" , "VALUES" , "h&" ] , ( "a" : 32751 , "b" : 2147483647 )
+YYT   [ "nZ" ] , ( "a" : 9223372036854775807 , "b" : 26 )
+YYT   @INVALID "#1727925865" , ( "a" : -2147483649 , "b" : 0.456962 )
+YYT   [ "a" ] , ( "a" : 127 , "b" : 19506 )
+YYT   [ "c 90aa0 a" ] , ( "a" : -9223372036854775809 , "b" : 1 )
+YYT   @INVALID "#-1954888039" , ( "a" : -2147483647 , "b" : 214 )
+YYT   [ "l nZZZ ZZ" , "Boolean" , "0𰩰" ] , @INVALID "#-1795594821"
+YYT   @INVALID "#1558871205" , ( "a" : 313 , "b" : 0.955901 )
+YYT   [ "TYPES" , "2" ] , ( "a" : 61376429 , "b" : 378754 )
+YYT   [ "a" , "p" , "oZ0aa90999r" , "E" ] , ( "a" : 613466 , "b" : 212284629177252 )
+YYT   [ "vaZn" , "TYPE" , "g90Znra00" , "TRANSFORMATION" ] , @INVALID "#1063104010"
+YYT   [ "🕴*𓎊𮰗?" , "􇲵?\𘥓h􄭭[" , "COLUMNAL" , "n9Z99nr" ] , ( "a" : 6775292679 , "b" : 32767 )
+YYT   @INVALID "#-1744156941" , ( "a" : 0.677939 , "b" : 32767 )
+YYT   [ "N" , "guU𓴅8+4R!󰆜E+)􋀴i" , "!󹁨v" ] , @INVALID "#-1015412198"
+YYT   [ "TEXTFILE" , "o9 rnZZnn" ] , ( "a" : 32767 , "b" : -32768 )
+YYT   [ "a" , "𭡝%\f" , "y" ] , ( "a" : -9223372036854775809 , "b" : 8179099341 )
+YYT   [ ":[C" , "hnn0a 90a" ] , ( "a" : -2147483649 , "b" : 1 )
+YYT   [ "a" , "/" , "5􏆒" , "rnr" ] , ( "a" : 0 , "b" : -128 )
+YYT   [ "TEXTFILE" , "}IMC)=z%" , "D𡴨[,􂶝e" , "𡐑i-Zr_𰐳p:z[" ] , ( "a" : -9223372036854775808 , "b" : 3 )
+YYT   [ "0E" ] , ( "a" : 3 , "b" : -9223372036854775808 )
+YYT   [ "m" ] , ( "a" : -2147483649 , "b" : 11906 )
+YYT   [ "I&1𰯜$걖<t?[" ] , ( "a" : 2173 , "b" : 9223372036854775807 )
+YYT   [ "E_󰷀􁗮" , "kZr9nan" , "Ⱛ" ] , ( "a" : 3503156 , "b" : 332 )
+YYT   [ "Aꙷ.𩠋0" , "*VIun" ] , ( "a" : 0 , "b" : 1245882 )
+YYT   [ "typevar" ] , @INVALID "#-860372142"
+YYT   [ "CONTENT" , "7;󸀼 *C_" ] , ( "a" : 0.470811 , "b" : 3189 )
+YYT   [ "apply" , "UNITS" , "eE" ] , @INVALID "#-427269270"
+YYT   [ "Time" , "𦞇􄹁 'Wn" ] , ( "a" : 249141 , "b" : 1722409 )
+YYT   [ "/𐚙9H{P􊗱􎬫G􋯙z{}w" , "INCOMPLETE" ] , ( "a" : 1000916375 , "b" : -2147483648 )
+YYT   [ "𫊞$" , "𧗝>롙$QX" , "Ti`" , "𣭬{" ] , ( "a" : -9223372036854775807 , "b" : 0.338575 )
+YYT   [ "q𠝚" , "er0r9ra a" , "Time" ] , ( "a" : 1561633 , "b" : 2147483648 )
+YYT   [ "󹿆􋃺" ] , ( "a" : 0.436846 , "b" : 2147483648 )
+YYT   [ "y0n00aZ 00" , "𤙽躺" , "Oj<N:EP" ] , ( "a" : 1 , "b" : -2147483649 )
+YYT   [ "b" , "e0Zrr" , "𓞶pn%9m𭖈~󷏱𥩾G" , "SOURCE" ] , ( "a" : 20 , "b" : 0 )
+YYT   [ "n쭷FK9y󹝱K𔈶3" , "DateYM" , "􏬢" , "oZ 0nZ 90" ] , ( "a" : 2147483647 , "b" : 19387 )
+YYT   [ "bn Z900Z0" , "Z&|" , "=R'𨴮s󺍶fv{|9" ] , ( "a" : 5473766 , "b" : -9223372036854775807 )
+YYT   @INVALID "#113740642" , ( "a" : 1 , "b" : 0 )
+YYT   @INVALID "#1648063116" , @INVALID "#-1675749439"
+YYT   [ "m 0a" ] , ( "a" : 0.760375 , "b" : 1416030 )
+YYT   [ ")󾩩D𦮱HQ=H" , "a2" , "sP" , "apply" ] , ( "a" : -127 , "b" : 27 )
+YYT   [ "Q󺃸" , "󸄙ٱW" , "~t𭅕𲯱" ] , ( "a" : 9 , "b" : -32767 )
+YYT   [ "QW􂢰" , "D)" , "TRANSFORMATION" ] , ( "a" : -127 , "b" : -2147483647 )
+YYT   [ "nm 󺱯" , "qZrZ9Za" , "." ] , ( "a" : 265980620 , "b" : 1 )
+YYT   @INVALID "#131012000" , ( "a" : 0.571271 , "b" : -9223372036854775807 )
+YYT   [ "lWS0똆'" , "srrZ" , "𐩕" , "*" ] , ( "a" : 3746 , "b" : 12 )
+YYT   [ "lr0Z0 9a9" ] , ( "a" : 127 , "b" : 0.460966 )
+YYT   [ "_𝌖" ] , ( "a" : 1 , "b" : 108397 )
+YYT   [ ".L" , "TRANSFORMATION" ] , ( "a" : 1 , "b" : -32767 )
+YYT   [ "R499" , "v99r r9 9" , "2}h}" , "TEXTFILE" ] , ( "a" : 0.97769 , "b" : 32767 )
+YYT   [ "DISPLAY" , "U󸈒" , "T󴕮𨽍" , "n~+Oi8J" ] , ( "a" : 157935 , "b" : 26 )
+YYT   [ "8" , "p0n" , "o􂻉" ] , ( "a" : 0.680596 , "b" : -32768 )
+YYT   [ "S" ] , ( "a" : -1 , "b" : 0.889074 )
+YYT   [ "𣘢0{􈅷𓞋{" ] , ( "a" : 0 , "b" : 127 )
+YYT   [ "󺱇D󹢓W" ] , ( "a" : 1219827072554397 , "b" : 2147483647 )
+YYT   [ "TYPES" ] , ( "a" : 6924 , "b" : 15199 )
+YYT   [ "l" , "cE" , "s0r" ] , ( "a" : 3 , "b" : 13731525 )
+YYT   [ "7)OT" , "쬎}c." ] , ( "a" : 127 , "b" : 32767 )
+YYT   @INVALID "#1574434813" , ( "a" : -9223372036854775808 , "b" : 247 )
+YYT   [ "xrnr9nn9Za" ] , ( "a" : 2147483647 , "b" : 32767 )
+YYT   [ "T^a􂠪MV" , "4" ] , ( "a" : -32768 , "b" : 2 )
+YYT   [ "X𣑡" , "snZZ99" , "TYPES" , "DateTimeZoned" ] , ( "a" : -9223372036854775808 , "b" : -1 )
+YYT   [ "a" , "LINKED" ] , ( "a" : 127 , "b" : 102306 )
+YYT   [ "TYPE" ] , ( "a" : 0.234413 , "b" : -2147483649 )
+YYT   [ "a" ] , ( "a" : 2147483648 , "b" : 3 )
+YYT   [ "q" , "L" , "n9ra99ar" ] , @INVALID "#1752808538"
+YYT   @INVALID "#1036512170" , ( "a" : -32767 , "b" : 1 )
+YYT   [ ")j#" , "k" , "inꞄ" ] , ( "a" : 127 , "b" : -9223372036854775808 )
+YYT   [ "^cC𛆆m𭎨^a" , "VALUES" , "a" , "k 9" ] , ( "a" : 2147483647 , "b" : 1356 )
+YYT   [ "a" , "J𭋗H<#􎰫" , "COLUMN" ] , ( "a" : -32767 , "b" : -9223372036854775809 )
+YYT   @INVALID "#-1411376186" , ( "a" : 57228586093 , "b" : 8490922534449 )
+YYT   [ "a" , "+" ] , ( "a" : 127 , "b" : 66105412318 )
+YYT   [ "CONTENT" , "7dd|7" , "j􈅸3)" , "􊕽" ] , ( "a" : 0.757836 , "b" : 2147483647 )
+YYT   [ "Bḉ'l" , "6􏵀f擩𗀛𪪻K𥾑􃢬a⋓" ] , ( "a" : 2147483647 , "b" : 2 )
+YYT   [ "<" , "DATA" , "Boolean" ] , ( "a" : -32767 , "b" : 3 )
+YYT   [ "=" , "I/" ] , ( "a" : 7321164515776 , "b" : -2147483647 )
+YYT   [ "VALUES" ] , ( "a" : -1 , "b" : -32768 )
+YYT   [ "a" , "-q\險*uvvK󼪏>Z|" , "􎃅􌒛󾱅㋊qO" , "DEFAULT" ] , ( "a" : 115791782 , "b" : 1 )
+YYT   [ "Number" , "𣇐^aDs􈟡w𧊧" , "􀷤𩞓 0" ] , ( "a" : -9223372036854775808 , "b" : 49215023771 )
+YYT   [ "bbfV󿀑" , "a9Z nrZ90" ] , ( "a" : 0 , "b" : 121540018089 )
+YYT   [ "2is" , "8d󹓱W" ] , ( "a" : -2147483647 , "b" : 12 )
+YYT   [ "*宦" , "VALUES" ] , ( "a" : 6270676667 , "b" : 14 )
+YYT   [ "COMMENT" , "O" ] , ( "a" : -2147483647 , "b" : -127 )
+YYT   [ "DateTime" , "𑨨🠈LCv=.M'H)2_xGI" , "0Q" , "BfH" ] , @INVALID "#-1373772839"
+YYT   [ "6" , "^ae_" , "a" , "UNITS" ] , ( "a" : -2147483649 , "b" : 54745 )
+YYT   [ "br00 0" , "v Z Z0" , "A" ] , ( "a" : 55783 , "b" : -9223372036854775807 )
+YYT   [ "a" , "wn09Zr" , "e9" , "a" ] , ( "a" : -2147483649 , "b" : 1 )
+YYT   [ "󲟏橌" , "-P뜋{o[," , "F=i_|" , "-r:qOU䤉3" ] , ( "a" : 14053516 , "b" : 117615884299938 )
+YYT   @INVALID "#637164856" , ( "a" : 65093480702431980 , "b" : -9223372036854775808 )
+YYT   [ "A1^a" , "DateTime" , "ar" ] , ( "a" : 0.386702 , "b" : -127 )
+YYT   [ "B" , "nnaZZnZZ" , "kZ r" , "na99" ] , @INVALID "#104977740"
+YYT   [ "𠆆" , "iZr0r0Z9 a" ] , ( "a" : 2026257842146 , "b" : 101920 )
+YYT   [ "trrr" , "U-fHn$+!N" ] , ( "a" : 481758 , "b" : 1970583055 )
+YYT   [ "Number" , "Time" , "h 009" ] , ( "a" : 1498 , "b" : -127 )
+YYT   [ ";%" , "dZZ00" , "2izr1W􆠊V';ZV" ] , ( "a" : 14430031657 , "b" : 82 )
+YYT   [ "bZnZn0 90" , "SOURCE" ] , ( "a" : -2147483647 , "b" : 0.782448 )
+YYT   [ "X4" , "H#\􃉍&𰗵M𮈃" ] , ( "a" : 2147483647 , "b" : 2147483648 )
+YYT   [ "onn9" ] , ( "a" : 2147483647 , "b" : 1 )
+YYT   [ "Z,󳹢O" , "h|" , "^cqge" , "%n𗦓" ] , ( "a" : 56220534780311 , "b" : -1 )
+YYT   @INVALID "#361574240" , ( "a" : 9223372036854775808 , "b" : -2147483648 )
+YYT   [ "h" , "bZ9 Zrn" ] , ( "a" : 16 , "b" : -9223372036854775807 )
+YYT   [ "$p~{k^c" , "s9 9rZ9a" , "L𗆚!󲤫" ] , ( "a" : 0 , "b" : -2147483649 )
+YYT   [ "&h" ] , ( "a" : 0.316899 , "b" : 975090277853 )
+YYT   [ "m" , "a)礒" , "TYPE" ] , ( "a" : 49090845184 , "b" : 30973128 )
+YYT   [ "v]1𣗩" ] , ( "a" : -9223372036854775808 , "b" : 2147483648 )
+YYT   [ "VALUES" ] , ( "a" : 2147483648 , "b" : -2147483647 )
+YYT   @INVALID "#1206178178" , ( "a" : 16210763573 , "b" : 1109 )
+YYT   [ "K" , "Text" , "􎛼c" ] , @INVALID "#2085160628"
+YYT   [ "]" ] , ( "a" : 0.989635 , "b" : 127 )
+YYT   [ "᭲8󵍀a|" , "INCOMPLETE" , "v" ] , ( "a" : 2057985182449472062338 , "b" : 24 )
+YYT   [ "COLUMNAL" ] , ( "a" : 14376 , "b" : -2147483647 )
+YYT   [ "wa0aZZrZ" ] , ( "a" : 0.637918 , "b" : 32767 )
+YYT   [ "+!" , "3'\" ] , ( "a" : 0.337814 , "b" : -9223372036854775808 )
+YYT   [ "[N 􄷳o0􌵯" , "m0a9rraZ0" , "LE7ﾈ𲮊_L" ] , ( "a" : -2147483649 , "b" : -32767 )
+YYT   [ "􏶵2" , ",鮝\_휪" , "Dqv" ] , @INVALID "#1236196040"
+YYT   [ "x0a arr Z" , "_QX" ] , ( "a" : 23707430 , "b" : 0.915396 )
+YYT   @INVALID "#877607593" , @INVALID "#739779821"
+YYT   [ "|􋗮(" ] , ( "a" : -9223372036854775809 , "b" : 9223372036854775807 )
+YYT   [ "=𤂝" , "gar" , "a" , "YSb[A𣎔" ] , ( "a" : 415 , "b" : 1 )
+YYT   [ "!Eo2" , "a" , "DEFAULT" ] , ( "a" : 903 , "b" : 69 )
+YYT   [ "􈎘m" ] , ( "a" : 0.20283 , "b" : 0.359637 )
+YYT   [ "a" , "𝟏" , "snnaraa" , ">C" ] , ( "a" : 2 , "b" : 6 )
+YYT   [ "b0ra9Z" , "^c_WYS𗜔" , "grZ9ra9" , "wJ􂜡a" ] , @INVALID "#267475855"
+YYT   [ "y㛐󲌘􆖲^a􎭖󾠼" , "TYPE" , "󸕸𮏬" , "􃌡" ] , ( "a" : 9223372036854775808 , "b" : 1 )
+YYT   [ "􅢿" , "5$/ꩀ+" ] , ( "a" : 1 , "b" : 0.381557 )
+YYT   [ "뤀V􊪮2." ] , ( "a" : 4 , "b" : -32768 )
+YYT   [ "x0" , "BEGIN" , "p󴥑Z]𰊷nS𩲊󶵇ꋙ" ] , ( "a" : -1 , "b" : 127 )
+YYT @END VALUES
+YYT DISPLAY @BEGIN
+YYT POSITION 1 1
+YYT SHOWCOLUMNS ALL
+YYT @END DISPLAY
+@END YYT DATA
+
+TRANSFORMATION @BEGIN QMI
+QMI "Trans 2"
+QMI concatenate
+QMI SOURCE "Test 0" "Test 0"
+QMI @BEGIN
+QMI @INCOMPLETE DEFAULT SOURCE 
+QMI @END
+QMI DISPLAY @BEGIN
+QMI POSITION 1 1
+QMI SHOWCOLUMNS ALL
+QMI @END DISPLAY
+@END QMI TRANSFORMATION
+
+TRANSFORMATION @BEGIN EJI
+EJI "Trans 3"
+EJI join
+EJI SOURCE "Trans 2" "Test 0"
+EJI @BEGIN
+EJI LEFTJOIN
+EJI @END
+EJI DISPLAY @BEGIN
+EJI POSITION 1 1
+EJI SHOWCOLUMNS ALL
+EJI @END DISPLAY
+@END EJI TRANSFORMATION
+
+TRANSFORMATION @BEGIN BOG
+BOG "Trans 1"
+BOG check
+BOG SOURCE "Test 0"
+BOG @BEGIN
+BOG CHECK ANYROWS @EXPRESSION column\\GenCol 66 <= @call function\\list\element(table\\Test 0#GenCol 66, 3)
+BOG @END
+BOG DISPLAY @BEGIN
+BOG POSITION 1 1
+BOG SHOWCOLUMNS ALL
+BOG @END DISPLAY
+@END BOG TRANSFORMATION
+
+TRANSFORMATION @BEGIN FSH
+FSH "Trans 4"
+FSH join
+FSH SOURCE "Trans 3" "Trans 1"
+FSH @BEGIN
+FSH LEFTJOIN
+FSH @END
+FSH DISPLAY @BEGIN
+FSH POSITION 1 1
+FSH SHOWCOLUMNS ALL
+FSH @END DISPLAY
+@END FSH TRANSFORMATION
+

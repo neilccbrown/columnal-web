@@ -1,0 +1,2 @@
+TABLE on0
+!UserException: Could not find source table: "VERSION"

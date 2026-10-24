@@ -1,0 +1,2 @@
+TABLE a
+!UserException: Could not find source table: "gZ9r9r"

@@ -1,0 +1,812 @@
+TABLE Test 0
+LENGTH 47
+COLUMN GenCol 186 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "𩻶q;JW", bool: true, c: Blank, dtz: 2035-06-12 14:19:42 Europe/Warsaw)
+  1: (Text: "gZn", bool: false, c: Blank, dtz: 2048-10-24 17:45:00 Africa/El_Aaiun)
+  2: (Text: "typevar", bool: false, c: Num(-128), dtz: 2042-10-25 10:50:42.33977029 +10:58)
+  3: (Text: "TYPE", bool: true, c: Blank, dtz: 4116-08-25 01:08:00 -05:07)
+  4: (Text: "#", bool: false, c: Blank, dtz: 1984-05-19 16:10:00 Asia/Qostanay)
+  5: (Text: ":", bool: true, c: Num(6114420063), dtz: 5451-01-01 17:14:29 Australia/Sydney)
+  6: (Text: "UFQ", bool: false, c: Blank, dtz: 1917-03-22 05:50:39.255512586 Etc/UTC)
+  7: (Text: "s5m", bool: true, c: Num(-2147483648), dtz: 8998-07-29 20:38:02.368338156 +11:16)
+  8: (Text: "]m_JJ", bool: false, c: Num(1410056152546), dtz: 2021-08-12 17:43:16 America/Punta_Arenas)
+  9: (Text: "z", bool: false, c: Blank, dtz: 1991-01-26 09:01:36 Asia/Thimbu)
+  10: (Text: "J", bool: true, c: Num(4), dtz: 9384-01-14 14:20:46.365627549 Asia/Vladivostok)
+  11: (Text: "da", bool: true, c: Num(38), dtz: 1966-10-20 17:49:39.982643101 -09:25)
+  12: (Text: "􍧱", bool: true, c: Num(0.312817), dtz: 1962-01-12 01:46:00 -06:59)
+  13: (Text: "Q{􄪤Mㅣ𓀕", bool: true, c: Num(0), dtz: 1957-07-07 21:49:34.691824047 -10:24)
+  14: (Text: "ᬊU", bool: false, c: Blank, dtz: 1993-03-25 13:06:26 America/Iqaluit)
+  15: (Text: "_O", bool: false, c: Blank, dtz: 2050-08-19 17:40:05.517176058 +06:11)
+  16: (Text: "􄃁", bool: true, c: Num(-9223372036854775808), dtz: 3125-01-20 18:21:39 +08:39)
+  17: (Text: "a", bool: true, c: Num(0.590622), dtz: 1955-07-24 14:18:18.390611298 -08:47)
+  18: (Text: "􁟴", bool: false, c: Num(9223372036854775808), dtz: 1336-01-14 13:08:20 America/Argentina/ComodRivadavia)
+  19: (Text: "~", bool: false, c: Num(18), dtz: 1933-03-12 04:28:00 -03:35)
+COLUMN GenCol 187 : C <Blank | Num:Number>
+  0: Num(-127)
+  1: Blank
+  2: Blank
+  3: !InvalidImmediateValueException: Invalid value: #1957816347
+  4: Num(2147483647)
+  5: Num(9223372036854775807)
+  6: Blank
+  7: Num(506)
+  8: Blank
+  9: Blank
+  10: Num(0.634748)
+  11: Num(12411898)
+  12: Num(3)
+  13: Num(0.936625)
+  14: Num(-1)
+  15: Num(0)
+  16: Num(-9223372036854775807)
+  17: Blank
+  18: Blank
+  19: Num(232177)
+COLUMN GenCol 188 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "unitvar", t 2: 692209364), z: 2147483648)
+  1: (inner: (t 1: "kK!􄼾*𨟤", t 2: -127), z: 58)
+  2: (inner: (t 1: "ꪉ􄩕", t 2: 53033663), z: 0.080292)
+  3: (inner: (t 1: "Mv", t 2: 172), z: -2147483647)
+  4: (inner: (t 1: "a", t 2: -9223372036854775807), z: -2147483647)
+  5: (inner: (t 1: "]◘p𬰤I", t 2: 1519), z: 0)
+  6: !InvalidImmediateValueException: Invalid value: #1554593200
+  7: (inner: (t 1: "K", t 2: -32768), z: -2147483647)
+  8: (inner: (t 1: "mr Z", t 2: -9223372036854775807), z: 127)
+  9: (inner: (t 1: "'", t 2: -32767), z: 0.417222)
+  10: (inner: (t 1: "TYPES", t 2: -128), z: 5225)
+  11: (inner: (t 1: "c9r 9Zrnaa", t 2: 182436), z: 46)
+  12: (inner: (t 1: "2Hp", t 2: 19), z: 9223372036854775808)
+  13: (inner: (t 1: "j󻀤a~ꇏ(}", t 2: 3443902435532), z: 1)
+  14: (inner: (t 1: "a", t 2: 32767), z: -32767)
+  15: (inner: (t 1: "pZ90a0a", t 2: -1), z: -127)
+  16: (inner: (t 1: "{", t 2: 0.569868), z: -1)
+  17: (inner: (t 1: "o:􅍎", t 2: 82), z: -1)
+  18: (inner: (t 1: "END", t 2: 240292), z: 0)
+  19: (inner: (t 1: "^a", t 2: 2147483647), z: 1)
+COLUMN GenCol 189 : DateYM
+  0: 6718-11
+  1: 1726-09
+  2: 6792-08
+  3: 6787-08
+  4: 3921-09
+  5: 5750-04
+  6: 2202-02
+  7: 8443-12
+  8: 7625-10
+  9: 2009-01
+  10: 5882-08
+  11: 1087-03
+  12: 0676-06
+  13: 2562-10
+  14: !InvalidImmediateValueException: Invalid value: #-487892367
+  15: 1267-08
+  16: 9734-02
+  17: 0754-07
+  18: 5109-12
+  19: 9838-08
+COLUMN GenCol 190 : Number{GBP}
+  0: 89789481
+  1: 0
+  2: 0
+  3: 2008
+  4: -9223372036854775807
+  5: 7486010
+  6: 9223372036854775808
+  7: -128
+  8: 24505
+  9: 0
+  10: 6658
+  11: 32767
+  12: 0.354656
+  13: 9223372036854775808
+  14: -32767
+  15: 1
+  16: -2147483647
+  17: 9223372036854775808
+  18: 0
+  19: -128
+COLUMN GenCol 191 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: !InvalidImmediateValueException: Invalid value: #747004792
+  6: !InvalidImmediateValueException: Invalid value: #-1666788280
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: !InvalidImmediateValueException: Invalid value: #-33470734
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 192 : [Text]
+  0: ["a", "y9 r 0arn", "y 0 r"]
+  1: ["Date", "pn 00"]
+  2: ["noዿ𔕐&R4UK e"]
+  3: !InvalidImmediateValueException: Invalid value: #702402978
+  4: ["4I󶓧Hj"]
+  5: !InvalidImmediateValueException: Invalid value: #1572478052
+  6: [")􊎨^c", "apply", "END", "+Hb"]
+  7: ["󻂰he", "6", "7^a𫯃{R𠩝"]
+  8: ["END", "END"]
+  9: !InvalidImmediateValueException: Invalid value: #-1449621013
+  10: !InvalidImmediateValueException: Invalid value: #-152833954
+  11: ["2ፃ"]
+  12: ["j9", "jna0r 0Zn", "ꭰ"]
+  13: !InvalidImmediateValueException: Invalid value: #-782438567
+  14: ["쑜󳽇", "L"]
+  15: ["t𥣨", "𘇺K", "쌸u9", "LINKED"]
+  16: !InvalidImmediateValueException: Invalid value: #2045165762
+  17: !InvalidImmediateValueException: Invalid value: #-994065005
+  18: ["a"]
+  19: ["퉤"]
+COLUMN GenCol 193 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "vnn9", t 2: 10006555577), z: 0.422118)
+  1: (inner: (t 1: "3", t 2: -9223372036854775807), z: 1)
+  2: (inner: (t 1: "⨔~P", t 2: 32767), z: 9223372036854775807)
+  3: (inner: (t 1: "VT", t 2: 1), z: -2147483648)
+  4: !InvalidImmediateValueException: Invalid value: #1474193095
+  5: (inner: (t 1: "A`3󽣬Y", t 2: 710962), z: 2978)
+  6: (inner: (t 1: "pr", t 2: 1), z: 1)
+  7: (inner: (t 1: "z9a0a Znr", t 2: -9223372036854775807), z: -1)
+  8: (inner: (t 1: "DateYM", t 2: 432), z: 2707)
+  9: !InvalidImmediateValueException: Invalid value: #-1866705474
+  10: !InvalidImmediateValueException: Invalid value: #272597593
+  11: (inner: (t 1: "TYPES", t 2: -128), z: -128)
+  12: (inner: (t 1: "!^a", t 2: 241640), z: 127)
+  13: (inner: (t 1: "vZ90r9r", t 2: -9223372036854775808), z: -9223372036854775809)
+  14: (inner: (t 1: "g9r0 rra90Z", t 2: 0.417438), z: 2147483647)
+  15: (inner: (t 1: "=", t 2: -2147483648), z: 611805370690081)
+  16: (inner: (t 1: "eZjhnq", t 2: -128), z: 15)
+  17: !InvalidImmediateValueException: Invalid value: #492375693
+  18: (inner: (t 1: "b nZaZn", t 2: -2147483647), z: -9223372036854775809)
+  19: !InvalidImmediateValueException: Invalid value: #2015797022
+COLUMN GenCol 194 : [Text]
+  0: ["F", "V", "t/{𫌧h󿣜l"]
+  1: !InvalidImmediateValueException: Invalid value: #2053300959
+  2: ["e"]
+  3: [".", "W|𬭀t>􏏆", "8"]
+  4: ["褋", "a", "VERSION"]
+  5: ["9", "tZr9r90"]
+  6: ["w0rn", "taa0 0", "o99aaana", "6T"]
+  7: ["s r90na0", "/1:m", "e.f"]
+  8: ["wan", "&E􆷥􍅿|y", "jx+~"]
+  9: ["驋𬮡웧g^c"]
+  10: ["󸊴"]
+  11: ["􅇯P󸌴ᔘ", "Number"]
+  12: ["a", "n0Z9rn"]
+  13: ["eZa0r", ")B", "pr n90n nnr"]
+  14: ["SKIP", "har"]
+  15: ["wn", "M|Z", "DateTime", "#|!"]
+  16: ["Time", "1:s", "vr nZa00", "DateTime"]
+  17: ["ja", "b 9r99", "sZanr0 9"]
+  18: ["𖡈", "CONTENT", "Q"]
+  19: ["A"]
+COLUMN GenCol 195 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: !InvalidImmediateValueException: Invalid value: #-86075122
+  1: [(a: 10809259589, nested: (num num: -127, the text 0 item: "tr09a 0Z99")), (a: -9223372036854775808, nested: (num num: -2147483649, the text 0 item: "J.?aqc4Et9𝕜"))]
+  2: [(a: 9223372036854775807, nested: (num num: 349493623, the text 0 item: "d 00 9n"))]
+  3: [(a: 0, nested: (num num: 0.83373, the text 0 item: "g𠳭x)"))]
+  4: [(a: -127, nested: (num num: 264233843, the text 0 item: "x0an0r09")), (a: -2147483647, nested: (num num: 7421452282, the text 0 item: "n(")), (a: 1527726, nested: (num num: 0.490606, the text 0 item: "END")), (a: 312643135, nested: (num num: 4, the text 0 item: "␆󼳖𧻿Pv􆒐RN"))]
+  5: [(a: 108, nested: (num num: 55, the text 0 item: "Z")), (a: 13586419, nested: (num num: 132265, the text 0 item: "vaZ"))]
+  6: [(a: -128, nested: (num num: -32768, the text 0 item: "a")), (a: 0.153792, nested: (num num: 266947791, the text 0 item: "a"))]
+  7: [(a: -9223372036854775807, nested: (num num: 49669939435, the text 0 item: "I")), (a: 127, nested: (num num: 4137, the text 0 item: "󳎵"))]
+  8: [(a: -2147483648, nested: (num num: -2147483647, the text 0 item: "1r"))]
+  9: [(a: 642909, nested: (num num: 238447, the text 0 item: "="))]
+  10: [(a: -2147483647, nested: (num num: -9223372036854775808, the text 0 item: "i"))]
+  11: [(a: 8736, nested: (num num: -2147483648, the text 0 item: "H㋺{R􂺙Ju0"))]
+  12: [(a: -9223372036854775808, nested: (num num: 0, the text 0 item: "e0")), (a: 4, nested: (num num: 1, the text 0 item: "Time"))]
+  13: [(a: 0.862376, nested: (num num: 143, the text 0 item: "a")), (a: -128, nested: (num num: 480236518857030, the text 0 item: "COLUMNAL")), (a: 0.829198, nested: (num num: 0.306018, the text 0 item: ",7`S"))]
+  14: [(a: 9223372036854775807, nested: (num num: -32768, the text 0 item: "iZZnnar9")), (a: 0, nested: (num num: 144925, the text 0 item: "kna9rnr"))]
+  15: [(a: 1, nested: (num num: 20, the text 0 item: "𨟒󼺷")), (a: 26055, nested: (num num: 152729, the text 0 item: "TYPES")), (a: -2147483647, nested: (num num: 0, the text 0 item: "VALUES")), (a: -127, nested: (num num: -32768, the text 0 item: "gZrnnaa"))]
+  16: [(a: 219, nested: (num num: 253961815608, the text 0 item: "A'")), (a: 200, nested: (num num: -2147483648, the text 0 item: "/&Cz")), (a: 127, nested: (num num: 0.522857, the text 0 item: "&"))]
+  17: [(a: 183, nested: (num num: -1, the text 0 item: "rn"))]
+  18: [(a: 0.035406, nested: (num num: 4, the text 0 item: "invalidtypeops"))]
+  19: [(a: 15758047656754323, nested: (num num: -127, the text 0 item: "h{?a~G󾩏gvln7")), (a: 696, nested: (num num: 0.222922, the text 0 item: "]\Z󵋝")), (a: -128, nested: (num num: 0, the text 0 item: "eaZr9"))]
+COLUMN GenCol 196 : Number{m^2}
+  0: 1025
+  1: 16
+  2: 102561739
+  3: 9223372036854775807
+  4: !InvalidImmediateValueException: Invalid value: #-17355559
+  5: 0
+  6: 5371100
+  7: -1
+  8: 0
+  9: -2147483649
+  10: 28530446064193
+  11: !InvalidImmediateValueException: Invalid value: #-1853395642
+  12: !InvalidImmediateValueException: Invalid value: #181118359
+  13: 1
+  14: -32767
+  15: 6987
+  16: -1
+  17: -2147483648
+  18: 0.622708
+  19: 1
+COLUMN GenCol 197 : DateTimeZoned
+  0: 1930-08-21 11:09:36.728317981 Antarctica/Troll
+  1: 2022-09-23 07:31:59.755011783 +09:41
+  2: 1928-10-29 06:56:00 Asia/Atyrau
+  3: 1949-08-23 07:10:11 +08:34
+  4: 7560-06-02 14:09:29.913821529 -07:28
+  5: !InvalidImmediateValueException: Invalid value: #707929293
+  6: 2005-06-10 10:51:27 +01:38
+  7: 1764-12-13 04:16:48.969028707 +06:09
+  8: 1917-04-16 17:17:37 America/Jamaica
+  9: 1935-09-02 13:59:57.065345146 America/Sitka
+  10: 4990-07-14 09:13:46.811127388 +00:53
+  11: 2014-04-05 20:09:00 Antarctica/Casey
+  12: 2028-09-28 17:52:09.597560399 Africa/Harare
+  13: !InvalidImmediateValueException: Invalid value: #2108735140
+  14: !InvalidImmediateValueException: Invalid value: #771813943
+  15: 5579-04-23 19:04:58.069570898 -01:22
+  16: 1906-04-20 11:29:00 -03:36
+  17: 1920-11-02 07:30:00 -09:09
+  18: 2018-06-17 19:34:23.993551748 +00:07
+  19: !InvalidImmediateValueException: Invalid value: #662546906
+TABLE Trans 1
+LENGTH 1
+COLUMN Sum 0 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: !UserException: Invalid value: #1474193095
+TABLE Trans 2
+LENGTH 47
+COLUMN GenCol 186 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "𩻶q;JW", bool: true, c: Blank, dtz: 2035-06-12 14:19:42 Europe/Warsaw)
+  1: (Text: "gZn", bool: false, c: Blank, dtz: 2048-10-24 17:45:00 Africa/El_Aaiun)
+  2: (Text: "typevar", bool: false, c: Num(-128), dtz: 2042-10-25 10:50:42.33977029 +10:58)
+  3: (Text: "TYPE", bool: true, c: Blank, dtz: 4116-08-25 01:08:00 -05:07)
+  4: (Text: "#", bool: false, c: Blank, dtz: 1984-05-19 16:10:00 Asia/Qostanay)
+  5: (Text: ":", bool: true, c: Num(6114420063), dtz: 5451-01-01 17:14:29 Australia/Sydney)
+  6: (Text: "UFQ", bool: false, c: Blank, dtz: 1917-03-22 05:50:39.255512586 Etc/UTC)
+  7: (Text: "s5m", bool: true, c: Num(-2147483648), dtz: 8998-07-29 20:38:02.368338156 +11:16)
+  8: (Text: "]m_JJ", bool: false, c: Num(1410056152546), dtz: 2021-08-12 17:43:16 America/Punta_Arenas)
+  9: (Text: "z", bool: false, c: Blank, dtz: 1991-01-26 09:01:36 Asia/Thimbu)
+  10: (Text: "J", bool: true, c: Num(4), dtz: 9384-01-14 14:20:46.365627549 Asia/Vladivostok)
+  11: (Text: "da", bool: true, c: Num(38), dtz: 1966-10-20 17:49:39.982643101 -09:25)
+  12: (Text: "􍧱", bool: true, c: Num(0.312817), dtz: 1962-01-12 01:46:00 -06:59)
+  13: (Text: "Q{􄪤Mㅣ𓀕", bool: true, c: Num(0), dtz: 1957-07-07 21:49:34.691824047 -10:24)
+  14: (Text: "ᬊU", bool: false, c: Blank, dtz: 1993-03-25 13:06:26 America/Iqaluit)
+  15: (Text: "_O", bool: false, c: Blank, dtz: 2050-08-19 17:40:05.517176058 +06:11)
+  16: (Text: "􄃁", bool: true, c: Num(-9223372036854775808), dtz: 3125-01-20 18:21:39 +08:39)
+  17: (Text: "a", bool: true, c: Num(0.590622), dtz: 1955-07-24 14:18:18.390611298 -08:47)
+  18: (Text: "􁟴", bool: false, c: Num(9223372036854775808), dtz: 1336-01-14 13:08:20 America/Argentina/ComodRivadavia)
+  19: (Text: "~", bool: false, c: Num(18), dtz: 1933-03-12 04:28:00 -03:35)
+COLUMN GenCol 187 : C <Blank | Num:Number>
+  0: Num(-127)
+  1: Blank
+  2: Blank
+  3: !InvalidImmediateValueException: Invalid value: #1957816347
+  4: Num(2147483647)
+  5: Num(9223372036854775807)
+  6: Blank
+  7: Num(506)
+  8: Blank
+  9: Blank
+  10: Num(0.634748)
+  11: Num(12411898)
+  12: Num(3)
+  13: Num(0.936625)
+  14: Num(-1)
+  15: Num(0)
+  16: Num(-9223372036854775807)
+  17: Blank
+  18: Blank
+  19: Num(232177)
+COLUMN GenCol 188 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "unitvar", t 2: 692209364), z: 2147483648)
+  1: (inner: (t 1: "kK!􄼾*𨟤", t 2: -127), z: 58)
+  2: (inner: (t 1: "ꪉ􄩕", t 2: 53033663), z: 0.080292)
+  3: (inner: (t 1: "Mv", t 2: 172), z: -2147483647)
+  4: (inner: (t 1: "a", t 2: -9223372036854775807), z: -2147483647)
+  5: (inner: (t 1: "]◘p𬰤I", t 2: 1519), z: 0)
+  6: !InvalidImmediateValueException: Invalid value: #1554593200
+  7: (inner: (t 1: "K", t 2: -32768), z: -2147483647)
+  8: (inner: (t 1: "mr Z", t 2: -9223372036854775807), z: 127)
+  9: (inner: (t 1: "'", t 2: -32767), z: 0.417222)
+  10: (inner: (t 1: "TYPES", t 2: -128), z: 5225)
+  11: (inner: (t 1: "c9r 9Zrnaa", t 2: 182436), z: 46)
+  12: (inner: (t 1: "2Hp", t 2: 19), z: 9223372036854775808)
+  13: (inner: (t 1: "j󻀤a~ꇏ(}", t 2: 3443902435532), z: 1)
+  14: (inner: (t 1: "a", t 2: 32767), z: -32767)
+  15: (inner: (t 1: "pZ90a0a", t 2: -1), z: -127)
+  16: (inner: (t 1: "{", t 2: 0.569868), z: -1)
+  17: (inner: (t 1: "o:􅍎", t 2: 82), z: -1)
+  18: (inner: (t 1: "END", t 2: 240292), z: 0)
+  19: (inner: (t 1: "^a", t 2: 2147483647), z: 1)
+COLUMN GenCol 189 : DateYM
+  0: 6718-11
+  1: 1726-09
+  2: 6792-08
+  3: 6787-08
+  4: 3921-09
+  5: 5750-04
+  6: 2202-02
+  7: 8443-12
+  8: 7625-10
+  9: 2009-01
+  10: 5882-08
+  11: 1087-03
+  12: 0676-06
+  13: 2562-10
+  14: !InvalidImmediateValueException: Invalid value: #-487892367
+  15: 1267-08
+  16: 9734-02
+  17: 0754-07
+  18: 5109-12
+  19: 9838-08
+COLUMN GenCol 190 : Number{GBP}
+  0: 89789481
+  1: 0
+  2: 0
+  3: 2008
+  4: -9223372036854775807
+  5: 7486010
+  6: 9223372036854775808
+  7: -128
+  8: 24505
+  9: 0
+  10: 6658
+  11: 32767
+  12: 0.354656
+  13: 9223372036854775808
+  14: -32767
+  15: 1
+  16: -2147483647
+  17: 9223372036854775808
+  18: 0
+  19: -128
+COLUMN GenCol 191 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: !InvalidImmediateValueException: Invalid value: #747004792
+  6: !InvalidImmediateValueException: Invalid value: #-1666788280
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: !InvalidImmediateValueException: Invalid value: #-33470734
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 192 : [Text]
+  0: ["a", "y9 r 0arn", "y 0 r"]
+  1: ["Date", "pn 00"]
+  2: ["noዿ𔕐&R4UK e"]
+  3: !InvalidImmediateValueException: Invalid value: #702402978
+  4: ["4I󶓧Hj"]
+  5: !InvalidImmediateValueException: Invalid value: #1572478052
+  6: [")􊎨^c", "apply", "END", "+Hb"]
+  7: ["󻂰he", "6", "7^a𫯃{R𠩝"]
+  8: ["END", "END"]
+  9: !InvalidImmediateValueException: Invalid value: #-1449621013
+  10: !InvalidImmediateValueException: Invalid value: #-152833954
+  11: ["2ፃ"]
+  12: ["j9", "jna0r 0Zn", "ꭰ"]
+  13: !InvalidImmediateValueException: Invalid value: #-782438567
+  14: ["쑜󳽇", "L"]
+  15: ["t𥣨", "𘇺K", "쌸u9", "LINKED"]
+  16: !InvalidImmediateValueException: Invalid value: #2045165762
+  17: !InvalidImmediateValueException: Invalid value: #-994065005
+  18: ["a"]
+  19: ["퉤"]
+COLUMN GenCol 193 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "vnn9", t 2: 10006555577), z: 0.422118)
+  1: (inner: (t 1: "3", t 2: -9223372036854775807), z: 1)
+  2: (inner: (t 1: "⨔~P", t 2: 32767), z: 9223372036854775807)
+  3: (inner: (t 1: "VT", t 2: 1), z: -2147483648)
+  4: !InvalidImmediateValueException: Invalid value: #1474193095
+  5: (inner: (t 1: "A`3󽣬Y", t 2: 710962), z: 2978)
+  6: (inner: (t 1: "pr", t 2: 1), z: 1)
+  7: (inner: (t 1: "z9a0a Znr", t 2: -9223372036854775807), z: -1)
+  8: (inner: (t 1: "DateYM", t 2: 432), z: 2707)
+  9: !InvalidImmediateValueException: Invalid value: #-1866705474
+  10: !InvalidImmediateValueException: Invalid value: #272597593
+  11: (inner: (t 1: "TYPES", t 2: -128), z: -128)
+  12: (inner: (t 1: "!^a", t 2: 241640), z: 127)
+  13: (inner: (t 1: "vZ90r9r", t 2: -9223372036854775808), z: -9223372036854775809)
+  14: (inner: (t 1: "g9r0 rra90Z", t 2: 0.417438), z: 2147483647)
+  15: (inner: (t 1: "=", t 2: -2147483648), z: 611805370690081)
+  16: (inner: (t 1: "eZjhnq", t 2: -128), z: 15)
+  17: !InvalidImmediateValueException: Invalid value: #492375693
+  18: (inner: (t 1: "b nZaZn", t 2: -2147483647), z: -9223372036854775809)
+  19: !InvalidImmediateValueException: Invalid value: #2015797022
+COLUMN GenCol 194 : [Text]
+  0: ["F", "V", "t/{𫌧h󿣜l"]
+  1: !InvalidImmediateValueException: Invalid value: #2053300959
+  2: ["e"]
+  3: [".", "W|𬭀t>􏏆", "8"]
+  4: ["褋", "a", "VERSION"]
+  5: ["9", "tZr9r90"]
+  6: ["w0rn", "taa0 0", "o99aaana", "6T"]
+  7: ["s r90na0", "/1:m", "e.f"]
+  8: ["wan", "&E􆷥􍅿|y", "jx+~"]
+  9: ["驋𬮡웧g^c"]
+  10: ["󸊴"]
+  11: ["􅇯P󸌴ᔘ", "Number"]
+  12: ["a", "n0Z9rn"]
+  13: ["eZa0r", ")B", "pr n90n nnr"]
+  14: ["SKIP", "har"]
+  15: ["wn", "M|Z", "DateTime", "#|!"]
+  16: ["Time", "1:s", "vr nZa00", "DateTime"]
+  17: ["ja", "b 9r99", "sZanr0 9"]
+  18: ["𖡈", "CONTENT", "Q"]
+  19: ["A"]
+COLUMN GenCol 195 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: !InvalidImmediateValueException: Invalid value: #-86075122
+  1: [(a: 10809259589, nested: (num num: -127, the text 0 item: "tr09a 0Z99")), (a: -9223372036854775808, nested: (num num: -2147483649, the text 0 item: "J.?aqc4Et9𝕜"))]
+  2: [(a: 9223372036854775807, nested: (num num: 349493623, the text 0 item: "d 00 9n"))]
+  3: [(a: 0, nested: (num num: 0.83373, the text 0 item: "g𠳭x)"))]
+  4: [(a: -127, nested: (num num: 264233843, the text 0 item: "x0an0r09")), (a: -2147483647, nested: (num num: 7421452282, the text 0 item: "n(")), (a: 1527726, nested: (num num: 0.490606, the text 0 item: "END")), (a: 312643135, nested: (num num: 4, the text 0 item: "␆󼳖𧻿Pv􆒐RN"))]
+  5: [(a: 108, nested: (num num: 55, the text 0 item: "Z")), (a: 13586419, nested: (num num: 132265, the text 0 item: "vaZ"))]
+  6: [(a: -128, nested: (num num: -32768, the text 0 item: "a")), (a: 0.153792, nested: (num num: 266947791, the text 0 item: "a"))]
+  7: [(a: -9223372036854775807, nested: (num num: 49669939435, the text 0 item: "I")), (a: 127, nested: (num num: 4137, the text 0 item: "󳎵"))]
+  8: [(a: -2147483648, nested: (num num: -2147483647, the text 0 item: "1r"))]
+  9: [(a: 642909, nested: (num num: 238447, the text 0 item: "="))]
+  10: [(a: -2147483647, nested: (num num: -9223372036854775808, the text 0 item: "i"))]
+  11: [(a: 8736, nested: (num num: -2147483648, the text 0 item: "H㋺{R􂺙Ju0"))]
+  12: [(a: -9223372036854775808, nested: (num num: 0, the text 0 item: "e0")), (a: 4, nested: (num num: 1, the text 0 item: "Time"))]
+  13: [(a: 0.862376, nested: (num num: 143, the text 0 item: "a")), (a: -128, nested: (num num: 480236518857030, the text 0 item: "COLUMNAL")), (a: 0.829198, nested: (num num: 0.306018, the text 0 item: ",7`S"))]
+  14: [(a: 9223372036854775807, nested: (num num: -32768, the text 0 item: "iZZnnar9")), (a: 0, nested: (num num: 144925, the text 0 item: "kna9rnr"))]
+  15: [(a: 1, nested: (num num: 20, the text 0 item: "𨟒󼺷")), (a: 26055, nested: (num num: 152729, the text 0 item: "TYPES")), (a: -2147483647, nested: (num num: 0, the text 0 item: "VALUES")), (a: -127, nested: (num num: -32768, the text 0 item: "gZrnnaa"))]
+  16: [(a: 219, nested: (num num: 253961815608, the text 0 item: "A'")), (a: 200, nested: (num num: -2147483648, the text 0 item: "/&Cz")), (a: 127, nested: (num num: 0.522857, the text 0 item: "&"))]
+  17: [(a: 183, nested: (num num: -1, the text 0 item: "rn"))]
+  18: [(a: 0.035406, nested: (num num: 4, the text 0 item: "invalidtypeops"))]
+  19: [(a: 15758047656754323, nested: (num num: -127, the text 0 item: "h{?a~G󾩏gvln7")), (a: 696, nested: (num num: 0.222922, the text 0 item: "]\Z󵋝")), (a: -128, nested: (num num: 0, the text 0 item: "eaZr9"))]
+COLUMN GenCol 196 : Number{m^2}
+  0: 1025
+  1: 16
+  2: 102561739
+  3: 9223372036854775807
+  4: !InvalidImmediateValueException: Invalid value: #-17355559
+  5: 0
+  6: 5371100
+  7: -1
+  8: 0
+  9: -2147483649
+  10: 28530446064193
+  11: !InvalidImmediateValueException: Invalid value: #-1853395642
+  12: !InvalidImmediateValueException: Invalid value: #181118359
+  13: 1
+  14: -32767
+  15: 6987
+  16: -1
+  17: -2147483648
+  18: 0.622708
+  19: 1
+COLUMN GenCol 197 : DateTimeZoned
+  0: 1930-08-21 11:09:36.728317981 Antarctica/Troll
+  1: 2022-09-23 07:31:59.755011783 +09:41
+  2: 1928-10-29 06:56:00 Asia/Atyrau
+  3: 1949-08-23 07:10:11 +08:34
+  4: 7560-06-02 14:09:29.913821529 -07:28
+  5: !InvalidImmediateValueException: Invalid value: #707929293
+  6: 2005-06-10 10:51:27 +01:38
+  7: 1764-12-13 04:16:48.969028707 +06:09
+  8: 1917-04-16 17:17:37 America/Jamaica
+  9: 1935-09-02 13:59:57.065345146 America/Sitka
+  10: 4990-07-14 09:13:46.811127388 +00:53
+  11: 2014-04-05 20:09:00 Antarctica/Casey
+  12: 2028-09-28 17:52:09.597560399 Africa/Harare
+  13: !InvalidImmediateValueException: Invalid value: #2108735140
+  14: !InvalidImmediateValueException: Invalid value: #771813943
+  15: 5579-04-23 19:04:58.069570898 -01:22
+  16: 1906-04-20 11:29:00 -03:36
+  17: 1920-11-02 07:30:00 -09:09
+  18: 2018-06-17 19:34:23.993551748 +00:07
+  19: !InvalidImmediateValueException: Invalid value: #662546906
+COLUMN New 1 : Number
+  0: 1
+  1: 2
+  2: 3
+  3: 4
+  4: 5
+  5: 6
+  6: 7
+  7: 8
+  8: 9
+  9: 10
+  10: 11
+  11: 12
+  12: 13
+  13: 14
+  14: 15
+  15: 16
+  16: 17
+  17: 18
+  18: 19
+  19: 20
+TABLE Trans 3
+LENGTH 47
+COLUMN GenCol 186 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "𩻶q;JW", bool: true, c: Blank, dtz: 2035-06-12 14:19:42 Europe/Warsaw)
+  1: (Text: "gZn", bool: false, c: Blank, dtz: 2048-10-24 17:45:00 Africa/El_Aaiun)
+  2: (Text: "typevar", bool: false, c: Num(-128), dtz: 2042-10-25 10:50:42.33977029 +10:58)
+  3: (Text: "TYPE", bool: true, c: Blank, dtz: 4116-08-25 01:08:00 -05:07)
+  4: (Text: "#", bool: false, c: Blank, dtz: 1984-05-19 16:10:00 Asia/Qostanay)
+  5: (Text: ":", bool: true, c: Num(6114420063), dtz: 5451-01-01 17:14:29 Australia/Sydney)
+  6: (Text: "UFQ", bool: false, c: Blank, dtz: 1917-03-22 05:50:39.255512586 Etc/UTC)
+  7: (Text: "s5m", bool: true, c: Num(-2147483648), dtz: 8998-07-29 20:38:02.368338156 +11:16)
+  8: (Text: "]m_JJ", bool: false, c: Num(1410056152546), dtz: 2021-08-12 17:43:16 America/Punta_Arenas)
+  9: (Text: "z", bool: false, c: Blank, dtz: 1991-01-26 09:01:36 Asia/Thimbu)
+  10: (Text: "J", bool: true, c: Num(4), dtz: 9384-01-14 14:20:46.365627549 Asia/Vladivostok)
+  11: (Text: "da", bool: true, c: Num(38), dtz: 1966-10-20 17:49:39.982643101 -09:25)
+  12: (Text: "􍧱", bool: true, c: Num(0.312817), dtz: 1962-01-12 01:46:00 -06:59)
+  13: (Text: "Q{􄪤Mㅣ𓀕", bool: true, c: Num(0), dtz: 1957-07-07 21:49:34.691824047 -10:24)
+  14: (Text: "ᬊU", bool: false, c: Blank, dtz: 1993-03-25 13:06:26 America/Iqaluit)
+  15: (Text: "_O", bool: false, c: Blank, dtz: 2050-08-19 17:40:05.517176058 +06:11)
+  16: (Text: "􄃁", bool: true, c: Num(-9223372036854775808), dtz: 3125-01-20 18:21:39 +08:39)
+  17: (Text: "a", bool: true, c: Num(0.590622), dtz: 1955-07-24 14:18:18.390611298 -08:47)
+  18: (Text: "􁟴", bool: false, c: Num(9223372036854775808), dtz: 1336-01-14 13:08:20 America/Argentina/ComodRivadavia)
+  19: (Text: "~", bool: false, c: Num(18), dtz: 1933-03-12 04:28:00 -03:35)
+COLUMN GenCol 187 : C <Blank | Num:Number>
+  0: Num(-127)
+  1: Blank
+  2: Blank
+  3: !InvalidImmediateValueException: Invalid value: #1957816347
+  4: Num(2147483647)
+  5: Num(9223372036854775807)
+  6: Blank
+  7: Num(506)
+  8: Blank
+  9: Blank
+  10: Num(0.634748)
+  11: Num(12411898)
+  12: Num(3)
+  13: Num(0.936625)
+  14: Num(-1)
+  15: Num(0)
+  16: Num(-9223372036854775807)
+  17: Blank
+  18: Blank
+  19: Num(232177)
+COLUMN GenCol 188 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "unitvar", t 2: 692209364), z: 2147483648)
+  1: (inner: (t 1: "kK!􄼾*𨟤", t 2: -127), z: 58)
+  2: (inner: (t 1: "ꪉ􄩕", t 2: 53033663), z: 0.080292)
+  3: (inner: (t 1: "Mv", t 2: 172), z: -2147483647)
+  4: (inner: (t 1: "a", t 2: -9223372036854775807), z: -2147483647)
+  5: (inner: (t 1: "]◘p𬰤I", t 2: 1519), z: 0)
+  6: !InvalidImmediateValueException: Invalid value: #1554593200
+  7: (inner: (t 1: "K", t 2: -32768), z: -2147483647)
+  8: (inner: (t 1: "mr Z", t 2: -9223372036854775807), z: 127)
+  9: (inner: (t 1: "'", t 2: -32767), z: 0.417222)
+  10: (inner: (t 1: "TYPES", t 2: -128), z: 5225)
+  11: (inner: (t 1: "c9r 9Zrnaa", t 2: 182436), z: 46)
+  12: (inner: (t 1: "2Hp", t 2: 19), z: 9223372036854775808)
+  13: (inner: (t 1: "j󻀤a~ꇏ(}", t 2: 3443902435532), z: 1)
+  14: (inner: (t 1: "a", t 2: 32767), z: -32767)
+  15: (inner: (t 1: "pZ90a0a", t 2: -1), z: -127)
+  16: (inner: (t 1: "{", t 2: 0.569868), z: -1)
+  17: (inner: (t 1: "o:􅍎", t 2: 82), z: -1)
+  18: (inner: (t 1: "END", t 2: 240292), z: 0)
+  19: (inner: (t 1: "^a", t 2: 2147483647), z: 1)
+COLUMN GenCol 189 : DateYM
+  0: 6718-11
+  1: 1726-09
+  2: 6792-08
+  3: 6787-08
+  4: 3921-09
+  5: 5750-04
+  6: 2202-02
+  7: 8443-12
+  8: 7625-10
+  9: 2009-01
+  10: 5882-08
+  11: 1087-03
+  12: 0676-06
+  13: 2562-10
+  14: !InvalidImmediateValueException: Invalid value: #-487892367
+  15: 1267-08
+  16: 9734-02
+  17: 0754-07
+  18: 5109-12
+  19: 9838-08
+COLUMN GenCol 190 : Number{GBP}
+  0: 89789481
+  1: 0
+  2: 0
+  3: 2008
+  4: -9223372036854775807
+  5: 7486010
+  6: 9223372036854775808
+  7: -128
+  8: 24505
+  9: 0
+  10: 6658
+  11: 32767
+  12: 0.354656
+  13: 9223372036854775808
+  14: -32767
+  15: 1
+  16: -2147483647
+  17: 9223372036854775808
+  18: 0
+  19: -128
+COLUMN GenCol 191 : B <Single>
+  0: Single
+  1: Single
+  2: Single
+  3: Single
+  4: Single
+  5: !InvalidImmediateValueException: Invalid value: #747004792
+  6: !InvalidImmediateValueException: Invalid value: #-1666788280
+  7: Single
+  8: Single
+  9: Single
+  10: Single
+  11: Single
+  12: !InvalidImmediateValueException: Invalid value: #-33470734
+  13: Single
+  14: Single
+  15: Single
+  16: Single
+  17: Single
+  18: Single
+  19: Single
+COLUMN GenCol 192 : [Text]
+  0: ["a", "y9 r 0arn", "y 0 r"]
+  1: ["Date", "pn 00"]
+  2: ["noዿ𔕐&R4UK e"]
+  3: !InvalidImmediateValueException: Invalid value: #702402978
+  4: ["4I󶓧Hj"]
+  5: !InvalidImmediateValueException: Invalid value: #1572478052
+  6: [")􊎨^c", "apply", "END", "+Hb"]
+  7: ["󻂰he", "6", "7^a𫯃{R𠩝"]
+  8: ["END", "END"]
+  9: !InvalidImmediateValueException: Invalid value: #-1449621013
+  10: !InvalidImmediateValueException: Invalid value: #-152833954
+  11: ["2ፃ"]
+  12: ["j9", "jna0r 0Zn", "ꭰ"]
+  13: !InvalidImmediateValueException: Invalid value: #-782438567
+  14: ["쑜󳽇", "L"]
+  15: ["t𥣨", "𘇺K", "쌸u9", "LINKED"]
+  16: !InvalidImmediateValueException: Invalid value: #2045165762
+  17: !InvalidImmediateValueException: Invalid value: #-994065005
+  18: ["a"]
+  19: ["퉤"]
+COLUMN GenCol 193 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "vnn9", t 2: 10006555577), z: 0.422118)
+  1: (inner: (t 1: "3", t 2: -9223372036854775807), z: 1)
+  2: (inner: (t 1: "⨔~P", t 2: 32767), z: 9223372036854775807)
+  3: (inner: (t 1: "VT", t 2: 1), z: -2147483648)
+  4: !InvalidImmediateValueException: Invalid value: #1474193095
+  5: (inner: (t 1: "A`3󽣬Y", t 2: 710962), z: 2978)
+  6: (inner: (t 1: "pr", t 2: 1), z: 1)
+  7: (inner: (t 1: "z9a0a Znr", t 2: -9223372036854775807), z: -1)
+  8: (inner: (t 1: "DateYM", t 2: 432), z: 2707)
+  9: !InvalidImmediateValueException: Invalid value: #-1866705474
+  10: !InvalidImmediateValueException: Invalid value: #272597593
+  11: (inner: (t 1: "TYPES", t 2: -128), z: -128)
+  12: (inner: (t 1: "!^a", t 2: 241640), z: 127)
+  13: (inner: (t 1: "vZ90r9r", t 2: -9223372036854775808), z: -9223372036854775809)
+  14: (inner: (t 1: "g9r0 rra90Z", t 2: 0.417438), z: 2147483647)
+  15: (inner: (t 1: "=", t 2: -2147483648), z: 611805370690081)
+  16: (inner: (t 1: "eZjhnq", t 2: -128), z: 15)
+  17: !InvalidImmediateValueException: Invalid value: #492375693
+  18: (inner: (t 1: "b nZaZn", t 2: -2147483647), z: -9223372036854775809)
+  19: !InvalidImmediateValueException: Invalid value: #2015797022
+COLUMN GenCol 194 : [Text]
+  0: ["F", "V", "t/{𫌧h󿣜l"]
+  1: !InvalidImmediateValueException: Invalid value: #2053300959
+  2: ["e"]
+  3: [".", "W|𬭀t>􏏆", "8"]
+  4: ["褋", "a", "VERSION"]
+  5: ["9", "tZr9r90"]
+  6: ["w0rn", "taa0 0", "o99aaana", "6T"]
+  7: ["s r90na0", "/1:m", "e.f"]
+  8: ["wan", "&E􆷥􍅿|y", "jx+~"]
+  9: ["驋𬮡웧g^c"]
+  10: ["󸊴"]
+  11: ["􅇯P󸌴ᔘ", "Number"]
+  12: ["a", "n0Z9rn"]
+  13: ["eZa0r", ")B", "pr n90n nnr"]
+  14: ["SKIP", "har"]
+  15: ["wn", "M|Z", "DateTime", "#|!"]
+  16: ["Time", "1:s", "vr nZa00", "DateTime"]
+  17: ["ja", "b 9r99", "sZanr0 9"]
+  18: ["𖡈", "CONTENT", "Q"]
+  19: ["A"]
+COLUMN GenCol 195 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: !InvalidImmediateValueException: Invalid value: #-86075122
+  1: [(a: 10809259589, nested: (num num: -127, the text 0 item: "tr09a 0Z99")), (a: -9223372036854775808, nested: (num num: -2147483649, the text 0 item: "J.?aqc4Et9𝕜"))]
+  2: [(a: 9223372036854775807, nested: (num num: 349493623, the text 0 item: "d 00 9n"))]
+  3: [(a: 0, nested: (num num: 0.83373, the text 0 item: "g𠳭x)"))]
+  4: [(a: -127, nested: (num num: 264233843, the text 0 item: "x0an0r09")), (a: -2147483647, nested: (num num: 7421452282, the text 0 item: "n(")), (a: 1527726, nested: (num num: 0.490606, the text 0 item: "END")), (a: 312643135, nested: (num num: 4, the text 0 item: "␆󼳖𧻿Pv􆒐RN"))]
+  5: [(a: 108, nested: (num num: 55, the text 0 item: "Z")), (a: 13586419, nested: (num num: 132265, the text 0 item: "vaZ"))]
+  6: [(a: -128, nested: (num num: -32768, the text 0 item: "a")), (a: 0.153792, nested: (num num: 266947791, the text 0 item: "a"))]
+  7: [(a: -9223372036854775807, nested: (num num: 49669939435, the text 0 item: "I")), (a: 127, nested: (num num: 4137, the text 0 item: "󳎵"))]
+  8: [(a: -2147483648, nested: (num num: -2147483647, the text 0 item: "1r"))]
+  9: [(a: 642909, nested: (num num: 238447, the text 0 item: "="))]
+  10: [(a: -2147483647, nested: (num num: -9223372036854775808, the text 0 item: "i"))]
+  11: [(a: 8736, nested: (num num: -2147483648, the text 0 item: "H㋺{R􂺙Ju0"))]
+  12: [(a: -9223372036854775808, nested: (num num: 0, the text 0 item: "e0")), (a: 4, nested: (num num: 1, the text 0 item: "Time"))]
+  13: [(a: 0.862376, nested: (num num: 143, the text 0 item: "a")), (a: -128, nested: (num num: 480236518857030, the text 0 item: "COLUMNAL")), (a: 0.829198, nested: (num num: 0.306018, the text 0 item: ",7`S"))]
+  14: [(a: 9223372036854775807, nested: (num num: -32768, the text 0 item: "iZZnnar9")), (a: 0, nested: (num num: 144925, the text 0 item: "kna9rnr"))]
+  15: [(a: 1, nested: (num num: 20, the text 0 item: "𨟒󼺷")), (a: 26055, nested: (num num: 152729, the text 0 item: "TYPES")), (a: -2147483647, nested: (num num: 0, the text 0 item: "VALUES")), (a: -127, nested: (num num: -32768, the text 0 item: "gZrnnaa"))]
+  16: [(a: 219, nested: (num num: 253961815608, the text 0 item: "A'")), (a: 200, nested: (num num: -2147483648, the text 0 item: "/&Cz")), (a: 127, nested: (num num: 0.522857, the text 0 item: "&"))]
+  17: [(a: 183, nested: (num num: -1, the text 0 item: "rn"))]
+  18: [(a: 0.035406, nested: (num num: 4, the text 0 item: "invalidtypeops"))]
+  19: [(a: 15758047656754323, nested: (num num: -127, the text 0 item: "h{?a~G󾩏gvln7")), (a: 696, nested: (num num: 0.222922, the text 0 item: "]\Z󵋝")), (a: -128, nested: (num num: 0, the text 0 item: "eaZr9"))]
+COLUMN GenCol 196 : Number{m^2}
+  0: 1025
+  1: 16
+  2: 102561739
+  3: 9223372036854775807
+  4: !InvalidImmediateValueException: Invalid value: #-17355559
+  5: 0
+  6: 5371100
+  7: -1
+  8: 0
+  9: -2147483649
+  10: 28530446064193
+  11: !InvalidImmediateValueException: Invalid value: #-1853395642
+  12: !InvalidImmediateValueException: Invalid value: #181118359
+  13: 1
+  14: -32767
+  15: 6987
+  16: -1
+  17: -2147483648
+  18: 0.622708
+  19: 1
+COLUMN GenCol 197 : DateTimeZoned
+  0: 1930-08-21 11:09:36.728317981 Antarctica/Troll
+  1: 2022-09-23 07:31:59.755011783 +09:41
+  2: 1928-10-29 06:56:00 Asia/Atyrau
+  3: 1949-08-23 07:10:11 +08:34
+  4: 7560-06-02 14:09:29.913821529 -07:28
+  5: !InvalidImmediateValueException: Invalid value: #707929293
+  6: 2005-06-10 10:51:27 +01:38
+  7: 1764-12-13 04:16:48.969028707 +06:09
+  8: 1917-04-16 17:17:37 America/Jamaica
+  9: 1935-09-02 13:59:57.065345146 America/Sitka
+  10: 4990-07-14 09:13:46.811127388 +00:53
+  11: 2014-04-05 20:09:00 Antarctica/Casey
+  12: 2028-09-28 17:52:09.597560399 Africa/Harare
+  13: !InvalidImmediateValueException: Invalid value: #2108735140
+  14: !InvalidImmediateValueException: Invalid value: #771813943
+  15: 5579-04-23 19:04:58.069570898 -01:22
+  16: 1906-04-20 11:29:00 -03:36
+  17: 1920-11-02 07:30:00 -09:09
+  18: 2018-06-17 19:34:23.993551748 +00:07
+  19: !InvalidImmediateValueException: Invalid value: #662546906
+COLUMN New 1 : Number
+  0: 1
+  1: 2
+  2: 3
+  3: 4
+  4: 5
+  5: 6
+  6: 7
+  7: 8
+  8: 9
+  9: 10
+  10: 11
+  11: 12
+  12: 13
+  13: 14
+  14: 15
+  15: 16
+  16: 17
+  17: 18
+  18: 19
+  19: 20
+TABLE Trans 4
+LENGTH 1
+COLUMN result : Boolean
+  0: true

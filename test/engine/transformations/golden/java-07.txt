@@ -1,0 +1,74 @@
+TABLE Test 0
+LENGTH 9
+COLUMN GenCol 31 : (a: Number, b: Number)
+  0: (a: -32768, b: 0.08322)
+  1: (a: 151, b: 791)
+  2: (a: -32767, b: 2114404)
+  3: (a: 13616723725767214937364, b: -32767)
+  4: (a: 39425, b: 127)
+  5: (a: 127, b: 30)
+  6: (a: 2, b: 440)
+  7: (a: 3, b: -32767)
+  8: (a: 0, b: 51)
+COLUMN GenCol 32 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: Is(None)
+  2: None
+  3: Is(None)
+  4: Is(Is("dr990"))
+  5: None
+  6: None
+  7: None
+  8: Is(Is("𦩱􆖠"))
+TABLE Trans 1
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Unknown name: "GenCol 32"
+TABLE Trans 2
+LENGTH 9
+COLUMN GenCol 31 : (a: Number, b: Number)
+  0: (a: -32768, b: 0.08322)
+  1: (a: 151, b: 791)
+  2: (a: -32767, b: 2114404)
+  3: (a: 13616723725767214937364, b: -32767)
+  4: (a: 39425, b: 127)
+  5: (a: 127, b: 30)
+  6: (a: 2, b: 440)
+  7: (a: 3, b: -32767)
+  8: (a: 0, b: 51)
+COLUMN GenCol 32 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: Is(None)
+  2: None
+  3: Is(None)
+  4: Is(Is("dr990"))
+  5: None
+  6: None
+  7: None
+  8: Is(Is("𦩱􆖠"))
+TABLE Trans 3
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Unknown name: "GenCol 32"
+TABLE Trans 4
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Unknown name: "GenCol 32"
+COLUMN New 1 : Boolean
+  0: !UserException: Unknown name: "GenCol 32"
+TABLE Trans 5
+LENGTH 1
+COLUMN result : Text
+  0: !UserException: Unknown name: "GenCol 32"
+COLUMN New 3 : Boolean
+  0: !UserException: Unknown name: "GenCol 32"
+COLUMN New 1 : Boolean
+  0: !UserException: Unknown name: "GenCol 32"
+TABLE Trans 6
+LENGTH 1
+COLUMN result : Text
+  0: !UserException: Unknown name: "GenCol 32"
+COLUMN New 3 : Boolean
+  0: !UserException: Unknown name: "GenCol 32"
+COLUMN New 1 : Boolean
+  0: !UserException: Unknown name: "GenCol 32"

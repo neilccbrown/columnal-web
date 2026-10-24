@@ -1,0 +1,35 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+TRANSFORMATION @BEGIN NQI
+NQI DEFAULT
+NQI correct
+NQI SOURCE jar
+NQI @BEGIN
+NQI EDIT "d0ZZa" @TYPE Text
+NQI EDITCOLUMN "Time" @TYPE ( COLUMN : Boolean , COMMENT : Number {1/(GBP*cm^15*mm^7*month^10)} , UNITS : DateTime , a : ( DATA : Text , END : Text , Number : Text , gaa90r990 9 : Date ) )
+NQI REPLACEMENT @VALUE  "" @ENDVALUE  @VALUE  ( "COLUMN" : true , "COMMENT" : 1 , "UNITS" : 2028-07-04 04:41:00 , "a" : ( "DATA" : "" , "END" : "a" , "Number" : "" , "gaa90r990 9" : 9145-07-02 ) )  @ENDVALUE
+NQI REPLACEMENT @VALUE  "SKIP" @ENDVALUE  @VALUE  ( "COLUMN" : false , "COMMENT" : 42956328213965 , "UNITS" : 3188-08-05 16:43:46.388431633 , "a" : ( "DATA" : "" , "END" : "FORMAT" , "Number" : "END" , "gaa90r990 9" : 1956-01-03 ) )  @ENDVALUE
+NQI REPLACEMENT @VALUE  "UNITS" @ENDVALUE  @VALUE  ( "COLUMN" : true , "COMMENT" : 0.915676 , "UNITS" : 2035-10-06 09:50:35.922138963 , "a" : ( "DATA" : "" , "END" : "v0Z r9" , "Number" : "" , "gaa90r990 9" : 1939-05-17 ) )  @ENDVALUE
+NQI REPLACEMENT @VALUE  "a" @ENDVALUE  @INVALIDVALUE  "#758320152"  @ENDVALUE
+NQI @END
+NQI DISPLAY @BEGIN
+NQI POSITION 1 1
+NQI SHOWCOLUMNS ALL
+NQI @END DISPLAY
+@END NQI TRANSFORMATION
+

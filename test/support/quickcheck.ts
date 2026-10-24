@@ -457,3 +457,12 @@ export class IntegerGenerator extends Generator<number>
         return random.nextInt(-2147483648, 2147483647);
     }
 }
+
+/** junit-quickcheck's default boolean generator (used for an un-annotated boolean parameter). */
+export class BooleanGenerator extends Generator<boolean>
+{
+    public override generate(random: SourceOfRandomness, _status: GenerationStatus): boolean
+    {
+        return random.nextBoolean();
+    }
+}

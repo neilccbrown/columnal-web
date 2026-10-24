@@ -21,8 +21,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ data | 48 / 48 | 8072 / 8072 (100%) |
 | ✅ expressions | 74 / 74 | 14567 / 14567 (100%) |
 | ✅ functions | 65 / 65 | 5719 / 5719 (100%) |
-| r-interop | 0 / 13 | 0 / 3275 (0%) |
-| transformations | 0 / 18 | 0 / 5749 (0%) |
+| ✅ r-interop | 13 / 13 | 3275 / 3275 (100%) |
+| ✅ transformations | 18 / 18 | 5749 / 5749 (100%) |
 | importers | 0 / 16 | 0 / 4433 (0%) |
 | exporters | 0 / 6 | 0 / 724 (0%) |
 
@@ -415,19 +415,19 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `r-interop/src/main/java/xyz/columnal/rinterop/ConvertFromR.java` | `src/engine/r-interop/rinterop/ConvertFromR.ts` | 826 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/ConvertToR.java` | `src/engine/r-interop/rinterop/ConvertToR.ts` | 411 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/DefaultRVisitor.java` | `src/engine/r-interop/rinterop/DefaultRVisitor.ts` | 105 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/RExecution.java` | `src/engine/r-interop/rinterop/RExecution.ts` | 242 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/RPrettyPrint.java` | `src/engine/r-interop/rinterop/RPrettyPrint.ts` | 187 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/RRead.java` | `src/engine/r-interop/rinterop/RRead.ts` | 416 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/RUtility.java` | `src/engine/r-interop/rinterop/RUtility.ts` | 406 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/RValue.java` | `src/engine/r-interop/rinterop/RValue.ts` | 33 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/RVisitor.java` | `src/engine/r-interop/rinterop/RVisitor.ts` | 64 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/RWrite.java` | `src/engine/r-interop/rinterop/RWrite.ts` | 343 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/SpecificRVisitor.java` | `src/engine/r-interop/rinterop/SpecificRVisitor.ts` | 98 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/TypeHeader.java` | `src/engine/r-interop/rinterop/TypeHeader.ts` | 102 | – |
-| `r-interop/src/main/java/xyz/columnal/rinterop/V2Header.java` | `src/engine/r-interop/rinterop/V2Header.ts` | 42 | – |
+| `r-interop/src/main/java/xyz/columnal/rinterop/ConvertFromR.java` | `src/engine/r-interop/rinterop/ConvertFromR.ts` | 826 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/ConvertToR.java` | `src/engine/r-interop/rinterop/ConvertToR.ts` | 411 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/DefaultRVisitor.java` | `src/engine/r-interop/rinterop/DefaultRVisitor.ts` | 105 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/RExecution.java` | `src/engine/r-interop/rinterop/RExecution.ts` | 242 | ✅ (parts deferred) |
+| `r-interop/src/main/java/xyz/columnal/rinterop/RPrettyPrint.java` | `src/engine/r-interop/rinterop/RPrettyPrint.ts` | 187 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/RRead.java` | `src/engine/r-interop/rinterop/RRead.ts` | 416 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/RUtility.java` | `src/engine/r-interop/rinterop/RUtility.ts` | 406 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/RValue.java` | `src/engine/r-interop/rinterop/RValue.ts` | 33 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/RVisitor.java` | `src/engine/r-interop/rinterop/RVisitor.ts` | 64 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/RWrite.java` | `src/engine/r-interop/rinterop/RWrite.ts` | 343 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/SpecificRVisitor.java` | `src/engine/r-interop/rinterop/SpecificRVisitor.ts` | 98 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/TypeHeader.java` | `src/engine/r-interop/rinterop/TypeHeader.ts` | 102 | ✅ |
+| `r-interop/src/main/java/xyz/columnal/rinterop/V2Header.java` | `src/engine/r-interop/rinterop/V2Header.ts` | 42 | ✅ |
 
 </details>
 
@@ -435,24 +435,24 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `transformations/src/main/java/xyz/columnal/error/expressions/ExpressionErrorException.java` | `src/engine/transformations/error/expressions/ExpressionErrorException.ts` | 68 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/Aggregate.java` | `src/engine/transformations/transformations/Aggregate.ts` | 1105 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/Calculate.java` | `src/engine/transformations/transformations/Calculate.ts` | 405 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/Check.java` | `src/engine/transformations/transformations/Check.ts` | 501 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/Concatenate.java` | `src/engine/transformations/transformations/Concatenate.ts` | 428 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/Filter.java` | `src/engine/transformations/transformations/Filter.ts` | 369 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/FoundTableActual.java` | `src/engine/transformations/transformations/FoundTableActual.ts` | 69 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/HideColumns.java` | `src/engine/transformations/transformations/HideColumns.ts` | 265 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/Join.java` | `src/engine/transformations/transformations/Join.ts` | 375 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/ManualEdit.java` | `src/engine/transformations/transformations/ManualEdit.ts` | 718 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/MultipleTableLookup.java` | `src/engine/transformations/transformations/MultipleTableLookup.ts` | 313 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/RTransformation.java` | `src/engine/transformations/transformations/RTransformation.ts` | 259 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/SingleSourceTransformationInfo.java` | `src/engine/transformations/transformations/SingleSourceTransformationInfo.ts` | 77 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/Sort.java` | `src/engine/transformations/transformations/Sort.ts` | 453 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/TransformationInfo.java` | `src/engine/transformations/transformations/TransformationInfo.ts` | 120 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/TransformationManager.java` | `src/engine/transformations/transformations/TransformationManager.ts` | 150 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/TransformationVisitor.java` | `src/engine/transformations/transformations/TransformationVisitor.ts` | 36 | – |
-| `transformations/src/main/java/xyz/columnal/transformations/VisitableTransformation.java` | `src/engine/transformations/transformations/VisitableTransformation.ts` | 38 | – |
+| `transformations/src/main/java/xyz/columnal/error/expressions/ExpressionErrorException.java` | `src/engine/transformations/error/expressions/ExpressionErrorException.ts` | 68 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/Aggregate.java` | `src/engine/transformations/transformations/Aggregate.ts` | 1105 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/Calculate.java` | `src/engine/transformations/transformations/Calculate.ts` | 405 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/Check.java` | `src/engine/transformations/transformations/Check.ts` | 501 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/Concatenate.java` | `src/engine/transformations/transformations/Concatenate.ts` | 428 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/Filter.java` | `src/engine/transformations/transformations/Filter.ts` | 369 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/FoundTableActual.java` | `src/engine/transformations/transformations/FoundTableActual.ts` | 69 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/HideColumns.java` | `src/engine/transformations/transformations/HideColumns.ts` | 265 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/Join.java` | `src/engine/transformations/transformations/Join.ts` | 375 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/ManualEdit.java` | `src/engine/transformations/transformations/ManualEdit.ts` | 718 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/MultipleTableLookup.java` | `src/engine/transformations/transformations/MultipleTableLookup.ts` | 313 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/RTransformation.java` | `src/engine/transformations/transformations/RTransformation.ts` | 259 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/SingleSourceTransformationInfo.java` | `src/engine/transformations/transformations/SingleSourceTransformationInfo.ts` | 77 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/Sort.java` | `src/engine/transformations/transformations/Sort.ts` | 453 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/TransformationInfo.java` | `src/engine/transformations/transformations/TransformationInfo.ts` | 120 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/TransformationManager.java` | `src/engine/transformations/transformations/TransformationManager.ts` | 150 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/TransformationVisitor.java` | `src/engine/transformations/transformations/TransformationVisitor.ts` | 36 | ✅ |
+| `transformations/src/main/java/xyz/columnal/transformations/VisitableTransformation.java` | `src/engine/transformations/transformations/VisitableTransformation.ts` | 38 | ✅ |
 
 </details>
 
@@ -728,13 +728,13 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | tests-gui-format | 0 / 4 | 0 / 920 (0%) | 0 / 6 (0%) |
 | tests-gui-grid | 0 / 4 | 0 / 1049 (0%) | 0 / 14 (0%) |
 | tests-gui-numbers | 0 / 1 | 0 / 380 (0%) | 0 / 14 (0%) |
-| tests-gui-r | 0 / 4 | 0 / 1147 (0%) | 0 / 27 (0%) |
+| tests-gui-r | 2 / 4 | 770 / 1147 (67%) | 10 / 27 (37%) |
 | tests-gui-side | 0 / 2 | 0 / 645 (0%) | 0 / 8 (0%) |
 | tests-gui-tables | 0 / 3 | 0 / 1635 (0%) | 0 / 12 (0%) |
 | tests-gui-transformations | 0 / 8 | 0 / 2251 (0%) | 0 / 22 (0%) |
 | tests-gui-transformations-create-edit | 0 / 1 | 0 / 651 (0%) | 0 / 2 (0%) |
 | tests-gui-type-editor | 0 / 4 | 0 / 954 (0%) | 0 / 57 (0%) |
-| tests-tables | 12 / 28 | 1446 / 3385 (43%) | 9 / 18 (50%) |
+| ✅ tests-tables | 28 / 28 | 3385 / 3385 (100%) | 18 / 18 (100%) |
 
 <details><summary>tests-basic</summary>
 
@@ -774,7 +774,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-functions/src/test/java/test/functions/PropNumericFunctions.java` | `test/engine/tests-functions/functions/PropNumericFunctions.test.ts` | 193 | ✅ (4/4 tests) |
 | `tests-functions/src/test/java/test/functions/PropStringFunctions.java` | `test/engine/tests-functions/functions/PropStringFunctions.test.ts` | 313 | ✅ (4/4 tests) |
 | `tests-functions/src/test/java/test/functions/TestBooleanFunctions.java` | `test/engine/tests-functions/functions/TestBooleanFunctions.test.ts` | 99 | ✅ (2/2 tests) |
-| `tests-functions/src/testFixtures/java/test/DummyManager.java` | `test/engine/tests-functions/fixtures/DummyManager.ts` | 82 | ✅ (parts deferred) |
+| `tests-functions/src/testFixtures/java/test/DummyManager.java` | `test/engine/tests-functions/fixtures/DummyManager.ts` | 82 | ✅ |
 | `tests-functions/src/testFixtures/java/test/SingleTableLookup.java` | `test/engine/tests-functions/fixtures/SingleTableLookup.ts` | 119 | ✅ |
 | `tests-functions/src/testFixtures/java/test/functions/TFunctionUtil.java` | `test/engine/tests-functions/fixtures/functions/TFunctionUtil.ts` | 496 | ✅ |
 | `tests-functions/src/testFixtures/java/test/gen/ExpressionValue.java` | `test/engine/tests-functions/fixtures/gen/ExpressionValue.ts` | 78 | ✅ |
@@ -855,7 +855,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-central/src/test/java/test/MatcherUtil.java` | `test/gui/tests-gui-central/MatcherUtil.spec.ts` | 70 | – |
+| `tests-gui-central/src/test/java/test/MatcherUtil.java` | `test/gui/tests-gui-central/MatcherUtil.ts` | 70 | – |
 | `tests-gui-central/src/test/java/test/PropInsertRemoveRows.java` | `test/gui/tests-gui-central/PropInsertRemoveRows.spec.ts` | 162 | – (0/2 tests) |
 | `tests-gui-central/src/test/java/test/PropStorageSet.java` | `test/gui/tests-gui-central/PropStorageSet.spec.ts` | 192 | – (0/1 tests) |
 | `tests-gui-central/src/test/java/test/TestInfrastructure.java` | `test/gui/tests-gui-central/TestInfrastructure.spec.ts` | 44 | – (0/1 tests) |
@@ -865,12 +865,12 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-central/src/test/java/test/expressions/TestExpressionExplanation.java` | `test/gui/tests-gui-central/expressions/TestExpressionExplanation.spec.ts` | 424 | – (0/4 tests) |
 | `tests-gui-central/src/test/java/test/expressions/TestFromDoc.java` | `test/engine/tests-gui-central/expressions/TestFromDoc.test.ts` | 361 | ✅ (1/1 tests) |
 | `tests-gui-central/src/test/java/test/expressions/TestLoadSaveExpression.java` | `test/gui/tests-gui-central/expressions/TestLoadSaveExpression.spec.ts` | 144 | – (0/3 tests) |
-| `tests-gui-central/src/test/java/test/gen/GenDateTime.java` | `test/gui/tests-gui-central/gen/GenDateTime.spec.ts` | 46 | – |
-| `tests-gui-central/src/test/java/test/gen/GenDateTimeZoned.java` | `test/gui/tests-gui-central/gen/GenDateTimeZoned.spec.ts` | 46 | – |
-| `tests-gui-central/src/test/java/test/gen/GenEditableColumn.java` | `test/gui/tests-gui-central/gen/GenEditableColumn.spec.ts` | 82 | – |
-| `tests-gui-central/src/test/java/test/gen/GenOffsetTime.java` | `test/gui/tests-gui-central/gen/GenOffsetTime.spec.ts` | 46 | – |
-| `tests-gui-central/src/test/java/test/gen/GenTime.java` | `test/gui/tests-gui-central/gen/GenTime.spec.ts` | 45 | – |
-| `tests-gui-central/src/test/java/test/gen/GenYearMonth.java` | `test/gui/tests-gui-central/gen/GenYearMonth.spec.ts` | 46 | – |
+| `tests-gui-central/src/test/java/test/gen/GenDateTime.java` | `test/gui/tests-gui-central/gen/GenDateTime.ts` | 46 | – |
+| `tests-gui-central/src/test/java/test/gen/GenDateTimeZoned.java` | `test/gui/tests-gui-central/gen/GenDateTimeZoned.ts` | 46 | – |
+| `tests-gui-central/src/test/java/test/gen/GenEditableColumn.java` | `test/gui/tests-gui-central/gen/GenEditableColumn.ts` | 82 | – |
+| `tests-gui-central/src/test/java/test/gen/GenOffsetTime.java` | `test/gui/tests-gui-central/gen/GenOffsetTime.ts` | 46 | – |
+| `tests-gui-central/src/test/java/test/gen/GenTime.java` | `test/gui/tests-gui-central/gen/GenTime.ts` | 45 | – |
+| `tests-gui-central/src/test/java/test/gen/GenYearMonth.java` | `test/gui/tests-gui-central/gen/GenYearMonth.ts` | 46 | – |
 | `tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java` | `test/gui/tests-gui-central/gui/TestBlankMainWindow.spec.ts` | 665 | – (0/11 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExplanationDisplay.java` | `test/gui/tests-gui-central/gui/TestExplanationDisplay.spec.ts` | 221 | – (0/8 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExportToCSV.java` | `test/gui/tests-gui-central/gui/TestExportToCSV.spec.ts` | 89 | – (0/1 tests) |
@@ -907,7 +907,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-expression-editor-further/src/test/java/test/gen/GenInvalidExpressionSource.java` | `test/gui/tests-gui-expression-editor-further/gen/GenInvalidExpressionSource.spec.ts` | 68 | – |
+| `tests-gui-expression-editor-further/src/test/java/test/gen/GenInvalidExpressionSource.java` | `test/gui/tests-gui-expression-editor-further/gen/GenInvalidExpressionSource.ts` | 68 | – |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/PropExpressionEditor.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/PropExpressionEditor.spec.ts` | 49 | – (0/1 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorCompletion.spec.ts` | 542 | – (0/30 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorInvalid.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorInvalid.spec.ts` | 79 | – (0/1 tests) |
@@ -941,7 +941,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-grid/src/test/java/test/gen/GenGridAreaList.java` | `test/gui/tests-gui-grid/gen/GenGridAreaList.spec.ts` | 105 | – |
+| `tests-gui-grid/src/test/java/test/gen/GenGridAreaList.java` | `test/gui/tests-gui-grid/gen/GenGridAreaList.ts` | 105 | – |
 | `tests-gui-grid/src/test/java/test/gui/PropGridOverlap.java` | `test/gui/tests-gui-grid/gui/PropGridOverlap.spec.ts` | 147 | – (0/3 tests) |
 | `tests-gui-grid/src/test/java/test/gui/TestKeyboardMovement.java` | `test/gui/tests-gui-grid/gui/TestKeyboardMovement.spec.ts` | 210 | – (0/2 tests) |
 | `tests-gui-grid/src/test/java/test/gui/TestVirtualGridLayout.java` | `test/gui/tests-gui-grid/gui/TestVirtualGridLayout.spec.ts` | 587 | – (0/9 tests) |
@@ -961,9 +961,9 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `tests-gui-r/src/test/java/test/gui/transformation/TestRTransformation.java` | `test/gui/tests-gui-r/gui/transformation/TestRTransformation.spec.ts` | 101 | – (0/1 tests) |
-| `tests-gui-r/src/test/java/test/importExport/GenRCompatibleRecordSet.java` | `test/gui/tests-gui-r/importExport/GenRCompatibleRecordSet.spec.ts` | 101 | – |
+| `tests-gui-r/src/test/java/test/importExport/GenRCompatibleRecordSet.java` | `test/engine/tests-gui-r/importExport/GenRCompatibleRecordSet.ts` | 101 | ✅ |
 | `tests-gui-r/src/test/java/test/importExport/TestRExecution.java` | `test/gui/tests-gui-r/importExport/TestRExecution.spec.ts` | 276 | – (0/16 tests) |
-| `tests-gui-r/src/test/java/test/importExport/TestRLoadSave.java` | `test/gui/tests-gui-r/importExport/TestRLoadSave.spec.ts` | 669 | – (0/10 tests) |
+| `tests-gui-r/src/test/java/test/importExport/TestRLoadSave.java` | `test/engine/tests-gui-r/importExport/TestRLoadSave.test.ts` | 669 | ✅ (10/10 tests) |
 
 </details>
 
@@ -990,7 +990,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-transformations/src/test/java/test/gen/GenDataAndTransforms.java` | `test/gui/tests-gui-transformations/gen/GenDataAndTransforms.spec.ts` | 188 | – |
+| `tests-gui-transformations/src/test/java/test/gen/GenDataAndTransforms.java` | `test/gui/tests-gui-transformations/gen/GenDataAndTransforms.ts` | 188 | – |
 | `tests-gui-transformations/src/test/java/test/gui/transformation/TestCalculate.java` | `test/gui/tests-gui-transformations/gui/transformation/TestCalculate.spec.ts` | 247 | – (0/1 tests) |
 | `tests-gui-transformations/src/test/java/test/gui/transformation/TestColumnRecipes.java` | `test/gui/tests-gui-transformations/gui/transformation/TestColumnRecipes.spec.ts` | 310 | – (0/16 tests) |
 | `tests-gui-transformations/src/test/java/test/gui/transformation/TestFilter.java` | `test/gui/tests-gui-transformations/gui/transformation/TestFilter.spec.ts` | 130 | – (0/1 tests) |
@@ -1025,33 +1025,33 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `tests-tables/src/test/java/test/PropLoadSaveData.java` | `test/engine/tests-tables/PropLoadSaveData.test.ts` | 158 | ✅ (2/2 tests) |
-| `tests-tables/src/test/java/test/PropLoadSaveTransformation.java` | `test/engine/tests-tables/PropLoadSaveTransformation.test.ts` | 101 | – (0/1 tests) |
+| `tests-tables/src/test/java/test/PropLoadSaveTransformation.java` | `test/engine/tests-tables/PropLoadSaveTransformation.test.ts` | 101 | ✅ (1/1 tests) |
 | `tests-tables/src/test/java/test/PropNumericStorage.java` | `test/engine/tests-tables/PropNumericStorage.test.ts` | 140 | ✅ (4/4 tests) |
-| `tests-tables/src/test/java/test/PropRunTransformation.java` | `test/engine/tests-tables/PropRunTransformation.test.ts` | 495 | – (0/7 tests) |
+| `tests-tables/src/test/java/test/PropRunTransformation.java` | `test/engine/tests-tables/PropRunTransformation.test.ts` | 495 | ✅ (7/7 tests) |
 | `tests-tables/src/test/java/test/TestSetValue.java` | `test/engine/tests-tables/TestSetValue.test.ts` | 106 | ✅ (1/1 tests) |
 | `tests-tables/src/test/java/test/data/PropFiles.java` | `test/engine/tests-tables/data/PropFiles.test.ts` | 60 | ✅ (1/1 tests) |
 | `tests-tables/src/test/java/test/data/TestTextFileColumn.java` | `test/engine/tests-tables/data/TestTextFileColumn.test.ts` | 140 | ✅ (1/1 tests) |
-| `tests-tables/src/test/java/test/expressions/PropRunExpression.java` | `test/engine/tests-tables/expressions/PropRunExpression.test.ts` | 93 | – (0/1 tests) |
+| `tests-tables/src/test/java/test/expressions/PropRunExpression.java` | `test/engine/tests-tables/expressions/PropRunExpression.test.ts` | 93 | ✅ (1/1 tests) |
 | `tests-tables/src/testFixtures/java/test/TTableUtil.java` | `test/engine/tests-tables/fixtures/TTableUtil.ts` | 244 | ✅ |
-| `tests-tables/src/testFixtures/java/test/Transformation_Mgr.java` | `test/engine/tests-tables/fixtures/Transformation_Mgr.ts` | 48 | – |
+| `tests-tables/src/testFixtures/java/test/Transformation_Mgr.java` | `test/engine/tests-tables/fixtures/Transformation_Mgr.ts` | 48 | ✅ |
 | `tests-tables/src/testFixtures/java/test/data/GeneratedTextFile.java` | `test/engine/tests-tables/fixtures/data/GeneratedTextFile.ts` | 106 | ✅ |
 | `tests-tables/src/testFixtures/java/test/gen/GenColumnId.java` | `test/engine/tests-tables/fixtures/gen/GenColumnId.ts` | 42 | ✅ |
 | `tests-tables/src/testFixtures/java/test/gen/GenFile.java` | `test/engine/tests-tables/fixtures/gen/GenFile.ts` | 161 | ✅ |
 | `tests-tables/src/testFixtures/java/test/gen/GenImmediateData.java` | `test/engine/tests-tables/fixtures/gen/GenImmediateData.ts` | 201 | ✅ |
 | `tests-tables/src/testFixtures/java/test/gen/GenTableId.java` | `test/engine/tests-tables/fixtures/gen/GenTableId.ts` | 42 | ✅ |
 | `tests-tables/src/testFixtures/java/test/gen/GenTableManager.java` | `test/engine/tests-tables/fixtures/gen/GenTableManager.ts` | 46 | ✅ |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseCheck.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseCheck.ts` | 69 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseConcatenate.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseConcatenate.ts` | 77 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseExpression.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseExpression.ts` | 369 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseFilter.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseFilter.ts` | 68 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseHideColumns.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseHideColumns.ts` | 73 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseJoin.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseJoin.ts` | 78 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseManualEdit.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseManualEdit.ts` | 108 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseRTransform.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseRTransform.ts` | 67 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseSort.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseSort.ts` | 74 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseSummaryStats.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseSummaryStats.ts` | 76 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseTransform.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseTransform.ts` | 82 | – |
-| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseTransformation.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseTransformation.ts` | 61 | – |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseCheck.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseCheck.ts` | 69 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseConcatenate.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseConcatenate.ts` | 77 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseExpression.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseExpression.ts` | 369 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseFilter.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseFilter.ts` | 68 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseHideColumns.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseHideColumns.ts` | 73 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseJoin.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseJoin.ts` | 78 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseManualEdit.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseManualEdit.ts` | 108 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseRTransform.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseRTransform.ts` | 67 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseSort.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseSort.ts` | 74 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseSummaryStats.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseSummaryStats.ts` | 76 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseTransform.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseTransform.ts` | 82 | ✅ |
+| `tests-tables/src/testFixtures/java/test/gen/nonsenseTrans/GenNonsenseTransformation.java` | `test/engine/tests-tables/fixtures/gen/nonsenseTrans/GenNonsenseTransformation.ts` | 61 | ✅ |
 
 </details>
 

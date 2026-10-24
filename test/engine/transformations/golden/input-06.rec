@@ -1,0 +1,105 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN LMA
+LMA "Test 0"
+LMA FORMAT @BEGIN
+LMA @COLUMN GenCol 23 @TYPE Boolean @DEFAULT false
+LMA @COLUMN GenCol 24 @TYPE Boolean @DEFAULT false
+LMA @COLUMN GenCol 25 @TYPE ( inner : ( t 1 : Text , t 2 : Number ) , z : Number ) @DEFAULT ( "inner" : ( "t 1" : "s 9 0na" , "t 2" : -127 ) , "z" : 14614 )
+LMA @COLUMN GenCol 26 @TYPE ( a : Number , b : Number ) @DEFAULT ( "a" : -9223372036854775807 , "b" : 70 )
+LMA @COLUMN GenCol 27 @TYPE DateTime @DEFAULT 2005-05-17 05:05:52.523536025
+LMA @COLUMN GenCol 28 @TYPE Nested @DEFAULT C ( Num ( 139 ) )
+LMA @COLUMN GenCol 29 @TYPE DateTime @DEFAULT 0563-09-12 09:30:16.896561786
+LMA @COLUMN GenCol 30 @TYPE B @DEFAULT Single
+LMA @END FORMAT
+LMA VALUES @BEGIN
+LMA   true , true , ( "inner" : ( "t 1" : "a" , "t 2" : 75934694129 ) , "z" : -128 ) , ( "a" : -9223372036854775807 , "b" : 9223372036854775807 ) , 1995-07-28 08:40:18 , A ( Single ) , 5737-06-01 02:50:58.712256397 , Single
+LMA   true , @INVALID "#297617465" , ( "inner" : ( "t 1" : "h9 9 9" , "t 2" : 1 ) , "z" : 2 ) , ( "a" : 883 , "b" : 127 ) , 1936-06-07 13:41:44 , C ( Num ( 0.63935 ) ) , 1970-10-04 00:20:00 , Single
+LMA   false , true , @INVALID "#1933904172" , ( "a" : 470 , "b" : -9223372036854775809 ) , 2018-11-24 18:55:00 , A ( Single ) , 3932-02-24 07:13:16 , Single
+LMA @END VALUES
+LMA DISPLAY @BEGIN
+LMA POSITION 1 1
+LMA SHOWCOLUMNS ALL
+LMA @END DISPLAY
+@END LMA DATA
+
+TRANSFORMATION @BEGIN DVK
+DVK "Trans 1"
+DVK filter
+DVK SOURCE "Test 0"
+DVK @BEGIN
+DVK KEEPIF column\\GenCol 23 >= @call function\\list\element(table\\Test 0#GenCol 23, 2)
+DVK @END
+DVK DISPLAY @BEGIN
+DVK POSITION 1 1
+DVK SHOWCOLUMNS ALL
+DVK @END DISPLAY
+@END DVK TRANSFORMATION
+
+TRANSFORMATION @BEGIN SFT
+SFT "Trans 4"
+SFT check
+SFT SOURCE "Trans 1"
+SFT @BEGIN
+SFT CHECK ALLROWS @EXPRESSION false
+SFT @END
+SFT DISPLAY @BEGIN
+SFT POSITION 1 1
+SFT SHOWCOLUMNS ALL
+SFT @END DISPLAY
+@END SFT TRANSFORMATION
+
+TRANSFORMATION @BEGIN URC
+URC "Trans 5"
+URC calculate
+URC SOURCE "Trans 1"
+URC @BEGIN
+URC CALCULATE "New 1" @EXPRESSION @call function\\boolean\not(column\\GenCol 28)
+URC @END
+URC DISPLAY @BEGIN
+URC POSITION 1 1
+URC SHOWCOLUMNS ALL
+URC @END DISPLAY
+@END URC TRANSFORMATION
+
+TRANSFORMATION @BEGIN MPL
+MPL "Trans 2"
+MPL filter
+MPL SOURCE "Test 0"
+MPL @BEGIN
+MPL KEEPIF column\\GenCol 26 <= @call function\\list\element(table\\Test 0#GenCol 26, 5)
+MPL @END
+MPL DISPLAY @BEGIN
+MPL POSITION 1 1
+MPL SHOWCOLUMNS ALL
+MPL @END DISPLAY
+@END MPL TRANSFORMATION
+
+TRANSFORMATION @BEGIN DIL
+DIL "Trans 3"
+DIL concatenate
+DIL SOURCE "Trans 2" "Trans 2" "Trans 2"
+DIL @BEGIN
+DIL @INCOMPLETE OMIT
+DIL @END
+DIL DISPLAY @BEGIN
+DIL POSITION 1 1
+DIL SHOWCOLUMNS ALL
+DIL @END DISPLAY
+@END DIL TRANSFORMATION
+

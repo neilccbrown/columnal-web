@@ -98,3 +98,15 @@ export function javaParseDouble(s: string): number
     }
     throw new NumberFormatException(`For input string: "${s}"`);
 }
+
+/** Java's (int) cast of a double: truncates, gives 0 for NaN, and saturates at the int range. */
+export function javaDoubleToInt(d: number): number
+{
+    if (Number.isNaN(d))
+        return 0;
+    if (d >= 2147483647)
+        return 2147483647;
+    if (d <= -2147483648)
+        return -2147483648;
+    return Math.trunc(d);
+}

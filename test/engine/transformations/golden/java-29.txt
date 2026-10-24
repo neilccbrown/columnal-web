@@ -1,0 +1,119 @@
+TABLE Test 0
+LENGTH 3
+COLUMN GenCol 178 : Number
+  0: 53
+  1: 32767
+  2: 8061692
+COLUMN GenCol 179 : Date
+  0: 2019-06-12
+  1: 1927-10-03
+  2: 1998-10-28
+COLUMN GenCol 180 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "'", bool: false, c: Blank, dtz: 6308-12-22 23:06:47.343749075 Europe/Astrakhan)
+  1: (Text: "􏃾w", bool: false, c: Blank, dtz: 2020-03-24 23:34:25.147054578 Africa/Dakar)
+  2: (Text: "3", bool: true, c: Blank, dtz: 1983-07-20 15:44:00 Asia/Chita)
+COLUMN GenCol 181 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+  2: Is(Is("}"))
+COLUMN GenCol 182 : (a: Number, b: Number)
+  0: (a: 32767, b: 127)
+  1: (a: 122222945199, b: 0.286475)
+  2: (a: 181308629160, b: 3)
+COLUMN GenCol 183 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "#", t 2: 49032), z: 0.025181)
+  1: (inner: (t 1: "SOURCE", t 2: -2147483649), z: 6)
+  2: (inner: (t 1: "nD", t 2: 6), z: 1)
+COLUMN GenCol 184 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: Is(Is("xp"))
+  1: Is(Is("DATA"))
+  2: Is(None)
+COLUMN GenCol 185 : Number{m^3/s^3}
+  0: 127
+  1: -2147483649
+  2: -2147483647
+TABLE Trans 1
+LENGTH 3
+COLUMN GenCol 178 : Number
+  0: 53
+  1: 32767
+  2: 8061692
+COLUMN GenCol 179 : Date
+  0: 2019-06-12
+  1: 1927-10-03
+  2: 1998-10-28
+COLUMN GenCol 180 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "'", bool: false, c: Blank, dtz: 6308-12-22 23:06:47.343749075 Europe/Astrakhan)
+  1: (Text: "􏃾w", bool: false, c: Blank, dtz: 2020-03-24 23:34:25.147054578 Africa/Dakar)
+  2: (Text: "3", bool: true, c: Blank, dtz: 1983-07-20 15:44:00 Asia/Chita)
+COLUMN GenCol 181 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: None
+  2: Is(Is("}"))
+COLUMN GenCol 182 : (a: Number, b: Number)
+  0: (a: 32767, b: 127)
+  1: (a: 122222945199, b: 0.286475)
+  2: (a: 181308629160, b: 3)
+COLUMN GenCol 183 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "#", t 2: 49032), z: 0.025181)
+  1: (inner: (t 1: "SOURCE", t 2: -2147483649), z: 6)
+  2: (inner: (t 1: "nD", t 2: 6), z: 1)
+COLUMN GenCol 185 : Number{m^3/s^3}
+  0: 127
+  1: -2147483649
+  2: -2147483647
+TABLE Trans 2
+LENGTH 2
+COLUMN GenCol 178 : Number
+  0: 32767
+  1: 8061692
+COLUMN GenCol 179 : Date
+  0: 1927-10-03
+  1: 1998-10-28
+COLUMN GenCol 180 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "􏃾w", bool: false, c: Blank, dtz: 2020-03-24 23:34:25.147054578 Africa/Dakar)
+  1: (Text: "3", bool: true, c: Blank, dtz: 1983-07-20 15:44:00 Asia/Chita)
+COLUMN GenCol 181 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: Is(Is("}"))
+COLUMN GenCol 182 : (a: Number, b: Number)
+  0: (a: 122222945199, b: 0.286475)
+  1: (a: 181308629160, b: 3)
+COLUMN GenCol 183 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "SOURCE", t 2: -2147483649), z: 6)
+  1: (inner: (t 1: "nD", t 2: 6), z: 1)
+COLUMN GenCol 184 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: Is(Is("DATA"))
+  1: Is(None)
+COLUMN GenCol 185 : Number{m^3/s^3}
+  0: -2147483649
+  1: -2147483647
+TABLE Trans 3
+!UserException: Duplicate column names found: Test 0 GenCol 178, Test 0 GenCol 179, Test 0 GenCol 180, Test 0 GenCol 181, Test 0 GenCol 182, Test 0 GenCol 183, Test 0 GenCol 184, Test 0 GenCol 185, Test 0 GenCol 178, Test 0 GenCol 179, Test 0 GenCol 180, Test 0 GenCol 181, Test 0 GenCol 182, Test 0 GenCol 183, Test 0 GenCol 184, Test 0 GenCol 185
+TABLE Trans 4
+LENGTH 2
+COLUMN GenCol 178 : Number
+  0: 32767
+  1: 8061692
+COLUMN GenCol 179 : Date
+  0: 1927-10-03
+  1: 1998-10-28
+COLUMN GenCol 180 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "􏃾w", bool: false, c: Blank, dtz: 2020-03-24 23:34:25.147054578 Africa/Dakar)
+  1: (Text: "3", bool: true, c: Blank, dtz: 1983-07-20 15:44:00 Asia/Chita)
+COLUMN GenCol 181 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: Is(Is("}"))
+COLUMN GenCol 182 : (a: Number, b: Number)
+  0: (a: 122222945199, b: 0.286475)
+  1: (a: 181308629160, b: 3)
+COLUMN GenCol 183 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "SOURCE", t 2: -2147483649), z: 6)
+  1: (inner: (t 1: "nD", t 2: 6), z: 1)
+COLUMN GenCol 185 : Number{m^3/s^3}
+  0: -2147483649
+  1: -2147483647
+TABLE Trans 5
+!UserException: Duplicate column names found: Test 0 GenCol 178, Test 0 GenCol 179, Test 0 GenCol 180, Test 0 GenCol 181, Test 0 GenCol 182, Test 0 GenCol 183, Test 0 GenCol 184, Test 0 GenCol 185, Test 0 GenCol 178, Test 0 GenCol 179, Test 0 GenCol 180, Test 0 GenCol 181, Test 0 GenCol 182, Test 0 GenCol 183, Test 0 GenCol 184, Test 0 GenCol 185
+TABLE Trans 6
+!UserException: Duplicate column names found: Trans 1 GenCol 178, Trans 1 GenCol 179, Trans 1 GenCol 180, Trans 1 GenCol 181, Trans 1 GenCol 182, Trans 1 GenCol 183, Trans 1 GenCol 185, Trans 1 GenCol 178, Trans 1 GenCol 179, Trans 1 GenCol 180, Trans 1 GenCol 181, Trans 1 GenCol 182, Trans 1 GenCol 183, Trans 1 GenCol 185

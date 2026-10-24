@@ -1374,14 +1374,14 @@ export class Utility
             {
                 if (epsilon.getFirst() === EpsilonType.RELATIVE)
                 {
-                    // PORT-NOTE: this is the Java code exactly, including what looks like a bug: it
-                    // computes |a-b|/a - 1 (not |a-b|/|a|), which is < epsilon for almost all pairs,
-                    // including any pair where a is negative.  (Java subtracts exactly, then divides
-                    // with DECIMAL128; the subtraction here is exact for numbers within 34 digits
-                    // of each other's magnitude.)
+                    // PORT-NOTE: bug fix.  Java computed |a-b|/a - 1 (not |a-b|/|a|), which is less
+                    // than epsilon for almost all pairs, including any pair where a is negative, so
+                    // every pair of numbers compared equal.  (Only PropRunExpression uses a relative
+                    // epsilon.)  Java subtracts exactly, then divides with DECIMAL128; the subtraction
+                    // here is exact for numbers within 34 digits of each other's magnitude.
                     const diff = da.minus(db).abs();
-                    if (da.eq(db) || (!da.isZero() && diff.div(da).minus(ONE).cmp(epsilon.getSecond()) < 0)
-                        || (!db.isZero() && diff.div(db).minus(ONE).cmp(epsilon.getSecond()) < 0))
+                    if (da.eq(db) || (!da.isZero() && diff.div(da.abs()).cmp(epsilon.getSecond()) < 0)
+                        || (!db.isZero() && diff.div(db.abs()).cmp(epsilon.getSecond()) < 0))
                         return 0;
                 }
                 else if (epsilon.getFirst() === EpsilonType.ABSOLUTE)

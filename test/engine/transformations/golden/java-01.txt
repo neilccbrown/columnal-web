@@ -1,0 +1,1776 @@
+TABLE Test 0
+LENGTH 252
+COLUMN GenCol 0 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  1: (Text: "i0 a rna 9a", bool: true, c: Num(-9223372036854775807), dtz: 1918-08-22 16:41:51.003031512 -08:48)
+  2: (Text: "a", bool: false, c: Num(-9223372036854775807), dtz: 2041-12-29 23:02:18.362735278 Pacific/Wallis)
+  3: (Text: "b", bool: true, c: Num(239), dtz: 0630-11-17 22:55:42 Australia/Perth)
+  4: (Text: "}%v", bool: false, c: Blank, dtz: 5905-02-05 10:09:28.539667886 Japan)
+  5: (Text: "𓭽󻒉", bool: false, c: Blank, dtz: 1942-02-02 16:21:22 +05:36)
+  6: (Text: "typevar", bool: false, c: Blank, dtz: 4894-12-05 12:43:36 +03:52)
+  7: (Text: "END", bool: true, c: Num(2147483647), dtz: 1946-07-18 21:13:53 +08:23)
+  8: (Text: "T", bool: true, c: Num(-2147483647), dtz: 1987-02-04 14:13:19.055389488 Pacific/Kosrae)
+  9: (Text: "W", bool: false, c: Blank, dtz: 4021-06-18 05:47:00 America/St_Thomas)
+  10: (Text: "0", bool: true, c: Blank, dtz: 1990-05-15 18:32:59 -08:37)
+  11: (Text: "YCTm", bool: false, c: Blank, dtz: 2020-12-20 00:10:57.164329076 +09:00)
+  12: (Text: "AO", bool: true, c: Num(283823), dtz: 9941-03-27 18:08:00 -00:56)
+  13: (Text: "􇴌", bool: false, c: Num(0.137881), dtz: 1907-04-22 18:14:32.90581249 America/Godthab)
+  14: (Text: "f00Z90rr", bool: false, c: Num(0), dtz: 1993-10-16 22:56:29.252309251 +10:31)
+  15: (Text: "0", bool: true, c: Blank, dtz: 1995-11-05 03:57:01 +11:55)
+  16: (Text: ";𤖇", bool: false, c: Blank, dtz: 2074-05-24 06:13:23 +04:07)
+  17: (Text: "VALUES", bool: false, c: Blank, dtz: 2016-10-20 15:39:35 America/Indiana/Marengo)
+  18: (Text: "COLUMN", bool: false, c: Blank, dtz: 9684-03-24 06:26:00 America/El_Salvador)
+  19: (Text: "COLUMNAL", bool: false, c: Blank, dtz: 1951-11-28 09:32:56 CST6CDT)
+COLUMN GenCol 1 : Number{m^2}
+  0: 1940
+  1: 0.501271
+  2: 0
+  3: 2919
+  4: -1
+  5: -2147483649
+  6: 0
+  7: 9
+  8: -127
+  9: 396
+  10: 640
+  11: -128
+  12: 2904
+  13: 9223372036854775807
+  14: 1622
+  15: 0.031616
+  16: 1
+  17: -32768
+  18: 5432735804986
+  19: -1
+COLUMN GenCol 2 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: Right(10)
+  1: Right(6271)
+  2: Right(-9223372036854775807)
+  3: Left(-128)
+  4: Right(74)
+  5: Left(-128)
+  6: Right(12)
+  7: Right(-2147483649)
+  8: Left(0.443103)
+  9: Left(44164864)
+  10: Left(0)
+  11: Right(64960897)
+  12: Right(-2147483648)
+  13: Left(495557)
+  14: Right(24881617)
+  15: Right(0.247564)
+  16: Left(-2147483648)
+  17: Right(3842)
+  18: Left(9223372036854775808)
+  19: Left(1558488)
+COLUMN GenCol 3 : DateTimeZoned
+  0: 1947-05-09 12:02:00 -07:01
+  1: 1912-10-08 00:19:40 +07:02
+  2: 5717-04-09 03:37:16 -10:24
+  3: 5767-09-29 01:28:39.160521308 Arctic/Longyearbyen
+  4: 1937-05-14 18:57:48.189878232 Europe/London
+  5: 1913-02-04 22:51:55 Australia/North
+  6: 2027-09-29 09:46:00 -10:56
+  7: 3945-02-15 13:43:06.023462895 +06:36
+  8: 1979-10-05 23:25:12.992071116 Europe/Zagreb
+  9: 1977-07-26 16:17:45.613179499 Africa/Bamako
+  10: 7829-07-02 02:20:21 America/Argentina/Ushuaia
+  11: 1955-10-22 20:11:00 -05:07
+  12: 7670-03-14 11:58:09.385526655 -00:31
+  13: 1907-10-23 09:19:00 -01:10
+  14: 1984-07-01 22:47:35.754965288 +03:00
+  15: 1949-08-31 18:45:36.74577695 +08:28
+  16: 2003-05-16 03:49:00 +06:15
+  17: 3929-02-13 07:38:33.525423838 Asia/Dacca
+  18: 2043-08-18 16:12:00 Asia/Thimbu
+  19: 2048-10-27 09:05:40 +02:35
+COLUMN GenCol 4 : DateTimeZoned
+  0: 5005-05-25 17:40:08.563173325 America/La_Paz
+  1: 1993-03-14 01:02:43 -04:47
+  2: 1902-03-18 00:03:06.708624298 -04:13
+  3: 1903-05-10 08:42:40.472110404 America/Coyhaique
+  4: 1985-02-09 23:24:00 -09:42
+  5: 2016-12-26 13:08:56.681362461 Africa/Dakar
+  6: 2017-08-02 06:05:00 Atlantic/Faeroe
+  7: 2236-07-31 00:11:22.050347328 +04:08
+  8: 0196-02-10 11:33:50.903011751 US/Pacific
+  9: 2005-11-30 18:59:05 -04:15
+  10: 1922-11-06 22:06:10.422358155 +06:55
+  11: 2050-01-03 02:47:14.171002739 -07:08
+  12: 1945-02-07 07:38:00 -03:13
+  13: 1907-01-09 08:33:00.02489474 +00:26
+  14: 2021-12-03 01:13:00 America/Tegucigalpa
+  15: 2035-01-09 16:03:44.0289036 Europe/Luxembourg
+  16: 9105-10-23 02:39:00 +02:49
+  17: 1927-11-16 14:42:00 -08:45
+  18: 1985-06-27 10:51:39.535124694 +01:02
+  19: 2048-08-06 15:33:00 +03:25
+COLUMN GenCol 5 : DateTimeZoned
+  0: 1946-06-16 09:17:17.007174818 +05:06
+  1: 1941-10-14 06:48:28.892418625 W-SU
+  2: 2029-11-11 20:55:46.887343095 Asia/Chita
+  3: 6521-01-13 13:34:09.783564531 -01:38
+  4: 7613-02-14 06:34:45 -02:40
+  5: 1990-06-03 14:00:23 +07:30
+  6: 1910-12-09 01:44:15.928220462 America/Port_of_Spain
+  7: 7833-10-16 03:15:00 UTC
+  8: 1964-04-07 18:04:21.748650287 +00:22
+  9: 1904-07-09 22:04:56.433910184 Pacific/Pohnpei
+  10: 1973-06-14 03:41:05.52154805 Etc/Zulu
+  11: 1977-07-22 18:35:02.2245091 -11:17
+  12: 1962-06-23 19:30:52.67652902 +00:48
+  13: 1967-07-29 19:40:00 +04:29
+  14: 6454-04-29 11:59:46.559001958 Asia/Vladivostok
+  15: 2009-10-23 18:14:54.814487183 +07:49
+  16: 9590-04-12 21:12:35 +11:41
+  17: 1941-09-09 08:53:00 -06:41
+  18: 1940-10-20 20:38:39.955265381 -11:17
+  19: 2039-07-30 14:51:58.63166407 Etc/UTC
+TABLE Trans 1
+LENGTH 252
+COLUMN GenCol 0 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  1: (Text: "i0 a rna 9a", bool: true, c: Num(-9223372036854775807), dtz: 1918-08-22 16:41:51.003031512 -08:48)
+  2: (Text: "a", bool: false, c: Num(-9223372036854775807), dtz: 2041-12-29 23:02:18.362735278 Pacific/Wallis)
+  3: (Text: "b", bool: true, c: Num(239), dtz: 0630-11-17 22:55:42 Australia/Perth)
+  4: (Text: "}%v", bool: false, c: Blank, dtz: 5905-02-05 10:09:28.539667886 Japan)
+  5: (Text: "𓭽󻒉", bool: false, c: Blank, dtz: 1942-02-02 16:21:22 +05:36)
+  6: (Text: "typevar", bool: false, c: Blank, dtz: 4894-12-05 12:43:36 +03:52)
+  7: (Text: "END", bool: true, c: Num(2147483647), dtz: 1946-07-18 21:13:53 +08:23)
+  8: (Text: "T", bool: true, c: Num(-2147483647), dtz: 1987-02-04 14:13:19.055389488 Pacific/Kosrae)
+  9: (Text: "W", bool: false, c: Blank, dtz: 4021-06-18 05:47:00 America/St_Thomas)
+  10: (Text: "0", bool: true, c: Blank, dtz: 1990-05-15 18:32:59 -08:37)
+  11: (Text: "YCTm", bool: false, c: Blank, dtz: 2020-12-20 00:10:57.164329076 +09:00)
+  12: (Text: "AO", bool: true, c: Num(283823), dtz: 9941-03-27 18:08:00 -00:56)
+  13: (Text: "􇴌", bool: false, c: Num(0.137881), dtz: 1907-04-22 18:14:32.90581249 America/Godthab)
+  14: (Text: "f00Z90rr", bool: false, c: Num(0), dtz: 1993-10-16 22:56:29.252309251 +10:31)
+  15: (Text: "0", bool: true, c: Blank, dtz: 1995-11-05 03:57:01 +11:55)
+  16: (Text: ";𤖇", bool: false, c: Blank, dtz: 2074-05-24 06:13:23 +04:07)
+  17: (Text: "VALUES", bool: false, c: Blank, dtz: 2016-10-20 15:39:35 America/Indiana/Marengo)
+  18: (Text: "COLUMN", bool: false, c: Blank, dtz: 9684-03-24 06:26:00 America/El_Salvador)
+  19: (Text: "COLUMNAL", bool: false, c: Blank, dtz: 1951-11-28 09:32:56 CST6CDT)
+COLUMN GenCol 1 : Number{m^2}
+  0: 1940
+  1: 0.501271
+  2: 0
+  3: 2919
+  4: -1
+  5: -2147483649
+  6: 0
+  7: 9
+  8: -127
+  9: 396
+  10: 640
+  11: -128
+  12: 2904
+  13: 9223372036854775807
+  14: 1622
+  15: 0.031616
+  16: 1
+  17: -32768
+  18: 5432735804986
+  19: -1
+COLUMN GenCol 2 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: Right(10)
+  1: Right(6271)
+  2: Right(-9223372036854775807)
+  3: Left(-128)
+  4: Right(74)
+  5: Left(-128)
+  6: Right(12)
+  7: Right(-2147483649)
+  8: Left(0.443103)
+  9: Left(44164864)
+  10: Left(0)
+  11: Right(64960897)
+  12: Right(-2147483648)
+  13: Left(495557)
+  14: Right(24881617)
+  15: Right(0.247564)
+  16: Left(-2147483648)
+  17: Right(3842)
+  18: Left(9223372036854775808)
+  19: Left(1558488)
+COLUMN GenCol 3 : DateTimeZoned
+  0: 1947-05-09 12:02:00 -07:01
+  1: 1912-10-08 00:19:40 +07:02
+  2: 5717-04-09 03:37:16 -10:24
+  3: 5767-09-29 01:28:39.160521308 Arctic/Longyearbyen
+  4: 1937-05-14 18:57:48.189878232 Europe/London
+  5: 1913-02-04 22:51:55 Australia/North
+  6: 2027-09-29 09:46:00 -10:56
+  7: 3945-02-15 13:43:06.023462895 +06:36
+  8: 1979-10-05 23:25:12.992071116 Europe/Zagreb
+  9: 1977-07-26 16:17:45.613179499 Africa/Bamako
+  10: 7829-07-02 02:20:21 America/Argentina/Ushuaia
+  11: 1955-10-22 20:11:00 -05:07
+  12: 7670-03-14 11:58:09.385526655 -00:31
+  13: 1907-10-23 09:19:00 -01:10
+  14: 1984-07-01 22:47:35.754965288 +03:00
+  15: 1949-08-31 18:45:36.74577695 +08:28
+  16: 2003-05-16 03:49:00 +06:15
+  17: 3929-02-13 07:38:33.525423838 Asia/Dacca
+  18: 2043-08-18 16:12:00 Asia/Thimbu
+  19: 2048-10-27 09:05:40 +02:35
+COLUMN GenCol 4 : DateTimeZoned
+  0: 5005-05-25 17:40:08.563173325 America/La_Paz
+  1: 1993-03-14 01:02:43 -04:47
+  2: 1902-03-18 00:03:06.708624298 -04:13
+  3: 1903-05-10 08:42:40.472110404 America/Coyhaique
+  4: 1985-02-09 23:24:00 -09:42
+  5: 2016-12-26 13:08:56.681362461 Africa/Dakar
+  6: 2017-08-02 06:05:00 Atlantic/Faeroe
+  7: 2236-07-31 00:11:22.050347328 +04:08
+  8: 0196-02-10 11:33:50.903011751 US/Pacific
+  9: 2005-11-30 18:59:05 -04:15
+  10: 1922-11-06 22:06:10.422358155 +06:55
+  11: 2050-01-03 02:47:14.171002739 -07:08
+  12: 1945-02-07 07:38:00 -03:13
+  13: 1907-01-09 08:33:00.02489474 +00:26
+  14: 2021-12-03 01:13:00 America/Tegucigalpa
+  15: 2035-01-09 16:03:44.0289036 Europe/Luxembourg
+  16: 9105-10-23 02:39:00 +02:49
+  17: 1927-11-16 14:42:00 -08:45
+  18: 1985-06-27 10:51:39.535124694 +01:02
+  19: 2048-08-06 15:33:00 +03:25
+COLUMN GenCol 5 : DateTimeZoned
+  0: 1946-06-16 09:17:17.007174818 +05:06
+  1: 1941-10-14 06:48:28.892418625 W-SU
+  2: 2029-11-11 20:55:46.887343095 Asia/Chita
+  3: 6521-01-13 13:34:09.783564531 -01:38
+  4: 7613-02-14 06:34:45 -02:40
+  5: 1990-06-03 14:00:23 +07:30
+  6: 1910-12-09 01:44:15.928220462 America/Port_of_Spain
+  7: 7833-10-16 03:15:00 UTC
+  8: 1964-04-07 18:04:21.748650287 +00:22
+  9: 1904-07-09 22:04:56.433910184 Pacific/Pohnpei
+  10: 1973-06-14 03:41:05.52154805 Etc/Zulu
+  11: 1977-07-22 18:35:02.2245091 -11:17
+  12: 1962-06-23 19:30:52.67652902 +00:48
+  13: 1967-07-29 19:40:00 +04:29
+  14: 6454-04-29 11:59:46.559001958 Asia/Vladivostok
+  15: 2009-10-23 18:14:54.814487183 +07:49
+  16: 9590-04-12 21:12:35 +11:41
+  17: 1941-09-09 08:53:00 -06:41
+  18: 1940-10-20 20:38:39.955265381 -11:17
+  19: 2039-07-30 14:51:58.63166407 Etc/UTC
+COLUMN New 2 : Number
+  0: 252
+  1: 252
+  2: 252
+  3: 252
+  4: 252
+  5: 252
+  6: 252
+  7: 252
+  8: 252
+  9: 252
+  10: 252
+  11: 252
+  12: 252
+  13: 252
+  14: 252
+  15: 252
+  16: 252
+  17: 252
+  18: 252
+  19: 252
+COLUMN New 1 : Void <>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  1: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  2: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  3: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  4: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  5: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  6: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  7: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  8: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  9: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  10: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  11: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  12: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  13: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  14: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  15: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  16: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  17: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  18: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  19: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+TABLE Trans 2
+LENGTH 252
+COLUMN Trans 1 GenCol 0 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  1: (Text: "i0 a rna 9a", bool: true, c: Num(-9223372036854775807), dtz: 1918-08-22 16:41:51.003031512 -08:48)
+  2: (Text: "a", bool: false, c: Num(-9223372036854775807), dtz: 2041-12-29 23:02:18.362735278 Pacific/Wallis)
+  3: (Text: "b", bool: true, c: Num(239), dtz: 0630-11-17 22:55:42 Australia/Perth)
+  4: (Text: "}%v", bool: false, c: Blank, dtz: 5905-02-05 10:09:28.539667886 Japan)
+  5: (Text: "𓭽󻒉", bool: false, c: Blank, dtz: 1942-02-02 16:21:22 +05:36)
+  6: (Text: "typevar", bool: false, c: Blank, dtz: 4894-12-05 12:43:36 +03:52)
+  7: (Text: "END", bool: true, c: Num(2147483647), dtz: 1946-07-18 21:13:53 +08:23)
+  8: (Text: "T", bool: true, c: Num(-2147483647), dtz: 1987-02-04 14:13:19.055389488 Pacific/Kosrae)
+  9: (Text: "W", bool: false, c: Blank, dtz: 4021-06-18 05:47:00 America/St_Thomas)
+  10: (Text: "0", bool: true, c: Blank, dtz: 1990-05-15 18:32:59 -08:37)
+  11: (Text: "YCTm", bool: false, c: Blank, dtz: 2020-12-20 00:10:57.164329076 +09:00)
+  12: (Text: "AO", bool: true, c: Num(283823), dtz: 9941-03-27 18:08:00 -00:56)
+  13: (Text: "􇴌", bool: false, c: Num(0.137881), dtz: 1907-04-22 18:14:32.90581249 America/Godthab)
+  14: (Text: "f00Z90rr", bool: false, c: Num(0), dtz: 1993-10-16 22:56:29.252309251 +10:31)
+  15: (Text: "0", bool: true, c: Blank, dtz: 1995-11-05 03:57:01 +11:55)
+  16: (Text: ";𤖇", bool: false, c: Blank, dtz: 2074-05-24 06:13:23 +04:07)
+  17: (Text: "VALUES", bool: false, c: Blank, dtz: 2016-10-20 15:39:35 America/Indiana/Marengo)
+  18: (Text: "COLUMN", bool: false, c: Blank, dtz: 9684-03-24 06:26:00 America/El_Salvador)
+  19: (Text: "COLUMNAL", bool: false, c: Blank, dtz: 1951-11-28 09:32:56 CST6CDT)
+COLUMN Trans 1 GenCol 1 : Number{m^2}
+  0: 1940
+  1: 0.501271
+  2: 0
+  3: 2919
+  4: -1
+  5: -2147483649
+  6: 0
+  7: 9
+  8: -127
+  9: 396
+  10: 640
+  11: -128
+  12: 2904
+  13: 9223372036854775807
+  14: 1622
+  15: 0.031616
+  16: 1
+  17: -32768
+  18: 5432735804986
+  19: -1
+COLUMN Trans 1 GenCol 2 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: Right(10)
+  1: Right(6271)
+  2: Right(-9223372036854775807)
+  3: Left(-128)
+  4: Right(74)
+  5: Left(-128)
+  6: Right(12)
+  7: Right(-2147483649)
+  8: Left(0.443103)
+  9: Left(44164864)
+  10: Left(0)
+  11: Right(64960897)
+  12: Right(-2147483648)
+  13: Left(495557)
+  14: Right(24881617)
+  15: Right(0.247564)
+  16: Left(-2147483648)
+  17: Right(3842)
+  18: Left(9223372036854775808)
+  19: Left(1558488)
+COLUMN Trans 1 GenCol 3 : DateTimeZoned
+  0: 1947-05-09 12:02:00 -07:01
+  1: 1912-10-08 00:19:40 +07:02
+  2: 5717-04-09 03:37:16 -10:24
+  3: 5767-09-29 01:28:39.160521308 Arctic/Longyearbyen
+  4: 1937-05-14 18:57:48.189878232 Europe/London
+  5: 1913-02-04 22:51:55 Australia/North
+  6: 2027-09-29 09:46:00 -10:56
+  7: 3945-02-15 13:43:06.023462895 +06:36
+  8: 1979-10-05 23:25:12.992071116 Europe/Zagreb
+  9: 1977-07-26 16:17:45.613179499 Africa/Bamako
+  10: 7829-07-02 02:20:21 America/Argentina/Ushuaia
+  11: 1955-10-22 20:11:00 -05:07
+  12: 7670-03-14 11:58:09.385526655 -00:31
+  13: 1907-10-23 09:19:00 -01:10
+  14: 1984-07-01 22:47:35.754965288 +03:00
+  15: 1949-08-31 18:45:36.74577695 +08:28
+  16: 2003-05-16 03:49:00 +06:15
+  17: 3929-02-13 07:38:33.525423838 Asia/Dacca
+  18: 2043-08-18 16:12:00 Asia/Thimbu
+  19: 2048-10-27 09:05:40 +02:35
+COLUMN Trans 1 GenCol 4 : DateTimeZoned
+  0: 5005-05-25 17:40:08.563173325 America/La_Paz
+  1: 1993-03-14 01:02:43 -04:47
+  2: 1902-03-18 00:03:06.708624298 -04:13
+  3: 1903-05-10 08:42:40.472110404 America/Coyhaique
+  4: 1985-02-09 23:24:00 -09:42
+  5: 2016-12-26 13:08:56.681362461 Africa/Dakar
+  6: 2017-08-02 06:05:00 Atlantic/Faeroe
+  7: 2236-07-31 00:11:22.050347328 +04:08
+  8: 0196-02-10 11:33:50.903011751 US/Pacific
+  9: 2005-11-30 18:59:05 -04:15
+  10: 1922-11-06 22:06:10.422358155 +06:55
+  11: 2050-01-03 02:47:14.171002739 -07:08
+  12: 1945-02-07 07:38:00 -03:13
+  13: 1907-01-09 08:33:00.02489474 +00:26
+  14: 2021-12-03 01:13:00 America/Tegucigalpa
+  15: 2035-01-09 16:03:44.0289036 Europe/Luxembourg
+  16: 9105-10-23 02:39:00 +02:49
+  17: 1927-11-16 14:42:00 -08:45
+  18: 1985-06-27 10:51:39.535124694 +01:02
+  19: 2048-08-06 15:33:00 +03:25
+COLUMN Trans 1 GenCol 5 : DateTimeZoned
+  0: 1946-06-16 09:17:17.007174818 +05:06
+  1: 1941-10-14 06:48:28.892418625 W-SU
+  2: 2029-11-11 20:55:46.887343095 Asia/Chita
+  3: 6521-01-13 13:34:09.783564531 -01:38
+  4: 7613-02-14 06:34:45 -02:40
+  5: 1990-06-03 14:00:23 +07:30
+  6: 1910-12-09 01:44:15.928220462 America/Port_of_Spain
+  7: 7833-10-16 03:15:00 UTC
+  8: 1964-04-07 18:04:21.748650287 +00:22
+  9: 1904-07-09 22:04:56.433910184 Pacific/Pohnpei
+  10: 1973-06-14 03:41:05.52154805 Etc/Zulu
+  11: 1977-07-22 18:35:02.2245091 -11:17
+  12: 1962-06-23 19:30:52.67652902 +00:48
+  13: 1967-07-29 19:40:00 +04:29
+  14: 6454-04-29 11:59:46.559001958 Asia/Vladivostok
+  15: 2009-10-23 18:14:54.814487183 +07:49
+  16: 9590-04-12 21:12:35 +11:41
+  17: 1941-09-09 08:53:00 -06:41
+  18: 1940-10-20 20:38:39.955265381 -11:17
+  19: 2039-07-30 14:51:58.63166407 Etc/UTC
+COLUMN New 2 : Number
+  0: 252
+  1: 252
+  2: 252
+  3: 252
+  4: 252
+  5: 252
+  6: 252
+  7: 252
+  8: 252
+  9: 252
+  10: 252
+  11: 252
+  12: 252
+  13: 252
+  14: 252
+  15: 252
+  16: 252
+  17: 252
+  18: 252
+  19: 252
+COLUMN New 1 : Void <>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  1: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  2: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  3: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  4: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  5: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  6: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  7: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  8: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  9: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  10: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  11: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  12: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  13: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  14: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  15: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  16: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  17: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  18: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  19: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+COLUMN Test 0 GenCol 0 : Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 1 : Optional(Number{m^2}) <None | Is:Number{m^2}>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 2 : Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 3 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 4 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 5 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+TABLE Trans 3
+LENGTH 756
+COLUMN GenCol 0 : Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>
+  0: Is(Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  1: Is(Text: "i0 a rna 9a", bool: true, c: Num(-9223372036854775807), dtz: 1918-08-22 16:41:51.003031512 -08:48)
+  2: Is(Text: "a", bool: false, c: Num(-9223372036854775807), dtz: 2041-12-29 23:02:18.362735278 Pacific/Wallis)
+  3: Is(Text: "b", bool: true, c: Num(239), dtz: 0630-11-17 22:55:42 Australia/Perth)
+  4: Is(Text: "}%v", bool: false, c: Blank, dtz: 5905-02-05 10:09:28.539667886 Japan)
+  5: Is(Text: "𓭽󻒉", bool: false, c: Blank, dtz: 1942-02-02 16:21:22 +05:36)
+  6: Is(Text: "typevar", bool: false, c: Blank, dtz: 4894-12-05 12:43:36 +03:52)
+  7: Is(Text: "END", bool: true, c: Num(2147483647), dtz: 1946-07-18 21:13:53 +08:23)
+  8: Is(Text: "T", bool: true, c: Num(-2147483647), dtz: 1987-02-04 14:13:19.055389488 Pacific/Kosrae)
+  9: Is(Text: "W", bool: false, c: Blank, dtz: 4021-06-18 05:47:00 America/St_Thomas)
+  10: Is(Text: "0", bool: true, c: Blank, dtz: 1990-05-15 18:32:59 -08:37)
+  11: Is(Text: "YCTm", bool: false, c: Blank, dtz: 2020-12-20 00:10:57.164329076 +09:00)
+  12: Is(Text: "AO", bool: true, c: Num(283823), dtz: 9941-03-27 18:08:00 -00:56)
+  13: Is(Text: "􇴌", bool: false, c: Num(0.137881), dtz: 1907-04-22 18:14:32.90581249 America/Godthab)
+  14: Is(Text: "f00Z90rr", bool: false, c: Num(0), dtz: 1993-10-16 22:56:29.252309251 +10:31)
+  15: Is(Text: "0", bool: true, c: Blank, dtz: 1995-11-05 03:57:01 +11:55)
+  16: Is(Text: ";𤖇", bool: false, c: Blank, dtz: 2074-05-24 06:13:23 +04:07)
+  17: Is(Text: "VALUES", bool: false, c: Blank, dtz: 2016-10-20 15:39:35 America/Indiana/Marengo)
+  18: Is(Text: "COLUMN", bool: false, c: Blank, dtz: 9684-03-24 06:26:00 America/El_Salvador)
+  19: Is(Text: "COLUMNAL", bool: false, c: Blank, dtz: 1951-11-28 09:32:56 CST6CDT)
+COLUMN GenCol 1 : Optional(Number{m^2}) <None | Is:Number{m^2}>
+  0: Is(1940)
+  1: Is(0.501271)
+  2: Is(0)
+  3: Is(2919)
+  4: Is(-1)
+  5: Is(-2147483649)
+  6: Is(0)
+  7: Is(9)
+  8: Is(-127)
+  9: Is(396)
+  10: Is(640)
+  11: Is(-128)
+  12: Is(2904)
+  13: Is(9223372036854775807)
+  14: Is(1622)
+  15: Is(0.031616)
+  16: Is(1)
+  17: Is(-32768)
+  18: Is(5432735804986)
+  19: Is(-1)
+COLUMN GenCol 2 : Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>
+  0: Is(Right(10))
+  1: Is(Right(6271))
+  2: Is(Right(-9223372036854775807))
+  3: Is(Left(-128))
+  4: Is(Right(74))
+  5: Is(Left(-128))
+  6: Is(Right(12))
+  7: Is(Right(-2147483649))
+  8: Is(Left(0.443103))
+  9: Is(Left(44164864))
+  10: Is(Left(0))
+  11: Is(Right(64960897))
+  12: Is(Right(-2147483648))
+  13: Is(Left(495557))
+  14: Is(Right(24881617))
+  15: Is(Right(0.247564))
+  16: Is(Left(-2147483648))
+  17: Is(Right(3842))
+  18: Is(Left(9223372036854775808))
+  19: Is(Left(1558488))
+COLUMN GenCol 3 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: Is(1947-05-09 12:02:00 -07:01)
+  1: Is(1912-10-08 00:19:40 +07:02)
+  2: Is(5717-04-09 03:37:16 -10:24)
+  3: Is(5767-09-29 01:28:39.160521308 Arctic/Longyearbyen)
+  4: Is(1937-05-14 18:57:48.189878232 Europe/London)
+  5: Is(1913-02-04 22:51:55 Australia/North)
+  6: Is(2027-09-29 09:46:00 -10:56)
+  7: Is(3945-02-15 13:43:06.023462895 +06:36)
+  8: Is(1979-10-05 23:25:12.992071116 Europe/Zagreb)
+  9: Is(1977-07-26 16:17:45.613179499 Africa/Bamako)
+  10: Is(7829-07-02 02:20:21 America/Argentina/Ushuaia)
+  11: Is(1955-10-22 20:11:00 -05:07)
+  12: Is(7670-03-14 11:58:09.385526655 -00:31)
+  13: Is(1907-10-23 09:19:00 -01:10)
+  14: Is(1984-07-01 22:47:35.754965288 +03:00)
+  15: Is(1949-08-31 18:45:36.74577695 +08:28)
+  16: Is(2003-05-16 03:49:00 +06:15)
+  17: Is(3929-02-13 07:38:33.525423838 Asia/Dacca)
+  18: Is(2043-08-18 16:12:00 Asia/Thimbu)
+  19: Is(2048-10-27 09:05:40 +02:35)
+COLUMN GenCol 4 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: Is(5005-05-25 17:40:08.563173325 America/La_Paz)
+  1: Is(1993-03-14 01:02:43 -04:47)
+  2: Is(1902-03-18 00:03:06.708624298 -04:13)
+  3: Is(1903-05-10 08:42:40.472110404 America/Coyhaique)
+  4: Is(1985-02-09 23:24:00 -09:42)
+  5: Is(2016-12-26 13:08:56.681362461 Africa/Dakar)
+  6: Is(2017-08-02 06:05:00 Atlantic/Faeroe)
+  7: Is(2236-07-31 00:11:22.050347328 +04:08)
+  8: Is(0196-02-10 11:33:50.903011751 US/Pacific)
+  9: Is(2005-11-30 18:59:05 -04:15)
+  10: Is(1922-11-06 22:06:10.422358155 +06:55)
+  11: Is(2050-01-03 02:47:14.171002739 -07:08)
+  12: Is(1945-02-07 07:38:00 -03:13)
+  13: Is(1907-01-09 08:33:00.02489474 +00:26)
+  14: Is(2021-12-03 01:13:00 America/Tegucigalpa)
+  15: Is(2035-01-09 16:03:44.0289036 Europe/Luxembourg)
+  16: Is(9105-10-23 02:39:00 +02:49)
+  17: Is(1927-11-16 14:42:00 -08:45)
+  18: Is(1985-06-27 10:51:39.535124694 +01:02)
+  19: Is(2048-08-06 15:33:00 +03:25)
+COLUMN GenCol 5 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: Is(1946-06-16 09:17:17.007174818 +05:06)
+  1: Is(1941-10-14 06:48:28.892418625 W-SU)
+  2: Is(2029-11-11 20:55:46.887343095 Asia/Chita)
+  3: Is(6521-01-13 13:34:09.783564531 -01:38)
+  4: Is(7613-02-14 06:34:45 -02:40)
+  5: Is(1990-06-03 14:00:23 +07:30)
+  6: Is(1910-12-09 01:44:15.928220462 America/Port_of_Spain)
+  7: Is(7833-10-16 03:15:00 UTC)
+  8: Is(1964-04-07 18:04:21.748650287 +00:22)
+  9: Is(1904-07-09 22:04:56.433910184 Pacific/Pohnpei)
+  10: Is(1973-06-14 03:41:05.52154805 Etc/Zulu)
+  11: Is(1977-07-22 18:35:02.2245091 -11:17)
+  12: Is(1962-06-23 19:30:52.67652902 +00:48)
+  13: Is(1967-07-29 19:40:00 +04:29)
+  14: Is(6454-04-29 11:59:46.559001958 Asia/Vladivostok)
+  15: Is(2009-10-23 18:14:54.814487183 +07:49)
+  16: Is(9590-04-12 21:12:35 +11:41)
+  17: Is(1941-09-09 08:53:00 -06:41)
+  18: Is(1940-10-20 20:38:39.955265381 -11:17)
+  19: Is(2039-07-30 14:51:58.63166407 Etc/UTC)
+COLUMN New 2 : Optional(Number) <None | Is:Number>
+  0: Is(252)
+  1: Is(252)
+  2: Is(252)
+  3: Is(252)
+  4: Is(252)
+  5: Is(252)
+  6: Is(252)
+  7: Is(252)
+  8: Is(252)
+  9: Is(252)
+  10: Is(252)
+  11: Is(252)
+  12: Is(252)
+  13: Is(252)
+  14: Is(252)
+  15: Is(252)
+  16: Is(252)
+  17: Is(252)
+  18: Is(252)
+  19: Is(252)
+COLUMN New 1 : Optional(Void <>) <None | Is:Void <>>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  1: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  2: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  3: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  4: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  5: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  6: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  7: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  8: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  9: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  10: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  11: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  12: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  13: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  14: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  15: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  16: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  17: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  18: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  19: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+COLUMN Trans 1 GenCol 0 : Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 1 : Optional(Number{m^2}) <None | Is:Number{m^2}>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 2 : Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 3 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 4 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 5 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 0 : Optional(Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>) <None | Is:Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 1 : Optional(Optional(Number{m^2}) <None | Is:Number{m^2}>) <None | Is:Optional(Number{m^2}) <None | Is:Number{m^2}>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 2 : Optional(Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>) <None | Is:Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 3 : Optional(Optional(DateTimeZoned) <None | Is:DateTimeZoned>) <None | Is:Optional(DateTimeZoned) <None | Is:DateTimeZoned>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 4 : Optional(Optional(DateTimeZoned) <None | Is:DateTimeZoned>) <None | Is:Optional(DateTimeZoned) <None | Is:DateTimeZoned>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 5 : Optional(Optional(DateTimeZoned) <None | Is:DateTimeZoned>) <None | Is:Optional(DateTimeZoned) <None | Is:DateTimeZoned>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+TABLE Trans 4
+LENGTH 190512
+COLUMN Trans 1 Trans 1 GenCol 0 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  1: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  2: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  3: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  4: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  5: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  6: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  7: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  8: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  9: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  10: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  11: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  12: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  13: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  14: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  15: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  16: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  17: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  18: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  19: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+COLUMN Trans 1 Trans 1 GenCol 1 : Number{m^2}
+  0: 1940
+  1: 1940
+  2: 1940
+  3: 1940
+  4: 1940
+  5: 1940
+  6: 1940
+  7: 1940
+  8: 1940
+  9: 1940
+  10: 1940
+  11: 1940
+  12: 1940
+  13: 1940
+  14: 1940
+  15: 1940
+  16: 1940
+  17: 1940
+  18: 1940
+  19: 1940
+COLUMN Trans 1 Trans 1 GenCol 2 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: Right(10)
+  1: Right(10)
+  2: Right(10)
+  3: Right(10)
+  4: Right(10)
+  5: Right(10)
+  6: Right(10)
+  7: Right(10)
+  8: Right(10)
+  9: Right(10)
+  10: Right(10)
+  11: Right(10)
+  12: Right(10)
+  13: Right(10)
+  14: Right(10)
+  15: Right(10)
+  16: Right(10)
+  17: Right(10)
+  18: Right(10)
+  19: Right(10)
+COLUMN Trans 1 Trans 1 GenCol 3 : DateTimeZoned
+  0: 1947-05-09 12:02:00 -07:01
+  1: 1947-05-09 12:02:00 -07:01
+  2: 1947-05-09 12:02:00 -07:01
+  3: 1947-05-09 12:02:00 -07:01
+  4: 1947-05-09 12:02:00 -07:01
+  5: 1947-05-09 12:02:00 -07:01
+  6: 1947-05-09 12:02:00 -07:01
+  7: 1947-05-09 12:02:00 -07:01
+  8: 1947-05-09 12:02:00 -07:01
+  9: 1947-05-09 12:02:00 -07:01
+  10: 1947-05-09 12:02:00 -07:01
+  11: 1947-05-09 12:02:00 -07:01
+  12: 1947-05-09 12:02:00 -07:01
+  13: 1947-05-09 12:02:00 -07:01
+  14: 1947-05-09 12:02:00 -07:01
+  15: 1947-05-09 12:02:00 -07:01
+  16: 1947-05-09 12:02:00 -07:01
+  17: 1947-05-09 12:02:00 -07:01
+  18: 1947-05-09 12:02:00 -07:01
+  19: 1947-05-09 12:02:00 -07:01
+COLUMN Trans 1 Trans 1 GenCol 4 : DateTimeZoned
+  0: 5005-05-25 17:40:08.563173325 America/La_Paz
+  1: 5005-05-25 17:40:08.563173325 America/La_Paz
+  2: 5005-05-25 17:40:08.563173325 America/La_Paz
+  3: 5005-05-25 17:40:08.563173325 America/La_Paz
+  4: 5005-05-25 17:40:08.563173325 America/La_Paz
+  5: 5005-05-25 17:40:08.563173325 America/La_Paz
+  6: 5005-05-25 17:40:08.563173325 America/La_Paz
+  7: 5005-05-25 17:40:08.563173325 America/La_Paz
+  8: 5005-05-25 17:40:08.563173325 America/La_Paz
+  9: 5005-05-25 17:40:08.563173325 America/La_Paz
+  10: 5005-05-25 17:40:08.563173325 America/La_Paz
+  11: 5005-05-25 17:40:08.563173325 America/La_Paz
+  12: 5005-05-25 17:40:08.563173325 America/La_Paz
+  13: 5005-05-25 17:40:08.563173325 America/La_Paz
+  14: 5005-05-25 17:40:08.563173325 America/La_Paz
+  15: 5005-05-25 17:40:08.563173325 America/La_Paz
+  16: 5005-05-25 17:40:08.563173325 America/La_Paz
+  17: 5005-05-25 17:40:08.563173325 America/La_Paz
+  18: 5005-05-25 17:40:08.563173325 America/La_Paz
+  19: 5005-05-25 17:40:08.563173325 America/La_Paz
+COLUMN Trans 1 Trans 1 GenCol 5 : DateTimeZoned
+  0: 1946-06-16 09:17:17.007174818 +05:06
+  1: 1946-06-16 09:17:17.007174818 +05:06
+  2: 1946-06-16 09:17:17.007174818 +05:06
+  3: 1946-06-16 09:17:17.007174818 +05:06
+  4: 1946-06-16 09:17:17.007174818 +05:06
+  5: 1946-06-16 09:17:17.007174818 +05:06
+  6: 1946-06-16 09:17:17.007174818 +05:06
+  7: 1946-06-16 09:17:17.007174818 +05:06
+  8: 1946-06-16 09:17:17.007174818 +05:06
+  9: 1946-06-16 09:17:17.007174818 +05:06
+  10: 1946-06-16 09:17:17.007174818 +05:06
+  11: 1946-06-16 09:17:17.007174818 +05:06
+  12: 1946-06-16 09:17:17.007174818 +05:06
+  13: 1946-06-16 09:17:17.007174818 +05:06
+  14: 1946-06-16 09:17:17.007174818 +05:06
+  15: 1946-06-16 09:17:17.007174818 +05:06
+  16: 1946-06-16 09:17:17.007174818 +05:06
+  17: 1946-06-16 09:17:17.007174818 +05:06
+  18: 1946-06-16 09:17:17.007174818 +05:06
+  19: 1946-06-16 09:17:17.007174818 +05:06
+COLUMN Trans 1 New 2 : Number
+  0: 252
+  1: 252
+  2: 252
+  3: 252
+  4: 252
+  5: 252
+  6: 252
+  7: 252
+  8: 252
+  9: 252
+  10: 252
+  11: 252
+  12: 252
+  13: 252
+  14: 252
+  15: 252
+  16: 252
+  17: 252
+  18: 252
+  19: 252
+COLUMN Trans 1 New 1 : Void <>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  1: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  2: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  3: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  4: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  5: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  6: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  7: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  8: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  9: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  10: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  11: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  12: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  13: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  14: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  15: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  16: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  17: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  18: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  19: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+COLUMN Trans 3 GenCol 0 : Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>
+  0: Is(Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  1: Is(Text: "i0 a rna 9a", bool: true, c: Num(-9223372036854775807), dtz: 1918-08-22 16:41:51.003031512 -08:48)
+  2: Is(Text: "a", bool: false, c: Num(-9223372036854775807), dtz: 2041-12-29 23:02:18.362735278 Pacific/Wallis)
+  3: Is(Text: "b", bool: true, c: Num(239), dtz: 0630-11-17 22:55:42 Australia/Perth)
+  4: Is(Text: "}%v", bool: false, c: Blank, dtz: 5905-02-05 10:09:28.539667886 Japan)
+  5: Is(Text: "𓭽󻒉", bool: false, c: Blank, dtz: 1942-02-02 16:21:22 +05:36)
+  6: Is(Text: "typevar", bool: false, c: Blank, dtz: 4894-12-05 12:43:36 +03:52)
+  7: Is(Text: "END", bool: true, c: Num(2147483647), dtz: 1946-07-18 21:13:53 +08:23)
+  8: Is(Text: "T", bool: true, c: Num(-2147483647), dtz: 1987-02-04 14:13:19.055389488 Pacific/Kosrae)
+  9: Is(Text: "W", bool: false, c: Blank, dtz: 4021-06-18 05:47:00 America/St_Thomas)
+  10: Is(Text: "0", bool: true, c: Blank, dtz: 1990-05-15 18:32:59 -08:37)
+  11: Is(Text: "YCTm", bool: false, c: Blank, dtz: 2020-12-20 00:10:57.164329076 +09:00)
+  12: Is(Text: "AO", bool: true, c: Num(283823), dtz: 9941-03-27 18:08:00 -00:56)
+  13: Is(Text: "􇴌", bool: false, c: Num(0.137881), dtz: 1907-04-22 18:14:32.90581249 America/Godthab)
+  14: Is(Text: "f00Z90rr", bool: false, c: Num(0), dtz: 1993-10-16 22:56:29.252309251 +10:31)
+  15: Is(Text: "0", bool: true, c: Blank, dtz: 1995-11-05 03:57:01 +11:55)
+  16: Is(Text: ";𤖇", bool: false, c: Blank, dtz: 2074-05-24 06:13:23 +04:07)
+  17: Is(Text: "VALUES", bool: false, c: Blank, dtz: 2016-10-20 15:39:35 America/Indiana/Marengo)
+  18: Is(Text: "COLUMN", bool: false, c: Blank, dtz: 9684-03-24 06:26:00 America/El_Salvador)
+  19: Is(Text: "COLUMNAL", bool: false, c: Blank, dtz: 1951-11-28 09:32:56 CST6CDT)
+COLUMN Trans 3 GenCol 1 : Optional(Number{m^2}) <None | Is:Number{m^2}>
+  0: Is(1940)
+  1: Is(0.501271)
+  2: Is(0)
+  3: Is(2919)
+  4: Is(-1)
+  5: Is(-2147483649)
+  6: Is(0)
+  7: Is(9)
+  8: Is(-127)
+  9: Is(396)
+  10: Is(640)
+  11: Is(-128)
+  12: Is(2904)
+  13: Is(9223372036854775807)
+  14: Is(1622)
+  15: Is(0.031616)
+  16: Is(1)
+  17: Is(-32768)
+  18: Is(5432735804986)
+  19: Is(-1)
+COLUMN Trans 3 GenCol 2 : Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>
+  0: Is(Right(10))
+  1: Is(Right(6271))
+  2: Is(Right(-9223372036854775807))
+  3: Is(Left(-128))
+  4: Is(Right(74))
+  5: Is(Left(-128))
+  6: Is(Right(12))
+  7: Is(Right(-2147483649))
+  8: Is(Left(0.443103))
+  9: Is(Left(44164864))
+  10: Is(Left(0))
+  11: Is(Right(64960897))
+  12: Is(Right(-2147483648))
+  13: Is(Left(495557))
+  14: Is(Right(24881617))
+  15: Is(Right(0.247564))
+  16: Is(Left(-2147483648))
+  17: Is(Right(3842))
+  18: Is(Left(9223372036854775808))
+  19: Is(Left(1558488))
+COLUMN Trans 3 GenCol 3 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: Is(1947-05-09 12:02:00 -07:01)
+  1: Is(1912-10-08 00:19:40 +07:02)
+  2: Is(5717-04-09 03:37:16 -10:24)
+  3: Is(5767-09-29 01:28:39.160521308 Arctic/Longyearbyen)
+  4: Is(1937-05-14 18:57:48.189878232 Europe/London)
+  5: Is(1913-02-04 22:51:55 Australia/North)
+  6: Is(2027-09-29 09:46:00 -10:56)
+  7: Is(3945-02-15 13:43:06.023462895 +06:36)
+  8: Is(1979-10-05 23:25:12.992071116 Europe/Zagreb)
+  9: Is(1977-07-26 16:17:45.613179499 Africa/Bamako)
+  10: Is(7829-07-02 02:20:21 America/Argentina/Ushuaia)
+  11: Is(1955-10-22 20:11:00 -05:07)
+  12: Is(7670-03-14 11:58:09.385526655 -00:31)
+  13: Is(1907-10-23 09:19:00 -01:10)
+  14: Is(1984-07-01 22:47:35.754965288 +03:00)
+  15: Is(1949-08-31 18:45:36.74577695 +08:28)
+  16: Is(2003-05-16 03:49:00 +06:15)
+  17: Is(3929-02-13 07:38:33.525423838 Asia/Dacca)
+  18: Is(2043-08-18 16:12:00 Asia/Thimbu)
+  19: Is(2048-10-27 09:05:40 +02:35)
+COLUMN Trans 3 GenCol 4 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: Is(5005-05-25 17:40:08.563173325 America/La_Paz)
+  1: Is(1993-03-14 01:02:43 -04:47)
+  2: Is(1902-03-18 00:03:06.708624298 -04:13)
+  3: Is(1903-05-10 08:42:40.472110404 America/Coyhaique)
+  4: Is(1985-02-09 23:24:00 -09:42)
+  5: Is(2016-12-26 13:08:56.681362461 Africa/Dakar)
+  6: Is(2017-08-02 06:05:00 Atlantic/Faeroe)
+  7: Is(2236-07-31 00:11:22.050347328 +04:08)
+  8: Is(0196-02-10 11:33:50.903011751 US/Pacific)
+  9: Is(2005-11-30 18:59:05 -04:15)
+  10: Is(1922-11-06 22:06:10.422358155 +06:55)
+  11: Is(2050-01-03 02:47:14.171002739 -07:08)
+  12: Is(1945-02-07 07:38:00 -03:13)
+  13: Is(1907-01-09 08:33:00.02489474 +00:26)
+  14: Is(2021-12-03 01:13:00 America/Tegucigalpa)
+  15: Is(2035-01-09 16:03:44.0289036 Europe/Luxembourg)
+  16: Is(9105-10-23 02:39:00 +02:49)
+  17: Is(1927-11-16 14:42:00 -08:45)
+  18: Is(1985-06-27 10:51:39.535124694 +01:02)
+  19: Is(2048-08-06 15:33:00 +03:25)
+COLUMN Trans 3 GenCol 5 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: Is(1946-06-16 09:17:17.007174818 +05:06)
+  1: Is(1941-10-14 06:48:28.892418625 W-SU)
+  2: Is(2029-11-11 20:55:46.887343095 Asia/Chita)
+  3: Is(6521-01-13 13:34:09.783564531 -01:38)
+  4: Is(7613-02-14 06:34:45 -02:40)
+  5: Is(1990-06-03 14:00:23 +07:30)
+  6: Is(1910-12-09 01:44:15.928220462 America/Port_of_Spain)
+  7: Is(7833-10-16 03:15:00 UTC)
+  8: Is(1964-04-07 18:04:21.748650287 +00:22)
+  9: Is(1904-07-09 22:04:56.433910184 Pacific/Pohnpei)
+  10: Is(1973-06-14 03:41:05.52154805 Etc/Zulu)
+  11: Is(1977-07-22 18:35:02.2245091 -11:17)
+  12: Is(1962-06-23 19:30:52.67652902 +00:48)
+  13: Is(1967-07-29 19:40:00 +04:29)
+  14: Is(6454-04-29 11:59:46.559001958 Asia/Vladivostok)
+  15: Is(2009-10-23 18:14:54.814487183 +07:49)
+  16: Is(9590-04-12 21:12:35 +11:41)
+  17: Is(1941-09-09 08:53:00 -06:41)
+  18: Is(1940-10-20 20:38:39.955265381 -11:17)
+  19: Is(2039-07-30 14:51:58.63166407 Etc/UTC)
+COLUMN Trans 3 New 2 : Optional(Number) <None | Is:Number>
+  0: Is(252)
+  1: Is(252)
+  2: Is(252)
+  3: Is(252)
+  4: Is(252)
+  5: Is(252)
+  6: Is(252)
+  7: Is(252)
+  8: Is(252)
+  9: Is(252)
+  10: Is(252)
+  11: Is(252)
+  12: Is(252)
+  13: Is(252)
+  14: Is(252)
+  15: Is(252)
+  16: Is(252)
+  17: Is(252)
+  18: Is(252)
+  19: Is(252)
+COLUMN Trans 3 New 1 : Optional(Void <>) <None | Is:Void <>>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  1: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  2: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  3: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  4: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  5: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  6: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  7: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  8: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  9: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  10: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  11: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  12: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  13: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  14: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  15: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  16: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  17: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  18: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  19: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+COLUMN Trans 1 GenCol 0 : Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 1 : Optional(Number{m^2}) <None | Is:Number{m^2}>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 2 : Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 3 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 4 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Trans 1 GenCol 5 : Optional(DateTimeZoned) <None | Is:DateTimeZoned>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 0 : Optional(Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>) <None | Is:Optional((Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)) <None | Is:(Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 1 : Optional(Optional(Number{m^2}) <None | Is:Number{m^2}>) <None | Is:Optional(Number{m^2}) <None | Is:Number{m^2}>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 2 : Optional(Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>) <None | Is:Optional(EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>) <None | Is:EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 3 : Optional(Optional(DateTimeZoned) <None | Is:DateTimeZoned>) <None | Is:Optional(DateTimeZoned) <None | Is:DateTimeZoned>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 4 : Optional(Optional(DateTimeZoned) <None | Is:DateTimeZoned>) <None | Is:Optional(DateTimeZoned) <None | Is:DateTimeZoned>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+COLUMN Test 0 GenCol 5 : Optional(Optional(DateTimeZoned) <None | Is:DateTimeZoned>) <None | Is:Optional(DateTimeZoned) <None | Is:DateTimeZoned>>
+  0: None
+  1: None
+  2: None
+  3: None
+  4: None
+  5: None
+  6: None
+  7: None
+  8: None
+  9: None
+  10: None
+  11: None
+  12: None
+  13: None
+  14: None
+  15: None
+  16: None
+  17: None
+  18: None
+  19: None
+TABLE Trans 5
+LENGTH 252
+COLUMN GenCol 0 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "cD", bool: false, c: Num(-32768), dtz: 1957-10-16 21:13:31.581493124 America/Santarem)
+  1: (Text: "i0 a rna 9a", bool: true, c: Num(-9223372036854775807), dtz: 1918-08-22 16:41:51.003031512 -08:48)
+  2: (Text: "a", bool: false, c: Num(-9223372036854775807), dtz: 2041-12-29 23:02:18.362735278 Pacific/Wallis)
+  3: (Text: "b", bool: true, c: Num(239), dtz: 0630-11-17 22:55:42 Australia/Perth)
+  4: (Text: "}%v", bool: false, c: Blank, dtz: 5905-02-05 10:09:28.539667886 Japan)
+  5: (Text: "𓭽󻒉", bool: false, c: Blank, dtz: 1942-02-02 16:21:22 +05:36)
+  6: (Text: "typevar", bool: false, c: Blank, dtz: 4894-12-05 12:43:36 +03:52)
+  7: (Text: "END", bool: true, c: Num(2147483647), dtz: 1946-07-18 21:13:53 +08:23)
+  8: (Text: "T", bool: true, c: Num(-2147483647), dtz: 1987-02-04 14:13:19.055389488 Pacific/Kosrae)
+  9: (Text: "W", bool: false, c: Blank, dtz: 4021-06-18 05:47:00 America/St_Thomas)
+  10: (Text: "0", bool: true, c: Blank, dtz: 1990-05-15 18:32:59 -08:37)
+  11: (Text: "YCTm", bool: false, c: Blank, dtz: 2020-12-20 00:10:57.164329076 +09:00)
+  12: (Text: "AO", bool: true, c: Num(283823), dtz: 9941-03-27 18:08:00 -00:56)
+  13: (Text: "􇴌", bool: false, c: Num(0.137881), dtz: 1907-04-22 18:14:32.90581249 America/Godthab)
+  14: (Text: "f00Z90rr", bool: false, c: Num(0), dtz: 1993-10-16 22:56:29.252309251 +10:31)
+  15: (Text: "0", bool: true, c: Blank, dtz: 1995-11-05 03:57:01 +11:55)
+  16: (Text: ";𤖇", bool: false, c: Blank, dtz: 2074-05-24 06:13:23 +04:07)
+  17: (Text: "VALUES", bool: false, c: Blank, dtz: 2016-10-20 15:39:35 America/Indiana/Marengo)
+  18: (Text: "COLUMN", bool: false, c: Blank, dtz: 9684-03-24 06:26:00 America/El_Salvador)
+  19: (Text: "COLUMNAL", bool: false, c: Blank, dtz: 1951-11-28 09:32:56 CST6CDT)
+COLUMN GenCol 1 : Number{m^2}
+  0: 1940
+  1: 0.501271
+  2: 0
+  3: 2919
+  4: -1
+  5: -2147483649
+  6: 0
+  7: 9
+  8: -127
+  9: 396
+  10: 640
+  11: -128
+  12: 2904
+  13: 9223372036854775807
+  14: 1622
+  15: 0.031616
+  16: 1
+  17: -32768
+  18: 5432735804986
+  19: -1
+COLUMN GenCol 2 : EitherMyOrHogshead <Left:Number{myUnit} | Right:Number{hogshead}>
+  0: Right(10)
+  1: Right(6271)
+  2: Right(-9223372036854775807)
+  3: Left(-128)
+  4: Right(74)
+  5: Left(-128)
+  6: Right(12)
+  7: Right(-2147483649)
+  8: Left(0.443103)
+  9: Left(44164864)
+  10: Left(0)
+  11: Right(64960897)
+  12: Right(-2147483648)
+  13: Left(495557)
+  14: Right(24881617)
+  15: Right(0.247564)
+  16: Left(-2147483648)
+  17: Right(3842)
+  18: Left(9223372036854775808)
+  19: Left(1558488)
+COLUMN GenCol 3 : DateTimeZoned
+  0: 1947-05-09 12:02:00 -07:01
+  1: 1912-10-08 00:19:40 +07:02
+  2: 5717-04-09 03:37:16 -10:24
+  3: 5767-09-29 01:28:39.160521308 Arctic/Longyearbyen
+  4: 1937-05-14 18:57:48.189878232 Europe/London
+  5: 1913-02-04 22:51:55 Australia/North
+  6: 2027-09-29 09:46:00 -10:56
+  7: 3945-02-15 13:43:06.023462895 +06:36
+  8: 1979-10-05 23:25:12.992071116 Europe/Zagreb
+  9: 1977-07-26 16:17:45.613179499 Africa/Bamako
+  10: 7829-07-02 02:20:21 America/Argentina/Ushuaia
+  11: 1955-10-22 20:11:00 -05:07
+  12: 7670-03-14 11:58:09.385526655 -00:31
+  13: 1907-10-23 09:19:00 -01:10
+  14: 1984-07-01 22:47:35.754965288 +03:00
+  15: 1949-08-31 18:45:36.74577695 +08:28
+  16: 2003-05-16 03:49:00 +06:15
+  17: 3929-02-13 07:38:33.525423838 Asia/Dacca
+  18: 2043-08-18 16:12:00 Asia/Thimbu
+  19: 2048-10-27 09:05:40 +02:35
+COLUMN GenCol 4 : DateTimeZoned
+  0: 5005-05-25 17:40:08.563173325 America/La_Paz
+  1: 1993-03-14 01:02:43 -04:47
+  2: 1902-03-18 00:03:06.708624298 -04:13
+  3: 1903-05-10 08:42:40.472110404 America/Coyhaique
+  4: 1985-02-09 23:24:00 -09:42
+  5: 2016-12-26 13:08:56.681362461 Africa/Dakar
+  6: 2017-08-02 06:05:00 Atlantic/Faeroe
+  7: 2236-07-31 00:11:22.050347328 +04:08
+  8: 0196-02-10 11:33:50.903011751 US/Pacific
+  9: 2005-11-30 18:59:05 -04:15
+  10: 1922-11-06 22:06:10.422358155 +06:55
+  11: 2050-01-03 02:47:14.171002739 -07:08
+  12: 1945-02-07 07:38:00 -03:13
+  13: 1907-01-09 08:33:00.02489474 +00:26
+  14: 2021-12-03 01:13:00 America/Tegucigalpa
+  15: 2035-01-09 16:03:44.0289036 Europe/Luxembourg
+  16: 9105-10-23 02:39:00 +02:49
+  17: 1927-11-16 14:42:00 -08:45
+  18: 1985-06-27 10:51:39.535124694 +01:02
+  19: 2048-08-06 15:33:00 +03:25
+COLUMN GenCol 5 : DateTimeZoned
+  0: 1946-06-16 09:17:17.007174818 +05:06
+  1: 1941-10-14 06:48:28.892418625 W-SU
+  2: 2029-11-11 20:55:46.887343095 Asia/Chita
+  3: 6521-01-13 13:34:09.783564531 -01:38
+  4: 7613-02-14 06:34:45 -02:40
+  5: 1990-06-03 14:00:23 +07:30
+  6: 1910-12-09 01:44:15.928220462 America/Port_of_Spain
+  7: 7833-10-16 03:15:00 UTC
+  8: 1964-04-07 18:04:21.748650287 +00:22
+  9: 1904-07-09 22:04:56.433910184 Pacific/Pohnpei
+  10: 1973-06-14 03:41:05.52154805 Etc/Zulu
+  11: 1977-07-22 18:35:02.2245091 -11:17
+  12: 2030-04-03 04:44:58 -05:27
+  13: 1967-07-29 19:40:00 +04:29
+  14: 6454-04-29 11:59:46.559001958 Asia/Vladivostok
+  15: 2009-10-23 18:14:54.814487183 +07:49
+  16: 9590-04-12 21:12:35 +11:41
+  17: 1941-09-09 08:53:00 -06:41
+  18: 1940-10-20 20:38:39.955265381 -11:17
+  19: 2039-07-30 14:51:58.63166407 Etc/UTC
+COLUMN New 2 : Number
+  0: 252
+  1: 252
+  2: 252
+  3: 252
+  4: 252
+  5: 252
+  6: 252
+  7: 252
+  8: 252
+  9: 252
+  10: 252
+  11: 252
+  12: 252
+  13: 252
+  14: 252
+  15: 252
+  16: 252
+  17: 252
+  18: 252
+  19: 252
+COLUMN New 1 : Void <>
+  0: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  1: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  2: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  3: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  4: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  5: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  6: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  7: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  8: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  9: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  10: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  11: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  12: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  13: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  14: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  15: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  16: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  17: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  18: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned
+  19: !UserException: Error in New 1 expression: Type mismatch: Boolean versus DateTimeZoned

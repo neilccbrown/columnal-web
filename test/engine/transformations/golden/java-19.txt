@@ -1,0 +1,180 @@
+TABLE Test 0
+LENGTH 372
+COLUMN GenCol 88 : [Number]
+  0: [71994173969, 1, 0]
+  1: [-9223372036854775808]
+  2: [1]
+  3: [0.063611, -2147483647]
+  4: [-9223372036854775807]
+  5: [0]
+  6: [2147483648, 139286, 4704]
+  7: [0.36917, -2147483647, 19504]
+  8: [-32768, 254]
+  9: [9223372036854775808]
+  10: [1091348, -1, 0]
+  11: [0.621793]
+  12: [14452, 0.964581, 1, -32768]
+  13: [0.837437, 205]
+  14: [-2147483649, 9223372036854775807, -2147483647]
+  15: [4]
+  16: [901772, 32767, 1555, 34660443]
+  17: [-127, 0.679048]
+  18: [-32767, 254, -9223372036854775807]
+  19: [32767]
+COLUMN GenCol 89 : Time
+  0: 03:44:22
+  1: 17:01:39
+  2: 09:17:04.202019261
+  3: 08:01:37
+  4: 13:56:00
+  5: 14:01:00
+  6: 08:24:27.285215091
+  7: 00:18:00
+  8: 18:30:14.918690682
+  9: 20:28:32.485263829
+  10: 20:32:23.192381628
+  11: 10:22:20.242564985
+  12: 05:08:43
+  13: 02:46:00
+  14: 20:05:01.062128368
+  15: 13:20:44
+  16: 13:04:59.405957885
+  17: 06:06:00.230179014
+  18: 09:54:00
+  19: 10:12:00
+COLUMN GenCol 90 : Date
+  0: 4115-06-19
+  1: 1971-03-23
+  2: 7284-05-09
+  3: 1977-04-12
+  4: 1998-05-26
+  5: 2029-02-16
+  6: 2033-10-23
+  7: 2006-10-06
+  8: 1900-07-06
+  9: 7903-03-25
+  10: 1948-08-26
+  11: 1988-03-12
+  12: 1947-10-22
+  13: 1995-07-09
+  14: 5991-05-20
+  15: 2011-08-03
+  16: 2038-02-01
+  17: 2045-10-21
+  18: 1928-03-12
+  19: 2000-12-10
+COLUMN GenCol 91 : Boolean
+  0: false
+  1: true
+  2: false
+  3: true
+  4: false
+  5: true
+  6: false
+  7: false
+  8: false
+  9: false
+  10: true
+  11: false
+  12: true
+  13: false
+  14: true
+  15: true
+  16: false
+  17: true
+  18: false
+  19: true
+TABLE Test 1
+LENGTH 2
+COLUMN GenCol 92 : B <Single>
+  0: Single
+  1: Single
+COLUMN GenCol 93 : Text
+  0: "d0a"
+  1: "󽇌"
+COLUMN GenCol 94 : Number
+  0: -1
+  1: -9223372036854775809
+COLUMN GenCol 95 : Number{GBP}
+  0: 0.707184
+  1: 0.093442
+COLUMN GenCol 96 : Number{m^3/s^3}
+  0: 46
+  1: 3335
+COLUMN GenCol 97 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+  0: Right(-127)
+  1: Right(2147483647)
+COLUMN GenCol 98 : DateYM
+  0: 4693-03
+  1: 9394-04
+COLUMN GenCol 99 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "+D", bool: false, c: Num(22), dtz: 2026-10-07 01:58:12.011118104 America/Menominee)
+  1: (Text: "M", bool: true, c: Num(1956), dtz: 2622-07-31 12:46:21 America/Whitehorse)
+TABLE Trans 1
+LENGTH 0
+COLUMN GenCol 92 : B <Single>
+COLUMN GenCol 93 : Text
+COLUMN GenCol 94 : Number
+COLUMN GenCol 95 : Number{GBP}
+COLUMN GenCol 96 : Number{m^3/s^3}
+COLUMN GenCol 97 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+COLUMN GenCol 98 : DateYM
+COLUMN GenCol 99 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+TABLE Trans 2
+LENGTH 0
+COLUMN GenCol 92 : B <Single>
+COLUMN GenCol 93 : Text
+COLUMN GenCol 94 : Number
+COLUMN GenCol 95 : Number{GBP}
+COLUMN GenCol 96 : Number{m^3/s^3}
+COLUMN GenCol 97 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+COLUMN GenCol 98 : DateYM
+COLUMN GenCol 99 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+TABLE Trans 3
+LENGTH 0
+COLUMN GenCol 92 : B <Single>
+COLUMN GenCol 93 : Text
+COLUMN GenCol 94 : Number
+COLUMN GenCol 95 : Number{GBP}
+COLUMN GenCol 96 : Number{m^3/s^3}
+COLUMN GenCol 97 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+COLUMN GenCol 98 : DateYM
+COLUMN GenCol 99 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+TABLE Trans 4
+LENGTH 0
+COLUMN GenCol 92 : B <Single>
+COLUMN GenCol 93 : Text
+COLUMN GenCol 94 : Number
+COLUMN GenCol 95 : Number{GBP}
+COLUMN GenCol 96 : Number{m^3/s^3}
+COLUMN GenCol 97 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+COLUMN GenCol 98 : DateYM
+COLUMN GenCol 99 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+COLUMN GenCol 88 : [Number]
+COLUMN GenCol 89 : Time
+COLUMN GenCol 90 : Date
+COLUMN GenCol 91 : Boolean
+TABLE Trans 5
+LENGTH 1
+COLUMN result : Boolean
+  0: false
+TABLE Trans 6
+LENGTH 0
+COLUMN GenCol 93 : Text
+COLUMN GenCol 94 : Number
+COLUMN GenCol 98 : DateYM
+TABLE Trans 7
+LENGTH 0
+COLUMN GenCol 92 : B <Single>
+COLUMN GenCol 93 : Text
+COLUMN GenCol 94 : Number
+COLUMN GenCol 95 : Number{GBP}
+COLUMN GenCol 96 : Number{m^3/s^3}
+COLUMN GenCol 97 : Void <>
+COLUMN GenCol 98 : DateYM
+COLUMN GenCol 99 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+COLUMN GenCol 88 : [Number]
+COLUMN GenCol 89 : Time
+COLUMN GenCol 90 : Date
+COLUMN GenCol 91 : Boolean
+COLUMN New 1 : Boolean

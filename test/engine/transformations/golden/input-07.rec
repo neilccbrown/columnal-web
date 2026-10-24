@@ -1,0 +1,119 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN AYM
+AYM "Test 0"
+AYM FORMAT @BEGIN
+AYM @COLUMN GenCol 31 @TYPE ( a : Number , b : Number ) @DEFAULT ( "a" : 1 , "b" : 0.420153 )
+AYM @COLUMN GenCol 32 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT None
+AYM @END FORMAT
+AYM VALUES @BEGIN
+AYM   ( "a" : -32768 , "b" : 0.08322 ) , None
+AYM   ( "a" : 151 , "b" : 791 ) , Is ( None )
+AYM   ( "a" : -32767 , "b" : 2114404 ) , None
+AYM   ( "a" : 13616723725767214937364 , "b" : -32767 ) , Is ( None )
+AYM   ( "a" : 39425 , "b" : 127 ) , Is ( Is ( "dr990" ) )
+AYM   ( "a" : 127 , "b" : 30 ) , None
+AYM   ( "a" : 2 , "b" : 440 ) , None
+AYM   ( "a" : 3 , "b" : -32767 ) , None
+AYM   ( "a" : 0 , "b" : 51 ) , Is ( Is ( "𦩱􆖠" ) )
+AYM @END VALUES
+AYM DISPLAY @BEGIN
+AYM POSITION 1 1
+AYM SHOWCOLUMNS ALL
+AYM @END DISPLAY
+@END AYM DATA
+
+TRANSFORMATION @BEGIN GNA
+GNA "Trans 1"
+GNA check
+GNA SOURCE "Test 0"
+GNA @BEGIN
+GNA CHECK STANDALONE @EXPRESSION column\\GenCol 32 >= @call function\\list\element(table\\Test 0#GenCol 32, 1)
+GNA @END
+GNA DISPLAY @BEGIN
+GNA POSITION 1 1
+GNA SHOWCOLUMNS ALL
+GNA @END DISPLAY
+@END GNA TRANSFORMATION
+
+TRANSFORMATION @BEGIN BBJ
+BBJ "Trans 3"
+BBJ correct
+BBJ SOURCE "Trans 1"
+BBJ @BEGIN
+BBJ EDIT
+BBJ @END
+BBJ DISPLAY @BEGIN
+BBJ POSITION 1 1
+BBJ SHOWCOLUMNS ALL
+BBJ @END DISPLAY
+@END BBJ TRANSFORMATION
+
+TRANSFORMATION @BEGIN LTK
+LTK "Trans 5"
+LTK calculate
+LTK SOURCE "Trans 3"
+LTK @BEGIN
+LTK CALCULATE "New 3" @EXPRESSION column\\result
+LTK CALCULATE result @EXPRESSION @call function\\conversion\to text(column\\result)
+LTK CALCULATE "New 1" @EXPRESSION column\\result
+LTK @END
+LTK DISPLAY @BEGIN
+LTK POSITION 1 1
+LTK SHOWCOLUMNS ALL
+LTK @END DISPLAY
+@END LTK TRANSFORMATION
+
+TRANSFORMATION @BEGIN YVH
+YVH "Trans 6"
+YVH filter
+YVH SOURCE "Trans 5"
+YVH @BEGIN
+YVH KEEPIF column\\result <= @call function\\list\element(table\\Trans 5#result, 4)
+YVH @END
+YVH DISPLAY @BEGIN
+YVH POSITION 1 1
+YVH SHOWCOLUMNS ALL
+YVH @END DISPLAY
+@END YVH TRANSFORMATION
+
+TRANSFORMATION @BEGIN ERU
+ERU "Trans 4"
+ERU calculate
+ERU SOURCE "Trans 1"
+ERU @BEGIN
+ERU CALCULATE "New 1" @EXPRESSION column\\result <> column\\result
+ERU @END
+ERU DISPLAY @BEGIN
+ERU POSITION 1 1
+ERU SHOWCOLUMNS ALL
+ERU @END DISPLAY
+@END ERU TRANSFORMATION
+
+TRANSFORMATION @BEGIN ZAB
+ZAB "Trans 2"
+ZAB "drop.columns"
+ZAB SOURCE "Test 0"
+ZAB @BEGIN
+ZAB @END
+ZAB DISPLAY @BEGIN
+ZAB POSITION 1 1
+ZAB SHOWCOLUMNS ALL
+ZAB @END DISPLAY
+@END ZAB TRANSFORMATION
+

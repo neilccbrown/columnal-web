@@ -1,0 +1,152 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN SFY
+SFY "Test 0"
+SFY FORMAT @BEGIN
+SFY @COLUMN GenCol 68 @TYPE ( inner : ( t 1 : Text , t 2 : Number ) , z : Number ) @DEFAULT ( "inner" : ( "t 1" : "Time" , "t 2" : 2147483648 ) , "z" : -1 )
+SFY @COLUMN GenCol 69 @TYPE A @DEFAULT Single
+SFY @COLUMN GenCol 70 @TYPE Number {GBP} @DEFAULT 5
+SFY @COLUMN GenCol 71 @TYPE Number @DEFAULT 32767
+SFY @COLUMN GenCol 72 @TYPE DateYM @DEFAULT 5822-12
+SFY @COLUMN GenCol 73 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT Is ( None )
+SFY @COLUMN GenCol 74 @TYPE Number {m} @DEFAULT -1
+SFY @COLUMN GenCol 75 @TYPE [ Text ] @DEFAULT [ "􏴴buA􎬞j" ]
+SFY @COLUMN GenCol 76 @TYPE [ ( a : Number , nested : ( num num : Number , the text 0 item : Text ) ) ] @DEFAULT [ ( "a" : -128 , "nested" : ( "num num" : 0.794546 , "the text 0 item" : "5" ) ) , ( "a" : 1 , "nested" : ( "num num" : 2147483647 , "the text 0 item" : "invalidtypeops" ) ) , ( "a" : 2 , "nested" : ( "num num" : 2147483647 , "the text 0 item" : "a" ) ) , ( "a" : 254 , "nested" : ( "num num" : 2147483648 , "the text 0 item" : "jr aa" ) ) ]
+SFY @COLUMN GenCol 77 @TYPE DateYM @DEFAULT 3598-10
+SFY @END FORMAT
+SFY VALUES @BEGIN
+SFY   ( "inner" : ( "t 1" : "p99na r0Zaa" , "t 2" : 0 ) , "z" : 127 ) , Single , -2147483648 , 255 , 5707-12 , None , 0 , [ "ua Z" , ">;󾨺" ] , [ ( "a" : 3 , "nested" : ( "num num" : 0.224485 , "the text 0 item" : "磲" ) ) , ( "a" : 0.078457 , "nested" : ( "num num" : -32767 , "the text 0 item" : "똥s_}뭙" ) ) ] , 0576-06
+SFY   ( "inner" : ( "t 1" : "s09" , "t 2" : 200433093 ) , "z" : -128 ) , Single , 0.980765 , -127 , 5321-01 , None , 7 , [ "a" ] , [ ( "a" : 2147483647 , "nested" : ( "num num" : 5 , "the text 0 item" : "e09Z" ) ) , ( "a" : 729724463 , "nested" : ( "num num" : -1 , "the text 0 item" : "C󲌷" ) ) , ( "a" : 997501 , "nested" : ( "num num" : 1 , "the text 0 item" : "ua0" ) ) , ( "a" : -128 , "nested" : ( "num num" : 38817 , "the text 0 item" : "􉧻LCL􊞫S#HR" ) ) ] , 5613-07
+SFY   ( "inner" : ( "t 1" : "Date" , "t 2" : -128 ) , "z" : 0.018493 ) , Single , 0.203463 , 32767 , 2700-07 , Is ( None ) , -2147483648 , [ "dr" , "VERSION" , "TYPE" ] , [ ( "a" : -32767 , "nested" : ( "num num" : -9223372036854775808 , "the text 0 item" : "a" ) ) , ( "a" : 3091 , "nested" : ( "num num" : -2147483648 , "the text 0 item" : "e 9Zr r9" ) ) , ( "a" : 127 , "nested" : ( "num num" : 1 , "the text 0 item" : "LINKED" ) ) ] , 8261-11
+SFY   ( "inner" : ( "t 1" : "nZ9rZr" , "t 2" : 0 ) , "z" : -127 ) , Single , -127 , -9223372036854775807 , 3455-05 , None , 0.643856 , [ "SOURCE" ] , [ ( "a" : 2572 , "nested" : ( "num num" : 33615 , "the text 0 item" : "b" ) ) ] , 3440-11
+SFY   ( "inner" : ( "t 1" : "Dd󾖵fu" , "t 2" : 1 ) , "z" : 0 ) , Single , 0.612923 , 23246067381 , 4736-02 , None , 2147483647 , [ "a" ] , [ ( "a" : 127 , "nested" : ( "num num" : 395727675174334518 , "the text 0 item" : "Y" ) ) , ( "a" : 0 , "nested" : ( "num num" : -9223372036854775807 , "the text 0 item" : "qr nan" ) ) , ( "a" : 1 , "nested" : ( "num num" : 8866584220177797894 , "the text 0 item" : "ga0aZr9" ) ) ] , 1190-08
+SFY   ( "inner" : ( "t 1" : "q" , "t 2" : 92 ) , "z" : 32767 ) , Single , 0.7571 , 7 , 5014-05 , Is ( Is ( ")M" ) ) , 41672629385 , [ "*f" , "u" ] , [ ( "a" : 4241932226 , "nested" : ( "num num" : 0.884601 , "the text 0 item" : "z9 n9" ) ) , ( "a" : 7 , "nested" : ( "num num" : 32767 , "the text 0 item" : "~" ) ) , ( "a" : 45 , "nested" : ( "num num" : -127 , "the text 0 item" : "!B􌑲^c" ) ) ] , 1853-04
+SFY   ( "inner" : ( "t 1" : "-f" , "t 2" : -2147483649 ) , "z" : 103 ) , Single , -32768 , 2147483648 , 3931-06 , None , 5298 , [ "eZ00rZn90" , "typevar" , "𨚺" , "𤴓" ] , [ ( "a" : 0 , "nested" : ( "num num" : 49 , "the text 0 item" : "􁤕8" ) ) ] , 7982-06
+SFY   ( "inner" : ( "t 1" : "D$" , "t 2" : 0.685645 ) , "z" : -2147483648 ) , Single , -2147483648 , 111552059962747 , 3354-03 , None , -128 , [ "1" , "c" ] , [ ( "a" : 3540011 , "nested" : ( "num num" : 1124606610373361 , "the text 0 item" : "pA" ) ) , ( "a" : -9223372036854775808 , "nested" : ( "num num" : 2147483647 , "the text 0 item" : "𬼕" ) ) , ( "a" : 704502 , "nested" : ( "num num" : 190373493 , "the text 0 item" : "invalidtypeops" ) ) , ( "a" : 79 , "nested" : ( "num num" : 16 , "the text 0 item" : "a" ) ) ] , 5790-09
+SFY @END VALUES
+SFY DISPLAY @BEGIN
+SFY POSITION 1 1
+SFY SHOWCOLUMNS ALL
+SFY @END DISPLAY
+@END SFY DATA
+
+DATA @BEGIN WDE
+WDE "Test 1"
+WDE FORMAT @BEGIN
+WDE @COLUMN GenCol 78 @TYPE Number {m^3/s^3} @DEFAULT 1
+WDE @END FORMAT
+WDE VALUES @BEGIN
+WDE   -128
+WDE   4150670
+WDE @END VALUES
+WDE DISPLAY @BEGIN
+WDE POSITION 1 1
+WDE SHOWCOLUMNS ALL
+WDE @END DISPLAY
+@END WDE DATA
+
+TRANSFORMATION @BEGIN QVQ
+QVQ "Trans 3"
+QVQ concatenate
+QVQ SOURCE "Test 1" "Test 0"
+QVQ @BEGIN
+QVQ @INCOMPLETE OMIT SOURCE 
+QVQ @END
+QVQ DISPLAY @BEGIN
+QVQ POSITION 1 1
+QVQ SHOWCOLUMNS ALL
+QVQ @END DISPLAY
+@END QVQ TRANSFORMATION
+
+TRANSFORMATION @BEGIN TCI
+TCI "Trans 6"
+TCI check
+TCI SOURCE "Trans 3"
+TCI @BEGIN
+TCI CHECK NOROWS @EXPRESSION column\\Source >= @call function\\list\element(table\\Trans 3#Source, 5)
+TCI @END
+TCI DISPLAY @BEGIN
+TCI POSITION 1 1
+TCI SHOWCOLUMNS ALL
+TCI @END DISPLAY
+@END TCI TRANSFORMATION
+
+TRANSFORMATION @BEGIN NIJ
+NIJ "Trans 1"
+NIJ correct
+NIJ SOURCE "Test 0"
+NIJ @BEGIN
+NIJ EDIT "GenCol 71" @TYPE Number
+NIJ EDITCOLUMN "GenCol 74" @TYPE Number {m}
+NIJ REPLACEMENT @VALUE  -127 @ENDVALUE  @VALUE  -2147483648  @ENDVALUE
+NIJ REPLACEMENT @VALUE  32767 @ENDVALUE  @VALUE  0  @ENDVALUE
+NIJ REPLACEMENT @VALUE  111552059962747 @ENDVALUE  @VALUE  5298  @ENDVALUE
+NIJ @END
+NIJ DISPLAY @BEGIN
+NIJ POSITION 1 1
+NIJ SHOWCOLUMNS ALL
+NIJ @END DISPLAY
+@END NIJ TRANSFORMATION
+
+TRANSFORMATION @BEGIN MAX
+MAX "Trans 2"
+MAX "drop.columns"
+MAX SOURCE "Trans 1"
+MAX @BEGIN
+MAX HIDE "GenCol 68"
+MAX HIDE "GenCol 73"
+MAX HIDE "GenCol 74"
+MAX @END
+MAX DISPLAY @BEGIN
+MAX POSITION 1 1
+MAX SHOWCOLUMNS ALL
+MAX @END DISPLAY
+@END MAX TRANSFORMATION
+
+TRANSFORMATION @BEGIN FZP
+FZP "Trans 4"
+FZP concatenate
+FZP SOURCE "Test 0" "Trans 2"
+FZP @BEGIN
+FZP @INCOMPLETE WRAPMAYBE SOURCE 
+FZP @END
+FZP DISPLAY @BEGIN
+FZP POSITION 1 1
+FZP SHOWCOLUMNS ALL
+FZP @END DISPLAY
+@END FZP TRANSFORMATION
+
+TRANSFORMATION @BEGIN HRB
+HRB "Trans 5"
+HRB correct
+HRB SOURCE "Trans 1"
+HRB @BEGIN
+HRB EDIT
+HRB EDITCOLUMN "GenCol 70" @TYPE Number {GBP}
+HRB REPLACEMENT @VALUE  2 @ENDVALUE  @VALUE  -127  @ENDVALUE
+HRB REPLACEMENT @VALUE  6 @ENDVALUE  @VALUE  -32768  @ENDVALUE
+HRB EDITCOLUMN "GenCol 75" @TYPE [ Text ]
+HRB REPLACEMENT @VALUE  1 @ENDVALUE  @VALUE  [ "dr" , "VERSION" , "TYPE" ]  @ENDVALUE
+HRB REPLACEMENT @VALUE  7 @ENDVALUE  @INVALIDVALUE  "#bad 1"  @ENDVALUE
+HRB @END
+HRB DISPLAY @BEGIN
+HRB POSITION 1 1
+HRB SHOWCOLUMNS ALL
+HRB @END DISPLAY
+@END HRB TRANSFORMATION
+

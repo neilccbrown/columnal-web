@@ -1,0 +1,30 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+TRANSFORMATION @BEGIN KNM
+KNM invalidtypeops
+KNM concatenate
+KNM SOURCE Boolean a a
+KNM @BEGIN
+KNM @INCOMPLETE WRAPMAYBE
+KNM @END
+KNM DISPLAY @BEGIN
+KNM POSITION 1 1
+KNM SHOWCOLUMNS ALL
+KNM @END DISPLAY
+@END KNM TRANSFORMATION
+

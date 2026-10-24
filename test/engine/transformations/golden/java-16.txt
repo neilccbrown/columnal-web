@@ -1,0 +1,2 @@
+TABLE invalidtypeops
+!UserException: Could not find table "Boolean"

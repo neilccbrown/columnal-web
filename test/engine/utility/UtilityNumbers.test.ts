@@ -10,6 +10,15 @@ import { EpsilonType, Utility } from "../../../src/engine/utility/utility/Utilit
 const KNOWN_DIFFERENCES = new Map<string, string>([
     // Java's Long negation overflows; canonical numbers don't (see Utility.negate):
     ["negate -9223372036854775808", "9223372036854775808"],
+    // Bug fix: Java's relative epsilon computed |a-b|/a - 1, so every pair compared equal (see Utility.compareNumbers):
+    ["compareEpsilon 1 2 RELATIVE 0.001", "-1"],
+    ["compareEpsilon 1 2 RELATIVE 0.5", "-1"],
+    ["compareEpsilon -5 5 RELATIVE 0.001", "-1"],
+    ["compareEpsilon -5 5 RELATIVE 0.5", "-1"],
+    ["compareEpsilon 0 0.0001 RELATIVE 0.001", "-1"],
+    ["compareEpsilon 0 0.0001 RELATIVE 0.5", "-1"],
+    ["compareEpsilon 5 -5 RELATIVE 0.001", "1"],
+    ["compareEpsilon 5 -5 RELATIVE 0.5", "1"],
 ]);
 
 /**

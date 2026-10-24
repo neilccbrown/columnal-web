@@ -1,0 +1,2 @@
+TABLE kZ0Zr aa
+!UserException: Could not find source table: "irZ"

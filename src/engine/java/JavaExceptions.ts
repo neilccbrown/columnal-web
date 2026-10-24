@@ -40,3 +40,13 @@ export class IOException extends Error
         this.name = "IOException";
     }
 }
+
+/** java.io.EOFException */
+export class EOFException extends IOException
+{
+    constructor(message: string = "")
+    {
+        super(message);
+        this.name = "EOFException";
+    }
+}

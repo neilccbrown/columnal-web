@@ -1,0 +1,121 @@
+COLUMNAL
+VERSION 3
+
+UNITS @BEGIN UU
+UU @UNIT myUnit "Custom unit for testing"
+UU @UNIT hogshead "An English wine cask hogshead" = 2387/10 * l
+UU @ALIAS myAlias = myUnit
+@END UU UNITS
+
+TYPES @BEGIN TT
+TT @TYPE A @tagged ( Single )
+TT @TYPE B @tagged ( Single )
+TT @TYPE C @tagged ( Blank | Num ( Number ) )
+TT @TYPE EitherMyOrHogshead @tagged ( Left ( Number { myUnit } ) | Right ( Number { hogshead } ) )
+TT @TYPE EitherNumUnit @tagged @unitvar a @unitvar b ( Left ( Number { @unitvar a } ) | Right ( Number { @unitvar b } ) )
+TT @TYPE Nested @tagged ( A ( A ) | C ( C ) )
+@END TT TYPES
+DATA @BEGIN RSY
+RSY "Test 0"
+RSY FORMAT @BEGIN
+RSY @COLUMN GenCol 178 @TYPE Number @DEFAULT 31
+RSY @COLUMN GenCol 179 @TYPE Date @DEFAULT 4041-03-15
+RSY @COLUMN GenCol 180 @TYPE ( Text : Text , bool : Boolean , c : C , dtz : DateTimeZoned ) @DEFAULT ( "Text" : "I\󵖚𪧥" , "bool" : true , "c" : Blank , "dtz" : 1971-07-27 11:39:21.253805765 Europe/Copenhagen )
+RSY @COLUMN GenCol 181 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT None
+RSY @COLUMN GenCol 182 @TYPE ( a : Number , b : Number ) @DEFAULT ( "a" : 2147483647 , "b" : 5 )
+RSY @COLUMN GenCol 183 @TYPE ( inner : ( t 1 : Text , t 2 : Number ) , z : Number ) @DEFAULT ( "inner" : ( "t 1" : "Z" , "t 2" : 125041572951650 ) , "z" : 0.565904 )
+RSY @COLUMN GenCol 184 @TYPE @apply   Optional ( @apply   Optional ( Text ) ) @DEFAULT None
+RSY @COLUMN GenCol 185 @TYPE Number {m^3/s^3} @DEFAULT 2147483647
+RSY @END FORMAT
+RSY VALUES @BEGIN
+RSY   53 , 2019-06-12 , ( "Text" : "'" , "bool" : false , "c" : Blank , "dtz" : 6308-12-22 23:06:47.343749075 Europe/Astrakhan ) , None , ( "a" : 32767 , "b" : 127 ) , ( "inner" : ( "t 1" : "#" , "t 2" : 49032 ) , "z" : 0.025181 ) , Is ( Is ( "xp" ) ) , 127
+RSY   32767 , 1927-10-03 , ( "Text" : "􏃾w" , "bool" : false , "c" : Blank , "dtz" : 2020-03-24 23:34:25.147054578 Africa/Dakar ) , None , ( "a" : 122222945199 , "b" : 0.286475 ) , ( "inner" : ( "t 1" : "SOURCE" , "t 2" : -2147483649 ) , "z" : 6 ) , Is ( Is ( "DATA" ) ) , -2147483649
+RSY   8061692 , 1998-10-28 , ( "Text" : "3" , "bool" : true , "c" : Blank , "dtz" : 1983-07-20 15:44:00 Asia/Chita ) , Is ( Is ( "}" ) ) , ( "a" : 181308629160 , "b" : 3 ) , ( "inner" : ( "t 1" : "nD" , "t 2" : 6 ) , "z" : 1 ) , Is ( None ) , -2147483647
+RSY @END VALUES
+RSY DISPLAY @BEGIN
+RSY POSITION 1 1
+RSY SHOWCOLUMNS ALL
+RSY @END DISPLAY
+@END RSY DATA
+
+TRANSFORMATION @BEGIN BEQ
+BEQ "Trans 1"
+BEQ "drop.columns"
+BEQ SOURCE "Test 0"
+BEQ @BEGIN
+BEQ HIDE "GenCol 184"
+BEQ @END
+BEQ DISPLAY @BEGIN
+BEQ POSITION 1 1
+BEQ SHOWCOLUMNS ALL
+BEQ @END DISPLAY
+@END BEQ TRANSFORMATION
+
+TRANSFORMATION @BEGIN NJJ
+NJJ "Trans 6"
+NJJ join
+NJJ SOURCE "Trans 1" "Trans 1"
+NJJ @BEGIN
+NJJ LEFTJOIN
+NJJ "GenCol 178" EQUALS "GenCol 178"
+NJJ @END
+NJJ DISPLAY @BEGIN
+NJJ POSITION 1 1
+NJJ SHOWCOLUMNS ALL
+NJJ @END DISPLAY
+@END NJJ TRANSFORMATION
+
+TRANSFORMATION @BEGIN ORC
+ORC "Trans 4"
+ORC filter
+ORC SOURCE "Trans 1"
+ORC @BEGIN
+ORC KEEPIF column\\GenCol 185 < @call function\\list\element(table\\Trans 1#GenCol 185, 1)
+ORC @END
+ORC DISPLAY @BEGIN
+ORC POSITION 1 1
+ORC SHOWCOLUMNS ALL
+ORC @END DISPLAY
+@END ORC TRANSFORMATION
+
+TRANSFORMATION @BEGIN FXF
+FXF "Trans 3"
+FXF join
+FXF SOURCE "Test 0" "Test 0"
+FXF @BEGIN
+FXF INNERJOIN
+FXF "GenCol 178" EQUALS "GenCol 178"
+FXF "GenCol 180" EQUALS "GenCol 180"
+FXF @END
+FXF DISPLAY @BEGIN
+FXF POSITION 1 1
+FXF SHOWCOLUMNS ALL
+FXF @END DISPLAY
+@END FXF TRANSFORMATION
+
+TRANSFORMATION @BEGIN OEZ
+OEZ "Trans 5"
+OEZ join
+OEZ SOURCE "Test 0" "Trans 3"
+OEZ @BEGIN
+OEZ LEFTJOIN
+OEZ @END
+OEZ DISPLAY @BEGIN
+OEZ POSITION 1 1
+OEZ SHOWCOLUMNS ALL
+OEZ @END DISPLAY
+@END OEZ TRANSFORMATION
+
+TRANSFORMATION @BEGIN EKQ
+EKQ "Trans 2"
+EKQ filter
+EKQ SOURCE "Test 0"
+EKQ @BEGIN
+EKQ KEEPIF column\\GenCol 183 > @call function\\list\element(table\\Test 0#GenCol 183, 1)
+EKQ @END
+EKQ DISPLAY @BEGIN
+EKQ POSITION 1 1
+EKQ SHOWCOLUMNS ALL
+EKQ @END DISPLAY
+@END EKQ TRANSFORMATION
+

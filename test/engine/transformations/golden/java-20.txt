@@ -1,0 +1,2 @@
+TABLE Boolean
+!UserException: Could not find table "typevar"

@@ -1,6 +1,7 @@
 // Equivalents of java.util.Collections methods whose exact behaviour matters for
 // reproducing seeded random tests.
-import { IndexOutOfBoundsException } from "./JavaExceptions.js";
+import type { HashMap } from "./HashMap.js";
+import { IllegalArgumentException, IndexOutOfBoundsException } from "./JavaExceptions.js";
 import type { JavaRandom } from "./JavaRandom.js";
 
 /** Collections.shuffle(list, rnd): the same permutation as Java for the same Random state. */
@@ -40,4 +41,17 @@ export function javaListAddAll<T>(list: T[], index: number, items: readonly T[])
         list.push(item);
     for (const item of tail)
         list.push(item);
+}
+
+/**
+ * Guava's ImmutableMap.Builder.put, for a builder held as a Map or HashMap (which keep insertion
+ * order, as ImmutableMap does): Guava's build() throws an IllegalArgumentException for a duplicate key.
+ * (Guava throws at build() rather than at put, which only matters if something fails in between.)
+ */
+export function immutableMapBuilderPut<K, V>(builder: HashMap<K, V> | Map<K, V>, key: K, value: V): void
+{
+    const existing = builder.get(key);
+    if (existing !== undefined || builder.has(key))
+        throw new IllegalArgumentException("Multiple entries with same key: " + String(key) + "=" + String(value) + " and " + String(key) + "=" + String(existing));
+    builder.set(key, value);
 }

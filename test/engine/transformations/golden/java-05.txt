@@ -1,0 +1,123 @@
+TABLE Test 0
+LENGTH 235
+COLUMN GenCol 18 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+  0: Right(-127)
+  1: Right(-32768)
+  2: Left(-9223372036854775807)
+  3: Left(127)
+  4: Left(2)
+  5: Left(-9223372036854775808)
+  6: Left(193000156802835)
+  7: Right(-2147483647)
+  8: Right(0.833452)
+  9: Left(0.756475)
+  10: Right(127)
+  11: Left(9223372036854775808)
+  12: Right(27638)
+  13: Right(119)
+  14: Left(-1)
+  15: Right(1189987824)
+  16: Left(2147483647)
+  17: Right(-2147483647)
+  18: Left(5)
+  19: Right(-1)
+COLUMN GenCol 19 : [(a: Number, nested: (num num: Number, the text 0 item: Text))]
+  0: [(a: 461358, nested: (num num: 1, the text 0 item: "􊾒")), (a: 0, nested: (num num: 13573159, the text 0 item: "h"))]
+  1: [(a: 4936, nested: (num num: 10422, the text 0 item: "]")), (a: -9223372036854775809, nested: (num num: 0.037401, the text 0 item: "n Zr9 0")), (a: 0, nested: (num num: -2147483648, the text 0 item: "BEGIN"))]
+  2: [(a: 0.604594, nested: (num num: 0.545087, the text 0 item: "p r9r")), (a: 189, nested: (num num: 1, the text 0 item: "d"))]
+  3: [(a: -9223372036854775807, nested: (num num: -9223372036854775808, the text 0 item: "pa0"))]
+  4: [(a: 0, nested: (num num: -32768, the text 0 item: "JC"))]
+  5: [(a: -2147483647, nested: (num num: -2147483647, the text 0 item: "zZ")), (a: 552744270687680, nested: (num num: 8679619903515, the text 0 item: "COLUMN")), (a: 657, nested: (num num: 2147483648, the text 0 item: "4r")), (a: 0.698385, nested: (num num: -9223372036854775808, the text 0 item: "kU="))]
+  6: [(a: -1, nested: (num num: 0, the text 0 item: "L")), (a: 2147483647, nested: (num num: 87, the text 0 item: ""))]
+  7: [(a: 21, nested: (num num: -9223372036854775807, the text 0 item: ";EH!")), (a: 2147483647, nested: (num num: 3, the text 0 item: "'{")), (a: 81408, nested: (num num: 30, the text 0 item: "ln0Z"))]
+  8: [(a: 7201104865, nested: (num num: 16832820857636, the text 0 item: "r90rn")), (a: -9223372036854775809, nested: (num num: -9223372036854775808, the text 0 item: "a")), (a: 14363, nested: (num num: 1, the text 0 item: "D𩀔"))]
+  9: [(a: 3, nested: (num num: 6303, the text 0 item: "6")), (a: 2147483648, nested: (num num: 7590, the text 0 item: "k r90 n99")), (a: -32768, nested: (num num: 7, the text 0 item: "`d"))]
+  10: [(a: 89279082, nested: (num num: 9223372036854775808, the text 0 item: "a a90")), (a: -2147483647, nested: (num num: 284484348161107, the text 0 item: "T#c "))]
+  11: [(a: 0.153814, nested: (num num: 603, the text 0 item: "TRANSFORMATION"))]
+  12: [(a: 171, nested: (num num: -2147483648, the text 0 item: "𗅧"))]
+  13: [(a: 40225849, nested: (num num: -127, the text 0 item: "LINKED")), (a: 280, nested: (num num: 987, the text 0 item: "l")), (a: 3, nested: (num num: 0.767811, the text 0 item: "END")), (a: 0.372501, nested: (num num: -127, the text 0 item: "e00naarZ"))]
+  14: [(a: 0, nested: (num num: 127, the text 0 item: "yZa r9Z"))]
+  15: [(a: -9223372036854775808, nested: (num num: 5763894, the text 0 item: "BQ"))]
+  16: [(a: -2147483649, nested: (num num: 127, the text 0 item: "I"))]
+  17: [(a: 0, nested: (num num: 295047278, the text 0 item: "u0r99 an"))]
+  18: [(a: 14573267376694794, nested: (num num: 6887934, the text 0 item: "5a"))]
+  19: [(a: 1836915, nested: (num num: -9223372036854775807, the text 0 item: "rn 0n 9 Zr0"))]
+COLUMN GenCol 20 : DateTimeZoned
+  0: 1919-12-31 20:06:00 America/Metlakatla
+  1: 1953-08-23 13:11:31.412726322 Europe/Vilnius
+  2: 5729-03-03 05:38:55 America/Argentina/San_Juan
+  3: 7815-09-30 22:32:00 America/New_York
+  4: 1941-02-19 01:14:00 Asia/Chita
+  5: 1986-11-07 23:42:00 -08:01
+  6: 1969-12-30 22:30:52.350361431 Australia/Lindeman
+  7: 2003-08-22 17:02:53.662307916 +04:40
+  8: 1953-11-22 20:35:37.621883831 -11:40
+  9: 2046-11-25 01:25:00 America/Port_of_Spain
+  10: 1972-07-29 08:41:16.612570748 +09:14
+  11: 1908-05-23 07:07:25 -02:45
+  12: 5752-09-18 15:27:58.652569641 +10:24
+  13: 2018-09-07 21:09:52.165277367 +07:58
+  14: 2771-11-24 14:27:26.827896518 US/Central
+  15: 1858-08-29 14:52:28.19965194 -08:01
+  16: 2017-05-18 09:35:16 Canada/Central
+  17: 1939-07-08 07:55:00 America/Argentina/San_Juan
+  18: 1928-03-18 06:05:37.153739288 -08:32
+  19: 1943-10-20 10:24:08 Europe/Kirov
+COLUMN GenCol 21 : (inner: (t 1: Text, t 2: Number), z: Number)
+  0: (inner: (t 1: "TEXTFILE", t 2: 450623091411), z: 377307388)
+  1: (inner: (t 1: "Z", t 2: -32768), z: 3854022025)
+  2: (inner: (t 1: "眬", t 2: -32767), z: 0.629524)
+  3: (inner: (t 1: "LINKED", t 2: 10344), z: 1)
+  4: (inner: (t 1: "saa 0rn 0", t 2: 3611), z: 49)
+  5: (inner: (t 1: "=8", t 2: 0.14238), z: 14276679)
+  6: (inner: (t 1: "tn90Z", t 2: 0.896404), z: -9223372036854775809)
+  7: (inner: (t 1: "Ph", t 2: 117148278768703), z: 2147483648)
+  8: (inner: (t 1: "𠡵", t 2: 0.089637), z: 5)
+  9: (inner: (t 1: "TYPES", t 2: 9), z: 0.814077)
+  10: (inner: (t 1: "UNITS", t 2: -9223372036854775809), z: 9223372036854775807)
+  11: (inner: (t 1: "Time", t 2: -2147483647), z: 2571)
+  12: (inner: (t 1: "e rZnr", t 2: 118405510), z: 37359256749)
+  13: (inner: (t 1: "CONTENT", t 2: -2147483647), z: -2147483649)
+  14: (inner: (t 1: "LuL􋽥r/", t 2: -128), z: 9223372036854775807)
+  15: (inner: (t 1: "ca", t 2: 27849), z: 0.381362)
+  16: (inner: (t 1: "=", t 2: -127), z: -9223372036854775808)
+  17: (inner: (t 1: "wn900", t 2: 3), z: 30866989)
+  18: (inner: (t 1: "{", t 2: -9223372036854775807), z: 127)
+  19: (inner: (t 1: "Z", t 2: 0), z: -9223372036854775807)
+COLUMN GenCol 22 : DateYM
+  0: 9633-06
+  1: 0896-07
+  2: 5753-06
+  3: 4595-04
+  4: 1887-06
+  5: 6697-09
+  6: 9647-08
+  7: 2578-02
+  8: 7206-06
+  9: 8898-12
+  10: 5197-11
+  11: 6695-09
+  12: 6961-11
+  13: 7977-08
+  14: 7463-09
+  15: 6964-06
+  16: 9574-10
+  17: 7416-10
+  18: 4367-02
+  19: 3024-05
+TABLE Trans 1
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Unknown name: "GenCol 22"
+TABLE Trans 2
+LENGTH 1
+COLUMN result : Boolean
+  0: false
+TABLE Trans 3
+LENGTH 1
+COLUMN result : Boolean
+  0: !UserException: Unknown name: "GenCol 22"
+TABLE Trans 4
+LENGTH 1
+COLUMN result : Boolean
+  0: !InvalidImmediateValueException: #bad 1

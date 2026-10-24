@@ -29,7 +29,8 @@ reviewed side by side with the Java. Refactoring comes after a module works and 
   java-string-similarity, and the logarithms of big-math's `BigDecimalMath`). Any module may use it. It contains `JavaObject` (equals/hashCode/compareTo),
   `HashMap`/`HashSet`, `TreeMap`/`TreeSet`, `JavaBigDecimal` (numbers), `JavaString`, `JavaDouble`,
   `JavaCharacter`, `JavaRandom`, `JavaCollections`, `JavaProperties`, `JavaEnum`, `JavaExceptions`,
-  and `time/` (java.time, see "Dates and times" below).
+  `BitSet`, `DataStreams` (`DataInputStream`/`DataOutputStream` over byte arrays), and `time/` (java.time,
+  see "Dates and times" below).
 - Files generated at build time are not committed: the ANTLR parsers (`src/engine/parsers/generated/`)
   and the function details (`src/engine/functions/generated/`, from the funcdoc XML by
   `scripts/gen-funcdoc.mjs`). `npm run gen` makes both, and runs on install and before dev,
@@ -243,6 +244,10 @@ exists, and fails. So:
 - `java.nio.charset.Charset` is `Charset` (`src/engine/java/JavaCharset.ts`), which decodes with
   `TextDecoder` and has only the charsets that it supports, under their Java names. As in Java, a
   byte order mark is kept except by `UTF-16`. Tests that need to *encode* a charset use `iconv-lite`.
+- Guava's `ImmutableMap.Builder` is a `Map`/`HashMap` filled with `immutableMapBuilderPut`
+  (`JavaCollections.ts`), which throws on a duplicate key as Guava does.
+- `String.getBytes(UTF_8)` is `javaUtf8Bytes` (`JavaString.ts`), and a `(int)` cast of a double is
+  `javaDoubleToInt` (`JavaDouble.ts`).
 - `List.addAll(index, items)` is `javaListAddAll` (`JavaCollections.ts`). Do not use
   `list.splice(index, 0, ...items)` where `items` can be large: the spread fails beyond about
   100,000 items.
@@ -310,6 +315,8 @@ install and before `dev`, `build`, `test` and `typecheck`.
 - A test in a GUI test module that doesn't use the GUI (such as `TestFromDoc`) is ported as a
   Vitest test under `test/engine/tests-gui-x/`, and listed in `ENGINE_TESTS_IN_GUI_MODULES` in
   `scripts/port-status.ts`.
+- A helper class in a test directory (one with no test methods, such as a generator) is a plain
+  module, `X.ts`, not a `.test.ts` or `.spec.ts` file.
 - `java.util.Random` is `JavaRandom`, which is bit-for-bit compatible. So tests with fixed seeds generate
   the same data as on the JVM.
 - **Golden values:** where Java behaviour is subtle, generate expected values from the real JVM rather
@@ -320,7 +327,7 @@ install and before `dev`, `build`, `test` and `typecheck`.
   utilities, 4,000 cases), `java-lang.sh` and `grammar-utility.sh`. Known, deliberate differences are
   listed explicitly in the test, with their `PORT-NOTE`.
 - For whole classes, `scripts/golden/build-columnal-jvm.sh` compiles the original engine modules
-  (so far up to `functions`) into `reference/jvm/classes`: it downloads the Maven dependencies (checking
+  (so far up to `transformations`, with a stand-in for the one GUI method `transformations` uses) into `reference/jvm/classes`: it downloads the Maven dependencies (checking
   their SHA-1s), generates the Java parsers with ANTLR 4.11, and strips the Checker Framework
   annotations. A harness such as `scripts/golden/java/TypesHarness.java` then calls the real classes,
   printing `section|input|output` lines that a test replays (`test/engine/types/TypesGolden.test.ts`).
@@ -328,6 +335,9 @@ install and before `dev`, `build`, `test` and `typecheck`.
   which `JavaRandom` makes possible. For saved files, `scripts/golden/data.sh` has the port generate
   random `.rec` files, which `DataHarness.java` loads into the original `TableManager` and saves
   again; `test/engine/data/DataGolden.test.ts` checks that the port saves them identically.
+  `scripts/golden/transformations.sh` does the same with transformations, and also has Java write the
+  computed contents of every table, which `test/engine/transformations/TransformationsGolden.test.ts`
+  compares with the port's.
 - New TS-only tests (for code with no Java test) go in `test/engine/<module>/`.
 - GUI tests (Playwright) are ported per test method, at the level of behaviour (PLAN.md §3b).
 

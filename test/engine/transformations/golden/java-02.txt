@@ -1,0 +1,220 @@
+TABLE Test 0
+LENGTH 10
+COLUMN GenCol 6 : DateYM
+  0: 1261-01
+  1: 1763-03
+  2: 1568-12
+  3: 5766-05
+  4: 2117-09
+  5: 6777-10
+  6: 5698-03
+  7: 5309-10
+  8: 9223-05
+  9: 7268-02
+COLUMN GenCol 7 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+  0: Right(86)
+  1: Left(3)
+  2: Left(0)
+  3: Left(-128)
+  4: Right(-2147483648)
+  5: Right(-2147483647)
+  6: Right(157151384)
+  7: Right(9223372036854775808)
+  8: Right(9223372036854775807)
+  9: Right(684)
+COLUMN GenCol 8 : [Text]
+  0: ["􉚊c樴V*K#}r2"]
+  1: ["DateTime"]
+  2: ["mnr9Za9an9n"]
+  3: ["BEGIN"]
+  4: ["𲑯nW9", "$y", "?(!N", "ana9n9nrr"]
+  5: ["yZn", "u Z9anZ Z"]
+  6: ["END"]
+  7: ["F", "HYHUJ", "o00"]
+  8: ["0M", "d9 rn"]
+  9: ["𢎦>􉸢󴘲Qt", "􀤤qs"]
+COLUMN GenCol 9 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "R", bool: false, c: Num(127), dtz: 3549-05-03 17:24:00 -00:16)
+  1: (Text: "}숭", bool: false, c: Blank, dtz: 0757-08-09 01:32:00 America/Anchorage)
+  2: (Text: "幟", bool: true, c: Blank, dtz: 1982-07-11 01:38:48 +06:19)
+  3: (Text: "l𢄴h", bool: true, c: Num(2), dtz: 2017-09-09 09:40:05.236251535 -05:37)
+  4: (Text: "8S𘬬w2e", bool: false, c: Blank, dtz: 1981-06-22 06:48:21 -02:56)
+  5: (Text: "U", bool: false, c: Num(32767), dtz: 1980-01-24 17:36:34.851322933 +03:12)
+  6: (Text: "n", bool: false, c: Blank, dtz: 1910-10-26 19:59:15.333967503 -07:40)
+  7: (Text: "ur9 0 a9na", bool: false, c: Blank, dtz: 2000-12-02 03:10:43 -05:48)
+  8: (Text: "✼", bool: false, c: Num(27484), dtz: 8472-12-07 06:26:00 +04:24)
+  9: (Text: "j 9rZn0", bool: false, c: Blank, dtz: 1997-09-25 17:52:00 America/Danmarkshavn)
+COLUMN GenCol 10 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: Is(Is("Z"))
+  1: Is(Is("CONTENT"))
+  2: None
+  3: Is(None)
+  4: None
+  5: None
+  6: None
+  7: Is(Is("d9Zr09 r"))
+  8: Is(None)
+  9: None
+TABLE Trans 1
+LENGTH 7
+COLUMN GenCol 6 : DateYM
+  0: 1568-12
+  1: 5766-05
+  2: 2117-09
+  3: 6777-10
+  4: 5698-03
+  5: 9223-05
+  6: 7268-02
+COLUMN GenCol 7 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+  0: Left(0)
+  1: Left(-128)
+  2: Right(-2147483648)
+  3: Right(-2147483647)
+  4: Right(157151384)
+  5: Right(9223372036854775807)
+  6: Right(684)
+COLUMN GenCol 8 : [Text]
+  0: ["mnr9Za9an9n"]
+  1: ["BEGIN"]
+  2: ["𲑯nW9", "$y", "?(!N", "ana9n9nrr"]
+  3: ["yZn", "u Z9anZ Z"]
+  4: ["END"]
+  5: ["0M", "d9 rn"]
+  6: ["𢎦>􉸢󴘲Qt", "􀤤qs"]
+COLUMN GenCol 9 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "幟", bool: true, c: Blank, dtz: 1982-07-11 01:38:48 +06:19)
+  1: (Text: "l𢄴h", bool: true, c: Num(2), dtz: 2017-09-09 09:40:05.236251535 -05:37)
+  2: (Text: "8S𘬬w2e", bool: false, c: Blank, dtz: 1981-06-22 06:48:21 -02:56)
+  3: (Text: "U", bool: false, c: Num(32767), dtz: 1980-01-24 17:36:34.851322933 +03:12)
+  4: (Text: "n", bool: false, c: Blank, dtz: 1910-10-26 19:59:15.333967503 -07:40)
+  5: (Text: "✼", bool: false, c: Num(27484), dtz: 8472-12-07 06:26:00 +04:24)
+  6: (Text: "j 9rZn0", bool: false, c: Blank, dtz: 1997-09-25 17:52:00 America/Danmarkshavn)
+COLUMN GenCol 10 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: None
+  1: Is(None)
+  2: None
+  3: None
+  4: None
+  5: Is(None)
+  6: None
+TABLE Trans 2
+LENGTH 10
+COLUMN GenCol 6 : DateYM
+  0: 1261-01
+  1: 1763-03
+  2: 1568-12
+  3: 5766-05
+  4: 2117-09
+  5: 6777-10
+  6: 5698-03
+  7: 5309-10
+  8: 9223-05
+  9: 7268-02
+COLUMN GenCol 9 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: (Text: "R", bool: false, c: Num(127), dtz: 3549-05-03 17:24:00 -00:16)
+  1: (Text: "}숭", bool: false, c: Blank, dtz: 0757-08-09 01:32:00 America/Anchorage)
+  2: (Text: "幟", bool: true, c: Blank, dtz: 1982-07-11 01:38:48 +06:19)
+  3: (Text: "l𢄴h", bool: true, c: Num(2), dtz: 2017-09-09 09:40:05.236251535 -05:37)
+  4: (Text: "8S𘬬w2e", bool: false, c: Blank, dtz: 1981-06-22 06:48:21 -02:56)
+  5: (Text: "U", bool: false, c: Num(32767), dtz: 1980-01-24 17:36:34.851322933 +03:12)
+  6: (Text: "n", bool: false, c: Blank, dtz: 1910-10-26 19:59:15.333967503 -07:40)
+  7: (Text: "ur9 0 a9na", bool: false, c: Blank, dtz: 2000-12-02 03:10:43 -05:48)
+  8: (Text: "✼", bool: false, c: Num(27484), dtz: 8472-12-07 06:26:00 +04:24)
+  9: (Text: "j 9rZn0", bool: false, c: Blank, dtz: 1997-09-25 17:52:00 America/Danmarkshavn)
+COLUMN GenCol 10 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: Is(Is("Z"))
+  1: Is(Is("CONTENT"))
+  2: None
+  3: Is(None)
+  4: None
+  5: None
+  6: None
+  7: Is(Is("d9Zr09 r"))
+  8: Is(None)
+  9: None
+TABLE Trans 3
+!UserException: Source table does not contain columns [Missing]
+TABLE Trans 4
+LENGTH 10
+COLUMN GenCol 6 : DateYM
+  0: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  7: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  8: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  9: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+COLUMN GenCol 7 : EitherNumUnit({1})({m}) <Left:Number | Right:Number{m}>
+  0: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  7: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  8: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  9: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+COLUMN GenCol 8 : [Text]
+  0: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  7: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  8: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  9: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+COLUMN GenCol 9 : (Text: Text, bool: Boolean, c: C <Blank | Num:Number>, dtz: DateTimeZoned)
+  0: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  7: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  8: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  9: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+COLUMN GenCol 10 : Optional(Optional(Text) <None | Is:Text>) <None | Is:Optional(Text) <None | Is:Text>>
+  0: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  1: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  2: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  3: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  4: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  5: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  6: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  7: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  8: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+  9: !UserException: Could not find source column to sort by: "(Missing, DESCENDING)"
+TABLE Trans 5
+LENGTH 1
+COLUMN result : Boolean
+  0: false
+TABLE Trans 6
+LENGTH 21
+COLUMN Source : Text
+  0: "Trans 2"
+  1: "Trans 2"
+  2: "Trans 2"
+  3: "Trans 2"
+  4: "Trans 2"
+  5: "Trans 2"
+  6: "Trans 2"
+  7: "Trans 2"
+  8: "Trans 2"
+  9: "Trans 2"
+  10: "Trans 5"
+  11: "Trans 4"
+  12: "Trans 4"
+  13: "Trans 4"
+  14: "Trans 4"
+  15: "Trans 4"
+  16: "Trans 4"
+  17: "Trans 4"
+  18: "Trans 4"
+  19: "Trans 4"

@@ -11,7 +11,7 @@ REF="$ROOT/reference/columnal"
 JARS="$ROOT/reference/jars"
 OUT="$ROOT/reference/jvm"
 # The engine modules built so far, in dependency order:
-MODULES="utility-error utility-functional utility-adt parsers identifiers utility types data expressions functions"
+MODULES="utility-error utility-functional utility-adt parsers identifiers utility types data expressions functions r-interop transformations"
 
 fetch() # group/artifact/version file
 {
@@ -68,11 +68,25 @@ mkdir -p "$OUT/src/annotation/units"
 for unit in RawInputLocation AbsRowIndex AbsColIndex CanonicalLocation DisplayLocation TableDataRowIndex TableDataColIndex; do
     printf 'package annotation.units;\npublic class %s\n{\n    public static final int ONE = 1;\n    public static final int ZERO = 0;\n}\n' "$unit" > "$OUT/src/annotation/units/$unit.java"
 done
+# transformations uses one method of the GUI module utility-gui (FXUtility.alertOnError_, which runs an
+# action and shows a dialog if it fails), so this stand-in replaces that module, as in the port
+# (which uses ErrorHandler; see .dependency-cruiser.cjs):
+mkdir -p "$OUT/src/xyz/columnal/utility/gui"
+cat > "$OUT/src/xyz/columnal/utility/gui/FXUtility.java" <<'JAVA'
+package xyz.columnal.utility.gui;
+public class FXUtility
+{
+    public static void alertOnError_(String title, xyz.columnal.log.ErrorHandler.RunOrError r)
+    {
+        xyz.columnal.log.ErrorHandler.getErrorHandler().alertOnError_(title, r);
+    }
+}
+JAVA
 find "$OUT/src" -name "*.java" > "$OUT/sources.txt"
 # Java 21 rejects the original's extra semicolon after some imports ("import ...;;"):
 xargs perl -pi -e 's/^(import [^;]+);;\s*$/$1;\n/' < "$OUT/sources.txt"
 javac -nowarn -encoding UTF-8 -proc:none -d "$OUT/classes" -cp "$LIBS" @"$OUT/sources.txt" 2>&1 | grep -v "^Note:" || true
-[ -f "$OUT/classes/xyz/columnal/data/datatype/DataType.class" ] || { echo "Compilation failed" >&2; exit 1; }
+[ -f "$OUT/classes/xyz/columnal/data/datatype/DataType.class" ] && [ -f "$OUT/classes/xyz/columnal/transformations/TransformationManager.class" ] || { echo "Compilation failed" >&2; exit 1; }
 # Resources (e.g. builtin_units.txt):
 cp "$REF/data/src/main/resources/builtin_units.txt" "$OUT/classes/"
 # The function details, which the Java build generated from the funcdoc XML with Saxon

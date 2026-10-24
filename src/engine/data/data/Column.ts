@@ -40,7 +40,8 @@ export abstract class Column
     protected readonly recordSet: RecordSet;
     private readonly name: ColumnId;
 
-    protected constructor(recordSet: RecordSet, name: ColumnId)
+    // Java: protected.  Public so that anonymous subclasses can be made in other modules (the class is abstract).
+    public constructor(recordSet: RecordSet, name: ColumnId)
     {
         this.recordSet = recordSet;
         this.name = name;

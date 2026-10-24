@@ -1,0 +1,45 @@
+<html><head><meta charset="utf-8"><title>Test</title></head><body><p>Before</p><table><caption>A caption</caption><tr><td>1,234</td></tr>
+<tr><td></td></tr>
+<tr><td rowspan="2">a<br>b</td></tr>
+<tr><td>3.25</td></tr>
+<tr><td><p>para</p><p>two</p></td></tr>
+<tr><td>&amp; &lt;x&gt; &nbsp;y&eacute;</td></tr>
+<tr><th>a<br>b</th></tr>
+<tr><th>$5</th></tr>
+<tr><td><span>x</span><span>y</span></td></tr>
+<tr><td rowspan="2">Name[1]</td></tr>
+<tr><td>&amp; &lt;x&gt; &nbsp;y&eacute;</td></tr>
+<tfoot><tr><td>foot</td></tr></tfoot></table><p>Before</p><table><tr><td>-7</td></tr>
+<tr><td><table><tr><td rowspan="3">1,234</td><td>plain</td><td rowspan="abc"><script>var x = 1;</script>shown</td><td>3.25</td><td><div>block</div>after</td></tr>
+<tr><td></td><td>1,234</td><td>12</td><td></td><td></td></tr>
+<tr><th> padded  text </th><td>Value [a 2] [3]</td><td>$5</td><td>a<br>b</td><td>2021-03-04</td></tr>
+<tr><th>$5</th><td>a<br>b</td><td><b>bold</b> and <i>italic</i></td><td rowspan="2">3.25</td><td>  </td></tr>
+<tr><td>line
+break</td><td colspan="x">-7</td><td>$5</td><td><b>bold</b> and <i>italic</i></td><th colspan="3">Value [a 2] [3]</th></tr>
+</table></td></tr>
+<tr><td><table><tr><th>Col 0</th><th>Name</th><th>Col 2</th><th>Price ($)</th></tr><tr><td>1,234</td><td>12</td><th>a<br>b</th><td><script>var x = 1;</script>shown</td></tr>
+<tr><td colspan="x"></td><td>Value [a 2] [3]</td><td>true</td><td>plain</td></tr>
+<tr><td>true</td><th colspan="x"></th><td>&amp; &lt;x&gt; &nbsp;y&eacute;</td><td> padded  text </td></tr>
+<tr><td>$5</td><td>&amp; &lt;x&gt; &nbsp;y&eacute;</td><td><pre>  pre  formatted </pre></td><td rowspan="2">$5</td></tr>
+<tr><td><script>var x = 1;</script>shown</td><td><p>para</p><p>two</p></td><td rowspan="abc"><div>block</div>after</td><td>12</td></tr>
+<tr><td>  </td><td>line
+break</td><td></td><td>&amp; &lt;x&gt; &nbsp;y&eacute;</td></tr>
+<tr><td>Name[1]</td><td rowspan="3"> padded  text </td><td>&amp; &lt;x&gt; &nbsp;y&eacute;</td><td>a<br>b</td></tr>
+</table></td></tr>
+<tr><td>  </td></tr>
+<tr><td>line
+break</td></tr>
+<tr><td><pre>  pre  formatted </pre></td></tr>
+</table><p>Before</p><table><thead><tr><th></th><th></th><th>Col 2</th></tr></thead><tbody><tr><td><div>block</div>after</td><td>Name[1]</td><td>$5</td></tr>
+<tr><td></td><td rowspan="3">&amp; &lt;x&gt; &nbsp;y&eacute;</td><td>  </td></tr>
+<tr><td></td><td><b>bold</b> and <i>italic</i></td><td>  </td></tr>
+<tr><td rowspan="3">Name[1]</td><td>Value [a 2] [3]</td><td>line
+break</td></tr>
+<tr><td>2021-03-04</td><td><table><tr><th></th></tr><tr><td colspan="1">1,234</td></tr>
+<tr><th>plain</th></tr>
+<tr><td>$5</td></tr>
+<tr><td>  </td></tr>
+<tr><td>1,234</td></tr>
+</table></td><td> padded  text </td></tr>
+<tr><td rowspan="2">a<br>b</td><td colspan="3"><script>var x = 1;</script>shown</td><td colspan="3" rowspan="2"><pre>  pre  formatted </pre></td></tr>
+</tbody></table></body></html>

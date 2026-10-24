@@ -1,0 +1,306 @@
+FILE html-05.html
+TABLE 1
+names Price ($)|Col 1|Amount[1]
+row -7|xy|shown|
+row paratwo|line\nbreak|xy|
+row line break|1,234|a\nb|xy
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [Price ($), Col 1, Amount[1], C 4]
+  columns Price|Col 1|Amount 1|C 4
+  types Text Text Text Text
+  length 3
+  "-7" | "xy" | "shown" | ""
+  "paratwo" | "line^nbreak" | "xy" | ""
+  "line break" | "1,234" | "a^nb" | "xy"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Price: Text
+  column Col 1: Text
+  column Amount 1: Text
+  column C 4: Text
+  columns Price|Col 1|Amount 1|C 4
+  types Text Text Text Text
+  length 3
+  "-7" | "xy" | "shown" | ""
+  "paratwo" | "line^nbreak" | "xy" | ""
+  "line break" | "1,234" | "a^nb" | "xy"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [Price ($), Col 1, Amount[1], C 4]
+  columns Price|Col 1|Amount 1|C 4
+  types Text Text Text Text
+  length 3
+  "-7" | "xy" | "shown" | ""
+  "paratwo" | "line^nbreak" | "xy" | ""
+  "line break" | "1,234" | "a^nb" | "xy"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Price: Text
+  column Col 1: Text
+  column Amount 1: Text
+  column C 4: Text
+  columns Price|Col 1|Amount 1|C 4
+  types Text Text Text Text
+  length 3
+  "-7" | "xy" | "shown" | ""
+  "paratwo" | "line^nbreak" | "xy" | ""
+  "line break" | "1,234" | "a^nb" | "xy"
+TABLE 2
+names 
+row 2021-03-04|plain|  pre  formatted |Name[1]|true|
+row Name[1]|shown|3.25|blockafter|a\nb|
+row 3.25|  pre  formatted |$5|true|  pre  formatted |plain
+row 3.25|paratwo|blockafter|a\nb||paratwo
+row -7||1,234|$5|bold and italic|
+trim whitespace true
+source trim <trim, vert +2 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4, C 5, C 6]
+  columns C 1|C 2|C 3|C 4|C 5|C 6
+  types Text Text Text Text Text Text
+  length 5
+  "2021-03-04" | "plain" | "  pre  formatted " | "Name[1]" | "true" | ""
+  "Name[1]" | "shown" | "3.25" | "blockafter" | "a^nb" | ""
+  "3.25" | "  pre  formatted " | "$5" | "true" | "  pre  formatted " | "plain"
+  "3.25" | "paratwo" | "blockafter" | "a^nb" | "" | "paratwo"
+  "-7" | "" | "1,234" | "$5" | "bold and italic" | ""
+dest <trim, vert +2 -0 horiz +0 -0>
+  column Name 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column shown: Text
+  column N3 25: Text
+  column blockafter: Text
+  column a b: Text
+  column C 6: Text
+  columns Name 1|shown|N3 25|blockafter|a b|C 6
+  types Number Text Text Text Text Text
+  length 3
+  3.25 | "pre  formatted" | "$5" | "true" | "pre  formatted" | "plain"
+  3.25 | "paratwo" | "blockafter" | "a^nb" | "" | "paratwo"
+  -7 | "" | "1,234" | "$5" | "bold and italic" | ""
+trim whitespace false
+source trim <trim, vert +2 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4, C 5, C 6]
+  columns C 1|C 2|C 3|C 4|C 5|C 6
+  types Text Text Text Text Text Text
+  length 5
+  "2021-03-04" | "plain" | "  pre  formatted " | "Name[1]" | "true" | ""
+  "Name[1]" | "shown" | "3.25" | "blockafter" | "a^nb" | ""
+  "3.25" | "  pre  formatted " | "$5" | "true" | "  pre  formatted " | "plain"
+  "3.25" | "paratwo" | "blockafter" | "a^nb" | "" | "paratwo"
+  "-7" | "" | "1,234" | "$5" | "bold and italic" | ""
+dest <trim, vert +2 -0 horiz +0 -0>
+  column Name 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column shown: Text
+  column N3 25: Text
+  column blockafter: Text
+  column a b: Text
+  column C 6: Text
+  columns Name 1|shown|N3 25|blockafter|a b|C 6
+  types Number Text Text Text Text Text
+  length 3
+  3.25 | "  pre  formatted " | "$5" | "true" | "  pre  formatted " | "plain"
+  3.25 | "paratwo" | "blockafter" | "a^nb" | "" | "paratwo"
+  -7 | "" | "1,234" | "$5" | "bold and italic" | ""
+TABLE 4
+names 
+row $5|xy|plain|paratwo|  
+row 3.25||3.25|xy|line\nbreak
+row paratwo|Value [a 2] [3]|plain|12|1,234
+trim whitespace true
+source trim <trim, vert +1 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4, C 5]
+  columns C 1|C 2|C 3|C 4|C 5
+  types Text Text Text Text Text
+  length 3
+  "$5" | "xy" | "plain" | "paratwo" | "  "
+  "3.25" | "" | "3.25" | "xy" | "line^nbreak"
+  "paratwo" | "Value [a 2] [3]" | "plain" | "12" | "1,234"
+dest <trim, vert +1 -0 horiz +0 -0>
+  column C 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=2, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column xy: Text
+  column plain: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=2, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column paratwo: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column C 5: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns C 1|xy|plain|paratwo|C 5
+  types @apply   Optional ( Number ) Text @apply   Optional ( Number ) @apply   Optional ( Number ) @apply   Optional ( Number )
+  length 2
+  Is(3.25) | "" | Is(3.25) | None | None
+  None | "Value [a 2] [3]" | None | Is(12) | Is(1234)
+trim whitespace false
+source trim <trim, vert +1 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4, C 5]
+  columns C 1|C 2|C 3|C 4|C 5
+  types Text Text Text Text Text
+  length 3
+  "$5" | "xy" | "plain" | "paratwo" | "  "
+  "3.25" | "" | "3.25" | "xy" | "line^nbreak"
+  "paratwo" | "Value [a 2] [3]" | "plain" | "12" | "1,234"
+dest <trim, vert +1 -0 horiz +0 -0>
+  column C 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=2, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column xy: Text
+  column plain: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=2, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column paratwo: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column C 5: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns C 1|xy|plain|paratwo|C 5
+  types @apply   Optional ( Number ) Text @apply   Optional ( Number ) @apply   Optional ( Number ) @apply   Optional ( Number )
+  length 2
+  Is(3.25) | "" | Is(3.25) | None | None
+  None | "Value [a 2] [3]" | None | Is(12) | Is(1234)
+TABLE 5
+names Name
+row Name[1]
+row -7
+trim whitespace true
+source trim <trim, vert +1 -0 horiz +0 -0> names [Name]
+  columns Name
+  types Text
+  length 2
+  "Name[1]"
+  "-7"
+dest <trim, vert +1 -0 horiz +0 -0>
+  column Name: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns Name
+  types Number
+  length 1
+  -7
+trim whitespace false
+source trim <trim, vert +1 -0 horiz +0 -0> names [Name]
+  columns Name
+  types Text
+  length 2
+  "Name[1]"
+  "-7"
+dest <trim, vert +1 -0 horiz +0 -0>
+  column Name: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns Name
+  types Number
+  length 1
+  -7
+TABLE 7
+names Price ($)
+row Name[1]|
+row & <x>  yé|
+row & <x> yé|$5
+row Name[1]|
+row Name[1]|
+row  padded  text |
+row 2021-03-04|
+row 12|
+row   |
+row a\nb|
+row shown|
+trim whitespace true
+source trim <trim, vert +3 -0 horiz +0 -1> names [Price ($), C 2]
+  columns Price|C 2
+  types Text Text
+  length 11
+  "Name[1]" | ""
+  "& <x>  yé" | ""
+  "& <x> yé" | "$5"
+  "Name[1]" | ""
+  "Name[1]" | ""
+  " padded  text " | ""
+  "2021-03-04" | ""
+  "12" | ""
+  "  " | ""
+  "a^nb" | ""
+  "shown" | ""
+dest <trim, vert +3 -0 horiz +0 -1>
+  column Price: Text
+  columns Price
+  types Text
+  length 7
+  "Name[1]"
+  "Name[1]"
+  "padded  text"
+  "2021-03-04"
+  "12"
+  "a^nb"
+  "shown"
+trim whitespace false
+source trim <trim, vert +3 -0 horiz +0 -1> names [Price ($), C 2]
+  columns Price|C 2
+  types Text Text
+  length 11
+  "Name[1]" | ""
+  "& <x>  yé" | ""
+  "& <x> yé" | "$5"
+  "Name[1]" | ""
+  "Name[1]" | ""
+  " padded  text " | ""
+  "2021-03-04" | ""
+  "12" | ""
+  "  " | ""
+  "a^nb" | ""
+  "shown" | ""
+dest <trim, vert +3 -0 horiz +0 -1>
+  column Price: Text
+  columns Price
+  types Text
+  length 8
+  "Name[1]"
+  "Name[1]"
+  " padded  text "
+  "2021-03-04"
+  "12"
+  "  "
+  "a^nb"
+  "shown"
+TABLE 8
+names ||Amount[1]
+row Name[1]|-7|paratwo|
+row blockafter|12|line\nbreak|
+row line break|3.25|  pre  formatted |$5
+row line break|shown|Value [a 2] [3]|shown
+row   |1,234|& <x>  yé|
+row $5|a\nb|  |
+row -7|xy|2021-03-04|
+row 1,234|paratwo|12|
+row  padded  text |1,234|Name[1]|
+row  padded  text |2021-03-04|blockafter|
+trim whitespace true
+source trim <trim, vert +5 -0 horiz +0 -1> names [, , Amount[1], C 4]
+  columns Col 0|Col 1|Amount 1|C 4
+  types Text Text Text Text
+  length 10
+  "Name[1]" | "-7" | "paratwo" | ""
+  "blockafter" | "12" | "line^nbreak" | ""
+  "line break" | "3.25" | "  pre  formatted " | "$5"
+  "line break" | "shown" | "Value [a 2] [3]" | "shown"
+  "  " | "1,234" | "& <x>  yé" | ""
+  "$5" | "a^nb" | "  " | ""
+  "-7" | "xy" | "2021-03-04" | ""
+  "1,234" | "paratwo" | "12" | ""
+  " padded  text " | "1,234" | "Name[1]" | ""
+  " padded  text " | "2021-03-04" | "blockafter" | ""
+dest <trim, vert +5 -0 horiz +0 -1>
+  column Col 0: Text
+  column Col 1: Text
+  column Amount 1: Text
+  columns Col 0|Col 1|Amount 1
+  types Text Text Text
+  length 5
+  "$5" | "a^nb" | ""
+  "-7" | "xy" | "2021-03-04"
+  "1,234" | "paratwo" | "12"
+  "padded  text" | "1,234" | "Name[1]"
+  "padded  text" | "2021-03-04" | "blockafter"
+trim whitespace false
+source trim <trim, vert +5 -0 horiz +0 -1> names [, , Amount[1], C 4]
+  columns Col 0|Col 1|Amount 1|C 4
+  types Text Text Text Text
+  length 10
+  "Name[1]" | "-7" | "paratwo" | ""
+  "blockafter" | "12" | "line^nbreak" | ""
+  "line break" | "3.25" | "  pre  formatted " | "$5"
+  "line break" | "shown" | "Value [a 2] [3]" | "shown"
+  "  " | "1,234" | "& <x>  yé" | ""
+  "$5" | "a^nb" | "  " | ""
+  "-7" | "xy" | "2021-03-04" | ""
+  "1,234" | "paratwo" | "12" | ""
+  " padded  text " | "1,234" | "Name[1]" | ""
+  " padded  text " | "2021-03-04" | "blockafter" | ""
+dest <trim, vert +5 -0 horiz +0 -1>
+  column Col 0: Text
+  column Col 1: Text
+  column Amount 1: Text
+  columns Col 0|Col 1|Amount 1
+  types Text Text Text
+  length 5
+  "$5" | "a^nb" | "  "
+  "-7" | "xy" | "2021-03-04"
+  "1,234" | "paratwo" | "12"
+  " padded  text " | "1,234" | "Name[1]"
+  " padded  text " | "2021-03-04" | "blockafter"

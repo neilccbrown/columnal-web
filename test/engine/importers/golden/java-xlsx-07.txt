@@ -1,0 +1,20 @@
+FILE xlsx-07.xlsx
+source trim <trim, vert +7 -0 horiz +0 -0> names [A, B, C, D, E]
+  columns A|B|C|D|E
+  types Text Text Text Text Text
+  length 14
+  "Amount" | "Name" | "TRUE" | "1974-01-22" | "Col 4"
+  "12abc" | "" | "FALSE" | "2044-04-26" | "-114800.285714"
+  "-695717.000000" | "TRUE" | "FALSE" | "1962-09-11" | "-163421.333333"
+  "x" | "FALSE" | "FALSE" | "1930-08-02" | "106434.333333"
+  "" | "TRUE" | "FALSE" | "1907-09-12" | "93768.600000"
+  "" | "FALSE" | "FALSE" | "1994-12-13" | "99816.285714"
+  "it's" | "TRUE" | "TRUE" | "" | "233.262000"
+  "FALSE" | "" | "FALSE" | "2047-04-11" | "113271.333333"
+  "FALSE" | "FALSE" | "TRUE" | "1902-09-18" | "-65184.285714"
+  "404588.000000" | "FALSE" | "TRUE" | "2049-05-05" | "9502.990000"
+  "335325.000000" | "TRUE" | "FALSE" | "1988-04-02" | "16363.600000"
+  "FALSE" | "FALSE" | "TRUE" | "1977-01-28" | "-9632.970000"
+  "FALSE" | "TRUE" | "FALSE" | "2024-11-02" | ""
+  "FALSE" | "" | "FALSE" | "1996-06-27" | "-110934.285714"
+dest EXCEPTION UserException: Duplicate column names found: it s, TRUE, TRUE, D, N233 262000

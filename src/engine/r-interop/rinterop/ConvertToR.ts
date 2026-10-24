@@ -8,7 +8,7 @@ import { javaEnumName } from "../../java/JavaEnum.js";
 import { javaReplace } from "../../java/JavaString.js";
 import { TreeSet } from "../../java/TreeMap.js";
 import type { LocalDate, LocalDateTime, LocalTime, YearMonth, ZonedDateTime } from "../../java/time/JavaTime.js";
-import { ZoneId, ZoneOffset } from "../../java/time/JavaTime.js";
+import { javaSystemDefaultZone, ZoneOffset } from "../../java/time/JavaTime.js";
 import type { TemporalAccessor } from "../../java/time/TemporalAccessor.js";
 import type { DataType, DataTypeVisitorEx, TagType } from "../../types/data/datatype/DataType.js";
 import { DataTypeUtility } from "../../types/data/datatype/DataTypeUtility.js";
@@ -77,7 +77,7 @@ export class ConvertToR
                 {
                     // If no non-NA, won't matter:
                     const firstPresent = values.find(v => v !== null) ?? null;
-                    const zone = firstPresent !== null ? (firstPresent as ZonedDateTime).zone() : ZoneId.systemDefault();
+                    const zone = firstPresent !== null ? (firstPresent as ZonedDateTime).zone() : javaSystemDefaultZone();
 
                     return visitor.visitTemporalList(dateTimeInfo.getType(), Utility.mapListI(values, mv => mv === null ? null : DataTypeUtility.valueZonedDateTime((mv as ZonedDateTime).withZoneSameInstant(zone))), RUtility.makeClassAttributes("POSIXct", new Map([["tzone", RUtility.stringVector(zone.toString())]])));
                 }

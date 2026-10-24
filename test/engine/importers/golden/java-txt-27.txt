@@ -1,0 +1,61 @@
+FILE txt-27.txt
+guessed InitialTextFormat{charset=UTF-8, separator=',', quote='null'}
+source trim <trim, vert +7 -0 horiz +0 -0> names null
+  columns Col 1|Col 2|Col 3|Col 4|Col 5|Col 6|Col 7
+  types Text Text Text Text Text Text Text
+  length 17
+  "# Generated report" | "" | "" | "" | "" | "" | ""
+  "mixed" | "text" | "Name" | "1st" | "Col 4" | "text" | ""
+  "3.5" | "€" | "924582¥" | "-207993" | "" | "say ^qhi^q" | ""
+  "3.5" | "Dürer" | "328117¥" | "520785" | "" | "£5" | ""
+  "-585286" | "Dürer" | "251814¥" | "437738" | "" | "Yes" | ""
+  "2020-01-01" | "cherry" | "348542¥" | "98578" | "" | "NA" | ""
+  "n" | "  spaced  " | "368308¥" | "642188" | "" | "" | ""
+  "2020-01-01" | "£5" | "98713¥" | "481326" | "" | "100%" | ""
+  "2020-01-01" | "x" | "330042¥" | "768312" | "" | "東京" | ""
+  "3.5" | "£5" | "920313¥" | "98874" | "" | "true" | ""
+  "it's" | "cherry" | "51529¥" | "502428" | "" | "£5" | ""
+  "#1" | "x" | "764209¥" | "" | "" | "Yes" | ""
+  "2020-01-01" | "  spaced  " | "573759¥" | "200700" | "" | "NA" | ""
+  "2020-01-01" | "Yes" | "75468¥" | "671977" | "" | "a" | " b"
+  "-98090" | "Yes" | "675126¥" | "-423941" | "" | "true" | ""
+  "x" | "true" | "929296¥" | "-825422" | "" | "say ^qhi^q" | ""
+  "3.5" | "say ^qhi^q" | "756652¥" | "" | "" | "100%" | ""
+dest InitialTextFormat{charset=UTF-8, separator=',', quote='null'} <trim, vert +7 -0 horiz +0 -0>
+  column n: Text
+  column spaced: Text
+  column C368308: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='¥'}
+  column C642188: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column C 1: Blank
+  column C 2: Text
+  column C 3: Text
+  columns n|spaced|C368308|C642188|C 1|C 2|C 3
+  types Text Text Number @apply   Optional ( Number ) Text Text Text
+  length 10
+  "2020-01-01" | "£5" | 98713 | Is(481326) | "" | "100%" | ""
+  "2020-01-01" | "x" | 330042 | Is(768312) | "" | "東京" | ""
+  "3.5" | "£5" | 920313 | Is(98874) | "" | "true" | ""
+  "it's" | "cherry" | 51529 | Is(502428) | "" | "£5" | ""
+  "#1" | "x" | 764209 | None | "" | "Yes" | ""
+  "2020-01-01" | "  spaced  " | 573759 | Is(200700) | "" | "NA" | ""
+  "2020-01-01" | "Yes" | 75468 | Is(671977) | "" | "a" | " b"
+  "-98090" | "Yes" | 675126 | Is(-423941) | "" | "true" | ""
+  "x" | "true" | 929296 | Is(-825422) | "" | "say ^qhi^q" | ""
+  "3.5" | "say ^qhi^q" | 756652 | None | "" | "100%" | ""
+text file:
+  columns n|spaced|C368308|C642188|C 1|C 2|C 3
+  types Text Text Number @apply   Optional ( Number ) Text Text Text
+  length 13
+  "n" | "  spaced  " | 368308 | Is(642188) | "" | "" | ""
+  "2020-01-01" | "£5" | 98713 | Is(481326) | "" | "100%" | ""
+  "2020-01-01" | "x" | 330042 | Is(768312) | "" | "東京" | ""
+  "" | "" | INVALID  | None | "" | "" | ""
+  "3.5" | "£5" | 920313 | Is(98874) | "" | "true" | ""
+  "it's" | "cherry" | 51529 | Is(502428) | "" | "£5" | ""
+  "#1" | "x" | 764209 | None | "" | "Yes" | ""
+  "2020-01-01" | "  spaced  " | 573759 | Is(200700) | "" | "NA" | ""
+  "2020-01-01" | "Yes" | 75468 | Is(671977) | "" | "a" | " b"
+  "-98090" | "Yes" | 675126 | Is(-423941) | "" | "true" | ""
+  "x" | "true" | 929296 | Is(-825422) | "" | "say ^qhi^q" | ""
+  "3.5" | "say ^qhi^q" | 756652 | None | "" | "100%" | ""
+  ERROR UserException | ERROR UserException | ERROR UserException | ERROR UserException | ERROR UserException | ERROR UserException | ERROR UserException

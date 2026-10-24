@@ -1,0 +1,49 @@
+FILE txt-26.txt
+guessed InitialTextFormat{charset=UTF-8, separator='null', quote='null'}
+source trim <trim, vert +0 -0 horiz +0 -0> names null
+  columns Col 1
+  types Text
+  length 2
+  "''"
+  "''"
+dest InitialTextFormat{charset=UTF-8, separator='null', quote='null'} <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Text
+  columns C 1
+  types Text
+  length 2
+  "''"
+  "''"
+text file:
+  columns C 1
+  types Text
+  length 30
+  ""
+  "''"
+  ""
+  ""
+  ""
+  ""
+  ""
+  "''"
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""

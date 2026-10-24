@@ -1,0 +1,32 @@
+FILE xlsx-03.xlsx
+source trim <trim, vert +6 -0 horiz +1 -0> names [A, B, C, D, E, F]
+  columns A|B|C|D|E|F
+  types Text Text Text Text Text Text
+  length 12
+  "" | "it's" | "true" | "" | "1971-01-22" | "139801.571429"
+  "" | "N/A" | "-" | "it's" | "1991-07-18" | "751.296000"
+  "" | "Dürer" | "Banana split" | "-968386.000000" | "2026-11-25" | "92091.500000"
+  "" | "Dürer" | "€" | "" | "1989-02-02" | "-3920.460000"
+  "" | "n" | "n" | "773526.000000" | "1977-09-06" | ""
+  "" | "a, b" | "  spaced  " | "" | "1998-05-06" | "-277.209000"
+  "" | "Yes" | "東京" | "" | "2021-10-05" | ""
+  "" | "" | "a, b" | "" | "1990-07-02" | "128404.000000"
+  "" | "true" | "Dürer" | "" | "2027-08-15" | "-93328.100000"
+  "" | "東京" | "NA" | "FALSE" | "1987-02-24" | "-720.927000"
+  "" | "apple" | "cherry" | "-377568.000000" | "2027-10-06" | "-411.420000"
+  "" | "Dürer" | "#1" | "" | "1995-01-16" | "283903.666667"
+dest <trim, vert +6 -0 horiz +1 -0>
+  column A: Text
+  column a b: Text
+  column spaced: Text
+  column D: CleanDate #5 YEARMONTHDAY true
+  column N1998 05 06: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=6, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns A|a b|spaced|D|N1998 05 06
+  types Text Text Text Date @apply   Optional ( Number )
+  length 6
+  "Yes" | "東京" | "" | 2021-10-05 | None
+  "" | "a, b" | "" | 1990-07-02 | Is(128404)
+  "true" | "Dürer" | "" | 2027-08-15 | Is(-93328.1)
+  "東京" | "NA" | "FALSE" | 1987-02-24 | Is(-720.927)
+  "apple" | "cherry" | "-377568.000000" | 2027-10-06 | Is(-411.42)
+  "Dürer" | "#1" | "" | 1995-01-16 | Is(283903.666667)

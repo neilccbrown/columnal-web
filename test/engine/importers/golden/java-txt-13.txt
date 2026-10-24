@@ -1,0 +1,30 @@
+FILE txt-13.txt
+guessed InitialTextFormat{charset=UTF-8, separator=',', quote='null'}
+source trim <trim, vert +1 -0 horiz +0 -0> names null
+  columns Col 1|Col 2|Col 3|Col 4|Col 5|Col 6|Col 7|Col 8
+  types Text Text Text Text Text Text Text Text
+  length 3
+  "Name" | "1st" | "1st" | "Name" | "Amount (4)" | "Col 5" | "" | ""
+  "-96" | "253" | "NA" | "495" | "085" | "172277�" | "apple" | "15:20:33"
+  "732" | "183" | "-887244" | "-374" | "462" | "571741�" | "n" | "3:08:49"
+dest InitialTextFormat{charset=UTF-8, separator=',', quote='null'} <trim, vert +1 -0 horiz +0 -0>
+  column Name: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column C1st: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column C1st 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Name 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column Amount 4: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column Col 5: Text
+  column C 1: Text
+  column C 2: CleanDate #0 TIMEOFDAY false
+  columns Name|C1st|C1st 1|Name 1|Amount 4|Col 5|C 1|C 2
+  types Number Number @apply   Optional ( Number ) Number Number Text Text Time
+  length 2
+  -96 | 253 | None | 495 | 85 | "172277�" | "apple" | 15:20:33
+  732 | 183 | Is(-887244) | -374 | 462 | "571741�" | "n" | 03:08:49
+text file:
+  columns Name|C1st|C1st 1|Name 1|Amount 4|Col 5|C 1|C 2
+  types Number Number @apply   Optional ( Number ) Number Number Text Text Time
+  length 3
+  -96 | 253 | None | 495 | 85 | "172277�" | "apple" | 15:20:33
+  732 | 183 | Is(-887244) | -374 | 462 | "571741�" | "n" | 03:08:49
+  INVALID  | INVALID  | INVALID  | INVALID  | INVALID  | "" | "" | INVALID 

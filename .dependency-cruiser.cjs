@@ -28,6 +28,18 @@ const ENGINE_MODULE_DEPENDENCIES = {
     "exporters": ["data", "identifiers", "r-interop", "types", "utility", "utility-adt", "utility-error", "utility-functional"],
 };
 
+// The same for the logic ported from the GUI modules (src/gui-logic/<module>/), which may use the
+// engine modules and the other GUI modules that their Java modules depended on.
+const GUI_LOGIC_MODULE_DEPENDENCIES = {
+    "utility-gui": { engine: ["utility", "utility-adt", "utility-error", "utility-functional", "parsers"], gui: [] },
+    "lex-editor-completion": { engine: ["utility", "utility-adt", "utility-error", "utility-functional"], gui: ["utility-gui"] },
+    "stf": { engine: ["identifiers", "utility", "utility-adt", "utility-error", "utility-functional", "data", "parsers", "types"], gui: ["utility-gui"] },
+    "lex-editor": { engine: ["utility", "utility-adt", "utility-error", "utility-functional", "expressions", "identifiers", "types", "data", "parsers"], gui: ["utility-gui", "lex-editor-completion"] },
+    "dialogs-non-expression": { engine: ["data", "identifiers", "parsers", "transformations", "utility", "utility-adt", "utility-error", "utility-functional"], gui: ["utility-gui"] },
+    "table-gui": { engine: ["utility", "utility-adt", "utility-error", "utility-functional", "parsers", "data", "exporters", "expressions", "functions", "identifiers", "transformations", "r-interop", "types"], gui: ["utility-gui", "stf", "dialogs-non-expression", "lex-editor"] },
+    "app": { engine: ["utility", "utility-adt", "utility-error", "utility-functional", "parsers", "data", "exporters", "expressions", "functions", "identifiers", "importers", "transformations", "r-interop", "types"], gui: ["utility-gui", "stf", "dialogs-non-expression", "lex-editor", "table-gui"] },
+};
+
 const escapeRegex = (s) => s.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 
 const engineLayerRules = Object.entries(ENGINE_MODULE_DEPENDENCIES).map(([module, deps]) => ({
@@ -40,6 +52,29 @@ const engineLayerRules = Object.entries(ENGINE_MODULE_DEPENDENCIES).map(([module
         pathNot: `^src/engine/(${[module, "java", "anns", ...deps].map(escapeRegex).join("|")})/`,
     },
 }));
+
+const guiLogicLayerRules = Object.entries(GUI_LOGIC_MODULE_DEPENDENCIES).flatMap(([module, deps]) => [
+    {
+        name: `gui-logic-layering-${module}`,
+        comment: `src/gui-logic/${module} may only depend on gui-logic modules: ${[module, ...deps.gui].join(", ")} (mirrors the Java Gradle module dependencies).`,
+        severity: "error",
+        from: { path: `^src/gui-logic/${escapeRegex(module)}/` },
+        to: {
+            path: "^src/gui-logic/[^/]+/",
+            pathNot: `^src/gui-logic/(${[module, ...deps.gui].map(escapeRegex).join("|")})/`,
+        },
+    },
+    {
+        name: `gui-logic-engine-layering-${module}`,
+        comment: `src/gui-logic/${module} may only depend on engine modules: ${["java", "anns", ...deps.engine].join(", ")} (mirrors the Java Gradle module dependencies).`,
+        severity: "error",
+        from: { path: `^src/gui-logic/${escapeRegex(module)}/` },
+        to: {
+            path: "^src/engine/[^/]+/",
+            pathNot: `^src/engine/(${["java", "anns", ...deps.engine].map(escapeRegex).join("|")})/`,
+        },
+    },
+]);
 
 // Class hierarchies whose base class constructs its subclasses (so the modules import each
 // other): each is loaded through a barrel module that lists the base class first, and other
@@ -123,6 +158,7 @@ module.exports = {
             to: { dependencyTypes: ["core"] },
         },
         ...engineLayerRules,
+        ...guiLogicLayerRules,
         {
             name: "no-circular",
             comment: "Circular imports can cause initialisation-order errors with ES module classes. Java allows cycles, so some may be needed; review each one.",

@@ -1,0 +1,20 @@
+FILE txt-07.txt
+guessed InitialTextFormat{charset=UTF-8, separator=' ', quote='null'}
+source trim <trim, vert +1 -0 horiz +0 -1> names null
+  columns Col 1|Col 2|Col 3
+  types Text Text Text
+  length 2
+  "Report" | "for" | "2020"
+  "Total" | "3" | ""
+dest InitialTextFormat{charset=UTF-8, separator=' ', quote='null'} <trim, vert +1 -0 horiz +0 -1>
+  column Report: Text
+  column for: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns Report|for
+  types Text Number
+  length 1
+  "Total" | 3
+text file:
+  columns Report|for
+  types Text Number
+  length 1
+  "Total" | 3

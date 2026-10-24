@@ -1,0 +1,165 @@
+FILE html-16-wiki.html
+TABLE 1
+names Amount[1]|Col 1|Price ($)|Col 3
+row -7|true|  |shown
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [Amount[1], Col 1, Price ($), Col 3]
+  columns Amount 1|Col 1|Price|Col 3
+  types Text Text Text Text
+  length 1
+  "-7" | "true" | "  " | "shown"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Amount: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column Col 1: Boolean[true]
+  column Price: Blank
+  column Col 3: Text
+  columns Amount|Col 1|Price|Col 3
+  types Number Boolean Text Text
+  length 1
+  -7 | true | "" | "shown"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [Amount[1], Col 1, Price ($), Col 3]
+  columns Amount 1|Col 1|Price|Col 3
+  types Text Text Text Text
+  length 1
+  "-7" | "true" | "  " | "shown"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Amount: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column Col 1: Boolean[true]
+  column Price: Blank
+  column Col 3: Text
+  columns Amount|Col 1|Price|Col 3
+  types Number Boolean Text Text
+  length 1
+  -7 | true | "  " | "shown"
+TABLE 2
+names Name|Price ($)|Name
+row $5|-7|& <x>  yé
+row bold and italic|bold and italic|true
+row shown|line\nbreak|line\nbreak
+row Value [a 2] [3]|xy|true
+row $5|true|line\nbreak
+trim whitespace true
+source EXCEPTION UserException: Duplicate column names found: Name, Price, Name
+trim whitespace false
+source EXCEPTION UserException: Duplicate column names found: Name, Price, Name
+TABLE 3
+names 
+row 3.25|paratwo|line\nbreak|
+row paratwo| padded  text |& <x>  yé|
+row  padded  text |true|line\nbreak|
+row 3.25|xy|plain|
+row a\nb|shown|line\nbreak|
+row line\nbreak|3.25|line\nbreak|
+row   pre  formatted |  pre  formatted | padded  text |
+row pre  formatted|$5|Value [a 2] [3]|  pre  formatted 
+row Name[1]|3.25|line\nbreak|
+row 3.25|Name[1]|1,234|bold and italic
+row 3.25|  |true|plain
+trim whitespace true
+source trim <trim, vert +5 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4]
+  columns C 1|C 2|C 3|C 4
+  types Text Text Text Text
+  length 11
+  "3.25" | "paratwo" | "line^nbreak" | ""
+  "paratwo" | " padded  text " | "& <x>  yé" | ""
+  " padded  text " | "true" | "line^nbreak" | ""
+  "3.25" | "xy" | "plain" | ""
+  "a^nb" | "shown" | "line^nbreak" | ""
+  "line^nbreak" | "3.25" | "line^nbreak" | ""
+  "  pre  formatted " | "  pre  formatted " | " padded  text " | ""
+  "pre  formatted" | "$5" | "Value [a 2] [3]" | "  pre  formatted "
+  "Name[1]" | "3.25" | "line^nbreak" | ""
+  "3.25" | "Name[1]" | "1,234" | "bold and italic"
+  "3.25" | "  " | "true" | "plain"
+dest <trim, vert +5 -0 horiz +0 -0>
+  column a b: Text
+  column shown: Text
+  column line break: Text
+  column C 4: Text
+  columns a b|shown|line break|C 4
+  types Text Text Text Text
+  length 6
+  "line^nbreak" | "3.25" | "line^nbreak" | ""
+  "pre  formatted" | "pre  formatted" | "padded  text" | ""
+  "pre  formatted" | "$5" | "Value " | "pre  formatted"
+  "Name" | "3.25" | "line^nbreak" | ""
+  "3.25" | "Name" | "1,234" | "bold and italic"
+  "3.25" | "" | "true" | "plain"
+trim whitespace false
+source trim <trim, vert +5 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4]
+  columns C 1|C 2|C 3|C 4
+  types Text Text Text Text
+  length 11
+  "3.25" | "paratwo" | "line^nbreak" | ""
+  "paratwo" | " padded  text " | "& <x>  yé" | ""
+  " padded  text " | "true" | "line^nbreak" | ""
+  "3.25" | "xy" | "plain" | ""
+  "a^nb" | "shown" | "line^nbreak" | ""
+  "line^nbreak" | "3.25" | "line^nbreak" | ""
+  "  pre  formatted " | "  pre  formatted " | " padded  text " | ""
+  "pre  formatted" | "$5" | "Value [a 2] [3]" | "  pre  formatted "
+  "Name[1]" | "3.25" | "line^nbreak" | ""
+  "3.25" | "Name[1]" | "1,234" | "bold and italic"
+  "3.25" | "  " | "true" | "plain"
+dest <trim, vert +5 -0 horiz +0 -0>
+  column a b: Text
+  column shown: Text
+  column line break: Text
+  column C 4: Text
+  columns a b|shown|line break|C 4
+  types Text Text Text Text
+  length 6
+  "line^nbreak" | "3.25" | "line^nbreak" | ""
+  "  pre  formatted " | "  pre  formatted " | " padded  text " | ""
+  "pre  formatted" | "$5" | "Value " | "  pre  formatted "
+  "Name" | "3.25" | "line^nbreak" | ""
+  "3.25" | "Name" | "1,234" | "bold and italic"
+  "3.25" | "  " | "true" | "plain"
+TABLE 4
+names 
+row shown
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [C 1]
+  columns C 1
+  types Text
+  length 1
+  "shown"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Text
+  columns C 1
+  types Text
+  length 1
+  "shown"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [C 1]
+  columns C 1
+  types Text
+  length 1
+  "shown"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Text
+  columns C 1
+  types Text
+  length 1
+  "shown"
+TABLE 5
+names 
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0

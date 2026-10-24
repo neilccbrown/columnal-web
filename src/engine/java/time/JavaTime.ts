@@ -398,3 +398,27 @@ export function isDateTimeException(e: unknown): e is Error
 }
 
 export { DateTimeException, DateTimeParseException };
+
+/**
+ * Java's ZoneId.systemDefault(): the system's time zone, as a named region (such as Europe/London).
+ *
+ * PORT-NOTE: js-joda's ZoneId.systemDefault() is a zone called "SYSTEM" whose rules come from the
+ * JavaScript Date, which can disagree with itself far from the present (Date maps a distant year to
+ * a nearby one for daylight saving time), so this uses the named zone's rules from the time zone
+ * database, as Java does.  If the browser doesn't name its zone, or the name is unknown, it falls
+ * back to js-joda's.
+ */
+export function javaSystemDefaultZone(): ZoneId
+{
+    try
+    {
+        const name = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (name !== undefined && name !== "")
+            return ZoneId.of(name);
+    }
+    catch (_e)
+    {
+        // Not a zone that js-joda knows
+    }
+    return ZoneId.systemDefault();
+}

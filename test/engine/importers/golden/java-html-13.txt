@@ -1,0 +1,117 @@
+FILE html-13.html
+TABLE 0
+names  padded  text 
+row 3.25|
+row line break|$5
+row line break| padded  text 
+row a\nb|
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [ padded  text , C 2]
+  columns padded text|C 2
+  types Text Text
+  length 4
+  "3.25" | ""
+  "line break" | "$5"
+  "line break" | " padded  text "
+  "a^nb" | ""
+dest <trim, vert +0 -0 horiz +0 -0>
+  column padded text: Text
+  column C 2: Text
+  columns padded text|C 2
+  types Text Text
+  length 4
+  "3.25" | ""
+  "line break" | "$5"
+  "line break" | "padded  text"
+  "a^nb" | ""
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [ padded  text , C 2]
+  columns padded text|C 2
+  types Text Text
+  length 4
+  "3.25" | ""
+  "line break" | "$5"
+  "line break" | " padded  text "
+  "a^nb" | ""
+dest <trim, vert +0 -0 horiz +0 -0>
+  column padded text: Text
+  column C 2: Text
+  columns padded text|C 2
+  types Text Text
+  length 4
+  "3.25" | ""
+  "line break" | "$5"
+  "line break" | " padded  text "
+  "a^nb" | ""
+TABLE 2
+names 
+row   ||Name[1]|2021-03-04|
+row |Name[1]|blockafter|  pre  formatted |plain
+row $5|plain|a\nb|12|
+row Value [a 2] [3]|line\nbreak|  |Name[1]|
+row Name[1]|bold and italic|true|bold and italic|
+row   pre  formatted |a\nb|  pre  formatted |-7|
+trim whitespace true
+source trim <trim, vert +3 -0 horiz +0 -1> names [C 1, C 2, C 3, C 4, C 5]
+  columns C 1|C 2|C 3|C 4|C 5
+  types Text Text Text Text Text
+  length 6
+  "  " | "" | "Name[1]" | "2021-03-04" | ""
+  "" | "Name[1]" | "blockafter" | "  pre  formatted " | "plain"
+  "$5" | "plain" | "a^nb" | "12" | ""
+  "Value [a 2] [3]" | "line^nbreak" | "  " | "Name[1]" | ""
+  "Name[1]" | "bold and italic" | "true" | "bold and italic" | ""
+  "  pre  formatted " | "a^nb" | "  pre  formatted " | "-7" | ""
+dest <trim, vert +3 -0 horiz +0 -1>
+  column C 1: Text
+  column plain: Text
+  column a b: Text
+  column N12: Text
+  columns C 1|plain|a b|N12
+  types Text Text Text Text
+  length 3
+  "Value [a 2] [3]" | "line^nbreak" | "" | "Name[1]"
+  "Name[1]" | "bold and italic" | "true" | "bold and italic"
+  "pre  formatted" | "a^nb" | "pre  formatted" | "-7"
+trim whitespace false
+source trim <trim, vert +3 -0 horiz +0 -1> names [C 1, C 2, C 3, C 4, C 5]
+  columns C 1|C 2|C 3|C 4|C 5
+  types Text Text Text Text Text
+  length 6
+  "  " | "" | "Name[1]" | "2021-03-04" | ""
+  "" | "Name[1]" | "blockafter" | "  pre  formatted " | "plain"
+  "$5" | "plain" | "a^nb" | "12" | ""
+  "Value [a 2] [3]" | "line^nbreak" | "  " | "Name[1]" | ""
+  "Name[1]" | "bold and italic" | "true" | "bold and italic" | ""
+  "  pre  formatted " | "a^nb" | "  pre  formatted " | "-7" | ""
+dest <trim, vert +3 -0 horiz +0 -1>
+  column C 1: Text
+  column plain: Text
+  column a b: Text
+  column N12: Text
+  columns C 1|plain|a b|N12
+  types Text Text Text Text
+  length 3
+  "Value [a 2] [3]" | "line^nbreak" | "  " | "Name[1]"
+  "Name[1]" | "bold and italic" | "true" | "bold and italic"
+  "  pre  formatted " | "a^nb" | "  pre  formatted " | "-7"
+TABLE 4
+names 
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0

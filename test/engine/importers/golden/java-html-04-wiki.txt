@@ -1,0 +1,99 @@
+FILE html-04-wiki.html
+TABLE 0
+names Name
+row true
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [Name]
+  columns Name
+  types Text
+  length 1
+  "true"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Name: Boolean[true]
+  columns Name
+  types Boolean
+  length 1
+  true
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [Name]
+  columns Name
+  types Text
+  length 1
+  "true"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Name: Boolean[true]
+  columns Name
+  types Boolean
+  length 1
+  true
+TABLE 1
+names 
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+TABLE 3
+names 
+row blockafter
+row   
+row bold and italic
+row Name[1]
+row xy
+row bold and italic
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [C 1]
+  columns C 1
+  types Text
+  length 6
+  "blockafter"
+  "  "
+  "bold and italic"
+  "Name[1]"
+  "xy"
+  "bold and italic"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Text
+  columns C 1
+  types Text
+  length 5
+  "blockafter"
+  "bold and italic"
+  "Name"
+  "xy"
+  "bold and italic"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [C 1]
+  columns C 1
+  types Text
+  length 6
+  "blockafter"
+  "  "
+  "bold and italic"
+  "Name[1]"
+  "xy"
+  "bold and italic"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Text
+  columns C 1
+  types Text
+  length 6
+  "blockafter"
+  "  "
+  "bold and italic"
+  "Name"
+  "xy"
+  "bold and italic"

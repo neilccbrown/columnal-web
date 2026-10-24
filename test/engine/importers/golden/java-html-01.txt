@@ -1,0 +1,39 @@
+FILE html-01.html
+TABLE 0
+names ||Price ($)
+row line\nbreak|  |blockafter
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [, , Price ($)]
+  columns Col 0|Col 1|Price
+  types Text Text Text
+  length 1
+  "line^nbreak" | "  " | "blockafter"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Col 0: Text
+  column Col 1: Blank
+  column Price: Text
+  columns Col 0|Col 1|Price
+  types Text Text Text
+  length 1
+  "line^nbreak" | "" | "blockafter"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [, , Price ($)]
+  columns Col 0|Col 1|Price
+  types Text Text Text
+  length 1
+  "line^nbreak" | "  " | "blockafter"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Col 0: Text
+  column Col 1: Blank
+  column Price: Text
+  columns Col 0|Col 1|Price
+  types Text Text Text
+  length 1
+  "line^nbreak" | "  " | "blockafter"
+TABLE 1
+names Amount[1]||Amount[1]|Name|Amount[1]
+row 1,234|  |2021-03-04|a\nb|12
+trim whitespace true
+source EXCEPTION UserException: Duplicate column names found: Amount 1, Col 1, Amount 1, Name, Amount 1
+trim whitespace false
+source EXCEPTION UserException: Duplicate column names found: Amount 1, Col 1, Amount 1, Name, Amount 1

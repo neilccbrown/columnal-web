@@ -1,0 +1,41 @@
+FILE rec-02.rec
+TABLE Test 0
+CSV EXCEPTION InvalidImmediateValueException: Invalid value: @1652331566
+HTML EXCEPTION InvalidImmediateValueException: Invalid value: @1652331566
+EXCEL
+source trim <trim, vert +0 -0 horiz +0 -0> names [A, B, C, D, E]
+  columns A|B|C|D|E
+  types Text Text Text Text Text
+  length 11
+  "GenCol 6" | "GenCol 7" | "GenCol 8" | "GenCol 9" | "GenCol 10"
+  "1261-01" | "Error: Invalid value: ^a1652331566" | "Error: Invalid value: ^a1482666830" | "(Text: ^qR^q, bool: false, c: Num(127), dtz: 3549-05-03 17:24:00 -00:16)" | "Is(Is(^qZ^q))"
+  "1763-03" | "Left(3)" | "Error: Invalid value: ^a1600230587" | "(Text: ^q}숭^q, bool: false, c: Blank, dtz: 0757-08-09 01:32:00 America/Anchorage)" | "Is(Is(^qCONTENT^q))"
+  "1568-12" | "Left(0)" | "Error: Invalid value: ^a2007133788" | "(Text: ^q幟^q, bool: true, c: Blank, dtz: 1982-07-11 01:38:48 +06:19)" | "None"
+  "5766-05" | "Left(-128)" | "[^qBEGIN^q]" | "(Text: ^ql𢄴h^q, bool: true, c: Num(2), dtz: 2017-09-09 09:40:05.236251535 -05:37)" | "Is(None)"
+  "Error: Invalid value: ^a1063189234" | "Right(-2147483648)" | "Error: Invalid value: ^a-1976522769" | "Error: Invalid value: ^aEND" | "None"
+  "6777-10" | "Right(-2147483647)" | "[^qyZn^q, ^qu Z9anZ Z^q]" | "(Text: ^qU^q, bool: false, c: Num(32767), dtz: 1980-01-24 17:36:34.851322933 +03:12)" | "Error: Invalid value: ^a1274358298"
+  "Error: Invalid value: ^a591060406" | "Right(157151384)" | "[^qEND^q]" | "(Text: ^qn^q, bool: false, c: Blank, dtz: 1910-10-26 19:59:15.333967503 -07:40)" | "Error: Invalid value: ^aEND"
+  "Error: Invalid value: ^a-245358335" | "Error: Invalid value: ^a-306941439" | "Error: Invalid value: ^a-1456136944" | "(Text: ^qur9 0 a9na^q, bool: false, c: Blank, dtz: 2000-12-02 03:10:43 -05:48)" | "Is(Is(^qd9Zr09 r^q))"
+  "9223-05" | "Error: Invalid value: ^a1767985213" | "[^q0M^q, ^qd9 rn^q]" | "(Text: ^q✼^q, bool: false, c: Num(27484), dtz: 8472-12-07 06:26:00 +04:24)" | "Error: Invalid value: ^a1233728768"
+  "Error: Invalid value: ^a166079397" | "Right(684)" | "Error: Invalid value: ^a-1228658154" | "(Text: ^qj 9rZn0^q, bool: false, c: Blank, dtz: 1997-09-25 17:52:00 America/Danmarkshavn)" | "None"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column A: Text
+  column B: Text
+  column C: Text
+  column D: Text
+  column E: Text
+  columns A|B|C|D|E
+  types Text Text Text Text Text
+  length 11
+  "GenCol 6" | "GenCol 7" | "GenCol 8" | "GenCol 9" | "GenCol 10"
+  "1261-01" | "Error: Invalid value: ^a1652331566" | "Error: Invalid value: ^a1482666830" | "(Text: ^qR^q, bool: false, c: Num(127), dtz: 3549-05-03 17:24:00 -00:16)" | "Is(Is(^qZ^q))"
+  "1763-03" | "Left(3)" | "Error: Invalid value: ^a1600230587" | "(Text: ^q}숭^q, bool: false, c: Blank, dtz: 0757-08-09 01:32:00 America/Anchorage)" | "Is(Is(^qCONTENT^q))"
+  "1568-12" | "Left(0)" | "Error: Invalid value: ^a2007133788" | "(Text: ^q幟^q, bool: true, c: Blank, dtz: 1982-07-11 01:38:48 +06:19)" | "None"
+  "5766-05" | "Left(-128)" | "[^qBEGIN^q]" | "(Text: ^ql𢄴h^q, bool: true, c: Num(2), dtz: 2017-09-09 09:40:05.236251535 -05:37)" | "Is(None)"
+  "Error: Invalid value: ^a1063189234" | "Right(-2147483648)" | "Error: Invalid value: ^a-1976522769" | "Error: Invalid value: ^aEND" | "None"
+  "6777-10" | "Right(-2147483647)" | "[^qyZn^q, ^qu Z9anZ Z^q]" | "(Text: ^qU^q, bool: false, c: Num(32767), dtz: 1980-01-24 17:36:34.851322933 +03:12)" | "Error: Invalid value: ^a1274358298"
+  "Error: Invalid value: ^a591060406" | "Right(157151384)" | "[^qEND^q]" | "(Text: ^qn^q, bool: false, c: Blank, dtz: 1910-10-26 19:59:15.333967503 -07:40)" | "Error: Invalid value: ^aEND"
+  "Error: Invalid value: ^a-245358335" | "Error: Invalid value: ^a-306941439" | "Error: Invalid value: ^a-1456136944" | "(Text: ^qur9 0 a9na^q, bool: false, c: Blank, dtz: 2000-12-02 03:10:43 -05:48)" | "Is(Is(^qd9Zr09 r^q))"
+  "9223-05" | "Error: Invalid value: ^a1767985213" | "[^q0M^q, ^qd9 rn^q]" | "(Text: ^q✼^q, bool: false, c: Num(27484), dtz: 8472-12-07 06:26:00 +04:24)" | "Error: Invalid value: ^a1233728768"
+  "Error: Invalid value: ^a166079397" | "Right(684)" | "Error: Invalid value: ^a-1228658154" | "(Text: ^qj 9rZn0^q, bool: false, c: Blank, dtz: 1997-09-25 17:52:00 America/Danmarkshavn)" | "None"
+END EXCEL

@@ -1,0 +1,349 @@
+// Port of xyz.columnal.importers.ExcelImporter (importers module).
+//
+// PORT-NOTE: Java reads the workbook with Apache POI; here SheetJS reads it.  The cell values are
+// turned into text as POI's were (see getCellValueAsString).  Java opens the workbook as an XSSFWorkbook,
+// which only reads the Office Open XML formats (.xlsx, .xlsm): see readWorkbook.
+import * as XLSX from "xlsx";
+import type { Localized } from "../../anns/Annotations.js";
+import type { CellPosition } from "../../data/data/CellPosition.js";
+import type { DataSource } from "../../data/data/DataSource.js";
+import { ImmediateDataSource } from "../../data/data/DataSources.js";
+import type { TableManager } from "../../data/data/TableManager.js";
+import { ColumnId } from "../../identifiers/id/ColumnId.js";
+import { decimalFromDouble, Decimal } from "../../java/JavaBigDecimal.js";
+import { javaListGet } from "../../java/JavaCollections.js";
+import type { JavaFile } from "../../java/JavaFile.js";
+import { LocalDate } from "../../java/time/JavaTime.js";
+import { Pair } from "../../utility-adt/utility/adt/Pair.js";
+import type { SimulationConsumerNoError } from "../../utility-functional/utility/function/simulation/SimulationConsumerNoError.js";
+import type { SimulationSupplier } from "../../utility-functional/utility/function/simulation/SimulationSupplier.js";
+import { ErrorHandler } from "../../utility/log/ErrorHandler.js";
+import { IdentifierUtility } from "../../utility/utility/IdentifierUtility.js";
+import { TranslationUtility } from "../../utility/utility/TranslationUtility.js";
+import { Workers } from "../../utility/utility/Workers.js";
+import type { GuessFormat } from "./GuessFormat.js";
+import type { Importer } from "./Importer.js";
+import type { ImporterDialogs } from "./ImporterDialogs.js";
+import { ImporterUtility } from "./ImporterUtility.js";
+import { ImportPlainTable } from "./ImportPlainTable.js";
+
+/**
+ * The exception POI throws when asked to open a file that isn't in an Office Open XML format,
+ * such as an .xls file (org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException).
+ */
+export class NotOfficeXmlFileException extends Error
+{
+    public constructor(message: string)
+    {
+        super(message);
+        this.name = "NotOfficeXmlFileException";
+    }
+}
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+export class ExcelImporter implements Importer
+{
+    public getName(): Localized
+    {
+        return TranslationUtility.getString("importer.excel.files");
+    }
+
+    public getSupportedFileTypes(): readonly string[]
+    {
+        return ["*.xls", "*.xlsx", "*.xlsm"];
+    }
+
+    public importFile(dialogs: ImporterDialogs, mgr: TableManager, destination: CellPosition, src: JavaFile, _origin: URL, recordLoadedTable: SimulationConsumerNoError<DataSource>): void
+    {
+        let vals: string[][];
+        try
+        {
+            vals = this.readFirstSheet(src);
+        }
+        catch (e)
+        {
+            if (e instanceof ExcelImporter.InvalidFormatException)
+            {
+                // TODO report an error
+                return;
+            }
+            throw e;
+        }
+
+        const importInfo = ExcelImporter.makeImport(mgr, vals);
+
+        dialogs.showImportChoices(src.getName(), importInfo, outcome =>
+        {
+            if (outcome !== null)
+            {
+                const outcomeNonNull = outcome;
+                const makeDataSource: SimulationSupplier<DataSource> = () => new ImmediateDataSource(mgr, outcomeNonNull.getInitialLoadDetails(destination), ImporterUtility.makeEditableRecordSet(mgr.getTypeManager(), outcomeNonNull.getFormat().trim.trim(vals), outcomeNonNull.getFormat().columnInfo));
+                Workers.onWorkerThread("Loading " + src.getName(), Workers.Priority.LOAD_FROM_DISK, () => ErrorHandler.getErrorHandler().alertOnError_(TranslationUtility.getString("error.importing.excel"), () =>
+                {
+                    const dataSource = makeDataSource();
+                    recordLoadedTable(dataSource);
+                }));
+            }
+        });
+    }
+
+    /**
+     * Reads the values of the first sheet of the workbook, as text, with the value of a merged
+     * cell in each cell of the merged region.  The rows are rectangular, with blank rows removed.
+     *
+     * PORT-NOTE: split out of importFile (which then shows the import dialog), so that it can be
+     * tested without the GUI.  Throws InvalidFormatException if the file can't be read (Java:
+     * IOException or InvalidFormatException, which importFile ignores), or NotOfficeXmlFileException.
+     */
+    public readFirstSheet(src: JavaFile): string[][]
+    {
+        const workbook = ExcelImporter.readWorkbook(src.readAllBytes());
+        // TODO offer sheet list as import choice
+        const datatypeSheet = workbook.Sheets[workbook.SheetNames[0]!]!;
+        const date1904 = workbook.Workbook?.WBProps?.date1904 === true;
+
+        const vals: string[][] = [];
+        // Java: a HashMap from each cell address in a merged region to the region
+        const mergedRegions = new Map<string, XLSX.Range>();
+        for (const mergedRegion of datatypeSheet["!merges"] ?? [])
+        {
+            for (let row = mergedRegion.s.r; row <= mergedRegion.e.r; row++)
+            {
+                for (let col = mergedRegion.s.c; col <= mergedRegion.e.c; col++)
+                {
+                    mergedRegions.set(row + "," + col, mergedRegion);
+                }
+            }
+        }
+
+        // Java iterates through the rows and their cells, in order:
+        const ref = datatypeSheet["!ref"];
+        if (ref !== undefined)
+        {
+            const range = XLSX.utils.decode_range(ref);
+            for (let rowIndex = range.s.r; rowIndex <= range.e.r; rowIndex++)
+            {
+                for (let columnIndex = range.s.c; columnIndex <= range.e.c; columnIndex++)
+                {
+                    const currentCell: XLSX.CellObject | undefined = datatypeSheet[XLSX.utils.encode_cell({ r: rowIndex, c: columnIndex })];
+                    if (currentCell === undefined)
+                        continue;
+                    const val = ExcelImporter.getCellValueAsString(currentCell, date1904);
+                    // No need to set if empty, that's the default:
+                    if (val !== "")
+                    {
+                        const merged = mergedRegions.get(rowIndex + "," + columnIndex);
+                        if (merged !== undefined)
+                        {
+                            for (let row = merged.s.r; row <= merged.e.r; row++)
+                            {
+                                for (let col = merged.s.c; col <= merged.e.c; col++)
+                                {
+                                    this.setValue(vals, row, col, val);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.setValue(vals, rowIndex, columnIndex, val);
+                        }
+                    }
+                }
+            }
+        }
+
+        ImporterUtility.rectangulariseAndRemoveBlankRows(vals);
+        return vals;
+    }
+
+    /**
+     * Java: new XSSFWorkbook(src).  Like POI's, it only reads the Office Open XML formats, which are
+     * zip files: anything else (such as an .xls file) throws NotOfficeXmlFileException.
+     *
+     * PORT-NOTE: Java lets that exception through, uncaught (so nothing happens for the user); here
+     * it is thrown to importFile's caller.
+     */
+    private static readWorkbook(bytes: Uint8Array): XLSX.WorkBook
+    {
+        const isZip = bytes.length >= 4 && bytes[0] === 0x50 && bytes[1] === 0x4B && bytes[2] === 0x03 && bytes[3] === 0x04;
+        if (!isZip)
+            throw new NotOfficeXmlFileException("No valid entries or contents found, this is not a valid OOXML (Office Open XML) file");
+        try
+        {
+            return XLSX.read(bytes, { type: "array", cellNF: true, cellDates: false, cellFormula: false, dense: false });
+        }
+        catch (e)
+        {
+            throw new ExcelImporter.InvalidFormatException(e instanceof Error ? e.message : String(e));
+        }
+    }
+
+    /**
+     * The import (for the import dialog) of a sheet's values, as read by readFirstSheet.
+     * PORT-NOTE: split out of importFile, like readFirstSheet.
+     */
+    public static makeImport(mgr: TableManager, vals: readonly (readonly string[])[]): ImportPlainTable
+    {
+        const numSrcColumns = vals.length === 0 ? 0 : vals[0]!.length;
+        return new class extends ImportPlainTable
+        {
+            public override srcColumnName(index: number): Pair<ColumnId, Localized>
+            {
+                const columnId = ExcelImporter.excelColumnName(index);
+                return new Pair(columnId, columnId.getRaw());
+            }
+
+            public override destColumnName(trimChoice: GuessFormat.TrimChoice, index: number): ColumnId
+            {
+                if (trimChoice.trimFromTop > 0)
+                    return new ColumnId(IdentifierUtility.fixExpressionIdentifier(javaListGet(javaListGet(vals, trimChoice.trimFromTop - 1), index), ExcelImporter.excelColumnName(index).getRaw()));
+                else
+                    return ExcelImporter.excelColumnName(index);
+            }
+        }(numSrcColumns, mgr, vals);
+    }
+
+    protected setValue(vals: string[][], rowIndex: number, columnIndex: number, val: string): void
+    {
+        while (vals.length <= rowIndex)
+        {
+            // Can't use Collections.emptyList because this may be later
+            // modified by rectangulariseAndRemoveBlankRows
+            vals.push([]);
+        }
+        const row = vals[rowIndex]!;
+        while (row.length <= columnIndex)
+        {
+            row.push("");
+        }
+        row[columnIndex] = val;
+    }
+
+    /**
+     * PORT-NOTE: Java's naming is wrong after column Z: the column after Z (index 26) is "BA" (Excel's
+     * is "AA"), and so on.  That is kept.
+     */
+    /** @internal */
+    public static excelColumnName(columnIndex: number): ColumnId
+    {
+        const A = "A".charCodeAt(0);
+        let s = "";
+        if (columnIndex >= 26 * 26)
+        {
+            const thirdDig = Math.trunc(columnIndex / (26 * 26));
+            s += String.fromCharCode(thirdDig + A);
+            columnIndex -= thirdDig * 26 * 26;
+        }
+        if (columnIndex >= 26)
+        {
+            s += String.fromCharCode(Math.trunc(columnIndex / 26) + A);
+            columnIndex = columnIndex % 26;
+        }
+        s += String.fromCharCode(columnIndex + A);
+        return new ColumnId(s);
+    }
+
+    /**
+     * Java: getCellValueAsString(Cell, CellType), from the POI cell.  A formula cell has its cached
+     * result, which SheetJS gives as the cell's value.
+     */
+    private static getCellValueAsString(currentCell: XLSX.CellObject, date1904: boolean): string
+    {
+        switch (currentCell.t)
+        {
+            case "n":
+            {
+                const value = currentCell.v as number;
+                if (ExcelImporter.isCellDateFormatted(currentCell, value))
+                    return ExcelImporter.formatDateF(ExcelImporter.getJavaDate(value, date1904));
+                else
+                    return ExcelImporter.formatF(value);
+            }
+            case "s":
+                return String(currentCell.v ?? "");
+            case "b":
+                return (currentCell.v === true ? "true" : "false").toUpperCase();
+            case "d":
+                // Only with SheetJS's cellDates option, which is off:
+                return ExcelImporter.formatDateF(LocalDate.parse((currentCell.v as Date).toISOString().substring(0, 10)));
+            case "e":
+            case "z":
+            default:
+                return "";
+        }
+    }
+
+    // POI's DateUtil.isCellDateFormatted: a valid Excel date, in a date format
+    private static isCellDateFormatted(cell: XLSX.CellObject, value: number): boolean
+    {
+        const format = cell.z;
+        if (format === undefined || typeof format !== "string")
+            return false;
+        // DateUtil.isValidExcelDate:
+        if (!(value > -Number.MIN_VALUE))
+            return false;
+        return (XLSX.SSF as { is_date(fmt: string): boolean }).is_date(format);
+    }
+
+    // POI's DateUtil.getJavaDate: the date part (the time zone does not matter, as only the date is shown)
+    private static getJavaDate(date: number, use1904windowing: boolean): LocalDate
+    {
+        let wholeDays = Math.floor(date);
+        const millisecondsInDay = Math.trunc((date - wholeDays) * MS_PER_DAY + 0.5);
+        let startYear = 1900;
+        let dayAdjust = -1; // Excel thinks 2/29/1900 is a valid date, which it isn't
+        if (use1904windowing)
+        {
+            startYear = 1904;
+            dayAdjust = 1; // 1904 date windowing uses 1/2/1904 as the first day
+        }
+        else if (wholeDays < 61)
+        {
+            // Date is prior to 3/1/1900, so adjust because Excel thinks 2/29/1900 exists
+            // If Excel date == 2/29/1900, will become 3/1/1900 in Java representation
+            dayAdjust = 0;
+        }
+        if (millisecondsInDay >= MS_PER_DAY)
+            wholeDays += 1;
+        // Java's Calendar.set(startYear, JANUARY, wholeDays + dayAdjust): day 1 is 1 January
+        return LocalDate.of(startYear, 1, 1).plusDays(wholeDays + dayAdjust - 1);
+    }
+
+    // Java's String.format("%tF", date): yyyy-MM-dd
+    private static formatDateF(date: LocalDate): string
+    {
+        const year = date.year();
+        const yearStr = year < 0 ? "-" + String(-year).padStart(4, "0") : String(year).padStart(4, "0");
+        return yearStr + "-" + String(date.monthValue()).padStart(2, "0") + "-" + String(date.dayOfMonth()).padStart(2, "0");
+    }
+
+    /**
+     * Java's String.format("%f", d): six decimal places, rounded half up from the double's
+     * (shortest) decimal representation.
+     */
+    /** @internal */
+    public static formatF(d: number): string
+    {
+        if (Number.isNaN(d))
+            return "NaN";
+        if (!Number.isFinite(d))
+            return d > 0 ? "Infinity" : "-Infinity";
+        const s = decimalFromDouble(d).toFixed(6, Decimal.ROUND_HALF_UP);
+        // Java keeps the sign of a negative number that rounds to zero:
+        return (d < 0 || Object.is(d, -0)) && !s.startsWith("-") ? "-" + s : s;
+    }
+}
+
+export namespace ExcelImporter
+{
+    /** org.apache.poi.openxml4j.exceptions.InvalidFormatException (or an IOException reading the file) */
+    export class InvalidFormatException extends Error
+    {
+        public constructor(message: string)
+        {
+            super(message);
+            this.name = "InvalidFormatException";
+        }
+    }
+}

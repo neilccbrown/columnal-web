@@ -18,19 +18,22 @@ reviewed side by side with the Java. Refactoring comes after a module works and 
 | `parsers/src/main/antlr/X.g4` | `src/engine/parsers/antlr/X.g4` (generated output: `src/engine/parsers/generated/`, not committed) |
 | `tests-x/src/test/java/test/<path>/X.java` (`tests-basic`, `tests-functions`, `tests-tables`) | `test/engine/tests-x/<path>/X.test.ts` |
 | `tests-x/src/test/java/test/<path>/X.java` (`tests-gui-*`) | `test/gui/tests-x/<path>/X.spec.ts` |
+| `tests-x/src/test/java/test/<path>/X.java` (`tests-gui-*` that only need `src/gui-logic`) | `test/gui-logic/tests-x/<path>/X.test.ts` |
 | `tests-x/src/testFixtures/java/(test\|xyz/columnal)/<path>/X.java` | `test/(engine\|gui)/tests-x/fixtures/<path>/X.ts` |
 | Resources (`*.properties`, `builtin_units.txt`, funcdoc and help XML) | `resources/` (see [resources/ORIGIN.md](../resources/ORIGIN.md)) |
 
 - One class per file, with the file named after the class, as in Java.
-- New tests with no Java counterpart go in `test/engine/<src-module>/` (for example `test/engine/java/`).
-  Directories named `tests-*` contain only ported tests.
+- New tests with no Java counterpart go in `test/engine/<src-module>/` (for example `test/engine/java/`),
+  or `test/gui-logic/<src-module>/` for gui-logic. Directories named `tests-*` contain only ported tests.
 - `src/engine/java/` is a TypeScript-only module of Java standard library equivalents, and of the
   small third-party Java classes Columnal used (`Rational` from javaSMT, `Damerau` from
   java-string-similarity, and the logarithms of big-math's `BigDecimalMath`). Any module may use it. It contains `JavaObject` (equals/hashCode/compareTo),
   `HashMap`/`HashSet`, `TreeMap`/`TreeSet`, `JavaBigDecimal` (numbers), `JavaString`, `JavaDouble`,
   `JavaCharacter`, `JavaRandom`, `JavaCollections`, `JavaProperties`, `JavaEnum`, `JavaExceptions`,
-  `BitSet`, `DataStreams` (`DataInputStream`/`DataOutputStream` over byte arrays), and `time/` (java.time,
-  see "Dates and times" below).
+  `BitSet`, `DataStreams` (`DataInputStream`/`DataOutputStream` over byte arrays), `JavaFXBeans`
+  (`SimpleObjectProperty` and the `ObjectExpression` interface, for logic that used JavaFX properties),
+  `Jsoup` (jsoup's `text()`, `wholeText()` and charset-detecting `parse`, over `DOMParser`),
+  `StringEscapeUtils` (commons-text's `escapeHtml4`), and `time/` (java.time, see "Dates and times" below).
 - Files generated at build time are not committed: the ANTLR parsers (`src/engine/parsers/generated/`)
   and the function details (`src/engine/functions/generated/`, from the funcdoc XML by
   `scripts/gen-funcdoc.mjs`). `npm run gen` makes both, and runs on install and before dev,
@@ -44,7 +47,8 @@ reviewed side by side with the Java. Refactoring comes after a module works and 
 - Imports are relative and use the `.js` extension (`import { X } from "./X.js"`), as ES modules
   require. Type-only imports use `import type` (enforced by `verbatimModuleSyntax`).
 - Resources are imported as text with Vite's `?raw` suffix through the `@resources` alias:
-  `import units from "@resources/data/builtin_units.txt?raw"`. This works in Vite and in Vitest.
+  `import units from "@resources/data/builtin_units.txt?raw"`. This works in Vite and in Vitest, and in
+  Node scripts run with `node --import tsx --import ./scripts/cli/register-resources.mjs` (as `npm run cli` is).
 - Keep the Java formatting style (Allman braces, 4-space indent) in ported code, so that it diffs
   cleanly against the original. Keep the original comments, including `Created by neil on ...`.
 
@@ -251,6 +255,9 @@ exists, and fails. So:
   (`JavaCollections.ts`), which throws on a duplicate key as Guava does.
 - `String.getBytes(UTF_8)` is `javaUtf8Bytes` (`JavaString.ts`), and a `(int)` cast of a double is
   `javaDoubleToInt` (`JavaDouble.ts`).
+- `ZoneId.systemDefault()` is `javaSystemDefaultZone()` (`time/JavaTime.ts`), which uses the zone that
+  `Intl` reports (js-joda's own `systemDefault` is a fixed offset). `String.compareToIgnoreCase` is
+  `javaCompareToIgnoreCase` (`JavaString.ts`).
 - `List.addAll(index, items)` is `javaListAddAll` (`JavaCollections.ts`). Do not use
   `list.splice(index, 0, ...items)` where `items` can be large: the spread fails beyond about
   100,000 items.
@@ -297,6 +304,25 @@ saved files; `JavaLexer` restores Java's behaviour.
 The parsers are regenerated (in under a second) by `npm run gen:parsers`. That also runs automatically on
 install and before `dev`, `build`, `test` and `typecheck`.
 
+## GUI logic (`src/gui-logic`)
+
+- Only the logic of a GUI module's class is ported, keeping its name, structure and members; the
+  file's header says what is left to the GUI (`PORT-DEFERRED`, with the phase). A class that is all
+  logic in a JavaFX shell (`VirtualGrid`, `EditorDisplay`, `LexCompletionList`) keeps its logic and
+  drops its nodes, layout and painting.
+- What the logic needs from the GUI is a settable static hook that does nothing (or something simple)
+  until the GUI sets it: `RecogniserDocument.showErrorAlert`, `NumberColumnFormatter.measureDigitSizes`,
+  `DocWindow.show`, `EditorDisplay.openFurtherDetails`, `ExpressionLexer.getStylesheet`; or an interface
+  the GUI implements, such as `VirtualGrid.Display`. Dialogs that the engine opened (the import
+  choices, picking a table or importer) are the callback interface `ImporterDialogs`, where a cancelled
+  dialog is `null`.
+- Key handlers become methods taking Java's `KeyCode` name (`"LEFT"`, `"BACK_SPACE"`, ...) and the
+  modifiers, which return false for keys left to the GUI (see `EditorDisplay.keyPressed`). Focus comes
+  in through a method the GUI calls (`EditorDisplay.focusChanged`).
+- JavaFX `Node` arguments that are only passed on to the GUI (such as `toRightOf` for a popup) are
+  `unknown`.
+- `test/gui-logic/ModuleLoading.test.ts` loads every gui-logic module first, as the engine's does.
+
 ## Tests
 
 - Keep each Java test method's name as the test name: `test("testFoo", ...)` or
@@ -318,6 +344,15 @@ install and before `dev`, `build`, `test` and `typecheck`.
 - A test in a GUI test module that doesn't use the GUI (such as `TestFromDoc`) is ported as a
   Vitest test under `test/engine/tests-gui-x/`, and listed in `ENGINE_TESTS_IN_GUI_MODULES` in
   `scripts/port-status.ts`.
+- A GUI test that only needs the logic in `src/gui-logic` once its GUI steps are replaced (typing
+  becomes `EditorDisplay.keyTyped`, a popup's contents become what the logic would show) is ported as a
+  Vitest test under `test/gui-logic/tests-gui-x/`, and listed in `GUI_LOGIC_TESTS_IN_GUI_MODULES`; what
+  it checks of the screen (popups showing, positions) is left to the GUI phase, and its header says so.
+  The expression, type and unit editor tests share a harness in `test/gui-logic/lex-editor/`
+  (`EditorHarness.ts`: an editor's content and display, typing, completions, quick fixes).
+- A Java test that is `@Ignore`d is ported as `test.skip` (or `propertyTest.skip`), with the reason.
+  A test that fails because of a Java bug awaiting a decision is also skipped, with the bug.
+- Tests that need `DOMParser` (the HTML importer) start with `// @vitest-environment jsdom`.
 - A helper class in a test directory (one with no test methods, such as a generator) is a plain
   module, `X.ts`, not a `.test.ts` or `.spec.ts` file.
 - `java.util.Random` is `JavaRandom`, which is bit-for-bit compatible. So tests with fixed seeds generate
@@ -340,7 +375,14 @@ install and before `dev`, `build`, `test` and `typecheck`.
   again; `test/engine/data/DataGolden.test.ts` checks that the port saves them identically.
   `scripts/golden/transformations.sh` does the same with transformations, and also has Java write the
   computed contents of every table, which `test/engine/transformations/TransformationsGolden.test.ts`
-  compares with the port's.
+  compares with the port's. `scripts/golden/importers.sh` builds the original importers and exporters
+  (`build-importers-jvm.sh`, with POI, jsoup and commons-text, and stand-ins for their dialogs) and runs
+  them on inputs the port generates, for `test/engine/importers/ImportersGolden.test.ts`.
+- **Comparing whole files with Java:** `npm run cli -- <file.rec> <dir>` loads a saved file with the
+  port, recomputes it, and writes it saved again, the contents of every table, and each table exported
+  in every format; `scripts/compare-with-java.sh <file.rec>...` runs that and its Java counterpart
+  (`scripts/golden/java/CliHarness.java`) on any files, such as real-world ones, and shows the
+  differences. The script lists the known ones.
 - New TS-only tests (for code with no Java test) go in `test/engine/<module>/`.
 - GUI tests (Playwright) are ported per test method, at the level of behaviour (PLAN.md §3b).
 

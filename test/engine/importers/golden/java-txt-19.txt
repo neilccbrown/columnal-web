@@ -1,0 +1,56 @@
+FILE txt-19.txt
+guessed InitialTextFormat{charset=UTF-8, separator=',', quote='"'}
+source trim <trim, vert +6 -0 horiz +0 -1> names null
+  columns Col 1|Col 2
+  types Text Text
+  length 17
+  "Total" | "3"
+  "text" | ""
+  "true" | ""
+  "x" | ""
+  "#1" | ""
+  "NA" | ""
+  "£5" | ""
+  "€" | ""
+  "100%" | ""
+  "€" | ""
+  "a, b" | ""
+  "#1" | ""
+  "N/A" | ""
+  "cherry" | ""
+  "Banana split" | ""
+  "#1" | ""
+  "n" | ""
+dest InitialTextFormat{charset=UTF-8, separator=',', quote='"'} <trim, vert +6 -0 horiz +0 -1>
+  column NA: Text
+  columns NA
+  types Text
+  length 11
+  "£5"
+  "€"
+  "100%"
+  "€"
+  "a, b"
+  "#1"
+  "N/A"
+  "cherry"
+  "Banana split"
+  "#1"
+  "n"
+text file:
+  columns NA
+  types Text
+  length 13
+  "NA"
+  "£5"
+  ""
+  "€"
+  "100%"
+  "€"
+  "a, b"
+  "#1"
+  "N/A"
+  "cherry"
+  "Banana split"
+  "#1"
+  "n"

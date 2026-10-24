@@ -1,0 +1,46 @@
+FILE html-11.html
+TABLE 0
+names 
+row 1,234|  
+row Value [a 2] [3]|true
+row   |3.25
+row paratwo|blockafter
+row bold and italic|  
+trim whitespace true
+source trim <trim, vert +2 -0 horiz +0 -0> names [C 1, C 2]
+  columns C 1|C 2
+  types Text Text
+  length 5
+  "1,234" | "  "
+  "Value [a 2] [3]" | "true"
+  "  " | "3.25"
+  "paratwo" | "blockafter"
+  "bold and italic" | "  "
+dest <trim, vert +2 -0 horiz +0 -0>
+  column Value a 2 3: Text
+  column C 2: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=2, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns Value a 2 3|C 2
+  types Text @apply   Optional ( Number )
+  length 3
+  "" | Is(3.25)
+  "paratwo" | None
+  "bold and italic" | None
+trim whitespace false
+source trim <trim, vert +2 -0 horiz +0 -0> names [C 1, C 2]
+  columns C 1|C 2
+  types Text Text
+  length 5
+  "1,234" | "  "
+  "Value [a 2] [3]" | "true"
+  "  " | "3.25"
+  "paratwo" | "blockafter"
+  "bold and italic" | "  "
+dest <trim, vert +2 -0 horiz +0 -0>
+  column Value a 2 3: Text
+  column C 2: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=2, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns Value a 2 3|C 2
+  types Text @apply   Optional ( Number )
+  length 3
+  "  " | Is(3.25)
+  "paratwo" | None
+  "bold and italic" | INVALID   

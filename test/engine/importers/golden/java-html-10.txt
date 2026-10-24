@@ -1,0 +1,150 @@
+FILE html-10.html
+TABLE 1
+names 
+row true
+row plain
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [C 1]
+  columns C 1
+  types Text
+  length 2
+  "true"
+  "plain"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Text
+  columns C 1
+  types Text
+  length 2
+  "true"
+  "plain"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [C 1]
+  columns C 1
+  types Text
+  length 2
+  "true"
+  "plain"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Text
+  columns C 1
+  types Text
+  length 2
+  "true"
+  "plain"
+TABLE 2
+names Amount[1]|Amount[1]|Amount[1]
+row   pre  formatted |& <x>  yé|paratwo
+row 3.25|Name[1]|line\nbreak
+row 3.25|Name[1]|  
+row Value [a 2] [3]|& <x>  yé|blockafter
+row $5|2021-03-04|& <x>  yé
+row   pre  formatted |Name[1]|  
+row 12|paratwo|1,234
+trim whitespace true
+source EXCEPTION UserException: Duplicate column names found: Amount 1, Amount 1, Amount 1
+trim whitespace false
+source EXCEPTION UserException: Duplicate column names found: Amount 1, Amount 1, Amount 1
+TABLE 3
+names $5
+row xy
+row  padded  text 
+row true
+row  padded  text 
+row $5
+row Name[1]
+row a\nb
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [$5]
+  columns Col 0
+  types Text
+  length 7
+  "xy"
+  " padded  text "
+  "true"
+  " padded  text "
+  "$5"
+  "Name[1]"
+  "a^nb"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Col 0: Text
+  columns Col 0
+  types Text
+  length 7
+  "xy"
+  "padded  text"
+  "true"
+  "padded  text"
+  "$5"
+  "Name[1]"
+  "a^nb"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [$5]
+  columns Col 0
+  types Text
+  length 7
+  "xy"
+  " padded  text "
+  "true"
+  " padded  text "
+  "$5"
+  "Name[1]"
+  "a^nb"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Col 0: Text
+  columns Col 0
+  types Text
+  length 7
+  "xy"
+  " padded  text "
+  "true"
+  " padded  text "
+  "$5"
+  "Name[1]"
+  "a^nb"
+TABLE 4
+names bold and italic
+row shown
+row & <x>  yé
+row & <x>  yé
+row  padded  text 
+row Name[1]
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [bold and italic]
+  columns bold and italic
+  types Text
+  length 5
+  "shown"
+  "& <x>  yé"
+  "& <x>  yé"
+  " padded  text "
+  "Name[1]"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column bold and italic: Text
+  columns bold and italic
+  types Text
+  length 5
+  "shown"
+  "& <x>  yé"
+  "& <x>  yé"
+  "padded  text"
+  "Name[1]"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [bold and italic]
+  columns bold and italic
+  types Text
+  length 5
+  "shown"
+  "& <x>  yé"
+  "& <x>  yé"
+  " padded  text "
+  "Name[1]"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column bold and italic: Text
+  columns bold and italic
+  types Text
+  length 5
+  "shown"
+  "& <x>  yé"
+  "& <x>  yé"
+  " padded  text "
+  "Name[1]"

@@ -84,8 +84,8 @@ Tests:
 | Threading | FX thread + Simulation thread (758 `@OnThread(Simulation)`) | Single main thread with a **serial task queue** (`Workers.onWorkerThread` → time-sliced queue) | Keep the same boundaries in the API so the engine could move to a Web Worker later. |
 | Files | `java.io.File`, native dialogs, autosave | **File System Access API** (Chromium) with upload/download fallback; autosave and recent files in **OPFS/IndexedDB** | Asynchronous; kept behind a `FileService` interface. The engine stays synchronous: it reads a `JavaFile`, whose contents the GUI reads in advance (Phase 3). Charsets are the ones `TextDecoder` supports, under their Java names. |
 | Clipboard | AWT/FX clipboard | async Clipboard API | Asynchronous. Copying HTML and plain text both work. |
-| Excel | Apache POI | **SheetJS** (`xlsx`, Apache-2.0) | |
-| HTML import | jsoup | `DOMParser` | |
+| Excel | Apache POI | **SheetJS** (`xlsx`, Apache-2.0) | Decided in Phase 6: version 0.20.3, installed from SheetJS's own CDN, since the npm registry's copy is years out of date. The exporter reproduces POI's date arithmetic. |
+| HTML import | jsoup | `DOMParser` | Decided in Phase 6: the jsoup behaviour the importer relies on (`text()`, `wholeText()`, charset detection) is in `src/engine/java/Jsoup.ts`. Node tests use jsdom's `DOMParser`. |
 | R | runs the `R` executable; RDS parsing is pure Java | Pure Java RDS code is ported directly; **webR** (R compiled to WASM) runs R transformations | webR is a large download, so load it lazily. |
 | Function docs/help | XSLT 2.0 (Saxon) at build time | Node build script (XML → JSON), rendered by the app; also **extracts the doc example tests** | Avoids depending on Saxon; browsers only support XSLT 1.0. |
 | i18n | `.properties` + ResourceBundle | Load `.properties` at build time into typed lookups | Same keys and strings. |
@@ -342,7 +342,7 @@ Carried over from Phase 5:
   example parts of `TestExpressionExplanation` and `TestLoadSaveExpression`). Check each when its phase
   comes; a test that doesn't use the GUI goes in `ENGINE_TESTS_IN_GUI_MODULES` in `scripts/port-status.ts`.
 
-### Phase 6: Import/export engines and GUI logic (L6 and gui-logic)
+### Phase 6: Import/export engines and GUI logic (L6 and gui-logic) (done)
 - Port GuessFormat, TextImporter, HTMLImporter (`DOMParser`), ExcelImporter (SheetJS),
   RImporter, and the CSV, HTML, Excel and R exporters.
 - Port the non-presentational logic from the GUI modules into `src/gui-logic`:
@@ -354,12 +354,94 @@ Carried over from Phase 5:
   - logic for the grid layout model and table placement
 - Find and extract any other logic embedded in `app` while doing this.
 
-**Tests:** the non-GUI halves of the format tests, and new Vitest unit tests for each
-gui-logic module, derived from the GUI tests that exercise it.
+- Done: the whole `importers` and `exporters` modules, apart from the import dialogs.
+  - The importers show their dialogs through the callback interface `ImporterDialogs` (the import
+    choices, picking an HTML table, R tables or an importer), which the GUI implements in Phase 11.
+    `GuessFormat`'s preview GUI and `ImporterManager`'s file choosers are `PORT-DEFERRED`.
+    `ImportChoicesDialog` and `ImporterGUI` are not ported (rebuilt in Phase 11).
+  - The exporters return the file's bytes (`exportData(table): Uint8Array`) rather than writing a file.
+  - New Java equivalents in `src/engine/java/`: `JavaFXBeans`, `Jsoup`, `StringEscapeUtils`,
+    `javaSystemDefaultZone` and `javaCompareToIgnoreCase`.
+- Done: the logic of the GUI modules, in `src/gui-logic` (see "GUI logic" in CONVENTIONS.md):
+  - `stf`: the recognisers, documents, `NumberColumnFormatter` and `TableDisplayUtility`'s display
+    rules; and the grid model: `VirtualGrid`'s layout (moving overlapping tables apart), selection,
+    keyboard actions and column widths, `GridArea`, `RectangleBounds` and the cell selections.
+  - `lex-editor` and `lex-editor-completion`: the expression, type and unit lexers and savers,
+    `EditorLocationAndErrorRecorder`, `TextQuickFix`, `EditorContent` (text, caret, re-lexing, undo),
+    the key handling and completion choosing of `EditorDisplay`, and the completion list's ranking
+    and selection (`LexCompletionList`, `LexAutoCompleteWindow`, `LexAutoComplete`).
+  - `app`: `AppUtility.valueToExpression`. Table placement (`TableManager.getNextInsertPosition`) was
+    already in the engine. The rest of `app` is GUI, except its `UndoManager` (backups of saved files),
+    which goes with the file handling in Phase 9.
+  - Smaller pieces: `utility-gui`'s `Clickable`, and `table-gui`'s `EntireTableSelection`.
+- Checked against the JVM (`scripts/golden/importers.sh`, `ImportersGolden.test.ts`): the original
+  importers and exporters (with POI, jsoup and commons-text) run on text, HTML and Excel files and
+  saved files that the port generates, and the port guesses the same formats and imports, and exports,
+  the same (89 cases). Known differences: Excel date-times after 2499 (js-joda's time-zone data has no
+  daylight saving after 2499), and class names in some messages (`class X` where Java has
+  `class xyz.columnal...X`).
+- Milestone: `npm run cli -- <file.rec> <dir>` (`scripts/cli/columnal-cli.ts`) loads a saved file in
+  Node, recomputes every table and writes it saved again, the contents of every table and each table
+  exported as CSV, HTML, Excel and R. `scripts/compare-with-java.sh <file.rec>...` runs it and the
+  original engine (`scripts/golden/java/CliHarness.java`) on any files and compares everything they
+  write. On the golden saved files, everything is the same apart from the two known differences
+  listed in the script.
+- New circular imports, as in Java, checked by `test/gui-logic/ModuleLoading.test.ts`: each lexer and
+  its saver, and `LexAutoComplete` with `LexAutoCompleteWindow`.
+
+**Tests:** the non-GUI halves of the format tests (`TestFormat`, and `PropFormat` as
+`PropFormatNoGUI`), and new Vitest unit tests for each gui-logic module, derived from the GUI tests
+that exercise it: `TestNumberColumnDisplay`, `TestCellReadWrite` and `TestDocumentTextField` (in
+`test/gui-logic/stf/`), `TestVirtualGridLayout`, `TestKeyboardMovement` and `PropGridOverlap`. These GUI
+tests are ported whole, with the editor in place of the screen: all of `tests-gui-type-editor`, and
+`TestExpressionEditorSyntaxError`, `…TypeError`, `…Completion` and `TestExpressionQuickFixSyntax` from
+`tests-gui-expression-editor-further`. In all, 256 gui-logic tests and 102 importer and format tests.
 
 **Milestone:** the engine is complete and headless. A Node CLI can load a `.rec` file,
 recompute everything and export it, and the results can be compared against Java
 outputs on real-world files.
+
+Carried over from Phase 6:
+- Java bugs found in Phase 6, reported to the project owner and awaiting a decision (preserved, with
+  `PORT-NOTE`s, until then):
+  1. `Utility.countLines` counts a last line without a newline twice, so importing a text file which
+     doesn't end in a newline fails (silently).
+  2. `TextImporter.makeRecordSet` has no case for `BoolColumnType`, so a CSV file with a boolean
+     column fails to import (silently).
+  3. Importing an HTML or Excel table with two columns of the same name fails ("Duplicate column
+     names found"); the text importer renames them.
+  4. `CSVExporter` triples quotes in values instead of doubling them, so a value with a quote is
+     exported wrongly.
+  5. The CSV and HTML exporters fail on a table that contains an invalid value, instead of exporting
+     the rest.
+  6. `ExcelImporter`'s column names after Z are wrong (Z is followed by BA, and names repeat after
+     676 columns).
+  7. `.xls` files are offered for import but can't be read (an uncaught exception).
+  8. `ExcelExporter` shifts date-times by the system's time-zone offset, and dates before 1900 by a
+     day.
+  9. `GuessFormat` checks `isDigit(length - 1)` where it means the last character (minor).
+  10. Excel import formats numbers with `%f`, which loses precision beyond 6 decimal places.
+  11. The expression editor's `UndoManager` keeps the redo history after a new edit, so redo after
+      an edit restores old text.
+  12. `AppUtility.valueToExpression` wraps a tagged value of a type with type variables (such as
+      Optional) in "as type" with a list of the type, so the expression has a type error. It is used
+      when unwrapping an Optional column with a default value, so doing that to a column whose inner
+      type is such a type (for example Optional(Optional(Number))) makes a Calculate with a type error.
+  13. Expression completions offer a tag name shared by two types unqualified (although ambiguous),
+      and don't offer one shared by three types.
+  14. Test-only: `GenFormattedData` uses `&lang;`/`&rang;`, which jsoup (HTML5) and HTML4 read
+      differently.
+  `PropFormatNoGUI`'s three tests are skipped until 1 and 14 are decided (they pass with both fixed).
+- The rest of the expression editor tests, which need typing a generated expression
+  (`EnterExpressionTrait`), the clipboard or the screen, are left for Phase 10: `TestExpressionEditor`,
+  `…Delete`, `…Position`, `…Resolution`, `…Invalid` and `PropExpressionEditor`. The ported editor tests
+  also leave their screen checks (popups, underlines, positions) to Phase 10.
+- Java order, matched where it is deterministic: Concatenate's "differing types" error lists the
+  types in an order that varies between Java runs (a `HashMap` keyed by `DataType`, whose hash
+  includes an enum's identity hash); the port uses the order of the golden files.
+- Still open from Phase 4: the offers about `years between` from 29 February and the MIT notice in
+  `Damerau.ts`; `javaClassName` for anonymous classes; and checking each remaining `tests-gui-central`
+  test for engine-level parts when its phase comes.
 
 ### Phase 7: GUI foundations, grid prototype, test harness
 - **Grid prototype first.** This is the biggest GUI risk. Build a throwaway table canvas

@@ -1,0 +1,61 @@
+FILE txt-40.txt
+guessed InitialTextFormat{charset=UTF-8, separator=',', quote='null'}
+source trim <trim, vert +6 -0 horiz +0 -0> names null
+  columns Col 1|Col 2|Col 3|Col 4
+  types Text Text Text Text
+  length 18
+  "Name" | "numNA" | "mixed" | "Name"
+  "1955 Oct 9" | "121354" | "247917" | "NA"
+  "2021 Jul 21" | "-496249" | "3.5" | "216518"
+  "1970 May 7" | "-607561" | "" | "-526852"
+  "1959 Jan 17" | "-15870" | "£5" | "NA"
+  "2000 Dec 16" | "NA" | "3.5" | "-977632"
+  "1974 Dec 27" | "520060" | "" | "662892"
+  "2008 Apr 18" | "634278" | "" | "521785"
+  "1986 Feb 8" | "124321" | "-601045" | "-584983"
+  "1961 Jun 27" | "-220327" | "-863167" | "NA"
+  "2019 Jan 26" | "NA" | "it's" | "584112"
+  "1970 Jul 3" | "-29245" | "2020-01-01" | "-652705"
+  "1973 Aug 20" | "NA" | "3.5" | "-278418"
+  "1952 Jun 1" | "-200940" | "2020-01-01" | "33452"
+  "2025 Mar 26" | "-656374" | "" | "-211054"
+  "1991 Oct 3" | "-120578" | "" | "-134588"
+  "1952 Nov 8" | "-700802" | "東京" | "70072"
+  "1988 May 22" | "104980" | "2020-01-01" | "NA"
+dest InitialTextFormat{charset=UTF-8, separator=',', quote='null'} <trim, vert +6 -0 horiz +0 -0>
+  column C2000 Dec 16: CleanDate #4 YEARMONTHDAY true
+  column NA: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column C35: Text
+  column N977632: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns C2000 Dec 16|NA|C35|N977632
+  types Date @apply   Optional ( Number ) Text @apply   Optional ( Number )
+  length 12
+  1974-12-27 | Is(520060) | "" | Is(662892)
+  2008-04-18 | Is(634278) | "" | Is(521785)
+  1986-02-08 | Is(124321) | "-601045" | Is(-584983)
+  1961-06-27 | Is(-220327) | "-863167" | None
+  2019-01-26 | None | "it's" | Is(584112)
+  1970-07-03 | Is(-29245) | "2020-01-01" | Is(-652705)
+  1973-08-20 | None | "3.5" | Is(-278418)
+  1952-06-01 | Is(-200940) | "2020-01-01" | Is(33452)
+  2025-03-26 | Is(-656374) | "" | Is(-211054)
+  1991-10-03 | Is(-120578) | "" | Is(-134588)
+  1952-11-08 | Is(-700802) | "東京" | Is(70072)
+  1988-05-22 | Is(104980) | "2020-01-01" | None
+text file:
+  columns C2000 Dec 16|NA|C35|N977632
+  types Date @apply   Optional ( Number ) Text @apply   Optional ( Number )
+  length 13
+  1974-12-27 | Is(520060) | "" | Is(662892)
+  2008-04-18 | Is(634278) | "" | Is(521785)
+  1986-02-08 | Is(124321) | "-601045" | Is(-584983)
+  1961-06-27 | Is(-220327) | "-863167" | None
+  INVALID  | INVALID  | "" | INVALID 
+  2019-01-26 | None | "it's" | Is(584112)
+  1970-07-03 | Is(-29245) | "2020-01-01" | Is(-652705)
+  1973-08-20 | None | "3.5" | Is(-278418)
+  1952-06-01 | Is(-200940) | "2020-01-01" | Is(33452)
+  2025-03-26 | Is(-656374) | "" | Is(-211054)
+  1991-10-03 | Is(-120578) | "" | Is(-134588)
+  1952-11-08 | Is(-700802) | "東京" | Is(70072)
+  1988-05-22 | Is(104980) | "2020-01-01" | None

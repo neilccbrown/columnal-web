@@ -1,0 +1,48 @@
+FILE html-07.html
+TABLE 0
+names Amount[1]|Price ($)|Name
+row Name[1]|  pre  formatted |$5|
+row $5|xy|Name[1]|12
+row -7| padded  text |bold and italic|
+row true|plain|$5|
+row 12||blockafter|
+trim whitespace true
+source trim <trim, vert +2 -0 horiz +0 -1> names [Amount[1], Price ($), Name, C 4]
+  columns Amount 1|Price|Name|C 4
+  types Text Text Text Text
+  length 5
+  "Name[1]" | "  pre  formatted " | "$5" | ""
+  "$5" | "xy" | "Name[1]" | "12"
+  "-7" | " padded  text " | "bold and italic" | ""
+  "true" | "plain" | "$5" | ""
+  "12" | "" | "blockafter" | ""
+dest <trim, vert +2 -0 horiz +0 -1>
+  column Amount 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Price: Text
+  column Name: Text
+  columns Amount 1|Price|Name
+  types @apply   Optional ( Number ) Text Text
+  length 3
+  Is(-7) | "padded  text" | "bold and italic"
+  None | "plain" | "$5"
+  Is(12) | "" | "blockafter"
+trim whitespace false
+source trim <trim, vert +2 -0 horiz +0 -1> names [Amount[1], Price ($), Name, C 4]
+  columns Amount 1|Price|Name|C 4
+  types Text Text Text Text
+  length 5
+  "Name[1]" | "  pre  formatted " | "$5" | ""
+  "$5" | "xy" | "Name[1]" | "12"
+  "-7" | " padded  text " | "bold and italic" | ""
+  "true" | "plain" | "$5" | ""
+  "12" | "" | "blockafter" | ""
+dest <trim, vert +2 -0 horiz +0 -1>
+  column Amount 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Price: Text
+  column Name: Text
+  columns Amount 1|Price|Name
+  types @apply   Optional ( Number ) Text Text
+  length 3
+  Is(-7) | " padded  text " | "bold and italic"
+  None | "plain" | "$5"
+  Is(12) | "" | "blockafter"

@@ -1,0 +1,175 @@
+FILE html-12-wiki.html
+TABLE 1
+names Name|
+row |bold and italic|
+row   pre  formatted |plain|
+row -7|2021-03-04|
+row -7|2021-03-04|blockafter
+row -7|12|true
+row line\nbreak|-7|
+row -7|xy|
+row blockafter|bold and italic|
+row bold and italic||
+row -7|  pre  formatted |
+trim whitespace true
+source trim <trim, vert +5 -0 horiz +0 -1> names [Name, , C 3]
+  columns Name|Col 1|C 3
+  types Text Text Text
+  length 10
+  "" | "bold and italic" | ""
+  "  pre  formatted " | "plain" | ""
+  "-7" | "2021-03-04" | ""
+  "-7" | "2021-03-04" | "blockafter"
+  "-7" | "12" | "true"
+  "line^nbreak" | "-7" | ""
+  "-7" | "xy" | ""
+  "blockafter" | "bold and italic" | ""
+  "bold and italic" | "" | ""
+  "-7" | "  pre  formatted " | ""
+dest <trim, vert +5 -0 horiz +0 -1>
+  column Name: Text
+  column Col 1: Text
+  columns Name|Col 1
+  types Text Text
+  length 5
+  "line^nbreak" | "-7"
+  "-7" | "xy"
+  "blockafter" | "bold and italic"
+  "bold and italic" | ""
+  "-7" | "pre  formatted"
+trim whitespace false
+source trim <trim, vert +5 -0 horiz +0 -1> names [Name, , C 3]
+  columns Name|Col 1|C 3
+  types Text Text Text
+  length 10
+  "" | "bold and italic" | ""
+  "  pre  formatted " | "plain" | ""
+  "-7" | "2021-03-04" | ""
+  "-7" | "2021-03-04" | "blockafter"
+  "-7" | "12" | "true"
+  "line^nbreak" | "-7" | ""
+  "-7" | "xy" | ""
+  "blockafter" | "bold and italic" | ""
+  "bold and italic" | "" | ""
+  "-7" | "  pre  formatted " | ""
+dest <trim, vert +5 -0 horiz +0 -1>
+  column Name: Text
+  column Col 1: Text
+  columns Name|Col 1
+  types Text Text
+  length 5
+  "line^nbreak" | "-7"
+  "-7" | "xy"
+  "blockafter" | "bold and italic"
+  "bold and italic" | ""
+  "-7" | "  pre  formatted "
+TABLE 2
+names Price ($)||Name|Col 3
+row 3.25|a\nb|xy|xy|
+row 1,234||3.25|bold and italic|
+row |paratwo|paratwo|Value [a 2] [3]|-7
+row blockafter| padded  text |paratwo|paratwo|
+row block after|  |-7|xy|-7
+row block after|12|shown|12|Name[1]
+row 1,234|  |true|a\nb|
+trim whitespace true
+source trim <trim, vert +3 -0 horiz +0 -0> names [Price ($), , Name, Col 3, C 5]
+  columns Price|Col 1|Name|Col 3|C 5
+  types Text Text Text Text Text
+  length 7
+  "3.25" | "a^nb" | "xy" | "xy" | ""
+  "1,234" | "" | "3.25" | "bold and italic" | ""
+  "" | "paratwo" | "paratwo" | "Value [a 2] [3]" | "-7"
+  "blockafter" | " padded  text " | "paratwo" | "paratwo" | ""
+  "block after" | "  " | "-7" | "xy" | "-7"
+  "block after" | "12" | "shown" | "12" | "Name[1]"
+  "1,234" | "  " | "true" | "a^nb" | ""
+dest <trim, vert +3 -0 horiz +0 -0>
+  column Price: Text
+  column Col 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Name: Text
+  column Col 3: Text
+  column C 5: Text
+  columns Price|Col 1|Name|Col 3|C 5
+  types Text @apply   Optional ( Number ) Text Text Text
+  length 4
+  "blockafter" | None | "paratwo" | "paratwo" | ""
+  "block after" | None | "-7" | "xy" | "-7"
+  "block after" | Is(12) | "shown" | "12" | "Name"
+  "1,234" | None | "true" | "a^nb" | ""
+trim whitespace false
+source trim <trim, vert +3 -0 horiz +0 -0> names [Price ($), , Name, Col 3, C 5]
+  columns Price|Col 1|Name|Col 3|C 5
+  types Text Text Text Text Text
+  length 7
+  "3.25" | "a^nb" | "xy" | "xy" | ""
+  "1,234" | "" | "3.25" | "bold and italic" | ""
+  "" | "paratwo" | "paratwo" | "Value [a 2] [3]" | "-7"
+  "blockafter" | " padded  text " | "paratwo" | "paratwo" | ""
+  "block after" | "  " | "-7" | "xy" | "-7"
+  "block after" | "12" | "shown" | "12" | "Name[1]"
+  "1,234" | "  " | "true" | "a^nb" | ""
+dest <trim, vert +3 -0 horiz +0 -0>
+  column Price: Text
+  column Col 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Name: Text
+  column Col 3: Text
+  column C 5: Text
+  columns Price|Col 1|Name|Col 3|C 5
+  types Text @apply   Optional ( Number ) Text Text Text
+  length 4
+  "blockafter" | None | "paratwo" | "paratwo" | ""
+  "block after" | INVALID    | "-7" | "xy" | "-7"
+  "block after" | Is(12) | "shown" | "12" | "Name"
+  "1,234" | INVALID    | "true" | "a^nb" | ""
+TABLE 3
+names Col 0
+row   pre  formatted 
+row   pre  formatted 
+row line\nbreak
+row $5
+row blockafter
+row Name[1]
+row & <x>  yé
+trim whitespace true
+source trim <trim, vert +3 -0 horiz +0 -0> names [Col 0]
+  columns Col 0
+  types Text
+  length 7
+  "  pre  formatted "
+  "  pre  formatted "
+  "line^nbreak"
+  "$5"
+  "blockafter"
+  "Name[1]"
+  "& <x>  yé"
+dest <trim, vert +3 -0 horiz +0 -0>
+  column Col 0: Text
+  columns Col 0
+  types Text
+  length 4
+  "$5"
+  "blockafter"
+  "Name"
+  "& <x>  yé"
+trim whitespace false
+source trim <trim, vert +3 -0 horiz +0 -0> names [Col 0]
+  columns Col 0
+  types Text
+  length 7
+  "  pre  formatted "
+  "  pre  formatted "
+  "line^nbreak"
+  "$5"
+  "blockafter"
+  "Name[1]"
+  "& <x>  yé"
+dest <trim, vert +3 -0 horiz +0 -0>
+  column Col 0: Text
+  columns Col 0
+  types Text
+  length 4
+  "$5"
+  "blockafter"
+  "Name"
+  "& <x>  yé"

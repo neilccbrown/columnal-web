@@ -1,0 +1,33 @@
+FILE html-03.html
+TABLE 0
+names 
+row 1,234
+row -7
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [C 1]
+  columns C 1
+  types Text
+  length 2
+  "1,234"
+  "-7"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns C 1
+  types Number
+  length 2
+  1234
+  -7
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [C 1]
+  columns C 1
+  types Text
+  length 2
+  "1,234"
+  "-7"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns C 1
+  types Number
+  length 2
+  1234
+  -7

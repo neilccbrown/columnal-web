@@ -1,0 +1,26 @@
+FILE txt-31.txt
+guessed InitialTextFormat{charset=UTF-8, separator=' ', quote='null'}
+source trim <trim, vert +1 -0 horiz +0 -1> names null
+  columns Col 1|Col 2
+  types Text Text
+  length 7
+  "Col" | "0"
+  "no" | ""
+  "no" | ""
+  "no" | ""
+  "yes" | ""
+  "no" | ""
+  "no" | ""
+dest InitialTextFormat{charset=UTF-8, separator=' ', quote='null'} <trim, vert +1 -0 horiz +0 -1>
+  column Col: Boolean[yes]
+  columns Col
+  types Boolean
+  length 6
+  false
+  false
+  false
+  true
+  false
+  false
+text file:
+EXCEPTION InternalException: Unhandled column type: class xyz.columnal.data.columntype.BoolColumnType

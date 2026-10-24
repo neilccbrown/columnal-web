@@ -1,0 +1,58 @@
+FILE html-08-wiki.html
+TABLE 1
+names Name|Price ($)|Price ($)|Price ($)|Name
+row 3.25|12|1,234|Name[1]|  |||
+row shown|blockafter|12|plain|bold and italic|||
+row 3.25|line\nbreak|Value [a 2] [3]|Name[1]|1,234|||
+row line break|blockafter|xy| padded  text ||Name[1]||
+row line break|block after|block after|  |Value [a 2] [3]|12|a\nb|$5
+row a\nb|bold and italic|12|2021-03-04|line\nbreak|||
+row shown|true|Name[1]|$5|Value [a 2] [3]|||
+row $5|paratwo|blockafter|true|paratwo|12||
+row $5|12|plain|$5|Name[1]|shown|shown|
+trim whitespace true
+source EXCEPTION UserException: Duplicate column names found: Name, Price, Price, Price, Name, C 6, C 7, C 8
+trim whitespace false
+source EXCEPTION UserException: Duplicate column names found: Name, Price, Price, Price, Name, C 6, C 7, C 8
+TABLE 3
+names Amount[1]|Amount[1]||Col 3|Price ($)
+row a\nb|paratwo|shown| padded  text |  ||
+row true|line\nbreak|  |-7|$5||
+row $5|blockafter|1,234||$5||
+row $5|-7|1,234|Value [a 2] [3]|Name[1]|-7|
+row $5|-7|12|blockafter|$5|a\nb|  pre  formatted 
+row   |line\nbreak||a\nb|xy||
+row 12|||  pre  formatted |blockafter||
+row pre  formatted|blockafter|1,234|Name[1]|  pre  formatted |xy|
+row   |plain||1,234|& <x>  yé||
+trim whitespace true
+source EXCEPTION UserException: Duplicate column names found: Amount 1, Amount 1, Col 2, Col 3, Price, C 6, C 7
+trim whitespace false
+source EXCEPTION UserException: Duplicate column names found: Amount 1, Amount 1, Col 2, Col 3, Price, C 6, C 7
+TABLE 5
+names Name|Amount[1]|Col 2|Amount[1]
+row Name[1]|12|$5|blockafter|
+row   |paratwo||  |
+row 2021-03-04|paratwo|12|bold and italic|
+row 2021-03-04|3.25|shown|bold and italic|2021-03-04
+row 2021-03-04|  pre  formatted |xy|bold and italic|
+row 2021-03-04|blockafter|  pre  formatted |true|& <x>  yé
+trim whitespace true
+source EXCEPTION UserException: Duplicate column names found: Name, Amount 1, Col 2, Amount 1, C 5
+trim whitespace false
+source EXCEPTION UserException: Duplicate column names found: Name, Amount 1, Col 2, Amount 1, C 5
+TABLE 6
+names Name|Name|Amount[1]
+row blockafter|blockafter|  pre  formatted |
+row shown|2021-03-04|$5|
+row bold and italic|2021-03-04|1,234|
+row 1,234|2021-03-04|-7|2021-03-04
+row bold and italic|  pre  formatted |true|
+row xy|xy|plain|
+row |a\nb||
+row Value [a 2] [3]|2021-03-04|xy|
+row line\nbreak| padded  text |a\nb|
+trim whitespace true
+source EXCEPTION UserException: Duplicate column names found: Name, Name, Amount 1, C 4
+trim whitespace false
+source EXCEPTION UserException: Duplicate column names found: Name, Name, Amount 1, C 4

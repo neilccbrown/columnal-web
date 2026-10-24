@@ -1,0 +1,41 @@
+FILE txt-23.txt
+guessed InitialTextFormat{charset=UTF-8, separator=' ', quote='"'}
+source trim <trim, vert +7 -0 horiz +0 -0> names null
+  columns Col 1|Col 2|Col 3|Col 4
+  types Text Text Text Text
+  length 16
+  "Col 0" | "1st" | "Name" | "1st"
+  "2020-01-01" | "N" | "8:30:43" | "-81219"
+  "" | "Y" | "1:03:40" | ""
+  "" | "Y" | "19:52:44" | "-874095"
+  "848275" | "Y" | "9:38:21" | "-107105"
+  "2020-01-01" | "Y" | "13:06:14" | "-444162"
+  "cherry" | "N" | "14:35:56" | "-353054"
+  "" | "Y" | "4:30:13" | "606516"
+  "-" | "Y" | "11:06:18" | "-697470"
+  "" | "N" | "8:19:57" | "856427"
+  "2020-01-01" | "N" | "5:46:50" | "-124090"
+  "-142409" | "Y" | "5:46:22" | "-250753"
+  "3.5" | "Y" | "0:08:37" | "363025"
+  "n" | "N" | "22:35:31" | ""
+  "3.5" | "Y" | "14:40:14" | "683744"
+  "877870" | "Y" | "5:28:47" | "-747421"
+dest InitialTextFormat{charset=UTF-8, separator=' ', quote='"'} <trim, vert +7 -0 horiz +0 -0>
+  column cherry: Text
+  column N: Boolean[y]
+  column C143556: CleanDate #0 TIMEOFDAY false
+  column N353054: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns cherry|N|C143556|N353054
+  types Text Boolean Time @apply   Optional ( Number )
+  length 9
+  "" | true | 04:30:13 | Is(606516)
+  "-" | true | 11:06:18 | Is(-697470)
+  "" | false | 08:19:57 | Is(856427)
+  "2020-01-01" | false | 05:46:50 | Is(-124090)
+  "-142409" | true | 05:46:22 | Is(-250753)
+  "3.5" | true | 00:08:37 | Is(363025)
+  "n" | false | 22:35:31 | None
+  "3.5" | true | 14:40:14 | Is(683744)
+  "877870" | true | 05:28:47 | Is(-747421)
+text file:
+EXCEPTION InternalException: Unhandled column type: class xyz.columnal.data.columntype.BoolColumnType

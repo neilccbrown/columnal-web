@@ -23,8 +23,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ functions | 65 / 65 | 5719 / 5719 (100%) |
 | ✅ r-interop | 13 / 13 | 3275 / 3275 (100%) |
 | ✅ transformations | 18 / 18 | 5749 / 5749 (100%) |
-| importers | 0 / 16 | 0 / 4433 (0%) |
-| exporters | 0 / 6 | 0 / 724 (0%) |
+| ✅ importers | 16 / 16 | 4433 / 4433 (100%) |
+| ✅ exporters | 6 / 6 | 724 / 724 (100%) |
 
 <details><summary>grammars (parsers/*.g4)</summary>
 
@@ -460,22 +460,22 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `importers/src/main/java/xyz/columnal/importers/ChoiceDetails.java` | `src/engine/importers/importers/ChoiceDetails.ts` | 70 | – |
-| `importers/src/main/java/xyz/columnal/importers/ClipboardUtils.java` | `src/engine/importers/importers/ClipboardUtils.ts` | 259 | – |
-| `importers/src/main/java/xyz/columnal/importers/ColumnInfo.java` | `src/engine/importers/importers/ColumnInfo.ts` | 70 | – |
-| `importers/src/main/java/xyz/columnal/importers/DateFormat.java` | `src/engine/importers/importers/DateFormat.ts` | 47 | – |
-| `importers/src/main/java/xyz/columnal/importers/ExcelImporter.java` | `src/engine/importers/importers/ExcelImporter.ts` | 245 | – |
-| `importers/src/main/java/xyz/columnal/importers/Format.java` | `src/engine/importers/importers/Format.ts` | 80 | – |
-| `importers/src/main/java/xyz/columnal/importers/GuessFormat.java` | `src/engine/importers/importers/GuessFormat.ts` | 1080 | – |
-| `importers/src/main/java/xyz/columnal/importers/HTMLImporter.java` | `src/engine/importers/importers/HTMLImporter.ts` | 512 | – |
-| `importers/src/main/java/xyz/columnal/importers/ImportPlainTable.java` | `src/engine/importers/importers/ImportPlainTable.ts` | 117 | – |
-| `importers/src/main/java/xyz/columnal/importers/Importer.java` | `src/engine/importers/importers/Importer.ts` | 64 | – |
-| `importers/src/main/java/xyz/columnal/importers/ImporterUtility.java` | `src/engine/importers/importers/ImporterUtility.ts` | 164 | – |
-| `importers/src/main/java/xyz/columnal/importers/RImporter.java` | `src/engine/importers/importers/RImporter.ts` | 156 | – |
-| `importers/src/main/java/xyz/columnal/importers/TextImporter.java` | `src/engine/importers/importers/TextImporter.ts` | 305 | – |
-| `importers/src/main/java/xyz/columnal/importers/gui/ImportChoicesDialog.java` | `src/engine/importers/importers/gui/ImportChoicesDialog.ts` | 740 | – |
-| `importers/src/main/java/xyz/columnal/importers/gui/ImporterGUI.java` | `src/engine/importers/importers/gui/ImporterGUI.ts` | 184 | – |
-| `importers/src/main/java/xyz/columnal/importers/manager/ImporterManager.java` | `src/engine/importers/importers/manager/ImporterManager.ts` | 340 | – |
+| `importers/src/main/java/xyz/columnal/importers/ChoiceDetails.java` | `src/engine/importers/importers/ChoiceDetails.ts` | 70 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/ClipboardUtils.java` | `src/engine/importers/importers/ClipboardUtils.ts` | 259 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/ColumnInfo.java` | `src/engine/importers/importers/ColumnInfo.ts` | 70 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/DateFormat.java` | `src/engine/importers/importers/DateFormat.ts` | 47 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/ExcelImporter.java` | `src/engine/importers/importers/ExcelImporter.ts` | 245 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/Format.java` | `src/engine/importers/importers/Format.ts` | 80 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/GuessFormat.java` | `src/engine/importers/importers/GuessFormat.ts` | 1080 | ✅ (parts deferred) |
+| `importers/src/main/java/xyz/columnal/importers/HTMLImporter.java` | `src/engine/importers/importers/HTMLImporter.ts` | 512 | ✅ (parts deferred) |
+| `importers/src/main/java/xyz/columnal/importers/ImportPlainTable.java` | `src/engine/importers/importers/ImportPlainTable.ts` | 117 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/Importer.java` | `src/engine/importers/importers/Importer.ts` | 64 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/ImporterUtility.java` | `src/engine/importers/importers/ImporterUtility.ts` | 164 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/RImporter.java` | `src/engine/importers/importers/RImporter.ts` | 156 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/TextImporter.java` | `src/engine/importers/importers/TextImporter.ts` | 305 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/gui/ImportChoicesDialog.java` | `src/engine/importers/importers/gui/ImportChoicesDialog.ts` | 740 | skipped: the import dialog, rebuilt in the GUI (Phase 11); the importers show it through ImporterDialogs |
+| `importers/src/main/java/xyz/columnal/importers/gui/ImporterGUI.java` | `src/engine/importers/importers/gui/ImporterGUI.ts` | 184 | skipped: the import dialog's choice rows, rebuilt in the GUI (Phase 11) |
+| `importers/src/main/java/xyz/columnal/importers/manager/ImporterManager.java` | `src/engine/importers/importers/manager/ImporterManager.ts` | 340 | ✅ (parts deferred) |
 
 </details>
 
@@ -483,12 +483,12 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `exporters/src/main/java/xyz/columnal/exporters/CSVExporter.java` | `src/engine/exporters/exporters/CSVExporter.ts` | 97 | – |
-| `exporters/src/main/java/xyz/columnal/exporters/ExcelExporter.java` | `src/engine/exporters/exporters/ExcelExporter.ts` | 251 | – |
-| `exporters/src/main/java/xyz/columnal/exporters/Exporter.java` | `src/engine/exporters/exporters/Exporter.ts` | 52 | – |
-| `exporters/src/main/java/xyz/columnal/exporters/HTMLExporter.java` | `src/engine/exporters/exporters/HTMLExporter.ts` | 101 | – |
-| `exporters/src/main/java/xyz/columnal/exporters/RExporter.java` | `src/engine/exporters/exporters/RExporter.ts` | 63 | – |
-| `exporters/src/main/java/xyz/columnal/exporters/manager/ExporterManager.java` | `src/engine/exporters/exporters/manager/ExporterManager.ts` | 160 | – |
+| `exporters/src/main/java/xyz/columnal/exporters/CSVExporter.java` | `src/engine/exporters/exporters/CSVExporter.ts` | 97 | ✅ |
+| `exporters/src/main/java/xyz/columnal/exporters/ExcelExporter.java` | `src/engine/exporters/exporters/ExcelExporter.ts` | 251 | ✅ |
+| `exporters/src/main/java/xyz/columnal/exporters/Exporter.java` | `src/engine/exporters/exporters/Exporter.ts` | 52 | ✅ |
+| `exporters/src/main/java/xyz/columnal/exporters/HTMLExporter.java` | `src/engine/exporters/exporters/HTMLExporter.ts` | 101 | ✅ |
+| `exporters/src/main/java/xyz/columnal/exporters/RExporter.java` | `src/engine/exporters/exporters/RExporter.ts` | 63 | ✅ |
+| `exporters/src/main/java/xyz/columnal/exporters/manager/ExporterManager.java` | `src/engine/exporters/exporters/manager/ExporterManager.ts` | 160 | ✅ (parts deferred) |
 
 </details>
 
@@ -496,13 +496,13 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Module | Files | Lines |
 |---|---|---|
-| utility-gui | 0 / 32 | 0 / 6658 (0%) |
-| lex-editor-completion | 0 / 7 | 0 / 1392 (0%) |
-| stf | 0 / 42 | 0 / 9337 (0%) |
-| lex-editor | 0 / 21 | 0 / 8146 (0%) |
-| table-gui | 0 / 7 | 0 / 2794 (0%) |
+| utility-gui | 1 / 32 | 137 / 6658 (2%) |
+| ✅ lex-editor-completion | 7 / 7 | 1392 / 1392 (100%) |
+| stf | 24 / 42 | 6124 / 9337 (66%) |
+| lex-editor | 18 / 21 | 7958 / 8146 (98%) |
+| table-gui | 1 / 7 | 159 / 2794 (6%) |
 | dialogs-non-expression | 0 / 7 | 0 / 1411 (0%) |
-| app | 0 / 42 | 0 / 13439 (0%) |
+| app | 1 / 42 | 163 / 13439 (1%) |
 
 <details><summary>utility-gui</summary>
 
@@ -510,7 +510,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | `utility-gui/src/main/java/xyz/columnal/gui/guidance/GuidanceWindow.java` | `src/gui-logic/utility-gui/gui/guidance/GuidanceWindow.ts` | 393 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/AlignedLabels.java` | `src/gui-logic/utility-gui/utility/gui/AlignedLabels.ts` | 103 | – |
-| `utility-gui/src/main/java/xyz/columnal/utility/gui/Clickable.java` | `src/gui-logic/utility-gui/utility/gui/Clickable.ts` | 137 | – |
+| `utility-gui/src/main/java/xyz/columnal/utility/gui/Clickable.java` | `src/gui-logic/utility-gui/utility/gui/Clickable.ts` | 137 | ✅ |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/DialogPaneWithSideButtons.java` | `src/gui-logic/utility-gui/utility/gui/DialogPaneWithSideButtons.ts` | 180 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/DimmableParent.java` | `src/gui-logic/utility-gui/utility/gui/DimmableParent.ts` | 61 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/DoubleOKLightDialog.java` | `src/gui-logic/utility-gui/utility/gui/DoubleOKLightDialog.ts` | 124 | – |
@@ -547,13 +547,13 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/InsertListener.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/InsertListener.ts` | 36 | – |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoComplete.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoComplete.ts` | 150 | – |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoCompleteWindow.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoCompleteWindow.ts` | 221 | – |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletion.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletion.ts` | 202 | – |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionGroup.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionGroup.ts` | 60 | – |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionList.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionList.ts` | 693 | – |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionListener.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionListener.ts` | 30 | – |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/InsertListener.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/InsertListener.ts` | 36 | ✅ |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoComplete.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoComplete.ts` | 150 | ✅ |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoCompleteWindow.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoCompleteWindow.ts` | 221 | ✅ (parts deferred) |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletion.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletion.ts` | 202 | ✅ |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionGroup.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionGroup.ts` | 60 | ✅ |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionList.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionList.ts` | 693 | ✅ (parts deferred) |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionListener.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionListener.ts` | 30 | ✅ |
 
 </details>
 
@@ -561,30 +561,30 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `stf/src/main/java/xyz/columnal/gui/dtf/CaretPositionMapper.java` | `src/gui-logic/stf/gui/dtf/CaretPositionMapper.ts` | 28 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/DisplayDocument.java` | `src/gui-logic/stf/gui/dtf/DisplayDocument.ts` | 124 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/Document.java` | `src/gui-logic/stf/gui/dtf/Document.ts` | 150 | – |
+| `stf/src/main/java/xyz/columnal/gui/dtf/CaretPositionMapper.java` | `src/gui-logic/stf/gui/dtf/CaretPositionMapper.ts` | 28 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/DisplayDocument.java` | `src/gui-logic/stf/gui/dtf/DisplayDocument.ts` | 124 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/Document.java` | `src/gui-logic/stf/gui/dtf/Document.ts` | 150 | ✅ |
 | `stf/src/main/java/xyz/columnal/gui/dtf/DocumentTextField.java` | `src/gui-logic/stf/gui/dtf/DocumentTextField.ts` | 681 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/NumberColumnFormatter.java` | `src/gui-logic/stf/gui/dtf/NumberColumnFormatter.ts` | 545 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/ReadOnlyDocument.java` | `src/gui-logic/stf/gui/dtf/ReadOnlyDocument.ts` | 109 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/Recogniser.java` | `src/gui-logic/stf/gui/dtf/Recogniser.ts` | 128 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/RecogniserDocument.java` | `src/gui-logic/stf/gui/dtf/RecogniserDocument.ts` | 267 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/TableDisplayUtility.java` | `src/gui-logic/stf/gui/dtf/TableDisplayUtility.ts` | 719 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/BooleanRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/BooleanRecogniser.ts` | 46 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/ListRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/ListRecogniser.ts` | 101 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/NumberRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/NumberRecogniser.ts` | 98 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/RecordRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/RecordRecogniser.ts` | 135 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/StringRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/StringRecogniser.ts` | 66 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/TaggedRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/TaggedRecogniser.ts` | 92 | – |
-| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/TemporalRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/TemporalRecogniser.ts` | 72 | – |
-| `stf/src/main/java/xyz/columnal/gui/grid/CellSelection.java` | `src/gui-logic/stf/gui/grid/CellSelection.ts` | 97 | – |
-| `stf/src/main/java/xyz/columnal/gui/grid/GridArea.java` | `src/gui-logic/stf/gui/grid/GridArea.ts` | 167 | – |
-| `stf/src/main/java/xyz/columnal/gui/grid/GridAreaCellPosition.java` | `src/gui-logic/stf/gui/grid/GridAreaCellPosition.ts` | 112 | – |
-| `stf/src/main/java/xyz/columnal/gui/grid/GridWithColumnWidths.java` | `src/gui-logic/stf/gui/grid/GridWithColumnWidths.ts` | 45 | – |
-| `stf/src/main/java/xyz/columnal/gui/grid/RectangleBounds.java` | `src/gui-logic/stf/gui/grid/RectangleBounds.ts` | 115 | – |
+| `stf/src/main/java/xyz/columnal/gui/dtf/NumberColumnFormatter.java` | `src/gui-logic/stf/gui/dtf/NumberColumnFormatter.ts` | 545 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/ReadOnlyDocument.java` | `src/gui-logic/stf/gui/dtf/ReadOnlyDocument.ts` | 109 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/Recogniser.java` | `src/gui-logic/stf/gui/dtf/Recogniser.ts` | 128 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/RecogniserDocument.java` | `src/gui-logic/stf/gui/dtf/RecogniserDocument.ts` | 267 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/TableDisplayUtility.java` | `src/gui-logic/stf/gui/dtf/TableDisplayUtility.ts` | 719 | ✅ (parts deferred) |
+| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/BooleanRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/BooleanRecogniser.ts` | 46 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/ListRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/ListRecogniser.ts` | 101 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/NumberRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/NumberRecogniser.ts` | 98 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/RecordRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/RecordRecogniser.ts` | 135 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/StringRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/StringRecogniser.ts` | 66 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/TaggedRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/TaggedRecogniser.ts` | 92 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/dtf/recognisers/TemporalRecogniser.java` | `src/gui-logic/stf/gui/dtf/recognisers/TemporalRecogniser.ts` | 72 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/grid/CellSelection.java` | `src/gui-logic/stf/gui/grid/CellSelection.ts` | 97 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/grid/GridArea.java` | `src/gui-logic/stf/gui/grid/GridArea.ts` | 167 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/grid/GridAreaCellPosition.java` | `src/gui-logic/stf/gui/grid/GridAreaCellPosition.ts` | 112 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/grid/GridWithColumnWidths.java` | `src/gui-logic/stf/gui/grid/GridWithColumnWidths.ts` | 45 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/grid/RectangleBounds.java` | `src/gui-logic/stf/gui/grid/RectangleBounds.ts` | 115 | ✅ |
 | `stf/src/main/java/xyz/columnal/gui/grid/RectangleOverlayItem.java` | `src/gui-logic/stf/gui/grid/RectangleOverlayItem.ts` | 107 | – |
-| `stf/src/main/java/xyz/columnal/gui/grid/RectangularTableCellSelection.java` | `src/gui-logic/stf/gui/grid/RectangularTableCellSelection.ts` | 215 | – |
-| `stf/src/main/java/xyz/columnal/gui/grid/VirtualGrid.java` | `src/gui-logic/stf/gui/grid/VirtualGrid.ts` | 2517 | – |
+| `stf/src/main/java/xyz/columnal/gui/grid/RectangularTableCellSelection.java` | `src/gui-logic/stf/gui/grid/RectangularTableCellSelection.ts` | 215 | ✅ |
+| `stf/src/main/java/xyz/columnal/gui/grid/VirtualGrid.java` | `src/gui-logic/stf/gui/grid/VirtualGrid.ts` | 2517 | ✅ (parts deferred) |
 | `stf/src/main/java/xyz/columnal/gui/grid/VirtualGridLineSupplier.java` | `src/gui-logic/stf/gui/grid/VirtualGridLineSupplier.ts` | 146 | – |
 | `stf/src/main/java/xyz/columnal/gui/grid/VirtualGridSupplier.java` | `src/gui-logic/stf/gui/grid/VirtualGridSupplier.ts` | 209 | – |
 | `stf/src/main/java/xyz/columnal/gui/grid/VirtualGridSupplierFloating.java` | `src/gui-logic/stf/gui/grid/VirtualGridSupplierFloating.ts` | 251 | – |
@@ -592,12 +592,12 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `stf/src/main/java/xyz/columnal/gui/stable/ColumnDetails.java` | `src/gui-logic/stf/gui/stable/ColumnDetails.ts` | 90 | – |
 | `stf/src/main/java/xyz/columnal/gui/stable/ColumnHandler.java` | `src/gui-logic/stf/gui/stable/ColumnHandler.ts` | 71 | – |
 | `stf/src/main/java/xyz/columnal/gui/stable/ColumnOperation.java` | `src/gui-logic/stf/gui/stable/ColumnOperation.ts` | 58 | – |
-| `stf/src/main/java/xyz/columnal/gui/stable/ColumnSelection.java` | `src/gui-logic/stf/gui/stable/ColumnSelection.ts` | 91 | – |
+| `stf/src/main/java/xyz/columnal/gui/stable/ColumnSelection.java` | `src/gui-logic/stf/gui/stable/ColumnSelection.ts` | 91 | skipped: entirely commented out in Java |
 | `stf/src/main/java/xyz/columnal/gui/stable/EditorKitCache.java` | `src/gui-logic/stf/gui/stable/EditorKitCache.ts` | 410 | – |
 | `stf/src/main/java/xyz/columnal/gui/stable/EditorKitCallback.java` | `src/gui-logic/stf/gui/stable/EditorKitCallback.ts` | 34 | – |
 | `stf/src/main/java/xyz/columnal/gui/stable/ReadOnlyStringColumnHandler.java` | `src/gui-logic/stf/gui/stable/ReadOnlyStringColumnHandler.ts` | 84 | – |
 | `stf/src/main/java/xyz/columnal/gui/stable/RowOperation.java` | `src/gui-logic/stf/gui/stable/RowOperation.ts` | 53 | – |
-| `stf/src/main/java/xyz/columnal/gui/stable/RowSelection.java` | `src/gui-logic/stf/gui/stable/RowSelection.ts` | 85 | – |
+| `stf/src/main/java/xyz/columnal/gui/stable/RowSelection.java` | `src/gui-logic/stf/gui/stable/RowSelection.ts` | 85 | skipped: entirely commented out in Java |
 | `stf/src/main/java/xyz/columnal/gui/stable/ScrollBindable.java` | `src/gui-logic/stf/gui/stable/ScrollBindable.ts` | 42 | – |
 | `stf/src/main/java/xyz/columnal/gui/stable/ScrollGroup.java` | `src/gui-logic/stf/gui/stable/ScrollGroup.ts` | 225 | – |
 | `stf/src/main/java/xyz/columnal/gui/stable/ScrollResult.java` | `src/gui-logic/stf/gui/stable/ScrollResult.ts` | 36 | – |
@@ -610,27 +610,27 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/CodeCompletionContext.java` | `src/gui-logic/lex-editor/gui/lexeditor/CodeCompletionContext.ts` | 47 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/DocWindow.java` | `src/gui-logic/lex-editor/gui/lexeditor/DocWindow.ts` | 70 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorContent.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorContent.ts` | 331 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorDisplay.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorDisplay.ts` | 702 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorLocationAndErrorRecorder.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorLocationAndErrorRecorder.ts` | 494 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionCompletionContext.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionCompletionContext.ts` | 39 | – |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/CodeCompletionContext.java` | `src/gui-logic/lex-editor/gui/lexeditor/CodeCompletionContext.ts` | 47 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/DocWindow.java` | `src/gui-logic/lex-editor/gui/lexeditor/DocWindow.ts` | 70 | ✅ (parts deferred) |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorContent.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorContent.ts` | 331 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorDisplay.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorDisplay.ts` | 702 | ✅ (parts deferred) |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorLocationAndErrorRecorder.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorLocationAndErrorRecorder.ts` | 494 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionCompletionContext.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionCompletionContext.ts` | 39 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionEditor.ts` | 110 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionLexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionLexer.ts` | 1368 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionSaver.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionSaver.ts` | 1324 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionToken.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionToken.ts` | 42 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/Lexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/Lexer.ts` | 437 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/SaverBase.java` | `src/gui-logic/lex-editor/gui/lexeditor/SaverBase.ts` | 956 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TextQuickFix.java` | `src/gui-logic/lex-editor/gui/lexeditor/TextQuickFix.ts` | 151 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TopLevelEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/TopLevelEditor.ts` | 586 | – |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionLexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionLexer.ts` | 1368 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionSaver.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionSaver.ts` | 1324 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionToken.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionToken.ts` | 42 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/Lexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/Lexer.ts` | 437 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/SaverBase.java` | `src/gui-logic/lex-editor/gui/lexeditor/SaverBase.ts` | 956 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TextQuickFix.java` | `src/gui-logic/lex-editor/gui/lexeditor/TextQuickFix.ts` | 151 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TopLevelEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/TopLevelEditor.ts` | 586 | ✅ (parts deferred) |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TypeEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/TypeEditor.ts` | 40 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TypeLexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/TypeLexer.ts` | 425 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TypeSaver.java` | `src/gui-logic/lex-editor/gui/lexeditor/TypeSaver.ts` | 413 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/UndoManager.java` | `src/gui-logic/lex-editor/gui/lexeditor/UndoManager.ts` | 69 | – |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TypeLexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/TypeLexer.ts` | 425 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TypeSaver.java` | `src/gui-logic/lex-editor/gui/lexeditor/TypeSaver.ts` | 413 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/UndoManager.java` | `src/gui-logic/lex-editor/gui/lexeditor/UndoManager.ts` | 69 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/UnitEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/UnitEditor.ts` | 38 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/UnitLexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/UnitLexer.ts` | 237 | – |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/UnitSaver.java` | `src/gui-logic/lex-editor/gui/lexeditor/UnitSaver.ts` | 267 | – |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/UnitLexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/UnitLexer.ts` | 237 | ✅ |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/UnitSaver.java` | `src/gui-logic/lex-editor/gui/lexeditor/UnitSaver.ts` | 267 | ✅ |
 
 </details>
 
@@ -640,7 +640,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | `table-gui/src/main/java/xyz/columnal/gui/table/DataCellSupplier.java` | `src/gui-logic/table-gui/gui/table/DataCellSupplier.ts` | 332 | – |
 | `table-gui/src/main/java/xyz/columnal/gui/table/DataDisplay.java` | `src/gui-logic/table-gui/gui/table/DataDisplay.ts` | 959 | – |
-| `table-gui/src/main/java/xyz/columnal/gui/table/EntireTableSelection.java` | `src/gui-logic/table-gui/gui/table/EntireTableSelection.ts` | 159 | – |
+| `table-gui/src/main/java/xyz/columnal/gui/table/EntireTableSelection.java` | `src/gui-logic/table-gui/gui/table/EntireTableSelection.ts` | 159 | ✅ |
 | `table-gui/src/main/java/xyz/columnal/gui/table/HeadedDisplay.java` | `src/gui-logic/table-gui/gui/table/HeadedDisplay.ts` | 656 | – |
 | `table-gui/src/main/java/xyz/columnal/gui/table/RowLabelSupplier.java` | `src/gui-logic/table-gui/gui/table/RowLabelSupplier.ts` | 533 | – |
 | `table-gui/src/main/java/xyz/columnal/gui/table/TableNameTextField.java` | `src/gui-logic/table-gui/gui/table/TableNameTextField.ts` | 89 | – |
@@ -666,7 +666,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `app/src/main/java/xyz/columnal/apputility/AppUtility.java` | `src/gui-logic/app/apputility/AppUtility.ts` | 163 | – |
+| `app/src/main/java/xyz/columnal/apputility/AppUtility.java` | `src/gui-logic/app/apputility/AppUtility.ts` | 163 | ✅ |
 | `app/src/main/java/xyz/columnal/gui/AggregateSplitByPane.java` | `src/gui-logic/app/gui/AggregateSplitByPane.ts` | 427 | – |
 | `app/src/main/java/xyz/columnal/gui/CheckSummaryLabel.java` | `src/gui-logic/app/gui/CheckSummaryLabel.ts` | 193 | – |
 | `app/src/main/java/xyz/columnal/gui/EditAggregateSplitByDialog.java` | `src/gui-logic/app/gui/EditAggregateSplitByDialog.ts` | 86 | – |
@@ -723,17 +723,17 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | tests-gui-dtf | 0 / 1 | 0 / 397 (0%) | 0 / 4 (0%) |
 | tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 0 / 68 (0%) |
 | tests-gui-expression-editor-delete | 0 / 1 | 0 / 372 (0%) | 0 / 20 (0%) |
-| tests-gui-expression-editor-further | 0 / 8 | 0 / 1600 (0%) | 0 / 130 (0%) |
+| tests-gui-expression-editor-further | 4 / 8 | 1250 / 1600 (78%) | 120 / 130 (92%) |
 | tests-gui-expression-editor-position | 0 / 1 | 0 / 618 (0%) | 0 / 34 (0%) |
-| tests-gui-format | 0 / 4 | 0 / 920 (0%) | 0 / 6 (0%) |
-| tests-gui-grid | 0 / 4 | 0 / 1049 (0%) | 0 / 14 (0%) |
+| tests-gui-format | 3 / 4 | 574 / 920 (62%) | 2 / 6 (33%) |
+| tests-gui-grid | 2 / 4 | 252 / 1049 (24%) | 3 / 14 (21%) |
 | tests-gui-numbers | 0 / 1 | 0 / 380 (0%) | 0 / 14 (0%) |
 | tests-gui-r | 2 / 4 | 770 / 1147 (67%) | 10 / 27 (37%) |
 | tests-gui-side | 0 / 2 | 0 / 645 (0%) | 0 / 8 (0%) |
 | tests-gui-tables | 0 / 3 | 0 / 1635 (0%) | 0 / 12 (0%) |
 | tests-gui-transformations | 0 / 8 | 0 / 2251 (0%) | 0 / 22 (0%) |
 | tests-gui-transformations-create-edit | 0 / 1 | 0 / 651 (0%) | 0 / 2 (0%) |
-| tests-gui-type-editor | 0 / 4 | 0 / 954 (0%) | 0 / 57 (0%) |
+| ✅ tests-gui-type-editor | 4 / 4 | 954 / 954 (100%) | 57 / 57 (100%) |
 | ✅ tests-tables | 28 / 28 | 3385 / 3385 (100%) | 18 / 18 (100%) |
 
 <details><summary>tests-basic</summary>
@@ -909,12 +909,12 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | `tests-gui-expression-editor-further/src/test/java/test/gen/GenInvalidExpressionSource.java` | `test/gui/tests-gui-expression-editor-further/gen/GenInvalidExpressionSource.ts` | 68 | – |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/PropExpressionEditor.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/PropExpressionEditor.spec.ts` | 49 | – (0/1 tests) |
-| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorCompletion.spec.ts` | 542 | – (0/30 tests) |
+| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorCompletion.test.ts` | 542 | ✅ (30/30 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorInvalid.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorInvalid.spec.ts` | 79 | – (0/1 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorResolution.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorResolution.spec.ts` | 154 | – (0/8 tests) |
-| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorSyntaxError.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorSyntaxError.spec.ts` | 260 | – (0/32 tests) |
-| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorTypeError.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorTypeError.spec.ts` | 161 | – (0/21 tests) |
-| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixSyntax.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionQuickFixSyntax.spec.ts` | 287 | – (0/37 tests) |
+| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorSyntaxError.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorSyntaxError.test.ts` | 260 | ✅ (32/32 tests) |
+| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorTypeError.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorTypeError.test.ts` | 161 | ✅ (21/21 tests) |
+| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixSyntax.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionQuickFixSyntax.test.ts` | 287 | ✅ (37/37 tests) |
 
 </details>
 
@@ -930,10 +930,10 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-format/src/test/java/test/TestFormat.java` | `test/gui/tests-gui-format/TestFormat.spec.ts` | 154 | – (0/2 tests) |
+| `tests-gui-format/src/test/java/test/TestFormat.java` | `test/engine/tests-gui-format/TestFormat.test.ts` | 154 | ✅ (2/2 tests) |
 | `tests-gui-format/src/test/java/test/gui/PropFormat.java` | `test/gui/tests-gui-format/gui/PropFormat.spec.ts` | 346 | – (0/4 tests) |
-| `tests-gui-format/src/testFixtures/java/test/gen/GenFormat.java` | `test/gui/tests-gui-format/fixtures/gen/GenFormat.ts` | 160 | – |
-| `tests-gui-format/src/testFixtures/java/test/gen/GenFormattedData.java` | `test/gui/tests-gui-format/fixtures/gen/GenFormattedData.ts` | 260 | – |
+| `tests-gui-format/src/testFixtures/java/test/gen/GenFormat.java` | `test/engine/tests-gui-format/fixtures/gen/GenFormat.ts` | 160 | ✅ |
+| `tests-gui-format/src/testFixtures/java/test/gen/GenFormattedData.java` | `test/engine/tests-gui-format/fixtures/gen/GenFormattedData.ts` | 260 | ✅ |
 
 </details>
 
@@ -941,8 +941,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-grid/src/test/java/test/gen/GenGridAreaList.java` | `test/gui/tests-gui-grid/gen/GenGridAreaList.ts` | 105 | – |
-| `tests-gui-grid/src/test/java/test/gui/PropGridOverlap.java` | `test/gui/tests-gui-grid/gui/PropGridOverlap.spec.ts` | 147 | – (0/3 tests) |
+| `tests-gui-grid/src/test/java/test/gen/GenGridAreaList.java` | `test/gui-logic/tests-gui-grid/gen/GenGridAreaList.ts` | 105 | ✅ |
+| `tests-gui-grid/src/test/java/test/gui/PropGridOverlap.java` | `test/gui-logic/tests-gui-grid/gui/PropGridOverlap.test.ts` | 147 | ✅ (3/3 tests) |
 | `tests-gui-grid/src/test/java/test/gui/TestKeyboardMovement.java` | `test/gui/tests-gui-grid/gui/TestKeyboardMovement.spec.ts` | 210 | – (0/2 tests) |
 | `tests-gui-grid/src/test/java/test/gui/TestVirtualGridLayout.java` | `test/gui/tests-gui-grid/gui/TestVirtualGridLayout.spec.ts` | 587 | – (0/9 tests) |
 
@@ -1013,10 +1013,10 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixType.java` | `test/gui/tests-gui-type-editor/gui/expressionEditor/TestExpressionQuickFixType.spec.ts` | 168 | – (0/21 tests) |
-| `tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorCompletion.java` | `test/gui/tests-gui-type-editor/gui/expressionEditor/TestTypeEditorCompletion.spec.ts` | 135 | – (0/2 tests) |
-| `tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorError.java` | `test/gui/tests-gui-type-editor/gui/expressionEditor/TestTypeEditorError.spec.ts` | 368 | – (0/22 tests) |
-| `tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeQuickFix.java` | `test/gui/tests-gui-type-editor/gui/expressionEditor/TestTypeQuickFix.spec.ts` | 283 | – (0/12 tests) |
+| `tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixType.java` | `test/gui-logic/tests-gui-type-editor/gui/expressionEditor/TestExpressionQuickFixType.test.ts` | 168 | ✅ (21/21 tests) |
+| `tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorCompletion.java` | `test/gui-logic/tests-gui-type-editor/gui/expressionEditor/TestTypeEditorCompletion.test.ts` | 135 | ✅ (2/2 tests) |
+| `tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorError.java` | `test/gui-logic/tests-gui-type-editor/gui/expressionEditor/TestTypeEditorError.test.ts` | 368 | ✅ (22/22 tests) |
+| `tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeQuickFix.java` | `test/gui-logic/tests-gui-type-editor/gui/expressionEditor/TestTypeQuickFix.test.ts` | 283 | ✅ (12/12 tests) |
 
 </details>
 

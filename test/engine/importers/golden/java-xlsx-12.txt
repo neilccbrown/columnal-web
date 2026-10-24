@@ -1,0 +1,16 @@
+FILE xlsx-12.xlsx
+source trim <trim, vert +1 -0 horiz +1 -0> names [A, B, C, D, E]
+  columns A|B|C|D|E
+  types Text Text Text Text Text
+  length 2
+  "" | "1899-12-31" | "-287560.000000" | "When" | "3624.480000"
+  "" | "1899-12-31" | "220086.000000" | "1981-04-19" | "-2936.200000"
+dest <trim, vert +1 -0 horiz +1 -0>
+  column A: CleanDate #5 YEARMONTHDAY true
+  column N1899 12 31: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=6, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column C: CleanDate #5 YEARMONTHDAY true
+  column When: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=6, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns A|N1899 12 31|C|When
+  types Date Number Date Number
+  length 1
+  1899-12-31 | 220086 | 1981-04-19 | -2936.2

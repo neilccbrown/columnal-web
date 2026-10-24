@@ -1,0 +1,46 @@
+Notes: see below
+1st:Name:"currencySuf":Amount (3):1st:Amount (5)
+May 15 2013:-214454:580191£:東京:"Y":£5
+July 7 2016:781711:"580803£":£5:N:"  spaced  "
+March 6 2014:"990046":92175£:n:Y:N/A
+March 9 2023:-313731:69985£:n:Y:NA
+
+"March 22 1962"::848045£:a, b:"Y":100%
+July 23 1960:-289917
+January 1 1987:-420011:871430£:  spaced  :Y:#1
+
+"June 15 2007":-953130:639035£:"Banana split":Y:N/A
+December 28 1992:386977:483876£:true:"N":n
+October 3 1958:-108989:577543£:it's:N:Yes
+November 27 1978:-894699:171345£:x:Y:Yes
+
+March 17 1975:425603:345404£:12abc:N:東京
+January 17 2012:676987:334933£:NA:N:"-"
+December 2 1971:828999:497778£:-:N:€
+December 7 2013:378962:473160£:cherry:N:Banana split
+November 16 1966:-127259:"381368£":x:"Y":true
+May 10 2007:74570:117551£:Dürer:N:12abc
+"September 17 2013":-390855:"852408£":x:N:#1
+"October 7 2027":119930:201861£:"Yes":N:"n"
+"February 8 1959":255078:"93183£":"say ""hi""":Y
+December 9 2026:416357:393631£:a, b:N:東京
+"May 6 1997"::179168£:"say ""hi""":"Y":"€"
+November 21 1958:579243:81073£:n:Y:apple
+April 5 2011:-698997:579205£:Yes:Y:a, b
+July 11 1954:-977673:276177£:€:Y:"Yes"
+September 24 2013:-177417:692132£:東京:N:n
+November 3 2023:-884857:506269£:a, b:N:cherry
+"February 15 2025"::904161£:-:Y:"Dürer"
+
+November 28 1981:674758:805296£:Yes:"Y":n
+March 2 2012:-508911:"105625£":x:N:€
+November 19 1970:407129:289287£:x:N:£5
+September 28 1957:510919:"407835£":Dürer:Y:"apple"
+November 15 2016:165496:220400£:a, b:Y:Dürer
+February 4 2018:259666:378373£:"n":Y:it's
+"February 9 1975":"":76494£:"n":N:東京
+November 11 1979:"439186":625293£:NA:Y:"#1"
+February 28 1950:-26198:306835£:n:Y:it's
+July 25 1973:-590097:68436£:"n":N:-
+
+"September 24 1965":-831118:558344£:12abc:N:true

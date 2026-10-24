@@ -370,6 +370,19 @@ export function propertyTest<Ts extends unknown[]>(
     }, options.timeout);
 }
 
+export namespace propertyTest
+{
+    /** A property test that is skipped (Java: @Ignore), like Vitest's test.skip. */
+    export function skip<Ts extends unknown[]>(
+        name: string,
+        _generators: { [K in keyof Ts]: Generator<Ts[K]> },
+        _body: (...args: Ts) => void | Promise<void>,
+        _options: PropertyOptions = {}): void
+    {
+        test.skip(name, () => {});
+    }
+}
+
 /** Checks a property directly (without registering a Vitest test); see propertyTest. */
 export async function checkProperty<Ts extends unknown[]>(
     generators: { [K in keyof Ts]: Generator<Ts[K]> },

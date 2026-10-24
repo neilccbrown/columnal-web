@@ -21,7 +21,6 @@ import { ColumnId } from "../../../src/engine/identifiers/id/ColumnId.js";
 import { TableId } from "../../../src/engine/identifiers/id/TableId.js";
 import { HashMap } from "../../../src/engine/java/HashMap.js";
 import { Decimal } from "../../../src/engine/java/JavaBigDecimal.js";
-import { javaCompare } from "../../../src/engine/java/JavaObject.js";
 import { JavaRandom } from "../../../src/engine/java/JavaRandom.js";
 import { Aggregate } from "../../../src/engine/transformations/transformations/Aggregate.js";
 import { Calculate } from "../../../src/engine/transformations/transformations/Calculate.js";
@@ -31,13 +30,12 @@ import { Filter } from "../../../src/engine/transformations/transformations/Filt
 import { HideColumns } from "../../../src/engine/transformations/transformations/HideColumns.js";
 import { Join } from "../../../src/engine/transformations/transformations/Join.js";
 import { ManualEdit } from "../../../src/engine/transformations/transformations/ManualEdit.js";
-import { RTransformation } from "../../../src/engine/transformations/transformations/RTransformation.js";
 import { Sort } from "../../../src/engine/transformations/transformations/Sort.js";
-import { DataTypeUtility } from "../../../src/engine/types/data/datatype/DataTypeUtility.js";
 import { Either } from "../../../src/engine/utility-adt/utility/adt/Either.js";
 import { Pair } from "../../../src/engine/utility-adt/utility/adt/Pair.js";
 import { UserException } from "../../../src/engine/utility-error/error/UserException.js";
 import type { Value } from "../../../src/engine/utility/utility/Value.js";
+import { dumpTables } from "../../../scripts/cli/dumpTables.js";
 import { GeometricDistribution, SimpleGenerationStatus, SourceOfRandomness } from "../../support/quickcheck.js";
 import { DummyManager } from "../tests-functions/fixtures/DummyManager.js";
 import { TTableUtil } from "../tests-tables/fixtures/TTableUtil.js";
@@ -49,73 +47,11 @@ const INPUT_COUNT = 32;
 // Rows shown per column in the contents:
 const MAX_ROWS = 20;
 
-// The contents of every table, in the format TransformationsHarness.java writes:
-function dumpTables(mgr: TableManager): string
-{
-    let out = "";
-    const line = (s: string): void => { out += s + "\n"; };
-    const err = (e: unknown): string =>
-    {
-        if (!(e instanceof Error))
-            throw e;
-        return "!" + e.name + ": " + e.message;
-    };
-    // (Sorted, as Java's order is an identity hash order)
-    for (const table of [...mgr.getAllTables()].sort((a, b) => javaCompare(a.getId(), b.getId())))
-    {
-        line("TABLE " + table.getId().getRaw());
-        if (table instanceof RTransformation)
-        {
-            line("(R not run)");
-            continue;
-        }
-        let columns: readonly Column[];
-        let length: number;
-        try
-        {
-            columns = table.getData().getColumns();
-            length = table.getData().getLength();
-        }
-        catch (e)
-        {
-            line(err(e));
-            continue;
-        }
-        line("LENGTH " + length);
-        for (const column of columns)
-        {
-            let type: string;
-            try
-            {
-                type = column.getType().getType().toString();
-            }
-            catch (e)
-            {
-                line("COLUMN " + column.getName().getRaw() + " " + err(e));
-                continue;
-            }
-            line("COLUMN " + column.getName().getRaw() + " : " + type);
-            for (let row = 0; row < Math.min(length, MAX_ROWS); row++)
-            {
-                try
-                {
-                    line("  " + row + ": " + DataTypeUtility.valueToString(column.getType().getCollapsed(row)));
-                }
-                catch (e)
-                {
-                    line("  " + row + ": " + err(e));
-                }
-            }
-        }
-    }
-    return out;
-}
-
 function loadAndSave(src: string): Pair<string, string>
 {
     const mgr = new DummyManager();
     mgr.loadAll(src, _w => {});
-    return new Pair(TTableUtil.save(mgr), dumpTables(mgr));
+    return new Pair(TTableUtil.save(mgr), dumpTables(mgr, MAX_ROWS));
 }
 
 // Java shows a computed number with its scale (2.50); the port's numbers have no trailing zeros

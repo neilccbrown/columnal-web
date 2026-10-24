@@ -250,3 +250,33 @@ export function javaUtf8Bytes(s: string): Uint8Array
 {
     return new TextEncoder().encode(s.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, "?"));
 }
+
+/**
+ * Java's String.compareToIgnoreCase: compares char by char, after Character.toUpperCase then
+ * Character.toLowerCase of each.  (Java 21 compares a surrogate pair as one code point; this
+ * compares its two chars, which only differs for supplementary characters with case.)
+ */
+export function javaCompareToIgnoreCase(s1: string, s2: string): number
+{
+    const n1 = s1.length;
+    const n2 = s2.length;
+    const min = Math.min(n1, n2);
+    for (let i = 0; i < min; i++)
+    {
+        let c1 = s1.charAt(i);
+        let c2 = s2.charAt(i);
+        if (c1 !== c2)
+        {
+            c1 = charToUpperCase(c1);
+            c2 = charToUpperCase(c2);
+            if (c1 !== c2)
+            {
+                c1 = charToLowerCase(c1);
+                c2 = charToLowerCase(c2);
+                if (c1 !== c2)
+                    return c1.charCodeAt(0) - c2.charCodeAt(0);
+            }
+        }
+    }
+    return n1 - n2;
+}

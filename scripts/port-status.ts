@@ -7,7 +7,7 @@
 //                                                       -> src/gui-logic/<module>/<path>/X.ts   (GUI modules: logic only)
 //   tests-x/src/test/java/test/<path>/X.java            -> test/engine/tests-x/<path>/X.test.ts (engine test modules)
 //                                                       -> test/gui/tests-x/<path>/X.spec.ts    (GUI test modules,
-//                                                          except ENGINE_TESTS_IN_GUI_MODULES)
+//                                                          except ENGINE_TESTS_IN_GUI_MODULES and GUI_LOGIC_TESTS_IN_GUI_MODULES)
 //   tests-x/src/testFixtures/java/(test|xyz/columnal)/<path>/X.java -> test/(engine|gui)/tests-x/fixtures/<path>/X.ts
 // Test methods (@Test/@Property) count as ported when the TS test file has a test with the same name.
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
@@ -35,17 +35,49 @@ interface FileStatus
     testMethods?: { total: string[]; ported: string[] };
 }
 
-// Tests in GUI test modules that don't use the GUI, which are ported as Vitest engine tests
+// Tests (and their fixtures) in GUI test modules that don't use the GUI, which are ported as Vitest engine tests
 // (test/engine/tests-gui-x/<path>/X.test.ts) rather than Playwright specs:
 const ENGINE_TESTS_IN_GUI_MODULES = new Set([
     "tests-gui-central/src/test/java/test/expressions/TestFromDoc.java",
     "tests-gui-r/src/test/java/test/importExport/TestRLoadSave.java",
     "tests-gui-r/src/test/java/test/importExport/GenRCompatibleRecordSet.java",
+    "tests-gui-format/src/test/java/test/TestFormat.java",
+    "tests-gui-format/src/testFixtures/java/test/gen/GenFormat.java",
+    "tests-gui-format/src/testFixtures/java/test/gen/GenFormattedData.java",
 ]);
+
+// Tests (and their helpers) in GUI test modules that only use the logic ported into src/gui-logic,
+// which are ported as Vitest tests (test/gui-logic/tests-gui-x/<path>/X.test.ts):
+const GUI_LOGIC_TESTS_IN_GUI_MODULES = new Set([
+    "tests-gui-grid/src/test/java/test/gui/PropGridOverlap.java",
+    "tests-gui-grid/src/test/java/test/gen/GenGridAreaList.java",
+    "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorError.java",
+    "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorCompletion.java",
+    "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeQuickFix.java",
+    "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixType.java",
+    "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorSyntaxError.java",
+    "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorTypeError.java",
+    "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixSyntax.java",
+    "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java",
+]);
+
+// The kind of TS test (engine, gui-logic or gui) a Java test file in a test module becomes:
+function testKind(javaPath: string, moduleKind: string): string
+{
+    if (ENGINE_TESTS_IN_GUI_MODULES.has(javaPath))
+        return "engine";
+    if (GUI_LOGIC_TESTS_IN_GUI_MODULES.has(javaPath))
+        return "gui-logic";
+    return moduleKind;
+}
 
 // Java files that are deliberately not ported (paths relative to reference/columnal):
 const SKIPPED = new Map<string, string>([
     ["utility/src/main/java/xyz/columnal/utility/ResourceUtility.java", "loads classpath resources; resources are bundled by Vite instead"],
+    ["importers/src/main/java/xyz/columnal/importers/gui/ImportChoicesDialog.java", "the import dialog, rebuilt in the GUI (Phase 11); the importers show it through ImporterDialogs"],
+    ["importers/src/main/java/xyz/columnal/importers/gui/ImporterGUI.java", "the import dialog's choice rows, rebuilt in the GUI (Phase 11)"],
+    ["stf/src/main/java/xyz/columnal/gui/stable/RowSelection.java", "entirely commented out in Java"],
+    ["stf/src/main/java/xyz/columnal/gui/stable/ColumnSelection.java", "entirely commented out in Java"],
 ]);
 
 function withStatus(f: FileStatus): FileStatus
@@ -127,10 +159,10 @@ function testModuleFiles(module: string): FileStatus[]
     const testsRoot = join(reference, module, "src", "test", "java");
     for (const f of walk(testsRoot, ".java").filter(f => !isIgnoredJava(f)))
     {
-        const fileKind = ENGINE_TESTS_IN_GUI_MODULES.has(relative(reference, f)) ? "engine" : kind;
+        const fileKind = testKind(relative(reference, f), kind);
         const methods = javaTestMethods(f);
         // A helper class with no test methods (such as a generator) is a plain module, not a test file:
-        const rel = stripPackageRoot(relative(testsRoot, f)).replace(/\.java$/, methods.length === 0 ? ".ts" : fileKind === "engine" ? ".test.ts" : ".spec.ts");
+        const rel = stripPackageRoot(relative(testsRoot, f)).replace(/\.java$/, methods.length === 0 ? ".ts" : fileKind === "gui" ? ".spec.ts" : ".test.ts");
         const tsPath = join(root, "test", fileKind, module, rel);
         const tsNames = tsTestNames(tsPath);
         result.push({
@@ -143,7 +175,8 @@ function testModuleFiles(module: string): FileStatus[]
     for (const f of walk(fixturesRoot, ".java").filter(f => !isIgnoredJava(f)))
     {
         const rel = stripPackageRoot(relative(fixturesRoot, f)).replace(/\.java$/, ".ts");
-        const tsPath = join(root, "test", kind, module, "fixtures", rel);
+        const fixtureKind = testKind(relative(reference, f), kind);
+        const tsPath = join(root, "test", fixtureKind, module, "fixtures", rel);
         result.push(withStatus({ javaPath: relative(reference, f), tsPath: relative(root, tsPath), lines: lineCount(f), ported: existsSync(tsPath) }));
     }
     return result;

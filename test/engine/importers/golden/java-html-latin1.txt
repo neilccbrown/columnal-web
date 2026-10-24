@@ -1,0 +1,28 @@
+FILE html-latin1.html
+TABLE 0
+names Café
+row crème brûlée
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [Café]
+  columns Café
+  types Text
+  length 1
+  "crème brûlée"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Café: Text
+  columns Café
+  types Text
+  length 1
+  "crème brûlée"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [Café]
+  columns Café
+  types Text
+  length 1
+  "crème brûlée"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Café: Text
+  columns Café
+  types Text
+  length 1
+  "crème brûlée"

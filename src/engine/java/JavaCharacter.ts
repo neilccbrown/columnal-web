@@ -93,6 +93,14 @@ export function isOtherLetter(codePoint: number): boolean
     return test(OTHER_LETTER, codePoint);
 }
 
+const CURRENCY_SYMBOL = /^\p{Sc}$/u;
+
+/** Character.getType(int) == Character.CURRENCY_SYMBOL */
+export function isCurrencySymbol(codePoint: number): boolean
+{
+    return test(CURRENCY_SYMBOL, codePoint);
+}
+
 // Chars whose simple (one-to-one) case mapping, which Java uses, is not their full mapping
 // (which JavaScript's toUpperCase/toLowerCase use) and isn't the char itself: the Greek letters
 // with ypogegrammeni uppercase to the titlecase letters with prosgegrammeni, and U+0130

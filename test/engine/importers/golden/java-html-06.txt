@@ -1,0 +1,61 @@
+FILE html-06.html
+TABLE 0
+names Col 0|Col 1|Name|Amount[1]
+row Name[1]|2021-03-04|plain| padded  text |
+row plain|true|1,234|paratwo|shown
+row Name[1]|paratwo|1,234|bold and italic| padded  text 
+trim whitespace true
+source trim <trim, vert +1 -0 horiz +0 -0> names [Col 0, Col 1, Name, Amount[1], C 5]
+  columns Col 0|Col 1|Name|Amount 1|C 5
+  types Text Text Text Text Text
+  length 3
+  "Name[1]" | "2021-03-04" | "plain" | " padded  text " | ""
+  "plain" | "true" | "1,234" | "paratwo" | "shown"
+  "Name[1]" | "paratwo" | "1,234" | "bold and italic" | " padded  text "
+dest <trim, vert +1 -0 horiz +0 -0>
+  column Col 0: Text
+  column Col 1: Text
+  column Name: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column Amount 1: Text
+  column C 5: Text
+  columns Col 0|Col 1|Name|Amount 1|C 5
+  types Text Text Number Text Text
+  length 2
+  "plain" | "true" | 1234 | "paratwo" | "shown"
+  "Name[1]" | "paratwo" | 1234 | "bold and italic" | "padded  text"
+trim whitespace false
+source trim <trim, vert +1 -0 horiz +0 -0> names [Col 0, Col 1, Name, Amount[1], C 5]
+  columns Col 0|Col 1|Name|Amount 1|C 5
+  types Text Text Text Text Text
+  length 3
+  "Name[1]" | "2021-03-04" | "plain" | " padded  text " | ""
+  "plain" | "true" | "1,234" | "paratwo" | "shown"
+  "Name[1]" | "paratwo" | "1,234" | "bold and italic" | " padded  text "
+dest <trim, vert +1 -0 horiz +0 -0>
+  column Col 0: Text
+  column Col 1: Text
+  column Name: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column Amount 1: Text
+  column C 5: Text
+  columns Col 0|Col 1|Name|Amount 1|C 5
+  types Text Text Number Text Text
+  length 2
+  "plain" | "true" | 1234 | "paratwo" | "shown"
+  "Name[1]" | "paratwo" | 1234 | "bold and italic" | " padded  text "
+TABLE 1
+names Price ($)|Price ($)|Price ($)|Amount[1]
+row plain| padded  text ||-7|
+row paratwo|& <x>  yé| padded  text |2021-03-04|
+row line\nbreak|shown||  |
+row xy|& <x>  yé|1,234|true|
+row Name[1]|Name[1]|| padded  text |
+row Name[1]|$5||blockafter|2021-03-04
+row Name[1]|paratwo|& <x>  yé|shown| padded  text 
+row 2021-03-04|bold and italic|true|a\nb|
+row  padded  text |bold and italic|  pre  formatted |Value [a 2] [3]|
+row   |  |a\nb|a\nb|
+row   | padded  text |$5|$5|
+trim whitespace true
+source EXCEPTION UserException: Duplicate column names found: Price, Price, Price, Amount 1, C 5
+trim whitespace false
+source EXCEPTION UserException: Duplicate column names found: Price, Price, Price, Amount 1, C 5

@@ -1,0 +1,25 @@
+FILE xlsx-port-rec-06-Test_0.xlsx
+source trim <trim, vert +0 -0 horiz +0 -0> names [A, B, C, D, E, F, G, H]
+  columns A|B|C|D|E|F|G|H
+  types Text Text Text Text Text Text Text Text
+  length 4
+  "GenCol 32" | "GenCol 33" | "GenCol 34" | "GenCol 35" | "GenCol 36" | "GenCol 37" | "GenCol 38" | "GenCol 39"
+  "TRUE" | "TRUE" | "Error: Invalid value: ^a1275062114" | "(a: -9223372036854775807, b: 9223372036854775807)" | "1995-07-28" | "Error: Invalid value: ^a-1916860627" | "5737-06-01" | "Single"
+  "Error: Invalid value: ^a-1944785265" | "Error: Invalid value: ^a15371762" | "(inner: (t 1: ^qh9 9 9^q, t 2: 1), z: 2)" | "(a: 883, b: 127)" | "Error: Invalid value: ^a-501051211" | "Error: Invalid value: ^a1325732346" | "Error: Invalid value: ^aEND" | "Error: Invalid value: ^a-1346708018"
+  "FALSE" | "Error: Invalid value: ^a-2069692480" | "Error: Invalid value: ^a769589945" | "(a: 470, b: -9223372036854775809)" | "2018-11-24" | "Error: Invalid value: ^a-1340791341" | "Error: Invalid value: ^a1139465011" | "Error: Invalid value: ^a-1472224969"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column A: Text
+  column B: Text
+  column C: Text
+  column D: Text
+  column E: Text
+  column F: Text
+  column G: Text
+  column H: Text
+  columns A|B|C|D|E|F|G|H
+  types Text Text Text Text Text Text Text Text
+  length 4
+  "GenCol 32" | "GenCol 33" | "GenCol 34" | "GenCol 35" | "GenCol 36" | "GenCol 37" | "GenCol 38" | "GenCol 39"
+  "TRUE" | "TRUE" | "Error: Invalid value: ^a1275062114" | "(a: -9223372036854775807, b: 9223372036854775807)" | "1995-07-28" | "Error: Invalid value: ^a-1916860627" | "5737-06-01" | "Single"
+  "Error: Invalid value: ^a-1944785265" | "Error: Invalid value: ^a15371762" | "(inner: (t 1: ^qh9 9 9^q, t 2: 1), z: 2)" | "(a: 883, b: 127)" | "Error: Invalid value: ^a-501051211" | "Error: Invalid value: ^a1325732346" | "Error: Invalid value: ^aEND" | "Error: Invalid value: ^a-1346708018"
+  "FALSE" | "Error: Invalid value: ^a-2069692480" | "Error: Invalid value: ^a769589945" | "(a: 470, b: -9223372036854775809)" | "2018-11-24" | "Error: Invalid value: ^a-1340791341" | "Error: Invalid value: ^a1139465011" | "Error: Invalid value: ^a-1472224969"

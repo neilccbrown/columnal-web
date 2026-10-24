@@ -1,0 +1,39 @@
+FILE xlsx-11.xlsx
+source trim <trim, vert +1 -0 horiz +1 -0> names [A, B, C, D]
+  columns A|B|C|D
+  types Text Text Text Text
+  length 14
+  "" | "-1989104.000000" | "apple" | "Amount"
+  "" | "-571234.000000" | "100%" | "397598.000000"
+  "" | "-865918.000000" | "€" | "50786.000000"
+  "" | "405906.000000" | "NA" | "50786.000000"
+  "" | "227146.000000" | "東京" | ""
+  "" | "788326.000000" | "#1" | "-32916.000000"
+  "" | "-1890864.000000" | "x" | ""
+  "" | "-438236.000000" | "it's" | "-384513.000000"
+  "" | "-283758.000000" | "£5" | "720366.000000"
+  "" | "-1814908.000000" | "Dürer" | "-257939.000000"
+  "" | "" | "apple" | "18082.000000"
+  "" | "-1357192.000000" | "" | "277539.000000"
+  "" | "2270.000000" | "#1" | "361285.000000"
+  "" | "1906496.000000" | "say ^qhi^q" | "-649431.000000"
+dest <trim, vert +1 -0 horiz +1 -0>
+  column A: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=6, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column B: Text
+  column apple: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=6, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns A|B|apple
+  types @apply   Optional ( Number ) Text @apply   Optional ( Number )
+  length 13
+  Is(-571234) | "100%" | Is(397598)
+  Is(-865918) | "€" | Is(50786)
+  Is(405906) | "NA" | Is(50786)
+  Is(227146) | "東京" | None
+  Is(788326) | "#1" | Is(-32916)
+  Is(-1890864) | "x" | None
+  Is(-438236) | "it's" | Is(-384513)
+  Is(-283758) | "£5" | Is(720366)
+  Is(-1814908) | "Dürer" | Is(-257939)
+  None | "apple" | Is(18082)
+  Is(-1357192) | "" | Is(277539)
+  Is(2270) | "#1" | Is(361285)
+  Is(1906496) | "say ^qhi^q" | Is(-649431)

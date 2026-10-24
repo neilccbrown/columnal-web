@@ -1,0 +1,19 @@
+Total,3
+text
+true
+
+x
+#1
+NA
+"£5"
+
+€
+100%
+€
+"a, b"
+#1
+N/A
+cherry
+Banana split
+#1
+n

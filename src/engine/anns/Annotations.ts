@@ -39,3 +39,17 @@ export type CanonicalLocation = number;
 
 /** A key into the function documentation (annotation.funcdoc.qual.FuncDocKey). */
 export type FuncDocKey = string;
+
+/** A key into the dialog help, "file/id" (annotation.help.qual.HelpKey). */
+export type HelpKey = string;
+
+/** Zero-based row index within a grid area, such as a table (annotation.units.GridAreaRowIndex). */
+export type GridAreaRowIndex = number;
+
+/** Zero-based column index within a grid area, such as a table (annotation.units.GridAreaColIndex). */
+export type GridAreaColIndex = number;
+
+/** A position in the editor's display of an expression (annotation.units.DisplayLocation). */
+export type DisplayLocation = number;
+export const DisplayLocation = { ZERO: 0, ONE: 1 } as const;
+export const CanonicalLocation = { ZERO: 0, ONE: 1 } as const;

@@ -1,0 +1,25 @@
+FILE xlsx-05.xlsx
+source trim <trim, vert +0 -0 horiz +1 -0> names [A, B, C]
+  columns A|B|C
+  types Text Text Text
+  length 7
+  "" | "949520.000000" | ""
+  "" | "-653060.000000" | ""
+  "" | "903738.000000" | ""
+  "" | "-923379.000000" | ""
+  "" | "260834.000000" | ""
+  "" | "-670566.000000" | "-670566.000000"
+  "" | "-670566.000000" | "-670566.000000"
+dest <trim, vert +0 -0 horiz +1 -0>
+  column A: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=6, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column B: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=6, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns A|B
+  types Number @apply   Optional ( Number )
+  length 7
+  949520 | None
+  -653060 | None
+  903738 | None
+  -923379 | None
+  260834 | None
+  -670566 | Is(-670566)
+  -670566 | Is(-670566)

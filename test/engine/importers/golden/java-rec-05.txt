@@ -1,0 +1,2043 @@
+FILE rec-05.rec
+TABLE Test 0
+CSV
+"GenCol 27","GenCol 28","GenCol 29","GenCol 30","GenCol 31"
+"Right(-127)","[(a: 461358, nested: (num num: 956799, the text 0 item: """􊾒*""")), (a: 13573159, nested: (num num: 0.543885, the text 0 item: """lrZZ Z0r"""))]","2020-11-02 17:53:30.097805292 Australia/Queensland","(inner: (t 1: """􁞙~:Z 8""", t 2: 705529326), z: 504945473330930697)","7601-12"
+"Right(-32768)","[(a: 112, nested: (num num: 0.037401, the text 0 item: """=""")), (a: 0, nested: (num num: -2147483648, the text 0 item: """BEGIN"""))]","1417-04-04 02:55:44 -11:43","(inner: (t 1: """𡭬f'𢦦""", t 2: 840), z: 1)","2361-07"
+"Left(-9223372036854775807)","[(a: 0.604594, nested: (num num: 0.545087, the text 0 item: """p r9r""")), (a: 189, nested: (num num: -9223372036854775808, the text 0 item: """d𣩰r톦"""))]","1980-01-26 13:46:23.599569781 +08:20","(inner: (t 1: """豳􏽵C􂒼""", t 2: 0.906518), z: 1022437348)","6635-04"
+"Left(127)","[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: """JCdY􊉏zo"""))]","2030-02-03 06:11:00 Europe/Riga","(inner: (t 1: """a'8g%Ok!󰩿#""", t 2: 0.595867), z: -32767)","8180-05"
+"Left(2)","[(a: 8679619903515, nested: (num num: 0.862723, the text 0 item: """END""")), (a: -127, nested: (num num: 1, the text 0 item: """完𒒰^c5""")), (a: 312071, nested: (num num: -127, the text 0 item: """TEXTFILE""")), (a: 32767, nested: (num num: 2147483647, the text 0 item: """FORMAT"""))]","7727-02-09 21:19:10.763886656 Pacific/Wallis","(inner: (t 1: """2nM""", t 2: 8085235), z: 5270)","3605-04"
+"Left(-9223372036854775808)","[(a: -9223372036854775807, nested: (num num: 11300, the text 0 item: """𖡎wQ􌪢UUXI_OE|3{𲉦􇧪"""))]","8261-12-20 05:43:00 Atlantic/South_Georgia","(inner: (t 1: """?O𨂧""", t 2: 1286082), z: -128)","1015-12"
+"Left(193000156802835)","[(a: 0.987967, nested: (num num: 30, the text 0 item: """COLUMN"""))]","1995-12-26 00:53:48.965579755 Africa/Brazzaville","(inner: (t 1: """ud""", t 2: 0.479025), z: 987)","4035-01"
+"Right(-2147483647)","[(a: 7201104865, nested: (num num: 16832820857636, the text 0 item: """r90rn""")), (a: -9223372036854775809, nested: (num num: -9223372036854775808, the text 0 item: """a""")), (a: 14363, nested: (num num: 9223372036854775808, the text 0 item: """D𩀔󻔒]?"""))]","1950-06-25 21:31:08.347311035 America/Porto_Velho","(inner: (t 1: """tna""", t 2: -128), z: 1)","7948-11"
+"Right(0.833452)","[(a: 2, nested: (num num: 0.625099, the text 0 item: """󶿹\""")), (a: 9223372036854775808, nested: (num num: -2147483649, the text 0 item: """j0r rrZna""")), (a: -127, nested: (num num: 2147483648, the text 0 item: """S􄄬2kUi=d#""")), (a: -9223372036854775809, nested: (num num: 0.376992, the text 0 item: """DATA"""))]","4147-09-10 09:58:00 +03:12","(inner: (t 1: """O%3l#.&uomb욠𮬯8U􄲵P🈷80]𒒰5""", t 2: -128), z: 127)","4801-03"
+"Left(0.756475)","[(a: 0.216113, nested: (num num: 603, the text 0 item: """brZ0nar 0"""))]","1960-01-11 00:42:04.519196911 +02:18","(inner: (t 1: """o""", t 2: -32767), z: -2147483649)","8105-12"
+"Right(127)","[(a: 171, nested: (num num: 1094208408272, the text 0 item: """𗅧ꪦ"""))]","1967-12-14 22:11:29 +11:55","(inner: (t 1: """f09a99""", t 2: 32767), z: 2147483648)","4438-01"
+"Left(9223372036854775808)","[(a: -2147483649, nested: (num num: 280, the text 0 item: """m""")), (a: -9223372036854775809, nested: (num num: 430, the text 0 item: """a""")), (a: 195, nested: (num num: -2147483647, the text 0 item: """cafaD𜶦$"""))]","2008-12-15 01:57:00 +01:03","(inner: (t 1: """END""", t 2: 545667936245), z: 11)","8220-07"
+"Right(27638)","[(a: -9223372036854775809, nested: (num num: 0.671, the text 0 item: """𓩑](K􎢕􉦭9𠞶"""))]","1930-03-25 05:11:43.775088911 +08:22","(inner: (t 1: """SOURCE""", t 2: 0), z: 0.484047)","4121-07"
+"Right(119)","[(a: 6319, nested: (num num: 136, the text 0 item: """뵙,(""")), (a: 1, nested: (num num: 16629314, the text 0 item: """a"""))]","1978-03-08 20:58:17.836752529 +02:03","(inner: (t 1: """𤴗Ǣ}%MUTIᯍ𓁟萕e""", t 2: 32308835214523842668298), z: 0)","8261-09"
+"Left(-1)","[(a: 0.223873, nested: (num num: 54250, the text 0 item: """5ax]$KO""")), (a: 59166, nested: (num num: 10249, the text 0 item: """Time""")), (a: 2147483648, nested: (num num: 562, the text 0 item: """DateTime"""))]","1979-08-12 16:50:21.404384879 Europe/Jersey","(inner: (t 1: """􆴃]""", t 2: -1), z: 13)","8945-08"
+"Right(1189987824)","[(a: -32768, nested: (num num: -1, the text 0 item: """#^aK[0^c𓈛""")), (a: 0.011613, nested: (num num: 2, the text 0 item: """CONTENT"""))]","2003-09-02 12:56:00 +11:26","(inner: (t 1: """qd^cB`h󲊗]u𢌾2%s""", t 2: 2147483647), z: 14544)","2320-05"
+"Left(2147483647)","[(a: 1, nested: (num num: 0, the text 0 item: """inrZ 09 0Z""")), (a: 0, nested: (num num: 0.533633, the text 0 item: """Date""")), (a: 2147483648, nested: (num num: -9223372036854775807, the text 0 item: """T󵾩^a󷵗"""))]","5952-06-25 09:24:02.032102578 Antarctica/Casey","(inner: (t 1: """E=""", t 2: 1337658108900497), z: 1)","1133-10"
+"Right(-2147483647)","[(a: -127, nested: (num num: 17, the text 0 item: """X𮊭]m6􆡝UBgrTb""")), (a: -32768, nested: (num num: 0.213295, the text 0 item: """v999 0 n"""))]","1966-06-10 07:19:30 -07:50","(inner: (t 1: """y9 na r""", t 2: -32768), z: 2147483647)","9503-08"
+"Left(5)","[(a: 5089557, nested: (num num: 13766439, the text 0 item: """󵪓n(f""")), (a: 6, nested: (num num: 10850, the text 0 item: """𐭸m=""")), (a: -32768, nested: (num num: 672, the text 0 item: """:o{L""")), (a: 46, nested: (num num: 0, the text 0 item: """carZ"""))]","5078-03-15 22:31:10.460611373 -07:05","(inner: (t 1: """I""", t 2: -128), z: -2147483649)","9321-10"
+"Right(-1)","[(a: 3, nested: (num num: 0.165223, the text 0 item: """c9 Zn""")), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: """>"""))]","1902-09-18 11:51:00 Europe/Lisbon","(inner: (t 1: """y0a nZa9an""", t 2: 5), z: 0)","1443-04"
+"Right(127)","[(a: 0, nested: (num num: 0.096263, the text 0 item: """nY3v_𓪊IS%C"""))]","2046-07-29 19:39:45.83374912 +01:14","(inner: (t 1: """T""", t 2: -9223372036854775807), z: 32767)","5730-02"
+"Right(-9223372036854775809)","[(a: -32768, nested: (num num: 319, the text 0 item: """Z""")), (a: 9223372036854775808, nested: (num num: 25556, the text 0 item: """Y""")), (a: 0, nested: (num num: -2147483649, the text 0 item: """wnrn""")), (a: 271, nested: (num num: -32767, the text 0 item: """jZrn"""))]","1911-05-24 01:10:00 Pacific/Norfolk","(inner: (t 1: """TEXTFILE""", t 2: -1), z: 2147483647)","5937-02"
+"Right(127)","[(a: 15, nested: (num num: -127, the text 0 item: """j2xo&0l󶌃^c"""))]","1939-12-15 07:20:14.940999401 -00:50","(inner: (t 1: """m0aa9""", t 2: -2147483649), z: 0)","3723-10"
+"Right(-32767)","[(a: 57098033, nested: (num num: -127, the text 0 item: """r 9a 0""")), (a: 0.330566, nested: (num num: -2147483649, the text 0 item: """qZ09""")), (a: 3, nested: (num num: 5, the text 0 item: """DateTimeZoned"""))]","1955-05-10 03:39:25.652407087 +11:16","(inner: (t 1: """c""", t 2: 130953), z: 9223372036854775808)","8303-07"
+"Right(-32768)","[(a: -2147483648, nested: (num num: 52396, the text 0 item: """rZ9aZZ00a""")), (a: 104204525, nested: (num num: 56044243535281381, the text 0 item: """^c""")), (a: 2147483647, nested: (num num: -127, the text 0 item: """tagged"""))]","1937-04-13 19:25:45 Pacific/Easter","(inner: (t 1: """TRANSFORMATION""", t 2: 2), z: -2147483648)","2064-08"
+"Right(2467)","[(a: 12, nested: (num num: -9223372036854775807, the text 0 item: """a""")), (a: -2147483647, nested: (num num: 9223372036854775807, the text 0 item: """f9aZ9Zn a""")), (a: 127, nested: (num num: 2165, the text 0 item: """DateTime""")), (a: 12, nested: (num num: 93961, the text 0 item: """𩩫Q𠂪<U_䰏󷉹Q谳省𗃨B􊎓"""))]","1980-08-18 04:33:43.733860616 Australia/Broken_Hill","(inner: (t 1: """FORMAT""", t 2: 1964), z: -127)","8132-06"
+"Right(18704084981)","[(a: 691, nested: (num num: 10094, the text 0 item: """sy; 𞟢""")), (a: 4, nested: (num num: 9223372036854775808, the text 0 item: """\c""")), (a: 643, nested: (num num: 9223372036854775807, the text 0 item: """SOURCE"""))]","1931-07-15 06:40:00 -09:58","(inner: (t 1: """3􋙲2""", t 2: 11641040), z: -2147483647)","5091-06"
+"Right(-127)","[(a: 9, nested: (num num: -1, the text 0 item: """>c􋴟q"""))]","2017-08-09 15:54:09.917944192 -07:37","(inner: (t 1: """󲲓G""", t 2: 370400), z: -9223372036854775809)","1107-08"
+"Left(-9223372036854775808)","[(a: 0.652745, nested: (num num: -1, the text 0 item: """5qlZ;鋾A⻳|󾮱RD"""))]","2039-11-13 08:35:18.016272068 Pacific/Wallis","(inner: (t 1: """paa9Z""", t 2: 9223372036854775808), z: -32768)","1556-07"
+"Left(58835976)","[(a: 9223372036854775807, nested: (num num: -2147483647, the text 0 item: """3v""")), (a: 4179926, nested: (num num: -2147483647, the text 0 item: """Number""")), (a: 0.138586, nested: (num num: -2147483647, the text 0 item: """2􎜁""")), (a: 0.956075, nested: (num num: -9223372036854775809, the text 0 item: """`?"""))]","1937-04-07 07:40:00 Africa/Juba","(inner: (t 1: """sxL𭴱Lb$󷜩5j""", t 2: 0.498568), z: 703148595)","3572-02"
+"Right(-128)","[(a: -1, nested: (num num: 4460929750738421, the text 0 item: """)M"""))]","1962-03-17 06:44:49 +07:56","(inner: (t 1: """󲦍Mp.""", t 2: -128), z: 0)","2779-01"
+"Left(0.726799)","[(a: 47, nested: (num num: 1590, the text 0 item: """kn9ZnZ a""")), (a: -2147483647, nested: (num num: -32768, the text 0 item: """vrr0""")), (a: 0.959485, nested: (num num: 127, the text 0 item: """UNITS"""))]","3542-08-22 09:58:20.498605054 America/Dawson_Creek","(inner: (t 1: """COLUMNAL""", t 2: -2147483647), z: 81)","0330-10"
+"Left(0)","[(a: -2147483648, nested: (num num: -9223372036854775808, the text 0 item: """R/""")), (a: 36255646, nested: (num num: -9223372036854775809, the text 0 item: """INCOMPLETE"""))]","2030-02-01 14:29:51.372424417 +06:46","(inner: (t 1: """m r""", t 2: -9223372036854775809), z: 127)","8713-08"
+"Right(1)","[(a: 2, nested: (num num: -2147483649, the text 0 item: """/%􁔜yV5l D7􋟸𰉦"""))]","1923-11-07 01:58:32.833025574 -08:29","(inner: (t 1: """Number""", t 2: 718), z: 32767)","0967-01"
+"Left(6789)","[(a: -128, nested: (num num: -127, the text 0 item: """BEGIN""")), (a: 2147483648, nested: (num num: 404, the text 0 item: """𤯵"""))]","1934-10-28 12:13:22.309654831 +03:55","(inner: (t 1: """u 9""", t 2: -2147483647), z: 230126481905)","4036-07"
+"Right(7)","[(a: 2147483648, nested: (num num: 9223372036854775808, the text 0 item: """M􄅅n/"""))]","1923-04-02 22:02:00 -04:20","(inner: (t 1: """lu""", t 2: -2147483649), z: -9223372036854775807)","6308-02"
+"Right(9223372036854775807)","[(a: 2147483647, nested: (num num: -9223372036854775807, the text 0 item: """7􅦯""")), (a: 2392, nested: (num num: 2031533, the text 0 item: """TRANSFORMATION""")), (a: -2147483648, nested: (num num: -9223372036854775808, the text 0 item: """tn""")), (a: -32767, nested: (num num: 0, the text 0 item: """r𮕭*폴Q"""))]","8826-05-24 13:13:00 Etc/GMT-10","(inner: (t 1: """DateTimeZoned""", t 2: -128), z: 6)","2226-11"
+"Right(174055825123325)","[(a: -1, nested: (num num: 2147483648, the text 0 item: """𨣸𦙬m󽚲""")), (a: 9223372036854775807, nested: (num num: -32767, the text 0 item: """unnn9"""))]","1925-08-06 01:11:12 Arctic/Longyearbyen","(inner: (t 1: """tagged""", t 2: 322037), z: -2147483648)","2469-03"
+"Left(-2147483649)","[(a: 1, nested: (num num: 127, the text 0 item: """X""")), (a: 7101, nested: (num num: -128, the text 0 item: """fZ Z"""))]","1964-09-22 05:45:36 +11:11","(inner: (t 1: """'PoLFKvkZuJ=G􂣉챙}[r🃇𣀗\""", t 2: 2), z: -127)","4715-01"
+"Right(-32768)","[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: """󾛞 󾊳󵺚|IaM󰈠I𲟀7C𡒔#*fL𝥓j[𗃦D"""))]","2025-10-20 11:43:21 Etc/GMT-0","(inner: (t 1: """yn0raZ9""", t 2: 442292410497767098051), z: -127)","7664-12"
+"Left(-2147483649)","[(a: 2106896, nested: (num num: -32768, the text 0 item: """a""")), (a: 0.415984, nested: (num num: 31686684464954658768, the text 0 item: """6W"""))]","2687-03-09 18:18:12 +06:20","(inner: (t 1: """R5{""", t 2: 0.598802), z: 105597)","0400-03"
+"Right(-2147483648)","[(a: 0, nested: (num num: 127, the text 0 item: """COLUMN""")), (a: -9223372036854775807, nested: (num num: 9223372036854775807, the text 0 item: """Z>""")), (a: -2147483649, nested: (num num: 6060228, the text 0 item: """+}N􁻴P{""")), (a: 32490, nested: (num num: -9223372036854775807, the text 0 item: """g9ar9a r"""))]","8972-04-03 23:09:29.502145641 -10:48","(inner: (t 1: """)󼅯""", t 2: -2147483649), z: 0.956357)","7247-09"
+"Right(3)","[(a: -127, nested: (num num: -32768, the text 0 item: """y0 nra00"""))]","2031-06-28 20:02:40 Europe/Sarajevo","(inner: (t 1: """󺊯""", t 2: 9223372036854775808), z: 127)","3022-01"
+"Left(-32767)","[(a: 127, nested: (num num: 0.957399, the text 0 item: """Aja𧸙""")), (a: -32768, nested: (num num: 0, the text 0 item: """Boolean""")), (a: 0.943392, nested: (num num: -2147483649, the text 0 item: """*8uW󰯝I;Q]刄B𥡒>{"""))]","1908-07-05 17:27:33 -03:19","(inner: (t 1: """✓y􁉼S􍋄󻢺""", t 2: 1), z: 12)","3878-01"
+"Right(8885008)","[(a: 0.960664, nested: (num num: 2147483647, the text 0 item: """EP""")), (a: 7, nested: (num num: 509, the text 0 item: """d(#s{""")), (a: -9223372036854775808, nested: (num num: 9223372036854775807, the text 0 item: """COLUMNAL""")), (a: 127, nested: (num num: 1, the text 0 item: """unitvar"""))]","1931-06-13 17:30:21.322650945 -06:06","(inner: (t 1: """Time""", t 2: -127), z: 9223372036854775808)","0849-04"
+"Left(9223372036854775807)","[(a: 0.279333, nested: (num num: 219303838, the text 0 item: """TEXTFILE""")), (a: -2147483649, nested: (num num: 0.720876, the text 0 item: """{1&S?灱""")), (a: -9223372036854775807, nested: (num num: 0.470358, the text 0 item: """k"""))]","2050-10-19 15:43:00 +07:05","(inner: (t 1: """un00""", t 2: 2147483647), z: 132)","3954-12"
+"Right(0)","[(a: 217374292551, nested: (num num: 5719, the text 0 item: """a"""))]","1932-11-23 12:36:57.752499892 +11:56","(inner: (t 1: """-#~G1""", t 2: -2147483647), z: -2147483648)","9812-11"
+"Left(5640531)","[(a: 0.721197, nested: (num num: 334472, the text 0 item: """0X,]nM4 """)), (a: -32768, nested: (num num: -1, the text 0 item: """COLUMNAL"""))]","1999-05-02 12:26:53.810998272 America/Thunder_Bay","(inner: (t 1: """hZ 9r 9 rn""", t 2: 10), z: 2147483647)","3879-03"
+"Right(2671)","[(a: 783995, nested: (num num: 9223372036854775808, the text 0 item: """v99Z r9r99r""")), (a: 127, nested: (num num: -2147483649, the text 0 item: """dnZ""")), (a: 0, nested: (num num: 9223372036854775808, the text 0 item: """7Tfnムh""")), (a: 9223372036854775808, nested: (num num: -2147483647, the text 0 item: """TYPES"""))]","1940-06-09 10:24:55 -06:28","(inner: (t 1: """DateYM""", t 2: -128), z: 9223372036854775808)","4740-05"
+"Right(-2147483649)","[(a: 11, nested: (num num: 253, the text 0 item: """znr9009Zn""")), (a: -127, nested: (num num: 32767, the text 0 item: """􃟾10E4Q9 """)), (a: -2147483647, nested: (num num: 0, the text 0 item: """apply"""))]","1941-09-06 17:58:16 Etc/GMT-3","(inner: (t 1: """s'l.9?\I󹺤S𮃝""", t 2: 32677), z: 17020)","0827-10"
+"Right(-9223372036854775807)","[(a: 7862, nested: (num num: -128, the text 0 item: """pr00rr""")), (a: 3, nested: (num num: 6, the text 0 item: """ja""")), (a: 0.070006, nested: (num num: 7290, the text 0 item: """DEFAULT"""))]","2011-08-24 18:20:18.472170629 Europe/Kiev","(inner: (t 1: """9I󸀹󳝃𧹞9}霡""", t 2: 6), z: -2147483647)","1330-06"
+"Left(0)","[(a: 2147483648, nested: (num num: -127, the text 0 item: """n󳒡I""")), (a: 502905097319, nested: (num num: 386, the text 0 item: """8""")), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: """v^c𪃻"""))]","1906-11-15 09:12:34 Asia/Dacca","(inner: (t 1: """q Zrn nn""", t 2: 0.762886), z: 1)","5377-07"
+"Left(48)","[(a: -2147483648, nested: (num num: 2147483648, the text 0 item: """􈇄𭄧o"""))]","1919-10-23 13:13:45.071810318 Canada/Central","(inner: (t 1: """va""", t 2: 23224962), z: 2147483647)","2654-05"
+"Left(-32768)","[(a: 167, nested: (num num: 2147483648, the text 0 item: """𫗥P𠦮𧘓]lB]~c5ﵞ{ MyⳲ'2""")), (a: 0.068239, nested: (num num: -2147483647, the text 0 item: """𝋌M/?𓶛%1""")), (a: -32768, nested: (num num: 7401725734, the text 0 item: """]-𱫻ra.JuⲜLS臾%*𛆽􄷂> d9"""))]","1992-11-24 19:06:53.093158142 -08:32","(inner: (t 1: """j0""", t 2: 2666), z: 0.404686)","6362-08"
+"Left(120)","[(a: 46, nested: (num num: -2147483647, the text 0 item: """Time""")), (a: 38, nested: (num num: 0, the text 0 item: """invalidtypeops""")), (a: 423392202177115836, nested: (num num: 9223372036854775808, the text 0 item: """n9a0 a9nZ"""))]","1914-04-14 19:43:00 -08:49","(inner: (t 1: """!r""", t 2: 4), z: -1)","4492-08"
+"Right(-2147483649)","[(a: 9223372036854775807, nested: (num num: 2694000995475377921, the text 0 item: """a9nr90a 0n""")), (a: 2147483647, nested: (num num: 1, the text 0 item: """a""")), (a: 941007, nested: (num num: -32767, the text 0 item: """a􃞻""")), (a: 1, nested: (num num: -9223372036854775808, the text 0 item: """cr9n0"""))]","1994-09-30 15:03:33.757368674 Africa/Timbuktu","(inner: (t 1: """TYPE""", t 2: 15), z: 2)","5636-07"
+"Left(2147483647)","[(a: -2147483648, nested: (num num: 0.574356, the text 0 item: """󳤇􈙝Ul[(>&􃼚_cO""")), (a: 0, nested: (num num: 0, the text 0 item: """􆖞󲼽Z+{'#궺C}t𤗺[]𨥋"""))]","1936-03-24 00:48:26.815519889 -01:36","(inner: (t 1: """㗱Qf!eg󻗏""", t 2: 5849250322033), z: 130216048609625978)","9938-02"
+"Left(53886901308828)","[(a: 0.808254, nested: (num num: 48, the text 0 item: """.x,/?4[b𦗙=XVJ"""))]","1947-08-11 03:26:05 America/Cambridge_Bay","(inner: (t 1: """Z""", t 2: 32767), z: -9223372036854775808)","5079-07"
+"Left(2098930612883740671)","[(a: 1, nested: (num num: -2147483649, the text 0 item: """DateTime""")), (a: 8804, nested: (num num: 1, the text 0 item: """TRANSFORMATION""")), (a: 1, nested: (num num: -2147483649, the text 0 item: """n"""))]","1945-06-16 20:15:49 +01:46","(inner: (t 1: """VERSION""", t 2: -2147483649), z: -2147483649)","7385-03"
+"Right(1096974090172)","[(a: 4842, nested: (num num: 0.83442, the text 0 item: """a""")), (a: 0.106409, nested: (num num: -1, the text 0 item: """lr""")), (a: 6, nested: (num num: 4, the text 0 item: """h0""")), (a: 9223372036854775808, nested: (num num: 40449426, the text 0 item: """a"""))]","2049-11-07 16:18:00 America/Santiago","(inner: (t 1: """+,&PjW(ib<""", t 2: 205888204), z: 57410220)","9077-05"
+"Right(-32768)","[(a: 0.999822, nested: (num num: 1, the text 0 item: """UNITS""")), (a: -127, nested: (num num: -128, the text 0 item: """󶆵􇒠}""")), (a: 0.418055, nested: (num num: 0, the text 0 item: """t^cP""")), (a: 0.000726, nested: (num num: 130922325, the text 0 item: """1󳝨"""))]","2010-05-17 06:24:00 Asia/Nicosia","(inner: (t 1: """DEFAULT""", t 2: -9223372036854775807), z: 12753)","7789-09"
+"Right(-9223372036854775808)","[(a: 32767, nested: (num num: 1, the text 0 item: """er 00ZrZa""")), (a: 3199, nested: (num num: 36912, the text 0 item: """h n9ZZ00an""")), (a: 15271, nested: (num num: -9223372036854775808, the text 0 item: """END""")), (a: 0.076321, nested: (num num: 1087, the text 0 item: """/|"""))]","4590-12-22 22:39:04.702448266 Etc/GMT+6","(inner: (t 1: """a""", t 2: 32767), z: 0.335546)","6044-06"
+"Right(0.794689)","[(a: -2147483649, nested: (num num: 405875875084, the text 0 item: """딵1;A󷾝""")), (a: 21209, nested: (num num: 0.797814, the text 0 item: """typevar"""))]","1904-01-11 06:50:30.379103114 Europe/Athens","(inner: (t 1: """=󿑆/""", t 2: 9223372036854775808), z: 0.991162)","9033-04"
+"Right(2147483648)","[(a: 2147483648, nested: (num num: 9223372036854775807, the text 0 item: """𦶂󲖝5O$󷷘󻃋#""")), (a: 127, nested: (num num: 143314992735, the text 0 item: """a"""))]","2036-08-07 17:59:18.209294271 America/Paramaribo","(inner: (t 1: """[m뙺""", t 2: 15112), z: 29)","3358-10"
+"Left(127)","[(a: 2147483647, nested: (num num: 2147483648, the text 0 item: """qrr""")), (a: 1378474095, nested: (num num: -32767, the text 0 item: """l0rnrnar""")), (a: -9223372036854775809, nested: (num num: 167, the text 0 item: """^c\}7Q𫨩a""")), (a: 0.415789, nested: (num num: -1, the text 0 item: """lZan"""))]","1963-10-21 11:36:07 -00:07","(inner: (t 1: """TRANSFORMATION""", t 2: -1), z: 2147483648)","1185-03"
+"Right(2834020840963942)","[(a: -9223372036854775808, nested: (num num: 127, the text 0 item: """ 𮥍y[􌨴󷮩="""))]","1908-07-18 05:16:37.726581204 Asia/Khandyga","(inner: (t 1: """𝕍k𳁆󴰤r㐵""", t 2: -9223372036854775808), z: 2147483648)","1543-09"
+"Right(104)","[(a: -9223372036854775808, nested: (num num: 107689, the text 0 item: """pr909""")), (a: 725480217713381, nested: (num num: 1363313028, the text 0 item: """Kmg\𢨣,$Q󰤄Gn""")), (a: 4959, nested: (num num: -9223372036854775808, the text 0 item: """k0a"""))]","2027-09-17 02:40:25.454070769 Asia/Bangkok","(inner: (t 1: """𩔱""", t 2: -2147483649), z: 32254)","6369-02"
+"Right(0.721903)","[(a: 0.109597, nested: (num num: 28886, the text 0 item: """r0"""))]","3649-09-24 10:20:00 +02:24","(inner: (t 1: """VALUES""", t 2: 1), z: 2147483647)","2626-04"
+"Left(-127)","[(a: 161, nested: (num num: 29, the text 0 item: """%;""")), (a: 0.271438, nested: (num num: 6561923737, the text 0 item: """BEGIN""")), (a: -9223372036854775808, nested: (num num: 3, the text 0 item: """;""")), (a: -1, nested: (num num: 9223372036854775807, the text 0 item: """TEXTFILE"""))]","1946-12-26 03:23:40 +06:29","(inner: (t 1: """ͣ𠨭󻍰3(󹖴?uU}𨟪J""", t 2: 48), z: -9223372036854775808)","7527-12"
+"Right(32335024646149510854)","[(a: 1, nested: (num num: 0.080564, the text 0 item: """COLUMN""")), (a: -1, nested: (num num: -127, the text 0 item: """er9r""")), (a: -128, nested: (num num: -2147483648, the text 0 item: """lr0 Zr""")), (a: 9223372036854775808, nested: (num num: 127, the text 0 item: """ta9an"""))]","5450-08-02 16:17:26.362748469 Europe/Moscow","(inner: (t 1: """🗨3Y'""", t 2: 122), z: 0.170487)","0716-12"
+"Left(0)","[(a: -32768, nested: (num num: 2516296, the text 0 item: """vrnn""")), (a: 4, nested: (num num: -2147483649, the text 0 item: """qZ9a9a"""))]","0029-01-26 13:16:00 -08:16","(inner: (t 1: """urr""", t 2: 478942912), z: -2147483648)","6473-10"
+"Right(1)","[(a: -2147483647, nested: (num num: 9223372036854775807, the text 0 item: """/""")), (a: -9223372036854775809, nested: (num num: 0, the text 0 item: """xnara000"""))]","1930-02-07 23:12:26.487227449 Etc/GMT+2","(inner: (t 1: """%""", t 2: -9223372036854775809), z: 15147)","9099-08"
+"Left(245)","[(a: -32767, nested: (num num: 6, the text 0 item: """a""")), (a: 0, nested: (num num: 2690, the text 0 item: """i9na""")), (a: 1, nested: (num num: -1, the text 0 item: """󹃟Y"""))]","2006-05-31 21:19:33.393116614 America/Argentina/Ushuaia","(inner: (t 1: """COLUMN""", t 2: 51549), z: 2147483648)","0899-05"
+"Left(253292)","[(a: 2147483648, nested: (num num: -2147483647, the text 0 item: """b%N}""")), (a: 103, nested: (num num: 32037665236, the text 0 item: """Z""")), (a: -127, nested: (num num: -2147483649, the text 0 item: """a"""))]","1937-09-21 01:23:10 -05:03","(inner: (t 1: """N'!V:E""", t 2: 15), z: 2042)","0598-09"
+"Right(2664842)","[(a: 17, nested: (num num: 127, the text 0 item: """G󰛴{^c7""")), (a: 0.867852, nested: (num num: 2147483648, the text 0 item: """Number""")), (a: -2147483648, nested: (num num: 4, the text 0 item: """V"""))]","4901-02-27 09:51:00 +09:28","(inner: (t 1: """brnaaaran""", t 2: 9223372036854775808), z: 98525534601)","6472-02"
+"Right(1)","[(a: 0, nested: (num num: 2147483647, the text 0 item: """Number""")), (a: 28024686817, nested: (num num: 191757526, the text 0 item: """bn n""")), (a: -32767, nested: (num num: 3218532, the text 0 item: """r""")), (a: -2147483648, nested: (num num: 2147483648, the text 0 item: """ZAGZjz*K"""))]","2048-10-19 05:36:03.85185028 America/Porto_Acre","(inner: (t 1: """apply""", t 2: 24357), z: 5262668304143)","5035-08"
+"Left(-9223372036854775807)","[(a: 0.479362, nested: (num num: 40594740428, the text 0 item: """𧈷N#oo󾰁_P𢭠𰲵|-[~Y """))]","2003-04-18 04:37:12.308992294 America/Ojinaga","(inner: (t 1: """~!Obg􊹺j""", t 2: 130325), z: -1)","0288-05"
+"Left(-9223372036854775807)","[(a: 0, nested: (num num: 34, the text 0 item: """1""")), (a: 1, nested: (num num: 0.725201, the text 0 item: """𤂑6w𢲶""")), (a: 1611874730, nested: (num num: -2147483649, the text 0 item: """:𥵹q""")), (a: 5, nested: (num num: 2147483647, the text 0 item: """a"""))]","1969-11-05 04:55:55.500990201 America/Phoenix","(inner: (t 1: """bZr""", t 2: 8), z: 2)","7312-12"
+"Right(127)","[(a: -2147483647, nested: (num num: 110817003, the text 0 item: """󽽈b􊝌&𧲞""")), (a: 11, nested: (num num: 15, the text 0 item: """f󳘹﯐.xA+𪋫e𥶩#""")), (a: 0, nested: (num num: -2147483648, the text 0 item: """󶘂]""")), (a: -1, nested: (num num: 43, the text 0 item: """)􏃁f|F~Z"""))]","1964-06-19 17:54:48 -02:42","(inner: (t 1: """D,tSz""", t 2: 9223372036854775808), z: -9223372036854775809)","7289-12"
+"Left(-2147483647)","[(a: 9223372036854775808, nested: (num num: -127, the text 0 item: """6-|u>󲎄BSP""")), (a: -9223372036854775809, nested: (num num: 0, the text 0 item: """%E""")), (a: 7986, nested: (num num: -9223372036854775807, the text 0 item: """on n"""))]","2023-05-20 21:50:21.365393372 +06:30","(inner: (t 1: """C􇛧4t𮃼􇤲 Bޠb/""", t 2: -127), z: 189)","4044-04"
+"Left(-127)","[(a: -1, nested: (num num: -2147483649, the text 0 item: """m0 ZrZna Z0""")), (a: 604721222274513, nested: (num num: 0, the text 0 item: """COLUMN""")), (a: -9223372036854775807, nested: (num num: 52, the text 0 item: """ganZ0""")), (a: -2147483648, nested: (num num: 127, the text 0 item: """츠📫#e~*Z󹷓6'K"""))]","1970-09-04 12:02:45 America/Cordoba","(inner: (t 1: """=v""", t 2: 2), z: 1264064)","6539-12"
+"Right(-127)","[(a: 1, nested: (num num: 69763102, the text 0 item: """a""")), (a: 96, nested: (num num: 5, the text 0 item: """󲈲|)R""")), (a: 32767, nested: (num num: 4567237794092, the text 0 item: """.7""")), (a: 75183, nested: (num num: 5, the text 0 item: """en9rZrn00"""))]","2044-12-21 22:14:00 -10:24","(inner: (t 1: """crnnZr r""", t 2: 9223372036854775807), z: 4251820237)","2339-01"
+"Left(1)","[(a: -9223372036854775809, nested: (num num: -32767, the text 0 item: """Z"""))]","1918-11-24 15:39:11.221135495 Pacific/Pago_Pago","(inner: (t 1: """1ꙫ""", t 2: -9223372036854775809), z: -32768)","1026-07"
+"Left(32767)","[(a: 460, nested: (num num: 0.513733, the text 0 item: """rn 9 0r"""))]","8393-10-09 10:30:00 Etc/GMT-7","(inner: (t 1: """BL+""", t 2: -32767), z: -127)","9085-09"
+"Right(9223372036854775807)","[(a: 1, nested: (num num: -2147483649, the text 0 item: """TYPES""")), (a: 12, nested: (num num: 0.591665, the text 0 item: """X*gix""")), (a: 32767, nested: (num num: 695, the text 0 item: """0skA𢨹f8hw\xy2ᱎ󶞗c""")), (a: 2147483648, nested: (num num: -2147483647, the text 0 item: """Ob𠿖􏈀󲸨h"""))]","2042-03-02 22:50:47.202567425 Pacific/Easter","(inner: (t 1: """4H,7%SK􀜬3$AqsA`}""", t 2: 32767), z: 0.758233)","0625-11"
+"Right(0.716204)","[(a: -9223372036854775807, nested: (num num: 0, the text 0 item: """_L;""")), (a: -9223372036854775807, nested: (num num: 5292784790, the text 0 item: """d r99""")), (a: 10, nested: (num num: 6318384, the text 0 item: """1%""")), (a: 0, nested: (num num: 0.621476, the text 0 item: """a"""))]","1929-08-07 15:32:39.323939163 Asia/Choibalsan","(inner: (t 1: """e0r0 n000n""", t 2: -9223372036854775809), z: -1)","4042-09"
+"Right(1054939)","[(a: 0, nested: (num num: 11, the text 0 item: """VN""")), (a: 119, nested: (num num: 914442, the text 0 item: """e ZZ""")), (a: 6, nested: (num num: 17112716799256912874784, the text 0 item: """Nw"""))]","1910-03-30 09:45:42 -09:56","(inner: (t 1: """I𬈑q4Pl""", t 2: 4509020), z: 53)","1553-03"
+"Right(0.968424)","[(a: 31, nested: (num num: 0.135982, the text 0 item: """B𓡱r""")), (a: 863, nested: (num num: 1, the text 0 item: """e+c"""))]","3715-06-18 12:50:30.459070058 Pacific/Bougainville","(inner: (t 1: """b0a Z 99""", t 2: -2147483647), z: -2147483648)","3480-10"
+"Left(-2147483647)","[(a: 3, nested: (num num: 0.74255, the text 0 item: """a""")), (a: 1, nested: (num num: 0, the text 0 item: """j n""")), (a: 13101, nested: (num num: -32768, the text 0 item: """Sb"""))]","2116-07-15 10:48:36 +00:40","(inner: (t 1: """rnr0Zra""", t 2: -9223372036854775807), z: -2147483648)","1792-09"
+"Left(9223372036854775807)","[(a: -1, nested: (num num: 13, the text 0 item: """bC>)SP󻺳􂢈Zw`i6"""))]","1927-07-17 09:51:05.409916877 +09:51","(inner: (t 1: """hr ar Zn""", t 2: 0.817856), z: 2147483648)","1718-03"
+"Left(-9223372036854775807)","[(a: 1, nested: (num num: -9223372036854775807, the text 0 item: """汊gV""")), (a: 9223372036854775808, nested: (num num: -9223372036854775808, the text 0 item: """wz󸫫LB(7B"""))]","1946-09-22 23:08:00 Australia/Lindeman","(inner: (t 1: """{󾵕􆐦bZ[""", t 2: 0.646839), z: 7804506341)","1229-07"
+"Left(-1)","[(a: 468579627570, nested: (num num: 1182935648214, the text 0 item: """pa""")), (a: 5498, nested: (num num: 208, the text 0 item: """TRANSFORMATION""")), (a: 0.252509, nested: (num num: 131754292, the text 0 item: """🙄𳍪𥫄𡬨""")), (a: 0, nested: (num num: -2147483649, the text 0 item: """ตS:{nf17"""))]","2000-04-15 09:59:00 America/Costa_Rica","(inner: (t 1: """􄆄k7i""", t 2: -9223372036854775808), z: -128)","3677-06"
+"Right(-127)","[(a: 718624, nested: (num num: 1, the text 0 item: """b9r""")), (a: -127, nested: (num num: 0.725721, the text 0 item: """a""")), (a: -128, nested: (num num: 0, the text 0 item: """󵵑ijM'vn`𠾩t𮆡􆌗𧶄􎂸d􂎡!㶒􋖏RB&fm/O)𞟦""")), (a: 1466511711, nested: (num num: -2147483647, the text 0 item: """%_*aTAϒ<#pye&𭋪Sm,jdo𱩀Jk"""))]","1928-12-01 05:25:48.142646399 -03:52","(inner: (t 1: """ya ZZaZ9nZ""", t 2: 1), z: 9223372036854775808)","1835-06"
+"Left(-32767)","[(a: -9223372036854775809, nested: (num num: 0.944141, the text 0 item: """wZa""")), (a: 1, nested: (num num: 1, the text 0 item: """iX}p𓽫H"""))]","3786-12-29 20:40:27.27113674 -00:57","(inner: (t 1: """DateYM""", t 2: 22885), z: -2147483648)","5583-12"
+"Right(0.559548)","[(a: 17, nested: (num num: 2147483648, the text 0 item: """e0"""))]","1941-06-03 03:50:03.102833546 -09:58","(inner: (t 1: """pnaZ0""", t 2: 77690), z: 1)","0213-10"
+"Left(-9223372036854775807)","[(a: 11, nested: (num num: 226, the text 0 item: """5m""")), (a: -32768, nested: (num num: 9223372036854775807, the text 0 item: """𮏓󷙞 K,=𑀣""")), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: """wa""")), (a: 1481232768, nested: (num num: -127, the text 0 item: """𫤝"""))]","1922-03-24 23:04:00 Etc/GMT-5","(inner: (t 1: """i0arr00""", t 2: 2147483648), z: 127)","6706-03"
+"Right(9223372036854775807)","[(a: 2147483648, nested: (num num: 30, the text 0 item: """רW""")), (a: 0, nested: (num num: 16, the text 0 item: """𪀨"""))]","1971-07-16 06:37:00 Etc/GMT","(inner: (t 1: """s90a""", t 2: -32767), z: -2147483647)","5068-09"
+"Right(127)","[(a: -9223372036854775808, nested: (num num: 1719, the text 0 item: """END""")), (a: 0.684886, nested: (num num: -32768, the text 0 item: """2=ﾨ󽡗⍇ev𫋒\r􆨇sK]:zj&=p􊷊PR3𓟲up`a􈩀""")), (a: 395129, nested: (num num: -9223372036854775809, the text 0 item: """Qa""")), (a: 9223372036854775807, nested: (num num: 0.836159, the text 0 item: """_Du ]IJ"""))]","2044-12-05 21:59:54.115211206 -07:02","(inner: (t 1: """X""", t 2: 0.910199), z: -32768)","7898-01"
+"Left(-32768)","[(a: -2147483648, nested: (num num: 985, the text 0 item: """gra90 9Z0Z"""))]","6057-06-08 23:41:51.700835387 +03:51","(inner: (t 1: """rZr r na0a""", t 2: 35648778), z: 84697)","3559-01"
+"Right(0)","[(a: 0, nested: (num num: 0, the text 0 item: """X叐""")), (a: 65469, nested: (num num: 301751, the text 0 item: """Number"""))]","1910-06-26 20:57:36 +04:09","(inner: (t 1: """a""", t 2: 63924601756509145), z: 9223372036854775808)","0237-06"
+"Right(183)","[(a: 0.121747, nested: (num num: 0.256532, the text 0 item: """^coU餜x嫣""")), (a: 0.661556, nested: (num num: 1, the text 0 item: """j9 r"""))]","2048-10-04 07:26:52 +03:53","(inner: (t 1: """w𥪿􉳤A:NPT󺂋x𑠢🉈O󱤫?""", t 2: 117), z: 0)","3070-08"
+"Right(194821)","[(a: 1, nested: (num num: -127, the text 0 item: """haZZ0a9""")), (a: -9223372036854775807, nested: (num num: 1053519017169, the text 0 item: """VALUES""")), (a: 0.661244, nested: (num num: 0.104904, the text 0 item: """󱦗CN􄟔\a0􅠑n󵌨""")), (a: 0, nested: (num num: 2147483647, the text 0 item: """hn n"""))]","1952-07-24 15:19:00 +03:40","(inner: (t 1: """]e}V,DAT=_jHZXg端K=)S#X󴃺r8N""", t 2: -9223372036854775807), z: 14867505518)","7586-07"
+"Right(-1)","[(a: 9223372036854775808, nested: (num num: -9223372036854775807, the text 0 item: """! $?𔐶yuWR""")), (a: 16322, nested: (num num: 0, the text 0 item: """𓟚+"""))]","1960-06-14 16:48:00 -08:44","(inner: (t 1: """<kz􆍳[􀇻`""", t 2: 32767), z: 500)","0745-03"
+"Left(177703125)","[(a: -1, nested: (num num: -32768, the text 0 item: """<J𰊖U󼛭􆦱+n 2D󺘫""")), (a: 19356, nested: (num num: 124, the text 0 item: """Time"""))]","1907-08-03 19:30:12.626820809 -03:55","(inner: (t 1: """CONTENT""", t 2: 0), z: 172861)","1221-12"
+"Right(-9223372036854775807)","[(a: 0.603549, nested: (num num: 3042, the text 0 item: """}""")), (a: 2147483648, nested: (num num: 210909, the text 0 item: """aZ""")), (a: -2147483648, nested: (num num: 3020, the text 0 item: """-"""))]","2004-08-04 03:23:34.553521864 +02:00","(inner: (t 1: """i na aZar0Z""", t 2: 0.584016), z: 0.288003)","0182-06"
+"Left(0)","[(a: 9223372036854775807, nested: (num num: 9223372036854775808, the text 0 item: """z𨒪5w]oVOum𘢄𱂟6{oB6u󴾥yj""")), (a: 30207920, nested: (num num: 0.820788, the text 0 item: """TYPE"""))]","2022-10-19 23:58:14 Asia/Amman","(inner: (t 1: """ianZ""", t 2: -2147483649), z: 32767)","7869-06"
+"Right(-2147483649)","[(a: 188357, nested: (num num: 126, the text 0 item: """]h(q*q(s""")), (a: -128, nested: (num num: -32767, the text 0 item: """z""")), (a: 0, nested: (num num: 7571444525, the text 0 item: """m3g􎗴$Ai􀽋􊡟""")), (a: 0, nested: (num num: -1, the text 0 item: """OUQ󳤟"""))]","1953-09-15 13:37:00 +03:21","(inner: (t 1: """i0 nZ 0 r9""", t 2: -9223372036854775808), z: 0)","1773-04"
+"Left(919899106098)","[(a: -2147483649, nested: (num num: 32767, the text 0 item: """DateTimeZoned"""))]","1956-12-26 19:27:00 Libya","(inner: (t 1: """Y""", t 2: 34), z: 20833234719)","3683-09"
+"Left(-9223372036854775809)","[(a: 1, nested: (num num: 0, the text 0 item: """b"""))]","1972-01-08 05:40:11 +03:48","(inner: (t 1: """Q""", t 2: 32767), z: 6173073693)","4535-11"
+"Left(3903211)","[(a: 5476, nested: (num num: 59815149, the text 0 item: """9""")), (a: 0.205018, nested: (num num: -32768, the text 0 item: """Boolean"""))]","1966-03-27 01:12:27.079696914 Etc/UCT","(inner: (t 1: """DATA""", t 2: 32767), z: 0.595212)","1554-10"
+"Right(1283181364)","[(a: -32767, nested: (num num: 28073, the text 0 item: """xZa09rZna""")), (a: 2147483648, nested: (num num: 2147483647, the text 0 item: """g9""")), (a: 0, nested: (num num: -2147483648, the text 0 item: """cZZn9 an""")), (a: -128, nested: (num num: 4110735756750, the text 0 item: """iE"""))]","1963-04-28 10:17:15.667969787 -08:04","(inner: (t 1: """%𣢜t󾋳""", t 2: -32767), z: -2147483647)","9787-08"
+"Right(0)","[(a: -2147483647, nested: (num num: 0, the text 0 item: """􏪤􎁸⳻𪬮W󸺡"""))]","1956-08-13 05:35:16.082883172 America/Argentina/Buenos_Aires","(inner: (t 1: """dm""", t 2: -9223372036854775807), z: 1)","1995-10"
+"Left(1356)","[(a: 2147483648, nested: (num num: 2147483647, the text 0 item: """UNITS"""))]","1908-09-13 23:32:41.581658792 +07:47","(inner: (t 1: """t0nn 99Z""", t 2: 0), z: 43017724)","8651-07"
+"Right(-9223372036854775807)","[(a: 0, nested: (num num: -9223372036854775807, the text 0 item: """rZZ0 ran""")), (a: 2147483648, nested: (num num: 334, the text 0 item: """𬷻1mr"""))]","6208-11-23 06:19:23.695421291 +00:18","(inner: (t 1: """un9 r9Z""", t 2: 9223372036854775808), z: 636529031)","4753-12"
+"Left(4)","[(a: 281204314079, nested: (num num: 2211434152628498, the text 0 item: """CONTENT""")), (a: -9223372036854775807, nested: (num num: 300755355225, the text 0 item: """C*􌾗""")), (a: -1, nested: (num num: 0.916364, the text 0 item: """aWp;c涷0"""))]","3810-08-22 14:59:44 +07:00","(inner: (t 1: """9&O𒄼l_""", t 2: 107376), z: -9223372036854775808)","0234-03"
+"Left(0.734134)","[(a: 345710986418, nested: (num num: -32768, the text 0 item: """w9n""")), (a: 26, nested: (num num: -9223372036854775809, the text 0 item: """SOURCE""")), (a: 23, nested: (num num: 51019858, the text 0 item: """𦛈\㭤􋏞0""")), (a: 5997322955005, nested: (num num: 0.591697, the text 0 item: """i0a aZ a"""))]","1913-02-21 02:28:59.255892397 -00:51","(inner: (t 1: """ls""", t 2: 4), z: -1)","1977-08"
+"Right(-1)","[(a: 3533196911, nested: (num num: 1579, the text 0 item: """䗖A𠿐""")), (a: -128, nested: (num num: -9223372036854775808, the text 0 item: """g0""")), (a: 3844435, nested: (num num: 0.629018, the text 0 item: """3,XM󾌐[PR𥇷{&hD3275/雷""")), (a: 22896, nested: (num num: -9223372036854775809, the text 0 item: """hC"""))]","1919-11-01 00:54:33.976089196 Indian/Cocos","(inner: (t 1: """bra""", t 2: -9223372036854775809), z: 2665632206542494)","8561-06"
+"Left(-32767)","[(a: 109984, nested: (num num: 65, the text 0 item: """A""")), (a: 24, nested: (num num: -127, the text 0 item: """T[ナ􊿖"""))]","8354-09-26 09:50:34.699937071 Africa/Djibouti","(inner: (t 1: """gaZn""", t 2: 743667), z: -2147483648)","5806-03"
+"Right(0)","[(a: 2147483648, nested: (num num: 29533, the text 0 item: """a""")), (a: 1, nested: (num num: 24, the text 0 item: """󿛐𤖒"""))]","1944-02-23 21:18:04 Canada/Central","(inner: (t 1: """COLUMNAL""", t 2: 0.8397), z: -127)","2232-03"
+"Left(-2147483648)","[(a: 131132, nested: (num num: 12, the text 0 item: """𥁔G""")), (a: 40882661727, nested: (num num: 75199784622, the text 0 item: """a""")), (a: -9223372036854775808, nested: (num num: 0, the text 0 item: """%4|<""")), (a: 0, nested: (num num: 18322936931, the text 0 item: """TYPES"""))]","4470-12-19 18:25:56.862475113 +04:27","(inner: (t 1: """sZr""", t 2: 5), z: 0.863093)","9256-12"
+"Right(0.035194)","[(a: -32768, nested: (num num: 15852, the text 0 item: """𣋟`􀨾􇤎qꋚ𘥾7E𰜓2M;R࣠""")), (a: 30364111971, nested: (num num: 23, the text 0 item: """Number"""))]","3197-07-05 20:49:20.457452042 Australia/Perth","(inner: (t 1: """leJlݾp󵶣<""", t 2: 0.154473), z: 1)","8721-11"
+"Right(50587)","[(a: 660, nested: (num num: 9223372036854775808, the text 0 item: """멪.<ᙯ𓎈"""))]","2006-06-20 03:51:47 +06:01","(inner: (t 1: """l Z""", t 2: 2147483647), z: 0)","9960-05"
+"Right(-9223372036854775807)","[(a: 2147483647, nested: (num num: 0.375463, the text 0 item: """invalidtypeops""")), (a: 651753712, nested: (num num: 32767, the text 0 item: """􎉄3"""))]","1913-05-21 10:29:00 Europe/Bucharest","(inner: (t 1: """yk""", t 2: -2147483647), z: -2147483647)","6084-10"
+"Left(2147483647)","[(a: 9223372036854775807, nested: (num num: 0.079348, the text 0 item: """xZan 999a"""))]","1977-08-10 09:26:00.377689132 -06:52","(inner: (t 1: """y 0 9990""", t 2: 32767), z: 429)","9694-03"
+"Right(0)","[(a: 1, nested: (num num: -2147483647, the text 0 item: """Number""")), (a: 2, nested: (num num: 435, the text 0 item: """Kuc3􉍕""")), (a: -2147483647, nested: (num num: 91, the text 0 item: """invalidtypeops"""))]","1926-10-16 07:25:30.486263459 +07:21","(inner: (t 1: """f𥚦2n""", t 2: 127), z: -9223372036854775807)","6952-08"
+"Right(-32767)","[(a: 20175, nested: (num num: 87928704837242774793, the text 0 item: """Sw􃔻2iF_㽷)䝧""")), (a: 6013, nested: (num num: 1607, the text 0 item: """!sy""")), (a: 597, nested: (num num: 3, the text 0 item: """T:Qi󶻜`橚^cQ""")), (a: -127, nested: (num num: 461785542921504, the text 0 item: """𭪡dJU𮰟Ss6^a󷖗􅼢NꥠO1𰐲"""))]","1940-03-18 07:21:00 +03:42","(inner: (t 1: """q9""", t 2: 59182), z: 0)","4016-05"
+"Left(36)","[(a: 9223372036854775807, nested: (num num: -9223372036854775808, the text 0 item: """VERSION""")), (a: 32767, nested: (num num: -9223372036854775807, the text 0 item: """srnn Zn Zn0""")), (a: 2147483647, nested: (num num: 28, the text 0 item: """o aarZ"""))]","1928-06-18 10:51:44.472672133 America/Guyana","(inner: (t 1: """a""", t 2: 4), z: -32768)","6254-08"
+"Right(9223372036854775807)","[(a: 0, nested: (num num: 2719, the text 0 item: """p6""")), (a: 1675866, nested: (num num: -1, the text 0 item: """nnn rZ""")), (a: -2147483647, nested: (num num: 9223372036854775808, the text 0 item: """󰫼쉦C?= }􈺘C􍸝"""))]","1905-05-07 12:02:48 -02:25","(inner: (t 1: """hZnra""", t 2: -9223372036854775807), z: 80)","6397-03"
+"Left(2147483647)","[(a: 7, nested: (num num: 67, the text 0 item: """eZ""")), (a: 18028392685, nested: (num num: -128, the text 0 item: """𓤝t󸹱W􆒂""")), (a: 9223372036854775807, nested: (num num: 9223372036854775807, the text 0 item: """G>7尀𬝶^c"""))]","1919-08-14 12:41:01.409995365 Etc/GMT-0","(inner: (t 1: """􍍶7twA7""", t 2: 0), z: 43)","2254-11"
+"Left(-127)","[(a: 127, nested: (num num: 6146, the text 0 item: """_ubb,W""")), (a: 1, nested: (num num: -9223372036854775807, the text 0 item: """a"""))]","1902-05-16 19:08:21 Africa/Conakry","(inner: (t 1: """ꅾ=<""", t 2: 9223372036854775807), z: 0)","9248-06"
+"Left(-9223372036854775809)","[(a: -9223372036854775808, nested: (num num: 47090, the text 0 item: """󽖣^c"""))]","6514-12-02 03:29:20.37471439 America/Scoresbysund","(inner: (t 1: """wrn00""", t 2: 9223372036854775807), z: -1)","9051-09"
+"Left(3674229553054682820482)","[(a: -9223372036854775808, nested: (num num: -9223372036854775809, the text 0 item: """END"""))]","2019-05-22 16:37:54 -06:46","(inner: (t 1: """M""", t 2: -2147483648), z: -2147483647)","3156-11"
+"Left(12425)","[(a: -9223372036854775808, nested: (num num: 0, the text 0 item: """na0an0 0r""")), (a: -32768, nested: (num num: 37087475476, the text 0 item: """NjS1🀾𤽑􁉄𲟹4di𱈮S"""))]","1986-03-10 16:33:00 -04:06","(inner: (t 1: """h9nn9""", t 2: 52), z: 1)","4187-06"
+"Left(20)","[(a: 43930165365030, nested: (num num: 1, the text 0 item: """J?^c."""))]","1900-08-26 06:10:09.357634624 +08:32","(inner: (t 1: """Number""", t 2: -2147483649), z: 2147483648)","0515-03"
+"Right(31751378)","[(a: 0.058942, nested: (num num: -128, the text 0 item: """r09 rnZZ""")), (a: 28, nested: (num num: -9223372036854775807, the text 0 item: """*""")), (a: -9223372036854775809, nested: (num num: 1, the text 0 item: """a""")), (a: 144, nested: (num num: -127, the text 0 item: """:8+G􉢔X"""))]","2603-04-08 19:46:00 -03:01","(inner: (t 1: """O;""", t 2: -9223372036854775808), z: -9223372036854775807)","9234-08"
+"Right(-9223372036854775809)","[(a: -2147483647, nested: (num num: -1, the text 0 item: """筠kn9""")), (a: 27341, nested: (num num: 802417, the text 0 item: """zZrra"""))]","3562-07-14 01:30:47 +05:52","(inner: (t 1: """o􋪊'DﾷU>􆖐4H􃅪""", t 2: 27137779200880040), z: 63816)","2959-10"
+"Right(0.180388)","[(a: -9223372036854775807, nested: (num num: 2407437311, the text 0 item: """ei𧥡r'YNR}}""")), (a: 9223372036854775808, nested: (num num: 302, the text 0 item: """fannnZa9Zn""")), (a: 127, nested: (num num: 0, the text 0 item: """tagged""")), (a: 6, nested: (num num: 43173738013, the text 0 item: """c0na"""))]","1917-12-28 08:31:00 +09:23","(inner: (t 1: """;𤴋1$""", t 2: 2147483648), z: -2147483649)","7058-08"
+"Left(0)","[(a: 2147483648, nested: (num num: 7220077, the text 0 item: """H""")), (a: 0, nested: (num num: -2147483647, the text 0 item: """h""")), (a: -2147483649, nested: (num num: -32767, the text 0 item: """䣜󱁲^c󶰞􀧘Q"""))]","2035-06-22 04:08:40 -02:36","(inner: (t 1: """𪶀}𭫕ns~?:R""", t 2: 7451074067), z: 1)","3154-05"
+"Left(0)","[(a: -128, nested: (num num: 4, the text 0 item: """Q-𗲮HZ󾷣""")), (a: 0, nested: (num num: 9223372036854775807, the text 0 item: """g n 9Z0""")), (a: 2371, nested: (num num: -1, the text 0 item: """an""")), (a: -127, nested: (num num: 0.873727, the text 0 item: """pn090r9r9r"""))]","4065-10-04 21:22:00 +03:31","(inner: (t 1: """Text""", t 2: -32767), z: -9223372036854775809)","7994-08"
+"Right(4)","[(a: 2033, nested: (num num: 0, the text 0 item: """Boolean""")), (a: 2204, nested: (num num: 230, the text 0 item: """b0Z"""))]","1911-10-09 11:39:57 -01:37","(inner: (t 1: """𓨐fPU""", t 2: 108614), z: -2147483649)","7522-08"
+"Left(0.319684)","[(a: 0.048034, nested: (num num: 1, the text 0 item: """}𱉔𑴏k^aXIZ􌟰Tc""")), (a: 9223372036854775807, nested: (num num: -32768, the text 0 item: """Date""")), (a: 0.415621, nested: (num num: 2147483648, the text 0 item: """󸾪""")), (a: -1, nested: (num num: -9223372036854775808, the text 0 item: """AS"""))]","2035-06-23 20:55:36.455261033 +09:27","(inner: (t 1: """Date""", t 2: -9223372036854775809), z: 885859)","0197-05"
+"Left(-9223372036854775809)","[(a: 113, nested: (num num: 127, the text 0 item: """沣"""))]","2033-12-07 03:00:11 Europe/Mariehamn","(inner: (t 1: """v󿳤DX|edY""", t 2: 23), z: -9223372036854775808)","6743-11"
+"Left(-1)","[(a: 12623873857, nested: (num num: 2147483648, the text 0 item: """󱮿~S>GḁZ;(!q""")), (a: 2147483647, nested: (num num: 0.6577, the text 0 item: """|󽁕]~G_""")), (a: 2792, nested: (num num: -2147483649, the text 0 item: """$􅦱岚G""")), (a: -32768, nested: (num num: 0, the text 0 item: """a"""))]","1948-05-18 22:14:17 America/Anchorage","(inner: (t 1: """typevar""", t 2: -2147483648), z: 8071472941461)","0141-08"
+"Left(9223372036854775807)","[(a: 79, nested: (num num: 32767, the text 0 item: """b00"""))]","1617-09-07 07:33:20 Africa/Juba","(inner: (t 1: """TYPES""", t 2: 1), z: 4839)","3850-12"
+"Left(-32768)","[(a: 0, nested: (num num: 1032, the text 0 item: """W<^aW$<S5""")), (a: -2147483648, nested: (num num: -128, the text 0 item: """jara99r0"""))]","1918-05-03 03:31:39 Asia/Hovd","(inner: (t 1: """u09ra ZZr""", t 2: 22468), z: -2147483648)","7680-10"
+"Left(-9223372036854775807)","[(a: 100, nested: (num num: -128, the text 0 item: """!r𪵼SYztdG^au[Ta~O"""))]","1949-05-20 23:21:26 Antarctica/Casey","(inner: (t 1: """z𥭱YY2𧌅5""", t 2: 1036072), z: 32767)","5700-10"
+"Left(-9223372036854775807)","[(a: 386, nested: (num num: 0.860161, the text 0 item: """W""")), (a: 157245662, nested: (num num: 29480084, the text 0 item: """v-m""")), (a: 9223372036854775808, nested: (num num: 576, the text 0 item: """%""")), (a: -1, nested: (num num: 2, the text 0 item: """ze􏥠}𮐎{v}"""))]","2040-10-15 19:14:46 Pacific/Honolulu","(inner: (t 1: """^c=`N󵄘𩠐m""", t 2: 594842), z: 2)","6256-03"
+"Right(-32768)","[(a: 5, nested: (num num: -2147483649, the text 0 item: """a""")), (a: -9223372036854775809, nested: (num num: 127, the text 0 item: """vZ"""))]","1926-11-11 18:16:00 America/Guayaquil","(inner: (t 1: """t0n909 n9ra""", t 2: 2147483647), z: -9223372036854775808)","1334-01"
+"Left(771526)","[(a: 1, nested: (num num: 32767, the text 0 item: """d Z99 Z""")), (a: -9223372036854775809, nested: (num num: 4215185595, the text 0 item: """mZ0"""))]","2008-01-17 17:39:33.206229754 NZ-CHAT","(inner: (t 1: """𰚬T""", t 2: 2147483648), z: 820)","6473-07"
+"Left(9223372036854775808)","[(a: 2993, nested: (num num: 36, the text 0 item: """Zq(l""")), (a: 9223372036854775807, nested: (num num: 3, the text 0 item: """Number"""))]","1952-11-23 07:26:00 America/Costa_Rica","(inner: (t 1: """x0 a""", t 2: 2), z: 9223372036854775808)","6576-07"
+"Left(0.017063)","[(a: 0.559358, nested: (num num: 9223372036854775807, the text 0 item: """Rve&炤-'D|m󰠄^c𠥼"""))]","2044-05-26 08:38:26.490004656 Europe/Helsinki","(inner: (t 1: """VALUES""", t 2: 0.94094), z: -2147483648)","0763-03"
+"Left(2147483647)","[(a: 0, nested: (num num: 1, the text 0 item: """dB`"""))]","2031-05-20 08:50:48.148590077 Africa/Ouagadougou","(inner: (t 1: """6󽟡[""", t 2: 6847), z: -2147483647)","9202-09"
+"Left(221931213093)","[(a: 0.887367, nested: (num num: 221, the text 0 item: """Date"""))]","1987-06-01 05:42:22 -10:05","(inner: (t 1: """ """, t 2: 32767), z: 3)","8384-08"
+"Left(-128)","[(a: -32767, nested: (num num: -9223372036854775809, the text 0 item: """𡨶^c""")), (a: 127, nested: (num num: 531593339, the text 0 item: """BEGIN""")), (a: 153, nested: (num num: -9223372036854775807, the text 0 item: """𩞕󰀏$-.gSM"""))]","8656-06-25 20:46:00 +05:52","(inner: (t 1: """󼑥𩋋""", t 2: 0.864689), z: -9223372036854775808)","9904-06"
+"Left(1)","[(a: -9223372036854775807, nested: (num num: 0.136102, the text 0 item: """l9rr""")), (a: -9223372036854775809, nested: (num num: 5, the text 0 item: """;6,󵼎𡡴𮌶>EY󺔝Sy􀒢f)𲮕􋴆!2󷮙"""))]","5490-01-25 06:11:45.400339713 America/Montserrat","(inner: (t 1: """$/i""", t 2: -9223372036854775808), z: 19)","5380-02"
+"Left(68698)","[(a: 0.708924, nested: (num num: -32767, the text 0 item: """INCOMPLETE""")), (a: 0, nested: (num num: 120, the text 0 item: """;1𓄮𫊆*􅰇o""")), (a: 213632550241525, nested: (num num: 2536027119017, the text 0 item: """invalidtypeops""")), (a: -2147483649, nested: (num num: 12, the text 0 item: """END"""))]","2031-09-02 05:46:49.343886995 Asia/Irkutsk","(inner: (t 1: """$B눖""", t 2: 1), z: 712)","2663-11"
+"Left(28783908245517105)","[(a: -9223372036854775809, nested: (num num: -2147483647, the text 0 item: """zZ9anaZr0Z"""))]","1997-04-14 07:14:38.683284022 +04:39","(inner: (t 1: """q99 r000ar""", t 2: -1), z: 341058070236839378)","7801-07"
+"Right(-9223372036854775809)","[(a: 963174, nested: (num num: -1, the text 0 item: """𮓋~􌃞H4𥩮-+?𦮹ㅁ+󺟪뗭8<㣆􀔡""")), (a: 93323515483290, nested: (num num: 23036039110918, the text 0 item: """DateYM"""))]","2031-01-08 12:10:31.754838406 +11:01","(inner: (t 1: """c9ZnZ""", t 2: -9223372036854775808), z: 2147483648)","4034-11"
+"Left(0.605447)","[(a: 10492574, nested: (num num: 7973, the text 0 item: """w􃍐z􈯥🬹l#0f""")), (a: -32767, nested: (num num: 1378, the text 0 item: """sar""")), (a: 227, nested: (num num: -9223372036854775809, the text 0 item: """A"""))]","2040-01-19 08:45:23.654589323 -09:38","(inner: (t 1: """DATA""", t 2: -32767), z: 560889763554597)","3146-05"
+"Right(-1)","[(a: -1, nested: (num num: 127, the text 0 item: """i0nn0rr""")), (a: -9223372036854775807, nested: (num num: -128, the text 0 item: """by(6""")), (a: 4434, nested: (num num: 918, the text 0 item: """LxS?󹺐]2o^c Q\?"""))]","1903-06-07 20:25:00 -02:34","(inner: (t 1: """z99Zar09aa""", t 2: 1), z: 0.551325)","5776-09"
+"Left(4120957941618878304)","[(a: 1, nested: (num num: 2, the text 0 item: """DISPLAY"""))]","1031-10-30 01:29:00 Egypt","(inner: (t 1: """hZ0099a0r""", t 2: 132229), z: -32768)","6477-10"
+"Right(9223372036854775807)","[(a: 60, nested: (num num: -2147483649, the text 0 item: """9Y` ]𪷠9""")), (a: 2147483648, nested: (num num: 17, the text 0 item: """END"""))]","1918-05-11 01:00:58 -04:29","(inner: (t 1: """ora""", t 2: 41657623951), z: 0)","1351-04"
+"Left(127)","[(a: 45879768, nested: (num num: 28843, the text 0 item: """t,gV""")), (a: 73, nested: (num num: -32767, the text 0 item: """u􄲨R*𲪵""")), (a: 1139, nested: (num num: 92579562190, the text 0 item: """YhNU𪲳8w,𜺜M󵛡𩍩|ht?!""")), (a: -32767, nested: (num num: 1, the text 0 item: """INCOMPLETE"""))]","7436-07-26 00:49:00 +00:11","(inner: (t 1: """DateTime""", t 2: 0.792287), z: 186)","7507-10"
+"Right(-127)","[(a: 0, nested: (num num: 2147483647, the text 0 item: """z9 Z9Za0r0n""")), (a: 610, nested: (num num: -9223372036854775807, the text 0 item: """qa"""))]","1905-02-20 22:54:08 -06:00","(inner: (t 1: """VALUES""", t 2: -9223372036854775807), z: -32768)","7881-11"
+"Right(2147483648)","[(a: 8392062, nested: (num num: 9223372036854775808, the text 0 item: """n9 a90""")), (a: 32767, nested: (num num: 9223372036854775807, the text 0 item: """apply"""))]","2042-10-30 18:32:00 -07:45","(inner: (t 1: """VERSION""", t 2: 0.943615), z: 0.728047)","9495-04"
+"Right(30469)","[(a: 2147483648, nested: (num num: -1, the text 0 item: """^a𣓠""")), (a: 2147483648, nested: (num num: 9223372036854775808, the text 0 item: """=x"""))]","3949-02-28 14:17:19 +05:13","(inner: (t 1: """OH""", t 2: 2147483647), z: 2)","0237-11"
+"Left(0.377591)","[(a: -2147483648, nested: (num num: 14691, the text 0 item: """p00anZ99 a""")), (a: -128, nested: (num num: -2147483648, the text 0 item: """jr"""))]","1966-09-04 17:23:00 America/Montserrat","(inner: (t 1: """TRANSFORMATION""", t 2: 0), z: 70)","5000-05"
+"Left(0.962516)","[(a: 127, nested: (num num: -2147483647, the text 0 item: """Bj􉥣',V跆""")), (a: 0.4589, nested: (num num: -127, the text 0 item: """hw𦷛`嚼󺮶kDj""")), (a: 9223372036854775808, nested: (num num: 0, the text 0 item: """󿗿q"""))]","2002-07-10 12:29:41 +10:54","(inner: (t 1: """Q""", t 2: 3061), z: 9223372036854775807)","0999-09"
+"Right(-1)","[(a: 948452189, nested: (num num: 32767, the text 0 item: """COMMENT""")), (a: 465, nested: (num num: -1, the text 0 item: """[eObY𖵚[h""")), (a: 2147483647, nested: (num num: -2147483649, the text 0 item: """𥝳a?\R"""))]","3912-12-19 22:26:12.719939851 Pacific/Tahiti","(inner: (t 1: """Boolean""", t 2: 127), z: -2147483647)","8849-05"
+"Left(447270)","[(a: 15925, nested: (num num: -9223372036854775808, the text 0 item: """EKK""")), (a: 8, nested: (num num: -127, the text 0 item: """f𝤮𫄉寢󻟵""")), (a: 2688762, nested: (num num: -2147483649, the text 0 item: """[ """)), (a: -9223372036854775807, nested: (num num: -2147483648, the text 0 item: """Q&w"""))]","2033-04-28 16:42:08.264167102 Pacific/Majuro","(inner: (t 1: """o9""", t 2: 0.462824), z: 0.448541)","4151-02"
+"Left(0.922143)","[(a: 19, nested: (num num: 369, the text 0 item: """grZ999"""))]","1982-11-06 00:47:00 Etc/GMT","(inner: (t 1: """END""", t 2: 0.421127), z: 9223372036854775808)","9757-03"
+"Left(1)","[(a: 0.906152, nested: (num num: -32767, the text 0 item: """i0rn00009a""")), (a: -9223372036854775808, nested: (num num: 0.725853, the text 0 item: """LINKED""")), (a: 0.929116, nested: (num num: 2147483647, the text 0 item: """vn""")), (a: 237, nested: (num num: 9223372036854775808, the text 0 item: """+􉨼3𪚦9r$𫕈NJ?𗴝i𑎁t"""))]","1996-09-27 01:02:36.11012972 -07:11","(inner: (t 1: """apply""", t 2: 3607), z: 1)","2129-03"
+"Left(-32768)","[(a: 1, nested: (num num: -2147483649, the text 0 item: """h Z0aa""")), (a: 0.769298, nested: (num num: 14, the text 0 item: """/"""))]","2397-06-21 04:23:52.846401277 +05:25","(inner: (t 1: """iZZ0""", t 2: 49), z: 2147483648)","5988-08"
+"Left(-128)","[(a: -127, nested: (num num: -9223372036854775809, the text 0 item: """0""")), (a: 0, nested: (num num: 3, the text 0 item: """r>􌷢xk𘫰𞺑Lp=H􎅩:B秮X8"""))]","1974-07-10 23:25:19.439545723 Etc/GMT+7","(inner: (t 1: """_k""", t 2: 0.477767), z: -1)","8858-05"
+"Left(6)","[(a: 363481323, nested: (num num: 391, the text 0 item: """舷:n쨱Z}c聍DdhP뎧?""")), (a: 145600, nested: (num num: 0, the text 0 item: """DateTimeZoned"""))]","3780-12-26 21:51:34 +05:32","(inner: (t 1: """zar00""", t 2: 2413080), z: 3230724)","4000-07"
+"Right(2147483648)","[(a: 33870429747, nested: (num num: 32767, the text 0 item: """g9nn0Zr"""))]","5516-08-17 09:12:22.191922417 Asia/Singapore","(inner: (t 1: """g🗌0-:1JJ""", t 2: 13), z: 0.772096)","1125-09"
+"Left(-2147483647)","[(a: 1, nested: (num num: 207, the text 0 item: """}Q""")), (a: 0, nested: (num num: 1, the text 0 item: """󵈛Jy󸭤~"""))]","1981-01-07 06:01:42.594442205 -04:09","(inner: (t 1: """a""", t 2: 2147483648), z: 14)","5739-02"
+"Right(-2147483647)","[(a: 0, nested: (num num: -9223372036854775808, the text 0 item: """COLUMN"""))]","1989-05-24 05:05:00 -08:55","(inner: (t 1: """SOURCE""", t 2: -9223372036854775808), z: 0)","0513-09"
+"Right(-2147483648)","[(a: 2147483648, nested: (num num: 298, the text 0 item: """Pd`󶹕𮣍""")), (a: 0, nested: (num num: 5, the text 0 item: """c""")), (a: 1, nested: (num num: 0, the text 0 item: """xra009aZZ"""))]","1937-11-25 02:32:00 +03:40","(inner: (t 1: """n90rr r""", t 2: -9223372036854775807), z: 0.71715)","0053-07"
+"Left(-127)","[(a: 0, nested: (num num: 3577115, the text 0 item: """iZ 0r"""))]","1997-11-03 12:13:54 -06:43","(inner: (t 1: """taa""", t 2: 2147483648), z: 0)","9118-05"
+"Right(-128)","[(a: 2147483647, nested: (num num: 0.45771, the text 0 item: """~o󽝛􏓢""")), (a: 2147483647, nested: (num num: -9223372036854775807, the text 0 item: """urZn9ZZ9n0""")), (a: 490424, nested: (num num: 9, the text 0 item: """B|]"""))]","2017-03-08 03:10:19 Europe/Saratov","(inner: (t 1: """,Pk矦􀌄𥐱""", t 2: 0), z: 0)","7393-08"
+"Right(0.812746)","[(a: -1, nested: (num num: -32768, the text 0 item: """C'z󷳻%㕇`wwW𨉘""")), (a: 247, nested: (num num: 336362958224, the text 0 item: """U""")), (a: -9223372036854775809, nested: (num num: 14, the text 0 item: """PD妅)m􏾄ir𲊡󴚠1𦠧4覞6l?C𘮔"""))]","1842-07-04 19:41:00 US/East-Indiana","(inner: (t 1: """cEꄺ2󸻵R""", t 2: 234), z: -127)","6156-12"
+"Left(45683550513)","[(a: 0, nested: (num num: 6, the text 0 item: """sn0nrnZ0a""")), (a: 26531288, nested: (num num: 9223372036854775808, the text 0 item: """mn 99rnZ00"""))]","1918-02-06 02:04:27.315195769 America/Mexico_City","(inner: (t 1: """s00a09n 9n""", t 2: 32767), z: 0.383863)","4379-10"
+"Left(2147483647)","[(a: 0.940914, nested: (num num: -128, the text 0 item: """i0 rn09Zn9""")), (a: 83750, nested: (num num: 72161200573893159, the text 0 item: """wrZ0a90""")), (a: 212843120650346358, nested: (num num: 2147483648, the text 0 item: """CONTENT""")), (a: 11, nested: (num num: 420589, the text 0 item: """lZ9r"""))]","1953-01-27 08:04:39 Pacific/Johnston","(inner: (t 1: """COMMENT""", t 2: 1), z: 5538)","4398-09"
+"Left(0)","[(a: -127, nested: (num num: 901012, the text 0 item: """䮵𘚨0Xo5l^af8bi&l\𘏠󰬫0𧂄H^c𢛥$""")), (a: -9223372036854775808, nested: (num num: -32768, the text 0 item: """INCOMPLETE""")), (a: 3752709761, nested: (num num: -2147483648, the text 0 item: """ji>""")), (a: -2147483647, nested: (num num: 12, the text 0 item: """COMMENT"""))]","1946-10-04 12:07:00 Europe/Kiev","(inner: (t 1: """qa Za9Zarn""", t 2: -32768), z: -9223372036854775808)","0517-10"
+"Left(22)","[(a: 9223372036854775808, nested: (num num: 5, the text 0 item: """O*>5fn"""))]","1928-07-14 23:27:00 -00:54","(inner: (t 1: """xp7Nj$Iv4󱪎""", t 2: -1), z: 9223372036854775807)","4970-08"
+"Right(-128)","[(a: -128, nested: (num num: -9223372036854775808, the text 0 item: """H'􌦑𦨔""")), (a: 3, nested: (num num: 15393677513, the text 0 item: """S*gmV(𞴝˙8𤵶j[􁺂""")), (a: 27143, nested: (num num: 15, the text 0 item: """CONTENT""")), (a: -9223372036854775809, nested: (num num: 0, the text 0 item: """2!'"""))]","2025-03-18 06:39:37.338332773 -06:48","(inner: (t 1: """X0𢁢j킑""", t 2: 127), z: -9223372036854775808)","2316-06"
+"Right(325030)","[(a: 67344, nested: (num num: -32768, the text 0 item: """paZZ""")), (a: -2147483648, nested: (num num: 21218, the text 0 item: """COLUMNAL""")), (a: 0.288178, nested: (num num: -128, the text 0 item: """%""")), (a: 39393, nested: (num num: 1563, the text 0 item: """xa0a0"""))]","1901-08-18 14:04:00 +03:44","(inner: (t 1: """Hk樝:IXs""", t 2: 0), z: 242183539)","5960-10"
+"Right(127)","[(a: -2147483647, nested: (num num: 2, the text 0 item: """apply""")), (a: 18933, nested: (num num: 4052802073, the text 0 item: """x""")), (a: 95, nested: (num num: 2147483647, the text 0 item: """arr9""")), (a: 3032555298, nested: (num num: 38262, the text 0 item: """pZaZaZZ 0Z"""))]","2008-02-16 12:07:28 Africa/Freetown","(inner: (t 1: """p""", t 2: -32767), z: 0)","5585-09"
+"Right(-32767)","[(a: -9223372036854775809, nested: (num num: 127, the text 0 item: """DateYM""")), (a: -2147483649, nested: (num num: 3854022025, the text 0 item: """a""")), (a: 1, nested: (num num: -9223372036854775807, the text 0 item: """LY1/􅆤𣆈(􅍙M(rB􈐸.""")), (a: 0.106715, nested: (num num: -1, the text 0 item: """&"""))]","7284-01-26 17:50:00 Europe/Sofia","(inner: (t 1: """Z""", t 2: -2147483647), z: -2147483647)","7731-10"
+"Left(-2147483648)","[(a: 127, nested: (num num: -9223372036854775808, the text 0 item: """a""")), (a: -9223372036854775807, nested: (num num: -32768, the text 0 item: """vraaZ""")), (a: 5, nested: (num num: 0.089637, the text 0 item: """𠡵""")), (a: 0.814077, nested: (num num: 9, the text 0 item: """TYPES"""))]","1960-06-16 10:15:29.916318955 America/Thunder_Bay","(inner: (t 1: """lr""", t 2: -9223372036854775807), z: 1)","9672-11"
+"Right(-9223372036854775807)","[(a: -1, nested: (num num: -2147483647, the text 0 item: """}e\𦲸J64aST2""")), (a: 9223372036854775807, nested: (num num: 0, the text 0 item: """LuL􋽥r/Yp􋞮c=󰶸󳬢M􌶚xoZ""")), (a: -127, nested: (num num: -2147483649, the text 0 item: """𠗴𰗫~^a땲ⵃ𨼙}󶫴}X2""")), (a: 921672266043083, nested: (num num: 796, the text 0 item: """𨸤"""))]","8333-03-08 13:52:57 +09:20","(inner: (t 1: """W𣐑<""", t 2: 21917312), z: 40)","2341-09"
+"Right(0.895866)","[(a: 32549, nested: (num num: 89572546, the text 0 item: """COMMENT"""))]","2023-08-30 01:25:35.569528625 +07:03","(inner: (t 1: """DateTime""", t 2: -32767), z: 1812784)","8452-03"
+"Right(0.978331)","[(a: -32767, nested: (num num: 1, the text 0 item: """srn0rn a""")), (a: -2147483647, nested: (num num: 0.270269, the text 0 item: """x3PZPsHtN􄩾AYAvTn/W念XJ{󾏛""")), (a: 0.847562, nested: (num num: 45276533, the text 0 item: """gre𢴣y7-}6㮷d⣋,砏𱦮_(󾒃!&g􃛅ﯲb')󱗾?`*|귳""")), (a: 32767, nested: (num num: 0.194677, the text 0 item: """y Z 0 nn"""))]","2015-07-26 05:23:55.214182673 Zulu","(inner: (t 1: """ 8𐲇𭣘󲙙55b-l󼉪^c;Qv3""", t 2: 1879639305409), z: 127)","8456-07"
+"Left(-1)","[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: """COLUMNAL"""))]","2005-10-07 19:40:14.463072189 -02:47","(inner: (t 1: """%N􆙎7􉵾󴍓􁼺""", t 2: 739734415022), z: 421141099239)","8706-12"
+"Right(772755734)","[(a: -127, nested: (num num: -128, the text 0 item: """tn 9 n0""")), (a: 241051, nested: (num num: 215654, the text 0 item: """𩹠""")), (a: 1, nested: (num num: 0.533176, the text 0 item: """TYPE""")), (a: -2147483647, nested: (num num: 0, the text 0 item: """𳆃Kruf󵌸t"""))]","1925-10-11 03:32:37.971194959 America/Cayenne","(inner: (t 1: """th|UD'𬎒O􃰸X""", t 2: -2147483649), z: -9223372036854775809)","8106-11"
+"Right(77)","[(a: 41869, nested: (num num: -128, the text 0 item: """𒁬uQqg4"""))]","1961-02-27 13:55:55 -11:58","(inner: (t 1: """7""", t 2: 1), z: 2577)","0080-10"
+"Left(9)","[(a: 127, nested: (num num: -32767, the text 0 item: """dZ"""))]","2040-08-24 15:42:00 Pacific/Kwajalein","(inner: (t 1: """>4""", t 2: 112196355973), z: -2147483648)","6108-10"
+"Left(2147483647)","[(a: 3, nested: (num num: 98, the text 0 item: """rZr""")), (a: -1, nested: (num num: -127, the text 0 item: """L(-𨗢G挗.􅊦"""))]","1967-08-17 07:39:44.508977208 -10:23","(inner: (t 1: """aF}তKb~""", t 2: -2147483648), z: 0.185358)","2029-07"
+"Right(25)","[(a: 36, nested: (num num: 328710, the text 0 item: """pᎤ}"""))]","2022-09-26 08:42:00 +03:08","(inner: (t 1: """LINKED""", t 2: -2147483648), z: 0.402317)","6099-03"
+"Right(9223372036854775808)","[(a: 51758, nested: (num num: 147972, the text 0 item: """AD궘y""")), (a: 3608, nested: (num num: 127, the text 0 item: """ta0ZaZ9"""))]","6758-05-27 02:24:01.983603371 +02:04","(inner: (t 1: """3󺊨𬱛""", t 2: 0), z: 466)","0738-08"
+"Left(136976386)","[(a: 32767, nested: (num num: 499, the text 0 item: """BEGIN"""))]","1925-09-01 20:09:00 Pacific/Midway","(inner: (t 1: """iUV""", t 2: 12), z: -32767)","9818-09"
+"Left(921895)","[(a: 1, nested: (num num: 8, the text 0 item: """𡯖t>""")), (a: 32767, nested: (num num: 26090, the text 0 item: """va n00"""))]","1912-11-29 03:50:46 -00:08","(inner: (t 1: """END""", t 2: -9223372036854775809), z: 9223372036854775808)","7709-09"
+"Right(309)","[(a: 0, nested: (num num: 230483, the text 0 item: """DISPLAY"""))]","2007-07-06 20:11:13.344982342 -00:05","(inner: (t 1: """2bu󷦸""", t 2: 0.134399), z: 1)","6071-11"
+"Right(-9223372036854775808)","[(a: 9, nested: (num num: 5206959565255297, the text 0 item: """LINKED"""))]","3486-10-14 17:08:00 +08:23","(inner: (t 1: """LINKED""", t 2: 32767), z: -127)","8659-09"
+"Right(-9223372036854775809)","[(a: -9223372036854775809, nested: (num num: 129122033930839796622, the text 0 item: """^aB󱕕4B5)F󱗌t𫶘^a!Y""")), (a: -2147483649, nested: (num num: 9223372036854775807, the text 0 item: """DEFAULT""")), (a: 4534093, nested: (num num: 83001, the text 0 item: """Ml"""))]","1927-04-02 23:42:00 +02:51","(inner: (t 1: """܀Q$𔒛""", t 2: -9223372036854775808), z: 23168)","6933-01"
+"Right(-9223372036854775807)","[(a: 9223372036854775807, nested: (num num: 432, the text 0 item: """TRANSFORMATION""")), (a: -128, nested: (num num: 2147483648, the text 0 item: """𤥇󵬼x ubA"""))]","1986-08-31 02:17:00 +01:25","(inner: (t 1: """DEFAULT""", t 2: 16625246541554973642), z: 14)","1269-11"
+"Left(663)","[(a: 29935112739, nested: (num num: 229, the text 0 item: """㘙""")), (a: 24, nested: (num num: 2147483648, the text 0 item: """INCOMPLETE""")), (a: 99379278169, nested: (num num: 0.305731, the text 0 item: """Number"""))]","1135-02-11 02:36:09 Indian/Chagos","(inner: (t 1: """Qib𤠋-dJ<""", t 2: 3), z: -9223372036854775808)","6580-08"
+"Right(32767)","[(a: -9223372036854775809, nested: (num num: 25, the text 0 item: """;󼇋""")), (a: 264667236552518, nested: (num num: -127, the text 0 item: """󰏹"""))]","1860-12-14 23:29:51.481581769 Europe/Dublin","(inner: (t 1: """Wr<]𔅊""", t 2: 1207851062), z: 0.934604)","6118-07"
+"Left(-32767)","[(a: -32768, nested: (num num: 0.496777, the text 0 item: """VERSION""")), (a: 2147483648, nested: (num num: -9223372036854775807, the text 0 item: """/衁y_^a7NiFt$󵯮.𮟗S""")), (a: 254587765152645, nested: (num num: 0.078624, the text 0 item: """Boolean"""))]","5587-07-09 00:41:00 America/Argentina/Buenos_Aires","(inner: (t 1: """󽨹An}D芽⫖""", t 2: 412663920), z: 9223372036854775808)","8692-02"
+"Left(1)","[(a: 9223372036854775807, nested: (num num: -9223372036854775808, the text 0 item: """󲔳삎b1f""")), (a: 1652936, nested: (num num: 1011746, the text 0 item: """Text"""))]","2026-02-14 05:19:33.401944267 America/Mazatlan","(inner: (t 1: """𱭇𢻔/^aDz󽸉8D.M󶊚vLx?al[A􄏓𲇪lb𗐤輹􋖇鸂/I""", t 2: 99056684842302), z: 76930478)","2131-09"
+"Right(1552)","[(a: 1, nested: (num num: 32767, the text 0 item: """q90Zn"""))]","1956-07-25 21:53:30.709828952 -02:26","(inner: (t 1: """^a#E""", t 2: -2147483647), z: -1)","9733-09"
+"Right(-9223372036854775808)","[(a: -9223372036854775809, nested: (num num: 44459, the text 0 item: """}􈴒𔇫r""")), (a: -32767, nested: (num num: -32767, the text 0 item: """l90rZr"""))]","9645-01-02 14:34:00.742492025 -08:00","(inner: (t 1: """g900r""", t 2: -9223372036854775807), z: 126)","9860-10"
+"Right(-128)","[(a: -9223372036854775807, nested: (num num: 2474, the text 0 item: """VGZp􀲏y)E"""))]","1913-10-15 15:12:00 -01:34","(inner: (t 1: """dr""", t 2: -1), z: 1)","3655-01"
+"Left(0)","[(a: 0.794994, nested: (num num: 176989668658, the text 0 item: """ 𜲷x?^a""")), (a: -9223372036854775809, nested: (num num: 2147483648, the text 0 item: """f+󾷾絧""")), (a: 3, nested: (num num: 0, the text 0 item: """𳃕vZ!X""")), (a: -2147483647, nested: (num num: 10584, the text 0 item: """l99ra0990"""))]","2050-09-20 10:50:59 -08:02","(inner: (t 1: """m`""", t 2: 41), z: -2147483649)","2933-04"
+"Left(1)","[(a: 9223372036854775808, nested: (num num: 6485229776, the text 0 item: """n99""")), (a: 2147483647, nested: (num num: 144, the text 0 item: """COLUMNAL""")), (a: 4290061192814, nested: (num num: -9223372036854775809, the text 0 item: """c 9""")), (a: 9223372036854775807, nested: (num num: 7, the text 0 item: """`fdV+>"""))]","2042-06-07 19:17:10.834173371 +06:12","(inner: (t 1: """oaZan090""", t 2: -2147483649), z: -32767)","2288-01"
+"Right(61)","[(a: 123388049847258572, nested: (num num: 0, the text 0 item: """TYPE""")), (a: 0.220846, nested: (num num: -9223372036854775807, the text 0 item: """)𡡃<7?'A"""))]","1980-08-21 23:38:00 -10:50","(inner: (t 1: """ian""", t 2: 1), z: 0.534557)","9281-04"
+"Left(-1)","[(a: 0.680234, nested: (num num: 32767, the text 0 item: """r0n09 aZr"""))]","9218-08-18 06:13:00 -00:45","(inner: (t 1: """DateTime""", t 2: -2147483648), z: 127)","8145-04"
+"Left(15)","[(a: -9223372036854775808, nested: (num num: -9223372036854775808, the text 0 item: """LaT"""))]","1972-10-24 08:36:14 -04:35","(inner: (t 1: """tr 99n""", t 2: 34195498594061), z: 2147483647)","1469-12"
+"Left(-9223372036854775809)","[(a: 9, nested: (num num: 9223372036854775807, the text 0 item: """Time""")), (a: 32767, nested: (num num: 439, the text 0 item: """𥑥#T"""))]","1923-01-11 09:34:15.454265444 Africa/Abidjan","(inner: (t 1: """END""", t 2: 184), z: 32767)","5754-05"
+"Left(-9223372036854775807)","[(a: 32767, nested: (num num: -127, the text 0 item: """TEXTFILE""")), (a: 17, nested: (num num: 1, the text 0 item: """DateTimeZoned"""))]","8797-09-15 07:26:52 +00:21","(inner: (t 1: """󸺳""", t 2: 804), z: 0.852928)","4018-08"
+"Left(127)","[(a: -9223372036854775809, nested: (num num: 0, the text 0 item: """{Gvr)OU""")), (a: 2, nested: (num num: 3903714781332524230054, the text 0 item: """wr90aZa r""")), (a: -32767, nested: (num num: 0, the text 0 item: """&`LH^a""")), (a: -2147483647, nested: (num num: 2147483647, the text 0 item: """a"""))]","2007-09-16 05:08:45 -03:35","(inner: (t 1: """Z""", t 2: 1174170), z: 5895)","4059-02"
+"Left(-9223372036854775807)","[(a: -32767, nested: (num num: 9223372036854775807, the text 0 item: """MG<UL"""))]","1951-01-25 08:17:47.141355838 -09:09","(inner: (t 1: """COLUMN""", t 2: 41), z: 1836)","4336-12"
+"Left(63972018)","[(a: 0.505237, nested: (num num: -2147483648, the text 0 item: """􃗓𗞜>𠡯>Se """)), (a: 24, nested: (num num: -127, the text 0 item: """pran0r""")), (a: 1024388943818667, nested: (num num: 9223372036854775808, the text 0 item: """TRANSFORMATION"""))]","1960-04-06 11:32:07 -04:08","(inner: (t 1: """SKIP""", t 2: 12740), z: 130752485)","2431-11"
+"Right(-2147483649)","[(a: 381859309062723486, nested: (num num: -32768, the text 0 item: """f9r9arrraZ""")), (a: 0.411456, nested: (num num: 9223372036854775808, the text 0 item: """𰯭5d""")), (a: 1, nested: (num num: 290261763, the text 0 item: """CONTENT""")), (a: 8259472058844, nested: (num num: 32767, the text 0 item: """;j5l󺉁u^a"""))]","2020-03-02 02:46:00 Pacific/Samoa","(inner: (t 1: """VERSION""", t 2: 248), z: 0)","4026-02"
+"Right(-128)","[(a: 9223372036854775807, nested: (num num: 2147483648, the text 0 item: """END"""))]","2004-07-03 10:51:45 -01:55","(inner: (t 1: """END""", t 2: 1), z: 2147483648)","0294-04"
+"Left(172071)","[(a: -9223372036854775808, nested: (num num: 2147483647, the text 0 item: """!􅃘""")), (a: -1, nested: (num num: 31, the text 0 item: """a99"""))]","1907-02-15 19:21:00 Asia/Hong_Kong","(inner: (t 1: """^ca""", t 2: 32767), z: -2147483647)","8021-06"
+"Right(-128)","[(a: 0, nested: (num num: 138, the text 0 item: """|8'>;+$T\𦥄􃊟󸏆=C""")), (a: -32768, nested: (num num: -2147483647, the text 0 item: """TRANSFORMATION""")), (a: -9223372036854775809, nested: (num num: 32767, the text 0 item: """O0묛y𘐁3?^c""")), (a: -128, nested: (num num: 4392, the text 0 item: """84\hp3z-"""))]","2041-06-15 01:54:35.564207262 +00:37","(inner: (t 1: """1t덓B/""", t 2: 659), z: 0)","5598-11"
+"Right(-128)","[(a: -1, nested: (num num: 2148, the text 0 item: """c Zna9""")), (a: 2147483648, nested: (num num: 0, the text 0 item: """􌣉􈯒"""))]","2047-10-29 07:12:00 Europe/Rome","(inner: (t 1: """w~3*𠨣{ """, t 2: 0.133185), z: 1)","5703-10"
+"Right(1)","[(a: 1, nested: (num num: 61, the text 0 item: """󺜯uT"""))]","1960-02-22 20:56:55 +07:10","(inner: (t 1: """kZ""", t 2: 112973), z: 127)","7675-01"
+"Right(66)","[(a: 9223372036854775807, nested: (num num: -9223372036854775809, the text 0 item: """ln0aZ0Za""")), (a: 262, nested: (num num: 0, the text 0 item: """ᏳEC""")), (a: 9223372036854775807, nested: (num num: -2147483647, the text 0 item: """B)/EX""")), (a: 25, nested: (num num: -2147483649, the text 0 item: """|6c"""))]","1998-11-12 17:43:49.447086829 +05:55","(inner: (t 1: """v9r0nZ""", t 2: 5), z: 32767)","1813-02"
+"Right(1916)","[(a: 9223372036854775808, nested: (num num: 127, the text 0 item: """Z$hQH"""))]","7330-01-01 09:26:32 +05:21","(inner: (t 1: """brnr9aa""", t 2: 5302831457164), z: 1787)","9383-10"
+"Left(1991311331781)","[(a: 47480033176279, nested: (num num: 1, the text 0 item: """DATA""")), (a: -2147483649, nested: (num num: -9223372036854775809, the text 0 item: """DateTimeZoned"""))]","2021-03-16 02:22:00 America/Argentina/Catamarca","(inner: (t 1: """o""", t 2: 1), z: 88)","9845-09"
+"Right(-2147483647)","[(a: 1, nested: (num num: -128, the text 0 item: """􄮩􋰛]􆽬""")), (a: -1, nested: (num num: 9223372036854775807, the text 0 item: """^a𢈷J􋹨󳻯NO𰩄𛋢8U""")), (a: 57, nested: (num num: 0, the text 0 item: """^a11"""))]","1741-10-30 11:25:04.735693947 Antarctica/Macquarie","(inner: (t 1: """HN󻼹Hb偈o\󼆐𮁇""", t 2: -1), z: 944)","1202-02"
+"Left(13959)","[(a: 179, nested: (num num: 32767, the text 0 item: """DATA""")), (a: 1, nested: (num num: 155, the text 0 item: """,󶌥=3\""")), (a: 33805101011247818, nested: (num num: -2147483648, the text 0 item: """END""")), (a: 54, nested: (num num: 0.916606, the text 0 item: """𪒽]󽜇"""))]","3721-04-06 14:15:47.967958294 +07:01","(inner: (t 1: """I\[󵻌%^a𦪇[b7:^c8V""", t 2: 2827061), z: -32768)","7351-09"
+END CSV
+HTML
+<!DOCTYPE html>
+<html>
+<head><title>Test 0</title></head>
+<body>
+<table>
+<caption>Test 0</caption>
+<thead>
+<tr>
+<td><b>GenCol 27</b></td>
+<td><b>GenCol 28</b></td>
+<td><b>GenCol 29</b></td>
+<td><b>GenCol 30</b></td>
+<td><b>GenCol 31</b></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Right(-127)</td>
+<td>[(a: 461358, nested: (num num: 956799, the text 0 item: &quot;􊾒*&quot;)), (a: 13573159, nested: (num num: 0.543885, the text 0 item: &quot;lrZZ Z0r&quot;))]</td>
+<td>2020-11-02 17:53:30.097805292 Australia/Queensland</td>
+<td>(inner: (t 1: &quot;􁞙~:Z 8&quot;, t 2: 705529326), z: 504945473330930697)</td>
+<td>7601-12</td>
+</tr>
+<tr>
+<td>Right(-32768)</td>
+<td>[(a: 112, nested: (num num: 0.037401, the text 0 item: &quot;=&quot;)), (a: 0, nested: (num num: -2147483648, the text 0 item: &quot;BEGIN&quot;))]</td>
+<td>1417-04-04 02:55:44 -11:43</td>
+<td>(inner: (t 1: &quot;𡭬f'𢦦&quot;, t 2: 840), z: 1)</td>
+<td>2361-07</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: 0.604594, nested: (num num: 0.545087, the text 0 item: &quot;p r9r&quot;)), (a: 189, nested: (num num: -9223372036854775808, the text 0 item: &quot;d𣩰r톦&quot;))]</td>
+<td>1980-01-26 13:46:23.599569781 +08:20</td>
+<td>(inner: (t 1: &quot;豳􏽵C􂒼&quot;, t 2: 0.906518), z: 1022437348)</td>
+<td>6635-04</td>
+</tr>
+<tr>
+<td>Left(127)</td>
+<td>[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: &quot;JCdY􊉏zo&quot;))]</td>
+<td>2030-02-03 06:11:00 Europe/Riga</td>
+<td>(inner: (t 1: &quot;a'8g%Ok!󰩿#&quot;, t 2: 0.595867), z: -32767)</td>
+<td>8180-05</td>
+</tr>
+<tr>
+<td>Left(2)</td>
+<td>[(a: 8679619903515, nested: (num num: 0.862723, the text 0 item: &quot;END&quot;)), (a: -127, nested: (num num: 1, the text 0 item: &quot;完𒒰^c5&quot;)), (a: 312071, nested: (num num: -127, the text 0 item: &quot;TEXTFILE&quot;)), (a: 32767, nested: (num num: 2147483647, the text 0 item: &quot;FORMAT&quot;))]</td>
+<td>7727-02-09 21:19:10.763886656 Pacific/Wallis</td>
+<td>(inner: (t 1: &quot;2nM&quot;, t 2: 8085235), z: 5270)</td>
+<td>3605-04</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775808)</td>
+<td>[(a: -9223372036854775807, nested: (num num: 11300, the text 0 item: &quot;𖡎wQ􌪢UUXI_OE|3{𲉦􇧪&quot;))]</td>
+<td>8261-12-20 05:43:00 Atlantic/South_Georgia</td>
+<td>(inner: (t 1: &quot;?O𨂧&quot;, t 2: 1286082), z: -128)</td>
+<td>1015-12</td>
+</tr>
+<tr>
+<td>Left(193000156802835)</td>
+<td>[(a: 0.987967, nested: (num num: 30, the text 0 item: &quot;COLUMN&quot;))]</td>
+<td>1995-12-26 00:53:48.965579755 Africa/Brazzaville</td>
+<td>(inner: (t 1: &quot;ud&quot;, t 2: 0.479025), z: 987)</td>
+<td>4035-01</td>
+</tr>
+<tr>
+<td>Right(-2147483647)</td>
+<td>[(a: 7201104865, nested: (num num: 16832820857636, the text 0 item: &quot;r90rn&quot;)), (a: -9223372036854775809, nested: (num num: -9223372036854775808, the text 0 item: &quot;a&quot;)), (a: 14363, nested: (num num: 9223372036854775808, the text 0 item: &quot;D𩀔󻔒]?&quot;))]</td>
+<td>1950-06-25 21:31:08.347311035 America/Porto_Velho</td>
+<td>(inner: (t 1: &quot;tna&quot;, t 2: -128), z: 1)</td>
+<td>7948-11</td>
+</tr>
+<tr>
+<td>Right(0.833452)</td>
+<td>[(a: 2, nested: (num num: 0.625099, the text 0 item: &quot;󶿹\&quot;)), (a: 9223372036854775808, nested: (num num: -2147483649, the text 0 item: &quot;j0r rrZna&quot;)), (a: -127, nested: (num num: 2147483648, the text 0 item: &quot;S􄄬2kUi=d#&quot;)), (a: -9223372036854775809, nested: (num num: 0.376992, the text 0 item: &quot;DATA&quot;))]</td>
+<td>4147-09-10 09:58:00 +03:12</td>
+<td>(inner: (t 1: &quot;O%3l#.&amp;uomb욠𮬯8U􄲵P🈷80]𒒰5&quot;, t 2: -128), z: 127)</td>
+<td>4801-03</td>
+</tr>
+<tr>
+<td>Left(0.756475)</td>
+<td>[(a: 0.216113, nested: (num num: 603, the text 0 item: &quot;brZ0nar 0&quot;))]</td>
+<td>1960-01-11 00:42:04.519196911 +02:18</td>
+<td>(inner: (t 1: &quot;o&quot;, t 2: -32767), z: -2147483649)</td>
+<td>8105-12</td>
+</tr>
+<tr>
+<td>Right(127)</td>
+<td>[(a: 171, nested: (num num: 1094208408272, the text 0 item: &quot;𗅧ꪦ&quot;))]</td>
+<td>1967-12-14 22:11:29 +11:55</td>
+<td>(inner: (t 1: &quot;f09a99&quot;, t 2: 32767), z: 2147483648)</td>
+<td>4438-01</td>
+</tr>
+<tr>
+<td>Left(9223372036854775808)</td>
+<td>[(a: -2147483649, nested: (num num: 280, the text 0 item: &quot;m&quot;)), (a: -9223372036854775809, nested: (num num: 430, the text 0 item: &quot;a&quot;)), (a: 195, nested: (num num: -2147483647, the text 0 item: &quot;cafaD𜶦$&quot;))]</td>
+<td>2008-12-15 01:57:00 +01:03</td>
+<td>(inner: (t 1: &quot;END&quot;, t 2: 545667936245), z: 11)</td>
+<td>8220-07</td>
+</tr>
+<tr>
+<td>Right(27638)</td>
+<td>[(a: -9223372036854775809, nested: (num num: 0.671, the text 0 item: &quot;𓩑](K􎢕􉦭9𠞶&quot;))]</td>
+<td>1930-03-25 05:11:43.775088911 +08:22</td>
+<td>(inner: (t 1: &quot;SOURCE&quot;, t 2: 0), z: 0.484047)</td>
+<td>4121-07</td>
+</tr>
+<tr>
+<td>Right(119)</td>
+<td>[(a: 6319, nested: (num num: 136, the text 0 item: &quot;뵙,(&quot;)), (a: 1, nested: (num num: 16629314, the text 0 item: &quot;a&quot;))]</td>
+<td>1978-03-08 20:58:17.836752529 +02:03</td>
+<td>(inner: (t 1: &quot;𤴗Ǣ}%MUTIᯍ𓁟萕e&quot;, t 2: 32308835214523842668298), z: 0)</td>
+<td>8261-09</td>
+</tr>
+<tr>
+<td>Left(-1)</td>
+<td>[(a: 0.223873, nested: (num num: 54250, the text 0 item: &quot;5ax]$KO&quot;)), (a: 59166, nested: (num num: 10249, the text 0 item: &quot;Time&quot;)), (a: 2147483648, nested: (num num: 562, the text 0 item: &quot;DateTime&quot;))]</td>
+<td>1979-08-12 16:50:21.404384879 Europe/Jersey</td>
+<td>(inner: (t 1: &quot;􆴃]&quot;, t 2: -1), z: 13)</td>
+<td>8945-08</td>
+</tr>
+<tr>
+<td>Right(1189987824)</td>
+<td>[(a: -32768, nested: (num num: -1, the text 0 item: &quot;#^aK[0^c𓈛&quot;)), (a: 0.011613, nested: (num num: 2, the text 0 item: &quot;CONTENT&quot;))]</td>
+<td>2003-09-02 12:56:00 +11:26</td>
+<td>(inner: (t 1: &quot;qd^cB`h󲊗]u𢌾2%s&quot;, t 2: 2147483647), z: 14544)</td>
+<td>2320-05</td>
+</tr>
+<tr>
+<td>Left(2147483647)</td>
+<td>[(a: 1, nested: (num num: 0, the text 0 item: &quot;inrZ 09 0Z&quot;)), (a: 0, nested: (num num: 0.533633, the text 0 item: &quot;Date&quot;)), (a: 2147483648, nested: (num num: -9223372036854775807, the text 0 item: &quot;T󵾩^a󷵗&quot;))]</td>
+<td>5952-06-25 09:24:02.032102578 Antarctica/Casey</td>
+<td>(inner: (t 1: &quot;E=&quot;, t 2: 1337658108900497), z: 1)</td>
+<td>1133-10</td>
+</tr>
+<tr>
+<td>Right(-2147483647)</td>
+<td>[(a: -127, nested: (num num: 17, the text 0 item: &quot;X𮊭]m6􆡝UBgrTb&quot;)), (a: -32768, nested: (num num: 0.213295, the text 0 item: &quot;v999 0 n&quot;))]</td>
+<td>1966-06-10 07:19:30 -07:50</td>
+<td>(inner: (t 1: &quot;y9 na r&quot;, t 2: -32768), z: 2147483647)</td>
+<td>9503-08</td>
+</tr>
+<tr>
+<td>Left(5)</td>
+<td>[(a: 5089557, nested: (num num: 13766439, the text 0 item: &quot;󵪓n(f&quot;)), (a: 6, nested: (num num: 10850, the text 0 item: &quot;𐭸m=&quot;)), (a: -32768, nested: (num num: 672, the text 0 item: &quot;:o{L&quot;)), (a: 46, nested: (num num: 0, the text 0 item: &quot;carZ&quot;))]</td>
+<td>5078-03-15 22:31:10.460611373 -07:05</td>
+<td>(inner: (t 1: &quot;I&quot;, t 2: -128), z: -2147483649)</td>
+<td>9321-10</td>
+</tr>
+<tr>
+<td>Right(-1)</td>
+<td>[(a: 3, nested: (num num: 0.165223, the text 0 item: &quot;c9 Zn&quot;)), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: &quot;&gt;&quot;))]</td>
+<td>1902-09-18 11:51:00 Europe/Lisbon</td>
+<td>(inner: (t 1: &quot;y0a nZa9an&quot;, t 2: 5), z: 0)</td>
+<td>1443-04</td>
+</tr>
+<tr>
+<td>Right(127)</td>
+<td>[(a: 0, nested: (num num: 0.096263, the text 0 item: &quot;nY3v_𓪊IS%C&quot;))]</td>
+<td>2046-07-29 19:39:45.83374912 +01:14</td>
+<td>(inner: (t 1: &quot;T&quot;, t 2: -9223372036854775807), z: 32767)</td>
+<td>5730-02</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775809)</td>
+<td>[(a: -32768, nested: (num num: 319, the text 0 item: &quot;Z&quot;)), (a: 9223372036854775808, nested: (num num: 25556, the text 0 item: &quot;Y&quot;)), (a: 0, nested: (num num: -2147483649, the text 0 item: &quot;wnrn&quot;)), (a: 271, nested: (num num: -32767, the text 0 item: &quot;jZrn&quot;))]</td>
+<td>1911-05-24 01:10:00 Pacific/Norfolk</td>
+<td>(inner: (t 1: &quot;TEXTFILE&quot;, t 2: -1), z: 2147483647)</td>
+<td>5937-02</td>
+</tr>
+<tr>
+<td>Right(127)</td>
+<td>[(a: 15, nested: (num num: -127, the text 0 item: &quot;j2xo&amp;0l󶌃^c&quot;))]</td>
+<td>1939-12-15 07:20:14.940999401 -00:50</td>
+<td>(inner: (t 1: &quot;m0aa9&quot;, t 2: -2147483649), z: 0)</td>
+<td>3723-10</td>
+</tr>
+<tr>
+<td>Right(-32767)</td>
+<td>[(a: 57098033, nested: (num num: -127, the text 0 item: &quot;r 9a 0&quot;)), (a: 0.330566, nested: (num num: -2147483649, the text 0 item: &quot;qZ09&quot;)), (a: 3, nested: (num num: 5, the text 0 item: &quot;DateTimeZoned&quot;))]</td>
+<td>1955-05-10 03:39:25.652407087 +11:16</td>
+<td>(inner: (t 1: &quot;c&quot;, t 2: 130953), z: 9223372036854775808)</td>
+<td>8303-07</td>
+</tr>
+<tr>
+<td>Right(-32768)</td>
+<td>[(a: -2147483648, nested: (num num: 52396, the text 0 item: &quot;rZ9aZZ00a&quot;)), (a: 104204525, nested: (num num: 56044243535281381, the text 0 item: &quot;^c&quot;)), (a: 2147483647, nested: (num num: -127, the text 0 item: &quot;tagged&quot;))]</td>
+<td>1937-04-13 19:25:45 Pacific/Easter</td>
+<td>(inner: (t 1: &quot;TRANSFORMATION&quot;, t 2: 2), z: -2147483648)</td>
+<td>2064-08</td>
+</tr>
+<tr>
+<td>Right(2467)</td>
+<td>[(a: 12, nested: (num num: -9223372036854775807, the text 0 item: &quot;a&quot;)), (a: -2147483647, nested: (num num: 9223372036854775807, the text 0 item: &quot;f9aZ9Zn a&quot;)), (a: 127, nested: (num num: 2165, the text 0 item: &quot;DateTime&quot;)), (a: 12, nested: (num num: 93961, the text 0 item: &quot;𩩫Q𠂪&lt;U_䰏󷉹Q谳省𗃨B􊎓&quot;))]</td>
+<td>1980-08-18 04:33:43.733860616 Australia/Broken_Hill</td>
+<td>(inner: (t 1: &quot;FORMAT&quot;, t 2: 1964), z: -127)</td>
+<td>8132-06</td>
+</tr>
+<tr>
+<td>Right(18704084981)</td>
+<td>[(a: 691, nested: (num num: 10094, the text 0 item: &quot;sy; 𞟢&quot;)), (a: 4, nested: (num num: 9223372036854775808, the text 0 item: &quot;\c&quot;)), (a: 643, nested: (num num: 9223372036854775807, the text 0 item: &quot;SOURCE&quot;))]</td>
+<td>1931-07-15 06:40:00 -09:58</td>
+<td>(inner: (t 1: &quot;3􋙲2&quot;, t 2: 11641040), z: -2147483647)</td>
+<td>5091-06</td>
+</tr>
+<tr>
+<td>Right(-127)</td>
+<td>[(a: 9, nested: (num num: -1, the text 0 item: &quot;&gt;c􋴟q&quot;))]</td>
+<td>2017-08-09 15:54:09.917944192 -07:37</td>
+<td>(inner: (t 1: &quot;󲲓G&quot;, t 2: 370400), z: -9223372036854775809)</td>
+<td>1107-08</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775808)</td>
+<td>[(a: 0.652745, nested: (num num: -1, the text 0 item: &quot;5qlZ;鋾A⻳|󾮱RD&quot;))]</td>
+<td>2039-11-13 08:35:18.016272068 Pacific/Wallis</td>
+<td>(inner: (t 1: &quot;paa9Z&quot;, t 2: 9223372036854775808), z: -32768)</td>
+<td>1556-07</td>
+</tr>
+<tr>
+<td>Left(58835976)</td>
+<td>[(a: 9223372036854775807, nested: (num num: -2147483647, the text 0 item: &quot;3v&quot;)), (a: 4179926, nested: (num num: -2147483647, the text 0 item: &quot;Number&quot;)), (a: 0.138586, nested: (num num: -2147483647, the text 0 item: &quot;2􎜁&quot;)), (a: 0.956075, nested: (num num: -9223372036854775809, the text 0 item: &quot;`?&quot;))]</td>
+<td>1937-04-07 07:40:00 Africa/Juba</td>
+<td>(inner: (t 1: &quot;sxL𭴱Lb$󷜩5j&quot;, t 2: 0.498568), z: 703148595)</td>
+<td>3572-02</td>
+</tr>
+<tr>
+<td>Right(-128)</td>
+<td>[(a: -1, nested: (num num: 4460929750738421, the text 0 item: &quot;)M&quot;))]</td>
+<td>1962-03-17 06:44:49 +07:56</td>
+<td>(inner: (t 1: &quot;󲦍Mp.&quot;, t 2: -128), z: 0)</td>
+<td>2779-01</td>
+</tr>
+<tr>
+<td>Left(0.726799)</td>
+<td>[(a: 47, nested: (num num: 1590, the text 0 item: &quot;kn9ZnZ a&quot;)), (a: -2147483647, nested: (num num: -32768, the text 0 item: &quot;vrr0&quot;)), (a: 0.959485, nested: (num num: 127, the text 0 item: &quot;UNITS&quot;))]</td>
+<td>3542-08-22 09:58:20.498605054 America/Dawson_Creek</td>
+<td>(inner: (t 1: &quot;COLUMNAL&quot;, t 2: -2147483647), z: 81)</td>
+<td>0330-10</td>
+</tr>
+<tr>
+<td>Left(0)</td>
+<td>[(a: -2147483648, nested: (num num: -9223372036854775808, the text 0 item: &quot;R/&quot;)), (a: 36255646, nested: (num num: -9223372036854775809, the text 0 item: &quot;INCOMPLETE&quot;))]</td>
+<td>2030-02-01 14:29:51.372424417 +06:46</td>
+<td>(inner: (t 1: &quot;m r&quot;, t 2: -9223372036854775809), z: 127)</td>
+<td>8713-08</td>
+</tr>
+<tr>
+<td>Right(1)</td>
+<td>[(a: 2, nested: (num num: -2147483649, the text 0 item: &quot;/%􁔜yV5l D7􋟸𰉦&quot;))]</td>
+<td>1923-11-07 01:58:32.833025574 -08:29</td>
+<td>(inner: (t 1: &quot;Number&quot;, t 2: 718), z: 32767)</td>
+<td>0967-01</td>
+</tr>
+<tr>
+<td>Left(6789)</td>
+<td>[(a: -128, nested: (num num: -127, the text 0 item: &quot;BEGIN&quot;)), (a: 2147483648, nested: (num num: 404, the text 0 item: &quot;𤯵&quot;))]</td>
+<td>1934-10-28 12:13:22.309654831 +03:55</td>
+<td>(inner: (t 1: &quot;u 9&quot;, t 2: -2147483647), z: 230126481905)</td>
+<td>4036-07</td>
+</tr>
+<tr>
+<td>Right(7)</td>
+<td>[(a: 2147483648, nested: (num num: 9223372036854775808, the text 0 item: &quot;M􄅅n/&quot;))]</td>
+<td>1923-04-02 22:02:00 -04:20</td>
+<td>(inner: (t 1: &quot;lu&quot;, t 2: -2147483649), z: -9223372036854775807)</td>
+<td>6308-02</td>
+</tr>
+<tr>
+<td>Right(9223372036854775807)</td>
+<td>[(a: 2147483647, nested: (num num: -9223372036854775807, the text 0 item: &quot;7􅦯&quot;)), (a: 2392, nested: (num num: 2031533, the text 0 item: &quot;TRANSFORMATION&quot;)), (a: -2147483648, nested: (num num: -9223372036854775808, the text 0 item: &quot;tn&quot;)), (a: -32767, nested: (num num: 0, the text 0 item: &quot;r𮕭*폴Q&quot;))]</td>
+<td>8826-05-24 13:13:00 Etc/GMT-10</td>
+<td>(inner: (t 1: &quot;DateTimeZoned&quot;, t 2: -128), z: 6)</td>
+<td>2226-11</td>
+</tr>
+<tr>
+<td>Right(174055825123325)</td>
+<td>[(a: -1, nested: (num num: 2147483648, the text 0 item: &quot;𨣸𦙬m󽚲&quot;)), (a: 9223372036854775807, nested: (num num: -32767, the text 0 item: &quot;unnn9&quot;))]</td>
+<td>1925-08-06 01:11:12 Arctic/Longyearbyen</td>
+<td>(inner: (t 1: &quot;tagged&quot;, t 2: 322037), z: -2147483648)</td>
+<td>2469-03</td>
+</tr>
+<tr>
+<td>Left(-2147483649)</td>
+<td>[(a: 1, nested: (num num: 127, the text 0 item: &quot;X&quot;)), (a: 7101, nested: (num num: -128, the text 0 item: &quot;fZ Z&quot;))]</td>
+<td>1964-09-22 05:45:36 +11:11</td>
+<td>(inner: (t 1: &quot;'PoLFKvkZuJ=G􂣉챙}[r🃇𣀗\&quot;, t 2: 2), z: -127)</td>
+<td>4715-01</td>
+</tr>
+<tr>
+<td>Right(-32768)</td>
+<td>[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: &quot;󾛞 󾊳󵺚|IaM󰈠I𲟀7C𡒔#*fL𝥓j[𗃦D&quot;))]</td>
+<td>2025-10-20 11:43:21 Etc/GMT-0</td>
+<td>(inner: (t 1: &quot;yn0raZ9&quot;, t 2: 442292410497767098051), z: -127)</td>
+<td>7664-12</td>
+</tr>
+<tr>
+<td>Left(-2147483649)</td>
+<td>[(a: 2106896, nested: (num num: -32768, the text 0 item: &quot;a&quot;)), (a: 0.415984, nested: (num num: 31686684464954658768, the text 0 item: &quot;6W&quot;))]</td>
+<td>2687-03-09 18:18:12 +06:20</td>
+<td>(inner: (t 1: &quot;R5{&quot;, t 2: 0.598802), z: 105597)</td>
+<td>0400-03</td>
+</tr>
+<tr>
+<td>Right(-2147483648)</td>
+<td>[(a: 0, nested: (num num: 127, the text 0 item: &quot;COLUMN&quot;)), (a: -9223372036854775807, nested: (num num: 9223372036854775807, the text 0 item: &quot;Z&gt;&quot;)), (a: -2147483649, nested: (num num: 6060228, the text 0 item: &quot;+}N􁻴P{&quot;)), (a: 32490, nested: (num num: -9223372036854775807, the text 0 item: &quot;g9ar9a r&quot;))]</td>
+<td>8972-04-03 23:09:29.502145641 -10:48</td>
+<td>(inner: (t 1: &quot;)󼅯&quot;, t 2: -2147483649), z: 0.956357)</td>
+<td>7247-09</td>
+</tr>
+<tr>
+<td>Right(3)</td>
+<td>[(a: -127, nested: (num num: -32768, the text 0 item: &quot;y0 nra00&quot;))]</td>
+<td>2031-06-28 20:02:40 Europe/Sarajevo</td>
+<td>(inner: (t 1: &quot;󺊯&quot;, t 2: 9223372036854775808), z: 127)</td>
+<td>3022-01</td>
+</tr>
+<tr>
+<td>Left(-32767)</td>
+<td>[(a: 127, nested: (num num: 0.957399, the text 0 item: &quot;Aja𧸙&quot;)), (a: -32768, nested: (num num: 0, the text 0 item: &quot;Boolean&quot;)), (a: 0.943392, nested: (num num: -2147483649, the text 0 item: &quot;*8uW󰯝I;Q]刄B𥡒&gt;{&quot;))]</td>
+<td>1908-07-05 17:27:33 -03:19</td>
+<td>(inner: (t 1: &quot;✓y􁉼S􍋄󻢺&quot;, t 2: 1), z: 12)</td>
+<td>3878-01</td>
+</tr>
+<tr>
+<td>Right(8885008)</td>
+<td>[(a: 0.960664, nested: (num num: 2147483647, the text 0 item: &quot;EP&quot;)), (a: 7, nested: (num num: 509, the text 0 item: &quot;d(#s{&quot;)), (a: -9223372036854775808, nested: (num num: 9223372036854775807, the text 0 item: &quot;COLUMNAL&quot;)), (a: 127, nested: (num num: 1, the text 0 item: &quot;unitvar&quot;))]</td>
+<td>1931-06-13 17:30:21.322650945 -06:06</td>
+<td>(inner: (t 1: &quot;Time&quot;, t 2: -127), z: 9223372036854775808)</td>
+<td>0849-04</td>
+</tr>
+<tr>
+<td>Left(9223372036854775807)</td>
+<td>[(a: 0.279333, nested: (num num: 219303838, the text 0 item: &quot;TEXTFILE&quot;)), (a: -2147483649, nested: (num num: 0.720876, the text 0 item: &quot;{1&amp;S?灱&quot;)), (a: -9223372036854775807, nested: (num num: 0.470358, the text 0 item: &quot;k&quot;))]</td>
+<td>2050-10-19 15:43:00 +07:05</td>
+<td>(inner: (t 1: &quot;un00&quot;, t 2: 2147483647), z: 132)</td>
+<td>3954-12</td>
+</tr>
+<tr>
+<td>Right(0)</td>
+<td>[(a: 217374292551, nested: (num num: 5719, the text 0 item: &quot;a&quot;))]</td>
+<td>1932-11-23 12:36:57.752499892 +11:56</td>
+<td>(inner: (t 1: &quot;-#~G1&quot;, t 2: -2147483647), z: -2147483648)</td>
+<td>9812-11</td>
+</tr>
+<tr>
+<td>Left(5640531)</td>
+<td>[(a: 0.721197, nested: (num num: 334472, the text 0 item: &quot;0X,]nM4 &quot;)), (a: -32768, nested: (num num: -1, the text 0 item: &quot;COLUMNAL&quot;))]</td>
+<td>1999-05-02 12:26:53.810998272 America/Thunder_Bay</td>
+<td>(inner: (t 1: &quot;hZ 9r 9 rn&quot;, t 2: 10), z: 2147483647)</td>
+<td>3879-03</td>
+</tr>
+<tr>
+<td>Right(2671)</td>
+<td>[(a: 783995, nested: (num num: 9223372036854775808, the text 0 item: &quot;v99Z r9r99r&quot;)), (a: 127, nested: (num num: -2147483649, the text 0 item: &quot;dnZ&quot;)), (a: 0, nested: (num num: 9223372036854775808, the text 0 item: &quot;7Tfnムh&quot;)), (a: 9223372036854775808, nested: (num num: -2147483647, the text 0 item: &quot;TYPES&quot;))]</td>
+<td>1940-06-09 10:24:55 -06:28</td>
+<td>(inner: (t 1: &quot;DateYM&quot;, t 2: -128), z: 9223372036854775808)</td>
+<td>4740-05</td>
+</tr>
+<tr>
+<td>Right(-2147483649)</td>
+<td>[(a: 11, nested: (num num: 253, the text 0 item: &quot;znr9009Zn&quot;)), (a: -127, nested: (num num: 32767, the text 0 item: &quot;􃟾10E4Q9 &quot;)), (a: -2147483647, nested: (num num: 0, the text 0 item: &quot;apply&quot;))]</td>
+<td>1941-09-06 17:58:16 Etc/GMT-3</td>
+<td>(inner: (t 1: &quot;s'l.9?\I󹺤S𮃝&quot;, t 2: 32677), z: 17020)</td>
+<td>0827-10</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775807)</td>
+<td>[(a: 7862, nested: (num num: -128, the text 0 item: &quot;pr00rr&quot;)), (a: 3, nested: (num num: 6, the text 0 item: &quot;ja&quot;)), (a: 0.070006, nested: (num num: 7290, the text 0 item: &quot;DEFAULT&quot;))]</td>
+<td>2011-08-24 18:20:18.472170629 Europe/Kiev</td>
+<td>(inner: (t 1: &quot;9I󸀹󳝃𧹞9}霡&quot;, t 2: 6), z: -2147483647)</td>
+<td>1330-06</td>
+</tr>
+<tr>
+<td>Left(0)</td>
+<td>[(a: 2147483648, nested: (num num: -127, the text 0 item: &quot;n󳒡I&quot;)), (a: 502905097319, nested: (num num: 386, the text 0 item: &quot;8&quot;)), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: &quot;v^c𪃻&quot;))]</td>
+<td>1906-11-15 09:12:34 Asia/Dacca</td>
+<td>(inner: (t 1: &quot;q Zrn nn&quot;, t 2: 0.762886), z: 1)</td>
+<td>5377-07</td>
+</tr>
+<tr>
+<td>Left(48)</td>
+<td>[(a: -2147483648, nested: (num num: 2147483648, the text 0 item: &quot;􈇄𭄧o&quot;))]</td>
+<td>1919-10-23 13:13:45.071810318 Canada/Central</td>
+<td>(inner: (t 1: &quot;va&quot;, t 2: 23224962), z: 2147483647)</td>
+<td>2654-05</td>
+</tr>
+<tr>
+<td>Left(-32768)</td>
+<td>[(a: 167, nested: (num num: 2147483648, the text 0 item: &quot;𫗥P𠦮𧘓]lB]~c5ﵞ{ MyⳲ'2&quot;)), (a: 0.068239, nested: (num num: -2147483647, the text 0 item: &quot;𝋌M/?𓶛%1&quot;)), (a: -32768, nested: (num num: 7401725734, the text 0 item: &quot;]-𱫻ra.JuⲜLS臾%*𛆽􄷂&gt; d9&quot;))]</td>
+<td>1992-11-24 19:06:53.093158142 -08:32</td>
+<td>(inner: (t 1: &quot;j0&quot;, t 2: 2666), z: 0.404686)</td>
+<td>6362-08</td>
+</tr>
+<tr>
+<td>Left(120)</td>
+<td>[(a: 46, nested: (num num: -2147483647, the text 0 item: &quot;Time&quot;)), (a: 38, nested: (num num: 0, the text 0 item: &quot;invalidtypeops&quot;)), (a: 423392202177115836, nested: (num num: 9223372036854775808, the text 0 item: &quot;n9a0 a9nZ&quot;))]</td>
+<td>1914-04-14 19:43:00 -08:49</td>
+<td>(inner: (t 1: &quot;!r&quot;, t 2: 4), z: -1)</td>
+<td>4492-08</td>
+</tr>
+<tr>
+<td>Right(-2147483649)</td>
+<td>[(a: 9223372036854775807, nested: (num num: 2694000995475377921, the text 0 item: &quot;a9nr90a 0n&quot;)), (a: 2147483647, nested: (num num: 1, the text 0 item: &quot;a&quot;)), (a: 941007, nested: (num num: -32767, the text 0 item: &quot;a􃞻&quot;)), (a: 1, nested: (num num: -9223372036854775808, the text 0 item: &quot;cr9n0&quot;))]</td>
+<td>1994-09-30 15:03:33.757368674 Africa/Timbuktu</td>
+<td>(inner: (t 1: &quot;TYPE&quot;, t 2: 15), z: 2)</td>
+<td>5636-07</td>
+</tr>
+<tr>
+<td>Left(2147483647)</td>
+<td>[(a: -2147483648, nested: (num num: 0.574356, the text 0 item: &quot;󳤇􈙝Ul[(&gt;&amp;􃼚_cO&quot;)), (a: 0, nested: (num num: 0, the text 0 item: &quot;􆖞󲼽Z+{'#궺C}t𤗺[]𨥋&quot;))]</td>
+<td>1936-03-24 00:48:26.815519889 -01:36</td>
+<td>(inner: (t 1: &quot;㗱Qf!eg󻗏&quot;, t 2: 5849250322033), z: 130216048609625978)</td>
+<td>9938-02</td>
+</tr>
+<tr>
+<td>Left(53886901308828)</td>
+<td>[(a: 0.808254, nested: (num num: 48, the text 0 item: &quot;.x,/?4[b𦗙=XVJ&quot;))]</td>
+<td>1947-08-11 03:26:05 America/Cambridge_Bay</td>
+<td>(inner: (t 1: &quot;Z&quot;, t 2: 32767), z: -9223372036854775808)</td>
+<td>5079-07</td>
+</tr>
+<tr>
+<td>Left(2098930612883740671)</td>
+<td>[(a: 1, nested: (num num: -2147483649, the text 0 item: &quot;DateTime&quot;)), (a: 8804, nested: (num num: 1, the text 0 item: &quot;TRANSFORMATION&quot;)), (a: 1, nested: (num num: -2147483649, the text 0 item: &quot;n&quot;))]</td>
+<td>1945-06-16 20:15:49 +01:46</td>
+<td>(inner: (t 1: &quot;VERSION&quot;, t 2: -2147483649), z: -2147483649)</td>
+<td>7385-03</td>
+</tr>
+<tr>
+<td>Right(1096974090172)</td>
+<td>[(a: 4842, nested: (num num: 0.83442, the text 0 item: &quot;a&quot;)), (a: 0.106409, nested: (num num: -1, the text 0 item: &quot;lr&quot;)), (a: 6, nested: (num num: 4, the text 0 item: &quot;h0&quot;)), (a: 9223372036854775808, nested: (num num: 40449426, the text 0 item: &quot;a&quot;))]</td>
+<td>2049-11-07 16:18:00 America/Santiago</td>
+<td>(inner: (t 1: &quot;+,&amp;PjW(ib&lt;&quot;, t 2: 205888204), z: 57410220)</td>
+<td>9077-05</td>
+</tr>
+<tr>
+<td>Right(-32768)</td>
+<td>[(a: 0.999822, nested: (num num: 1, the text 0 item: &quot;UNITS&quot;)), (a: -127, nested: (num num: -128, the text 0 item: &quot;󶆵􇒠}&quot;)), (a: 0.418055, nested: (num num: 0, the text 0 item: &quot;t^cP&quot;)), (a: 0.000726, nested: (num num: 130922325, the text 0 item: &quot;1󳝨&quot;))]</td>
+<td>2010-05-17 06:24:00 Asia/Nicosia</td>
+<td>(inner: (t 1: &quot;DEFAULT&quot;, t 2: -9223372036854775807), z: 12753)</td>
+<td>7789-09</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775808)</td>
+<td>[(a: 32767, nested: (num num: 1, the text 0 item: &quot;er 00ZrZa&quot;)), (a: 3199, nested: (num num: 36912, the text 0 item: &quot;h n9ZZ00an&quot;)), (a: 15271, nested: (num num: -9223372036854775808, the text 0 item: &quot;END&quot;)), (a: 0.076321, nested: (num num: 1087, the text 0 item: &quot;/|&quot;))]</td>
+<td>4590-12-22 22:39:04.702448266 Etc/GMT+6</td>
+<td>(inner: (t 1: &quot;a&quot;, t 2: 32767), z: 0.335546)</td>
+<td>6044-06</td>
+</tr>
+<tr>
+<td>Right(0.794689)</td>
+<td>[(a: -2147483649, nested: (num num: 405875875084, the text 0 item: &quot;딵1;A󷾝&quot;)), (a: 21209, nested: (num num: 0.797814, the text 0 item: &quot;typevar&quot;))]</td>
+<td>1904-01-11 06:50:30.379103114 Europe/Athens</td>
+<td>(inner: (t 1: &quot;=󿑆/&quot;, t 2: 9223372036854775808), z: 0.991162)</td>
+<td>9033-04</td>
+</tr>
+<tr>
+<td>Right(2147483648)</td>
+<td>[(a: 2147483648, nested: (num num: 9223372036854775807, the text 0 item: &quot;𦶂󲖝5O$󷷘󻃋#&quot;)), (a: 127, nested: (num num: 143314992735, the text 0 item: &quot;a&quot;))]</td>
+<td>2036-08-07 17:59:18.209294271 America/Paramaribo</td>
+<td>(inner: (t 1: &quot;[m뙺&quot;, t 2: 15112), z: 29)</td>
+<td>3358-10</td>
+</tr>
+<tr>
+<td>Left(127)</td>
+<td>[(a: 2147483647, nested: (num num: 2147483648, the text 0 item: &quot;qrr&quot;)), (a: 1378474095, nested: (num num: -32767, the text 0 item: &quot;l0rnrnar&quot;)), (a: -9223372036854775809, nested: (num num: 167, the text 0 item: &quot;^c\}7Q𫨩a&quot;)), (a: 0.415789, nested: (num num: -1, the text 0 item: &quot;lZan&quot;))]</td>
+<td>1963-10-21 11:36:07 -00:07</td>
+<td>(inner: (t 1: &quot;TRANSFORMATION&quot;, t 2: -1), z: 2147483648)</td>
+<td>1185-03</td>
+</tr>
+<tr>
+<td>Right(2834020840963942)</td>
+<td>[(a: -9223372036854775808, nested: (num num: 127, the text 0 item: &quot; 𮥍y[􌨴󷮩=&quot;))]</td>
+<td>1908-07-18 05:16:37.726581204 Asia/Khandyga</td>
+<td>(inner: (t 1: &quot;𝕍k𳁆󴰤r㐵&quot;, t 2: -9223372036854775808), z: 2147483648)</td>
+<td>1543-09</td>
+</tr>
+<tr>
+<td>Right(104)</td>
+<td>[(a: -9223372036854775808, nested: (num num: 107689, the text 0 item: &quot;pr909&quot;)), (a: 725480217713381, nested: (num num: 1363313028, the text 0 item: &quot;Kmg\𢨣,$Q󰤄Gn&quot;)), (a: 4959, nested: (num num: -9223372036854775808, the text 0 item: &quot;k0a&quot;))]</td>
+<td>2027-09-17 02:40:25.454070769 Asia/Bangkok</td>
+<td>(inner: (t 1: &quot;𩔱&quot;, t 2: -2147483649), z: 32254)</td>
+<td>6369-02</td>
+</tr>
+<tr>
+<td>Right(0.721903)</td>
+<td>[(a: 0.109597, nested: (num num: 28886, the text 0 item: &quot;r0&quot;))]</td>
+<td>3649-09-24 10:20:00 +02:24</td>
+<td>(inner: (t 1: &quot;VALUES&quot;, t 2: 1), z: 2147483647)</td>
+<td>2626-04</td>
+</tr>
+<tr>
+<td>Left(-127)</td>
+<td>[(a: 161, nested: (num num: 29, the text 0 item: &quot;%;&quot;)), (a: 0.271438, nested: (num num: 6561923737, the text 0 item: &quot;BEGIN&quot;)), (a: -9223372036854775808, nested: (num num: 3, the text 0 item: &quot;;&quot;)), (a: -1, nested: (num num: 9223372036854775807, the text 0 item: &quot;TEXTFILE&quot;))]</td>
+<td>1946-12-26 03:23:40 +06:29</td>
+<td>(inner: (t 1: &quot;ͣ𠨭󻍰3(󹖴?uU}𨟪J&quot;, t 2: 48), z: -9223372036854775808)</td>
+<td>7527-12</td>
+</tr>
+<tr>
+<td>Right(32335024646149510854)</td>
+<td>[(a: 1, nested: (num num: 0.080564, the text 0 item: &quot;COLUMN&quot;)), (a: -1, nested: (num num: -127, the text 0 item: &quot;er9r&quot;)), (a: -128, nested: (num num: -2147483648, the text 0 item: &quot;lr0 Zr&quot;)), (a: 9223372036854775808, nested: (num num: 127, the text 0 item: &quot;ta9an&quot;))]</td>
+<td>5450-08-02 16:17:26.362748469 Europe/Moscow</td>
+<td>(inner: (t 1: &quot;🗨3Y'&quot;, t 2: 122), z: 0.170487)</td>
+<td>0716-12</td>
+</tr>
+<tr>
+<td>Left(0)</td>
+<td>[(a: -32768, nested: (num num: 2516296, the text 0 item: &quot;vrnn&quot;)), (a: 4, nested: (num num: -2147483649, the text 0 item: &quot;qZ9a9a&quot;))]</td>
+<td>0029-01-26 13:16:00 -08:16</td>
+<td>(inner: (t 1: &quot;urr&quot;, t 2: 478942912), z: -2147483648)</td>
+<td>6473-10</td>
+</tr>
+<tr>
+<td>Right(1)</td>
+<td>[(a: -2147483647, nested: (num num: 9223372036854775807, the text 0 item: &quot;/&quot;)), (a: -9223372036854775809, nested: (num num: 0, the text 0 item: &quot;xnara000&quot;))]</td>
+<td>1930-02-07 23:12:26.487227449 Etc/GMT+2</td>
+<td>(inner: (t 1: &quot;%&quot;, t 2: -9223372036854775809), z: 15147)</td>
+<td>9099-08</td>
+</tr>
+<tr>
+<td>Left(245)</td>
+<td>[(a: -32767, nested: (num num: 6, the text 0 item: &quot;a&quot;)), (a: 0, nested: (num num: 2690, the text 0 item: &quot;i9na&quot;)), (a: 1, nested: (num num: -1, the text 0 item: &quot;󹃟Y&quot;))]</td>
+<td>2006-05-31 21:19:33.393116614 America/Argentina/Ushuaia</td>
+<td>(inner: (t 1: &quot;COLUMN&quot;, t 2: 51549), z: 2147483648)</td>
+<td>0899-05</td>
+</tr>
+<tr>
+<td>Left(253292)</td>
+<td>[(a: 2147483648, nested: (num num: -2147483647, the text 0 item: &quot;b%N}&quot;)), (a: 103, nested: (num num: 32037665236, the text 0 item: &quot;Z&quot;)), (a: -127, nested: (num num: -2147483649, the text 0 item: &quot;a&quot;))]</td>
+<td>1937-09-21 01:23:10 -05:03</td>
+<td>(inner: (t 1: &quot;N'!V:E&quot;, t 2: 15), z: 2042)</td>
+<td>0598-09</td>
+</tr>
+<tr>
+<td>Right(2664842)</td>
+<td>[(a: 17, nested: (num num: 127, the text 0 item: &quot;G󰛴{^c7&quot;)), (a: 0.867852, nested: (num num: 2147483648, the text 0 item: &quot;Number&quot;)), (a: -2147483648, nested: (num num: 4, the text 0 item: &quot;V&quot;))]</td>
+<td>4901-02-27 09:51:00 +09:28</td>
+<td>(inner: (t 1: &quot;brnaaaran&quot;, t 2: 9223372036854775808), z: 98525534601)</td>
+<td>6472-02</td>
+</tr>
+<tr>
+<td>Right(1)</td>
+<td>[(a: 0, nested: (num num: 2147483647, the text 0 item: &quot;Number&quot;)), (a: 28024686817, nested: (num num: 191757526, the text 0 item: &quot;bn n&quot;)), (a: -32767, nested: (num num: 3218532, the text 0 item: &quot;r&quot;)), (a: -2147483648, nested: (num num: 2147483648, the text 0 item: &quot;ZAGZjz*K&quot;))]</td>
+<td>2048-10-19 05:36:03.85185028 America/Porto_Acre</td>
+<td>(inner: (t 1: &quot;apply&quot;, t 2: 24357), z: 5262668304143)</td>
+<td>5035-08</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: 0.479362, nested: (num num: 40594740428, the text 0 item: &quot;𧈷N#oo󾰁_P𢭠𰲵|-[~Y &quot;))]</td>
+<td>2003-04-18 04:37:12.308992294 America/Ojinaga</td>
+<td>(inner: (t 1: &quot;~!Obg􊹺j&quot;, t 2: 130325), z: -1)</td>
+<td>0288-05</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: 0, nested: (num num: 34, the text 0 item: &quot;1&quot;)), (a: 1, nested: (num num: 0.725201, the text 0 item: &quot;𤂑6w𢲶&quot;)), (a: 1611874730, nested: (num num: -2147483649, the text 0 item: &quot;:𥵹q&quot;)), (a: 5, nested: (num num: 2147483647, the text 0 item: &quot;a&quot;))]</td>
+<td>1969-11-05 04:55:55.500990201 America/Phoenix</td>
+<td>(inner: (t 1: &quot;bZr&quot;, t 2: 8), z: 2)</td>
+<td>7312-12</td>
+</tr>
+<tr>
+<td>Right(127)</td>
+<td>[(a: -2147483647, nested: (num num: 110817003, the text 0 item: &quot;󽽈b􊝌&amp;𧲞&quot;)), (a: 11, nested: (num num: 15, the text 0 item: &quot;f󳘹﯐.xA+𪋫e𥶩#&quot;)), (a: 0, nested: (num num: -2147483648, the text 0 item: &quot;󶘂]&quot;)), (a: -1, nested: (num num: 43, the text 0 item: &quot;)􏃁f|F~Z&quot;))]</td>
+<td>1964-06-19 17:54:48 -02:42</td>
+<td>(inner: (t 1: &quot;D,tSz&quot;, t 2: 9223372036854775808), z: -9223372036854775809)</td>
+<td>7289-12</td>
+</tr>
+<tr>
+<td>Left(-2147483647)</td>
+<td>[(a: 9223372036854775808, nested: (num num: -127, the text 0 item: &quot;6-|u&gt;󲎄BSP&quot;)), (a: -9223372036854775809, nested: (num num: 0, the text 0 item: &quot;%E&quot;)), (a: 7986, nested: (num num: -9223372036854775807, the text 0 item: &quot;on n&quot;))]</td>
+<td>2023-05-20 21:50:21.365393372 +06:30</td>
+<td>(inner: (t 1: &quot;C􇛧4t𮃼􇤲 Bޠb/&quot;, t 2: -127), z: 189)</td>
+<td>4044-04</td>
+</tr>
+<tr>
+<td>Left(-127)</td>
+<td>[(a: -1, nested: (num num: -2147483649, the text 0 item: &quot;m0 ZrZna Z0&quot;)), (a: 604721222274513, nested: (num num: 0, the text 0 item: &quot;COLUMN&quot;)), (a: -9223372036854775807, nested: (num num: 52, the text 0 item: &quot;ganZ0&quot;)), (a: -2147483648, nested: (num num: 127, the text 0 item: &quot;츠📫#e~*Z󹷓6'K&quot;))]</td>
+<td>1970-09-04 12:02:45 America/Cordoba</td>
+<td>(inner: (t 1: &quot;=v&quot;, t 2: 2), z: 1264064)</td>
+<td>6539-12</td>
+</tr>
+<tr>
+<td>Right(-127)</td>
+<td>[(a: 1, nested: (num num: 69763102, the text 0 item: &quot;a&quot;)), (a: 96, nested: (num num: 5, the text 0 item: &quot;󲈲|)R&quot;)), (a: 32767, nested: (num num: 4567237794092, the text 0 item: &quot;.7&quot;)), (a: 75183, nested: (num num: 5, the text 0 item: &quot;en9rZrn00&quot;))]</td>
+<td>2044-12-21 22:14:00 -10:24</td>
+<td>(inner: (t 1: &quot;crnnZr r&quot;, t 2: 9223372036854775807), z: 4251820237)</td>
+<td>2339-01</td>
+</tr>
+<tr>
+<td>Left(1)</td>
+<td>[(a: -9223372036854775809, nested: (num num: -32767, the text 0 item: &quot;Z&quot;))]</td>
+<td>1918-11-24 15:39:11.221135495 Pacific/Pago_Pago</td>
+<td>(inner: (t 1: &quot;1ꙫ&quot;, t 2: -9223372036854775809), z: -32768)</td>
+<td>1026-07</td>
+</tr>
+<tr>
+<td>Left(32767)</td>
+<td>[(a: 460, nested: (num num: 0.513733, the text 0 item: &quot;rn 9 0r&quot;))]</td>
+<td>8393-10-09 10:30:00 Etc/GMT-7</td>
+<td>(inner: (t 1: &quot;BL+&quot;, t 2: -32767), z: -127)</td>
+<td>9085-09</td>
+</tr>
+<tr>
+<td>Right(9223372036854775807)</td>
+<td>[(a: 1, nested: (num num: -2147483649, the text 0 item: &quot;TYPES&quot;)), (a: 12, nested: (num num: 0.591665, the text 0 item: &quot;X*gix&quot;)), (a: 32767, nested: (num num: 695, the text 0 item: &quot;0skA𢨹f8hw\xy2ᱎ󶞗c&quot;)), (a: 2147483648, nested: (num num: -2147483647, the text 0 item: &quot;Ob𠿖􏈀󲸨h&quot;))]</td>
+<td>2042-03-02 22:50:47.202567425 Pacific/Easter</td>
+<td>(inner: (t 1: &quot;4H,7%SK􀜬3$AqsA`}&quot;, t 2: 32767), z: 0.758233)</td>
+<td>0625-11</td>
+</tr>
+<tr>
+<td>Right(0.716204)</td>
+<td>[(a: -9223372036854775807, nested: (num num: 0, the text 0 item: &quot;_L;&quot;)), (a: -9223372036854775807, nested: (num num: 5292784790, the text 0 item: &quot;d r99&quot;)), (a: 10, nested: (num num: 6318384, the text 0 item: &quot;1%&quot;)), (a: 0, nested: (num num: 0.621476, the text 0 item: &quot;a&quot;))]</td>
+<td>1929-08-07 15:32:39.323939163 Asia/Choibalsan</td>
+<td>(inner: (t 1: &quot;e0r0 n000n&quot;, t 2: -9223372036854775809), z: -1)</td>
+<td>4042-09</td>
+</tr>
+<tr>
+<td>Right(1054939)</td>
+<td>[(a: 0, nested: (num num: 11, the text 0 item: &quot;VN&quot;)), (a: 119, nested: (num num: 914442, the text 0 item: &quot;e ZZ&quot;)), (a: 6, nested: (num num: 17112716799256912874784, the text 0 item: &quot;Nw&quot;))]</td>
+<td>1910-03-30 09:45:42 -09:56</td>
+<td>(inner: (t 1: &quot;I𬈑q4Pl&quot;, t 2: 4509020), z: 53)</td>
+<td>1553-03</td>
+</tr>
+<tr>
+<td>Right(0.968424)</td>
+<td>[(a: 31, nested: (num num: 0.135982, the text 0 item: &quot;B𓡱r&quot;)), (a: 863, nested: (num num: 1, the text 0 item: &quot;e+c&quot;))]</td>
+<td>3715-06-18 12:50:30.459070058 Pacific/Bougainville</td>
+<td>(inner: (t 1: &quot;b0a Z 99&quot;, t 2: -2147483647), z: -2147483648)</td>
+<td>3480-10</td>
+</tr>
+<tr>
+<td>Left(-2147483647)</td>
+<td>[(a: 3, nested: (num num: 0.74255, the text 0 item: &quot;a&quot;)), (a: 1, nested: (num num: 0, the text 0 item: &quot;j n&quot;)), (a: 13101, nested: (num num: -32768, the text 0 item: &quot;Sb&quot;))]</td>
+<td>2116-07-15 10:48:36 +00:40</td>
+<td>(inner: (t 1: &quot;rnr0Zra&quot;, t 2: -9223372036854775807), z: -2147483648)</td>
+<td>1792-09</td>
+</tr>
+<tr>
+<td>Left(9223372036854775807)</td>
+<td>[(a: -1, nested: (num num: 13, the text 0 item: &quot;bC&gt;)SP󻺳􂢈Zw`i6&quot;))]</td>
+<td>1927-07-17 09:51:05.409916877 +09:51</td>
+<td>(inner: (t 1: &quot;hr ar Zn&quot;, t 2: 0.817856), z: 2147483648)</td>
+<td>1718-03</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: 1, nested: (num num: -9223372036854775807, the text 0 item: &quot;汊gV&quot;)), (a: 9223372036854775808, nested: (num num: -9223372036854775808, the text 0 item: &quot;wz󸫫LB(7B&quot;))]</td>
+<td>1946-09-22 23:08:00 Australia/Lindeman</td>
+<td>(inner: (t 1: &quot;{󾵕􆐦bZ[&quot;, t 2: 0.646839), z: 7804506341)</td>
+<td>1229-07</td>
+</tr>
+<tr>
+<td>Left(-1)</td>
+<td>[(a: 468579627570, nested: (num num: 1182935648214, the text 0 item: &quot;pa&quot;)), (a: 5498, nested: (num num: 208, the text 0 item: &quot;TRANSFORMATION&quot;)), (a: 0.252509, nested: (num num: 131754292, the text 0 item: &quot;🙄𳍪𥫄𡬨&quot;)), (a: 0, nested: (num num: -2147483649, the text 0 item: &quot;ตS:{nf17&quot;))]</td>
+<td>2000-04-15 09:59:00 America/Costa_Rica</td>
+<td>(inner: (t 1: &quot;􄆄k7i&quot;, t 2: -9223372036854775808), z: -128)</td>
+<td>3677-06</td>
+</tr>
+<tr>
+<td>Right(-127)</td>
+<td>[(a: 718624, nested: (num num: 1, the text 0 item: &quot;b9r&quot;)), (a: -127, nested: (num num: 0.725721, the text 0 item: &quot;a&quot;)), (a: -128, nested: (num num: 0, the text 0 item: &quot;󵵑ijM'vn`𠾩t𮆡􆌗𧶄􎂸d􂎡!㶒􋖏RB&amp;fm/O)𞟦&quot;)), (a: 1466511711, nested: (num num: -2147483647, the text 0 item: &quot;%_*aTA&upsih;&lt;#pye&amp;𭋪Sm,jdo𱩀Jk&quot;))]</td>
+<td>1928-12-01 05:25:48.142646399 -03:52</td>
+<td>(inner: (t 1: &quot;ya ZZaZ9nZ&quot;, t 2: 1), z: 9223372036854775808)</td>
+<td>1835-06</td>
+</tr>
+<tr>
+<td>Left(-32767)</td>
+<td>[(a: -9223372036854775809, nested: (num num: 0.944141, the text 0 item: &quot;wZa&quot;)), (a: 1, nested: (num num: 1, the text 0 item: &quot;iX}p𓽫H&quot;))]</td>
+<td>3786-12-29 20:40:27.27113674 -00:57</td>
+<td>(inner: (t 1: &quot;DateYM&quot;, t 2: 22885), z: -2147483648)</td>
+<td>5583-12</td>
+</tr>
+<tr>
+<td>Right(0.559548)</td>
+<td>[(a: 17, nested: (num num: 2147483648, the text 0 item: &quot;e0&quot;))]</td>
+<td>1941-06-03 03:50:03.102833546 -09:58</td>
+<td>(inner: (t 1: &quot;pnaZ0&quot;, t 2: 77690), z: 1)</td>
+<td>0213-10</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: 11, nested: (num num: 226, the text 0 item: &quot;5m&quot;)), (a: -32768, nested: (num num: 9223372036854775807, the text 0 item: &quot;𮏓󷙞 K,=𑀣&quot;)), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: &quot;wa&quot;)), (a: 1481232768, nested: (num num: -127, the text 0 item: &quot;𫤝&quot;))]</td>
+<td>1922-03-24 23:04:00 Etc/GMT-5</td>
+<td>(inner: (t 1: &quot;i0arr00&quot;, t 2: 2147483648), z: 127)</td>
+<td>6706-03</td>
+</tr>
+<tr>
+<td>Right(9223372036854775807)</td>
+<td>[(a: 2147483648, nested: (num num: 30, the text 0 item: &quot;רW&quot;)), (a: 0, nested: (num num: 16, the text 0 item: &quot;𪀨&quot;))]</td>
+<td>1971-07-16 06:37:00 Etc/GMT</td>
+<td>(inner: (t 1: &quot;s90a&quot;, t 2: -32767), z: -2147483647)</td>
+<td>5068-09</td>
+</tr>
+<tr>
+<td>Right(127)</td>
+<td>[(a: -9223372036854775808, nested: (num num: 1719, the text 0 item: &quot;END&quot;)), (a: 0.684886, nested: (num num: -32768, the text 0 item: &quot;2=ﾨ󽡗⍇ev𫋒\r􆨇sK]:zj&amp;=p􊷊PR3𓟲up`a􈩀&quot;)), (a: 395129, nested: (num num: -9223372036854775809, the text 0 item: &quot;Qa&quot;)), (a: 9223372036854775807, nested: (num num: 0.836159, the text 0 item: &quot;_Du ]IJ&quot;))]</td>
+<td>2044-12-05 21:59:54.115211206 -07:02</td>
+<td>(inner: (t 1: &quot;X&quot;, t 2: 0.910199), z: -32768)</td>
+<td>7898-01</td>
+</tr>
+<tr>
+<td>Left(-32768)</td>
+<td>[(a: -2147483648, nested: (num num: 985, the text 0 item: &quot;gra90 9Z0Z&quot;))]</td>
+<td>6057-06-08 23:41:51.700835387 +03:51</td>
+<td>(inner: (t 1: &quot;rZr r na0a&quot;, t 2: 35648778), z: 84697)</td>
+<td>3559-01</td>
+</tr>
+<tr>
+<td>Right(0)</td>
+<td>[(a: 0, nested: (num num: 0, the text 0 item: &quot;X叐&quot;)), (a: 65469, nested: (num num: 301751, the text 0 item: &quot;Number&quot;))]</td>
+<td>1910-06-26 20:57:36 +04:09</td>
+<td>(inner: (t 1: &quot;a&quot;, t 2: 63924601756509145), z: 9223372036854775808)</td>
+<td>0237-06</td>
+</tr>
+<tr>
+<td>Right(183)</td>
+<td>[(a: 0.121747, nested: (num num: 0.256532, the text 0 item: &quot;^coU餜x嫣&quot;)), (a: 0.661556, nested: (num num: 1, the text 0 item: &quot;j9 r&quot;))]</td>
+<td>2048-10-04 07:26:52 +03:53</td>
+<td>(inner: (t 1: &quot;w𥪿􉳤A:NPT󺂋x𑠢🉈O󱤫?&quot;, t 2: 117), z: 0)</td>
+<td>3070-08</td>
+</tr>
+<tr>
+<td>Right(194821)</td>
+<td>[(a: 1, nested: (num num: -127, the text 0 item: &quot;haZZ0a9&quot;)), (a: -9223372036854775807, nested: (num num: 1053519017169, the text 0 item: &quot;VALUES&quot;)), (a: 0.661244, nested: (num num: 0.104904, the text 0 item: &quot;󱦗CN􄟔\a0􅠑n󵌨&quot;)), (a: 0, nested: (num num: 2147483647, the text 0 item: &quot;hn n&quot;))]</td>
+<td>1952-07-24 15:19:00 +03:40</td>
+<td>(inner: (t 1: &quot;]e}V,DAT=_jHZXg端K=)S#X󴃺r8N&quot;, t 2: -9223372036854775807), z: 14867505518)</td>
+<td>7586-07</td>
+</tr>
+<tr>
+<td>Right(-1)</td>
+<td>[(a: 9223372036854775808, nested: (num num: -9223372036854775807, the text 0 item: &quot;! $?𔐶yuWR&quot;)), (a: 16322, nested: (num num: 0, the text 0 item: &quot;𓟚+&quot;))]</td>
+<td>1960-06-14 16:48:00 -08:44</td>
+<td>(inner: (t 1: &quot;&lt;kz􆍳[􀇻`&quot;, t 2: 32767), z: 500)</td>
+<td>0745-03</td>
+</tr>
+<tr>
+<td>Left(177703125)</td>
+<td>[(a: -1, nested: (num num: -32768, the text 0 item: &quot;&lt;J𰊖U󼛭􆦱+n 2D󺘫&quot;)), (a: 19356, nested: (num num: 124, the text 0 item: &quot;Time&quot;))]</td>
+<td>1907-08-03 19:30:12.626820809 -03:55</td>
+<td>(inner: (t 1: &quot;CONTENT&quot;, t 2: 0), z: 172861)</td>
+<td>1221-12</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775807)</td>
+<td>[(a: 0.603549, nested: (num num: 3042, the text 0 item: &quot;}&quot;)), (a: 2147483648, nested: (num num: 210909, the text 0 item: &quot;aZ&quot;)), (a: -2147483648, nested: (num num: 3020, the text 0 item: &quot;-&quot;))]</td>
+<td>2004-08-04 03:23:34.553521864 +02:00</td>
+<td>(inner: (t 1: &quot;i na aZar0Z&quot;, t 2: 0.584016), z: 0.288003)</td>
+<td>0182-06</td>
+</tr>
+<tr>
+<td>Left(0)</td>
+<td>[(a: 9223372036854775807, nested: (num num: 9223372036854775808, the text 0 item: &quot;z𨒪5w]oVOum𘢄𱂟6{oB6u󴾥yj&quot;)), (a: 30207920, nested: (num num: 0.820788, the text 0 item: &quot;TYPE&quot;))]</td>
+<td>2022-10-19 23:58:14 Asia/Amman</td>
+<td>(inner: (t 1: &quot;ianZ&quot;, t 2: -2147483649), z: 32767)</td>
+<td>7869-06</td>
+</tr>
+<tr>
+<td>Right(-2147483649)</td>
+<td>[(a: 188357, nested: (num num: 126, the text 0 item: &quot;]h(q*q(s&quot;)), (a: -128, nested: (num num: -32767, the text 0 item: &quot;z&quot;)), (a: 0, nested: (num num: 7571444525, the text 0 item: &quot;m3g􎗴$Ai􀽋􊡟&quot;)), (a: 0, nested: (num num: -1, the text 0 item: &quot;OUQ󳤟&quot;))]</td>
+<td>1953-09-15 13:37:00 +03:21</td>
+<td>(inner: (t 1: &quot;i0 nZ 0 r9&quot;, t 2: -9223372036854775808), z: 0)</td>
+<td>1773-04</td>
+</tr>
+<tr>
+<td>Left(919899106098)</td>
+<td>[(a: -2147483649, nested: (num num: 32767, the text 0 item: &quot;DateTimeZoned&quot;))]</td>
+<td>1956-12-26 19:27:00 Libya</td>
+<td>(inner: (t 1: &quot;Y&quot;, t 2: 34), z: 20833234719)</td>
+<td>3683-09</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775809)</td>
+<td>[(a: 1, nested: (num num: 0, the text 0 item: &quot;b&quot;))]</td>
+<td>1972-01-08 05:40:11 +03:48</td>
+<td>(inner: (t 1: &quot;Q&quot;, t 2: 32767), z: 6173073693)</td>
+<td>4535-11</td>
+</tr>
+<tr>
+<td>Left(3903211)</td>
+<td>[(a: 5476, nested: (num num: 59815149, the text 0 item: &quot;9&quot;)), (a: 0.205018, nested: (num num: -32768, the text 0 item: &quot;Boolean&quot;))]</td>
+<td>1966-03-27 01:12:27.079696914 Etc/UCT</td>
+<td>(inner: (t 1: &quot;DATA&quot;, t 2: 32767), z: 0.595212)</td>
+<td>1554-10</td>
+</tr>
+<tr>
+<td>Right(1283181364)</td>
+<td>[(a: -32767, nested: (num num: 28073, the text 0 item: &quot;xZa09rZna&quot;)), (a: 2147483648, nested: (num num: 2147483647, the text 0 item: &quot;g9&quot;)), (a: 0, nested: (num num: -2147483648, the text 0 item: &quot;cZZn9 an&quot;)), (a: -128, nested: (num num: 4110735756750, the text 0 item: &quot;iE&quot;))]</td>
+<td>1963-04-28 10:17:15.667969787 -08:04</td>
+<td>(inner: (t 1: &quot;%𣢜t󾋳&quot;, t 2: -32767), z: -2147483647)</td>
+<td>9787-08</td>
+</tr>
+<tr>
+<td>Right(0)</td>
+<td>[(a: -2147483647, nested: (num num: 0, the text 0 item: &quot;􏪤􎁸⳻𪬮W󸺡&quot;))]</td>
+<td>1956-08-13 05:35:16.082883172 America/Argentina/Buenos_Aires</td>
+<td>(inner: (t 1: &quot;dm&quot;, t 2: -9223372036854775807), z: 1)</td>
+<td>1995-10</td>
+</tr>
+<tr>
+<td>Left(1356)</td>
+<td>[(a: 2147483648, nested: (num num: 2147483647, the text 0 item: &quot;UNITS&quot;))]</td>
+<td>1908-09-13 23:32:41.581658792 +07:47</td>
+<td>(inner: (t 1: &quot;t0nn 99Z&quot;, t 2: 0), z: 43017724)</td>
+<td>8651-07</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775807)</td>
+<td>[(a: 0, nested: (num num: -9223372036854775807, the text 0 item: &quot;rZZ0 ran&quot;)), (a: 2147483648, nested: (num num: 334, the text 0 item: &quot;𬷻1mr&quot;))]</td>
+<td>6208-11-23 06:19:23.695421291 +00:18</td>
+<td>(inner: (t 1: &quot;un9 r9Z&quot;, t 2: 9223372036854775808), z: 636529031)</td>
+<td>4753-12</td>
+</tr>
+<tr>
+<td>Left(4)</td>
+<td>[(a: 281204314079, nested: (num num: 2211434152628498, the text 0 item: &quot;CONTENT&quot;)), (a: -9223372036854775807, nested: (num num: 300755355225, the text 0 item: &quot;C*􌾗&quot;)), (a: -1, nested: (num num: 0.916364, the text 0 item: &quot;aWp;c涷0&quot;))]</td>
+<td>3810-08-22 14:59:44 +07:00</td>
+<td>(inner: (t 1: &quot;9&amp;O𒄼l_&quot;, t 2: 107376), z: -9223372036854775808)</td>
+<td>0234-03</td>
+</tr>
+<tr>
+<td>Left(0.734134)</td>
+<td>[(a: 345710986418, nested: (num num: -32768, the text 0 item: &quot;w9n&quot;)), (a: 26, nested: (num num: -9223372036854775809, the text 0 item: &quot;SOURCE&quot;)), (a: 23, nested: (num num: 51019858, the text 0 item: &quot;𦛈\㭤􋏞0&quot;)), (a: 5997322955005, nested: (num num: 0.591697, the text 0 item: &quot;i0a aZ a&quot;))]</td>
+<td>1913-02-21 02:28:59.255892397 -00:51</td>
+<td>(inner: (t 1: &quot;ls&quot;, t 2: 4), z: -1)</td>
+<td>1977-08</td>
+</tr>
+<tr>
+<td>Right(-1)</td>
+<td>[(a: 3533196911, nested: (num num: 1579, the text 0 item: &quot;䗖A𠿐&quot;)), (a: -128, nested: (num num: -9223372036854775808, the text 0 item: &quot;g0&quot;)), (a: 3844435, nested: (num num: 0.629018, the text 0 item: &quot;3,XM󾌐[PR𥇷{&amp;hD3275/雷&quot;)), (a: 22896, nested: (num num: -9223372036854775809, the text 0 item: &quot;hC&quot;))]</td>
+<td>1919-11-01 00:54:33.976089196 Indian/Cocos</td>
+<td>(inner: (t 1: &quot;bra&quot;, t 2: -9223372036854775809), z: 2665632206542494)</td>
+<td>8561-06</td>
+</tr>
+<tr>
+<td>Left(-32767)</td>
+<td>[(a: 109984, nested: (num num: 65, the text 0 item: &quot;A&quot;)), (a: 24, nested: (num num: -127, the text 0 item: &quot;T[ナ􊿖&quot;))]</td>
+<td>8354-09-26 09:50:34.699937071 Africa/Djibouti</td>
+<td>(inner: (t 1: &quot;gaZn&quot;, t 2: 743667), z: -2147483648)</td>
+<td>5806-03</td>
+</tr>
+<tr>
+<td>Right(0)</td>
+<td>[(a: 2147483648, nested: (num num: 29533, the text 0 item: &quot;a&quot;)), (a: 1, nested: (num num: 24, the text 0 item: &quot;󿛐𤖒&quot;))]</td>
+<td>1944-02-23 21:18:04 Canada/Central</td>
+<td>(inner: (t 1: &quot;COLUMNAL&quot;, t 2: 0.8397), z: -127)</td>
+<td>2232-03</td>
+</tr>
+<tr>
+<td>Left(-2147483648)</td>
+<td>[(a: 131132, nested: (num num: 12, the text 0 item: &quot;𥁔G&quot;)), (a: 40882661727, nested: (num num: 75199784622, the text 0 item: &quot;a&quot;)), (a: -9223372036854775808, nested: (num num: 0, the text 0 item: &quot;%4|&lt;&quot;)), (a: 0, nested: (num num: 18322936931, the text 0 item: &quot;TYPES&quot;))]</td>
+<td>4470-12-19 18:25:56.862475113 +04:27</td>
+<td>(inner: (t 1: &quot;sZr&quot;, t 2: 5), z: 0.863093)</td>
+<td>9256-12</td>
+</tr>
+<tr>
+<td>Right(0.035194)</td>
+<td>[(a: -32768, nested: (num num: 15852, the text 0 item: &quot;𣋟`􀨾􇤎qꋚ𘥾7E𰜓2M;R࣠&quot;)), (a: 30364111971, nested: (num num: 23, the text 0 item: &quot;Number&quot;))]</td>
+<td>3197-07-05 20:49:20.457452042 Australia/Perth</td>
+<td>(inner: (t 1: &quot;leJlݾp󵶣&lt;&quot;, t 2: 0.154473), z: 1)</td>
+<td>8721-11</td>
+</tr>
+<tr>
+<td>Right(50587)</td>
+<td>[(a: 660, nested: (num num: 9223372036854775808, the text 0 item: &quot;멪.&lt;ᙯ𓎈&quot;))]</td>
+<td>2006-06-20 03:51:47 +06:01</td>
+<td>(inner: (t 1: &quot;l Z&quot;, t 2: 2147483647), z: 0)</td>
+<td>9960-05</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775807)</td>
+<td>[(a: 2147483647, nested: (num num: 0.375463, the text 0 item: &quot;invalidtypeops&quot;)), (a: 651753712, nested: (num num: 32767, the text 0 item: &quot;􎉄3&quot;))]</td>
+<td>1913-05-21 10:29:00 Europe/Bucharest</td>
+<td>(inner: (t 1: &quot;yk&quot;, t 2: -2147483647), z: -2147483647)</td>
+<td>6084-10</td>
+</tr>
+<tr>
+<td>Left(2147483647)</td>
+<td>[(a: 9223372036854775807, nested: (num num: 0.079348, the text 0 item: &quot;xZan 999a&quot;))]</td>
+<td>1977-08-10 09:26:00.377689132 -06:52</td>
+<td>(inner: (t 1: &quot;y 0 9990&quot;, t 2: 32767), z: 429)</td>
+<td>9694-03</td>
+</tr>
+<tr>
+<td>Right(0)</td>
+<td>[(a: 1, nested: (num num: -2147483647, the text 0 item: &quot;Number&quot;)), (a: 2, nested: (num num: 435, the text 0 item: &quot;Kuc3􉍕&quot;)), (a: -2147483647, nested: (num num: 91, the text 0 item: &quot;invalidtypeops&quot;))]</td>
+<td>1926-10-16 07:25:30.486263459 +07:21</td>
+<td>(inner: (t 1: &quot;f𥚦2n&quot;, t 2: 127), z: -9223372036854775807)</td>
+<td>6952-08</td>
+</tr>
+<tr>
+<td>Right(-32767)</td>
+<td>[(a: 20175, nested: (num num: 87928704837242774793, the text 0 item: &quot;Sw􃔻2iF_㽷)䝧&quot;)), (a: 6013, nested: (num num: 1607, the text 0 item: &quot;!sy&quot;)), (a: 597, nested: (num num: 3, the text 0 item: &quot;T:Qi󶻜`橚^cQ&quot;)), (a: -127, nested: (num num: 461785542921504, the text 0 item: &quot;𭪡dJU𮰟Ss6^a󷖗􅼢NꥠO1𰐲&quot;))]</td>
+<td>1940-03-18 07:21:00 +03:42</td>
+<td>(inner: (t 1: &quot;q9&quot;, t 2: 59182), z: 0)</td>
+<td>4016-05</td>
+</tr>
+<tr>
+<td>Left(36)</td>
+<td>[(a: 9223372036854775807, nested: (num num: -9223372036854775808, the text 0 item: &quot;VERSION&quot;)), (a: 32767, nested: (num num: -9223372036854775807, the text 0 item: &quot;srnn Zn Zn0&quot;)), (a: 2147483647, nested: (num num: 28, the text 0 item: &quot;o aarZ&quot;))]</td>
+<td>1928-06-18 10:51:44.472672133 America/Guyana</td>
+<td>(inner: (t 1: &quot;a&quot;, t 2: 4), z: -32768)</td>
+<td>6254-08</td>
+</tr>
+<tr>
+<td>Right(9223372036854775807)</td>
+<td>[(a: 0, nested: (num num: 2719, the text 0 item: &quot;p6&quot;)), (a: 1675866, nested: (num num: -1, the text 0 item: &quot;nnn rZ&quot;)), (a: -2147483647, nested: (num num: 9223372036854775808, the text 0 item: &quot;󰫼쉦C?= }􈺘C􍸝&quot;))]</td>
+<td>1905-05-07 12:02:48 -02:25</td>
+<td>(inner: (t 1: &quot;hZnra&quot;, t 2: -9223372036854775807), z: 80)</td>
+<td>6397-03</td>
+</tr>
+<tr>
+<td>Left(2147483647)</td>
+<td>[(a: 7, nested: (num num: 67, the text 0 item: &quot;eZ&quot;)), (a: 18028392685, nested: (num num: -128, the text 0 item: &quot;𓤝t󸹱W􆒂&quot;)), (a: 9223372036854775807, nested: (num num: 9223372036854775807, the text 0 item: &quot;G&gt;7尀𬝶^c&quot;))]</td>
+<td>1919-08-14 12:41:01.409995365 Etc/GMT-0</td>
+<td>(inner: (t 1: &quot;􍍶7twA7&quot;, t 2: 0), z: 43)</td>
+<td>2254-11</td>
+</tr>
+<tr>
+<td>Left(-127)</td>
+<td>[(a: 127, nested: (num num: 6146, the text 0 item: &quot;_ubb,W&quot;)), (a: 1, nested: (num num: -9223372036854775807, the text 0 item: &quot;a&quot;))]</td>
+<td>1902-05-16 19:08:21 Africa/Conakry</td>
+<td>(inner: (t 1: &quot;ꅾ=&lt;&quot;, t 2: 9223372036854775807), z: 0)</td>
+<td>9248-06</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775809)</td>
+<td>[(a: -9223372036854775808, nested: (num num: 47090, the text 0 item: &quot;󽖣^c&quot;))]</td>
+<td>6514-12-02 03:29:20.37471439 America/Scoresbysund</td>
+<td>(inner: (t 1: &quot;wrn00&quot;, t 2: 9223372036854775807), z: -1)</td>
+<td>9051-09</td>
+</tr>
+<tr>
+<td>Left(3674229553054682820482)</td>
+<td>[(a: -9223372036854775808, nested: (num num: -9223372036854775809, the text 0 item: &quot;END&quot;))]</td>
+<td>2019-05-22 16:37:54 -06:46</td>
+<td>(inner: (t 1: &quot;M&quot;, t 2: -2147483648), z: -2147483647)</td>
+<td>3156-11</td>
+</tr>
+<tr>
+<td>Left(12425)</td>
+<td>[(a: -9223372036854775808, nested: (num num: 0, the text 0 item: &quot;na0an0 0r&quot;)), (a: -32768, nested: (num num: 37087475476, the text 0 item: &quot;NjS1🀾𤽑􁉄𲟹4di𱈮S&quot;))]</td>
+<td>1986-03-10 16:33:00 -04:06</td>
+<td>(inner: (t 1: &quot;h9nn9&quot;, t 2: 52), z: 1)</td>
+<td>4187-06</td>
+</tr>
+<tr>
+<td>Left(20)</td>
+<td>[(a: 43930165365030, nested: (num num: 1, the text 0 item: &quot;J?^c.&quot;))]</td>
+<td>1900-08-26 06:10:09.357634624 +08:32</td>
+<td>(inner: (t 1: &quot;Number&quot;, t 2: -2147483649), z: 2147483648)</td>
+<td>0515-03</td>
+</tr>
+<tr>
+<td>Right(31751378)</td>
+<td>[(a: 0.058942, nested: (num num: -128, the text 0 item: &quot;r09 rnZZ&quot;)), (a: 28, nested: (num num: -9223372036854775807, the text 0 item: &quot;*&quot;)), (a: -9223372036854775809, nested: (num num: 1, the text 0 item: &quot;a&quot;)), (a: 144, nested: (num num: -127, the text 0 item: &quot;:8+G􉢔X&quot;))]</td>
+<td>2603-04-08 19:46:00 -03:01</td>
+<td>(inner: (t 1: &quot;O;&quot;, t 2: -9223372036854775808), z: -9223372036854775807)</td>
+<td>9234-08</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775809)</td>
+<td>[(a: -2147483647, nested: (num num: -1, the text 0 item: &quot;筠kn9&quot;)), (a: 27341, nested: (num num: 802417, the text 0 item: &quot;zZrra&quot;))]</td>
+<td>3562-07-14 01:30:47 +05:52</td>
+<td>(inner: (t 1: &quot;o􋪊'DﾷU&gt;􆖐4H􃅪&quot;, t 2: 27137779200880040), z: 63816)</td>
+<td>2959-10</td>
+</tr>
+<tr>
+<td>Right(0.180388)</td>
+<td>[(a: -9223372036854775807, nested: (num num: 2407437311, the text 0 item: &quot;ei𧥡r'YNR}}&quot;)), (a: 9223372036854775808, nested: (num num: 302, the text 0 item: &quot;fannnZa9Zn&quot;)), (a: 127, nested: (num num: 0, the text 0 item: &quot;tagged&quot;)), (a: 6, nested: (num num: 43173738013, the text 0 item: &quot;c0na&quot;))]</td>
+<td>1917-12-28 08:31:00 +09:23</td>
+<td>(inner: (t 1: &quot;;𤴋1$&quot;, t 2: 2147483648), z: -2147483649)</td>
+<td>7058-08</td>
+</tr>
+<tr>
+<td>Left(0)</td>
+<td>[(a: 2147483648, nested: (num num: 7220077, the text 0 item: &quot;H&quot;)), (a: 0, nested: (num num: -2147483647, the text 0 item: &quot;h&quot;)), (a: -2147483649, nested: (num num: -32767, the text 0 item: &quot;䣜󱁲^c󶰞􀧘Q&quot;))]</td>
+<td>2035-06-22 04:08:40 -02:36</td>
+<td>(inner: (t 1: &quot;𪶀}𭫕ns~?:R&quot;, t 2: 7451074067), z: 1)</td>
+<td>3154-05</td>
+</tr>
+<tr>
+<td>Left(0)</td>
+<td>[(a: -128, nested: (num num: 4, the text 0 item: &quot;Q-𗲮HZ󾷣&quot;)), (a: 0, nested: (num num: 9223372036854775807, the text 0 item: &quot;g n 9Z0&quot;)), (a: 2371, nested: (num num: -1, the text 0 item: &quot;an&quot;)), (a: -127, nested: (num num: 0.873727, the text 0 item: &quot;pn090r9r9r&quot;))]</td>
+<td>4065-10-04 21:22:00 +03:31</td>
+<td>(inner: (t 1: &quot;Text&quot;, t 2: -32767), z: -9223372036854775809)</td>
+<td>7994-08</td>
+</tr>
+<tr>
+<td>Right(4)</td>
+<td>[(a: 2033, nested: (num num: 0, the text 0 item: &quot;Boolean&quot;)), (a: 2204, nested: (num num: 230, the text 0 item: &quot;b0Z&quot;))]</td>
+<td>1911-10-09 11:39:57 -01:37</td>
+<td>(inner: (t 1: &quot;𓨐fPU&quot;, t 2: 108614), z: -2147483649)</td>
+<td>7522-08</td>
+</tr>
+<tr>
+<td>Left(0.319684)</td>
+<td>[(a: 0.048034, nested: (num num: 1, the text 0 item: &quot;}𱉔𑴏k^aXIZ􌟰Tc&quot;)), (a: 9223372036854775807, nested: (num num: -32768, the text 0 item: &quot;Date&quot;)), (a: 0.415621, nested: (num num: 2147483648, the text 0 item: &quot;󸾪&quot;)), (a: -1, nested: (num num: -9223372036854775808, the text 0 item: &quot;AS&quot;))]</td>
+<td>2035-06-23 20:55:36.455261033 +09:27</td>
+<td>(inner: (t 1: &quot;Date&quot;, t 2: -9223372036854775809), z: 885859)</td>
+<td>0197-05</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775809)</td>
+<td>[(a: 113, nested: (num num: 127, the text 0 item: &quot;沣&quot;))]</td>
+<td>2033-12-07 03:00:11 Europe/Mariehamn</td>
+<td>(inner: (t 1: &quot;v󿳤DX|edY&quot;, t 2: 23), z: -9223372036854775808)</td>
+<td>6743-11</td>
+</tr>
+<tr>
+<td>Left(-1)</td>
+<td>[(a: 12623873857, nested: (num num: 2147483648, the text 0 item: &quot;󱮿~S&gt;GḁZ;(!q&quot;)), (a: 2147483647, nested: (num num: 0.6577, the text 0 item: &quot;|󽁕]~G_&quot;)), (a: 2792, nested: (num num: -2147483649, the text 0 item: &quot;$􅦱岚G&quot;)), (a: -32768, nested: (num num: 0, the text 0 item: &quot;a&quot;))]</td>
+<td>1948-05-18 22:14:17 America/Anchorage</td>
+<td>(inner: (t 1: &quot;typevar&quot;, t 2: -2147483648), z: 8071472941461)</td>
+<td>0141-08</td>
+</tr>
+<tr>
+<td>Left(9223372036854775807)</td>
+<td>[(a: 79, nested: (num num: 32767, the text 0 item: &quot;b00&quot;))]</td>
+<td>1617-09-07 07:33:20 Africa/Juba</td>
+<td>(inner: (t 1: &quot;TYPES&quot;, t 2: 1), z: 4839)</td>
+<td>3850-12</td>
+</tr>
+<tr>
+<td>Left(-32768)</td>
+<td>[(a: 0, nested: (num num: 1032, the text 0 item: &quot;W&lt;^aW$&lt;S5&quot;)), (a: -2147483648, nested: (num num: -128, the text 0 item: &quot;jara99r0&quot;))]</td>
+<td>1918-05-03 03:31:39 Asia/Hovd</td>
+<td>(inner: (t 1: &quot;u09ra ZZr&quot;, t 2: 22468), z: -2147483648)</td>
+<td>7680-10</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: 100, nested: (num num: -128, the text 0 item: &quot;!r𪵼SYztdG^au[Ta~O&quot;))]</td>
+<td>1949-05-20 23:21:26 Antarctica/Casey</td>
+<td>(inner: (t 1: &quot;z𥭱YY2𧌅5&quot;, t 2: 1036072), z: 32767)</td>
+<td>5700-10</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: 386, nested: (num num: 0.860161, the text 0 item: &quot;W&quot;)), (a: 157245662, nested: (num num: 29480084, the text 0 item: &quot;v-m&quot;)), (a: 9223372036854775808, nested: (num num: 576, the text 0 item: &quot;%&quot;)), (a: -1, nested: (num num: 2, the text 0 item: &quot;ze􏥠}𮐎{v}&quot;))]</td>
+<td>2040-10-15 19:14:46 Pacific/Honolulu</td>
+<td>(inner: (t 1: &quot;^c=`N󵄘𩠐m&quot;, t 2: 594842), z: 2)</td>
+<td>6256-03</td>
+</tr>
+<tr>
+<td>Right(-32768)</td>
+<td>[(a: 5, nested: (num num: -2147483649, the text 0 item: &quot;a&quot;)), (a: -9223372036854775809, nested: (num num: 127, the text 0 item: &quot;vZ&quot;))]</td>
+<td>1926-11-11 18:16:00 America/Guayaquil</td>
+<td>(inner: (t 1: &quot;t0n909 n9ra&quot;, t 2: 2147483647), z: -9223372036854775808)</td>
+<td>1334-01</td>
+</tr>
+<tr>
+<td>Left(771526)</td>
+<td>[(a: 1, nested: (num num: 32767, the text 0 item: &quot;d Z99 Z&quot;)), (a: -9223372036854775809, nested: (num num: 4215185595, the text 0 item: &quot;mZ0&quot;))]</td>
+<td>2008-01-17 17:39:33.206229754 NZ-CHAT</td>
+<td>(inner: (t 1: &quot;𰚬T&quot;, t 2: 2147483648), z: 820)</td>
+<td>6473-07</td>
+</tr>
+<tr>
+<td>Left(9223372036854775808)</td>
+<td>[(a: 2993, nested: (num num: 36, the text 0 item: &quot;Zq(l&quot;)), (a: 9223372036854775807, nested: (num num: 3, the text 0 item: &quot;Number&quot;))]</td>
+<td>1952-11-23 07:26:00 America/Costa_Rica</td>
+<td>(inner: (t 1: &quot;x0 a&quot;, t 2: 2), z: 9223372036854775808)</td>
+<td>6576-07</td>
+</tr>
+<tr>
+<td>Left(0.017063)</td>
+<td>[(a: 0.559358, nested: (num num: 9223372036854775807, the text 0 item: &quot;Rve&amp;炤-'D|m󰠄^c𠥼&quot;))]</td>
+<td>2044-05-26 08:38:26.490004656 Europe/Helsinki</td>
+<td>(inner: (t 1: &quot;VALUES&quot;, t 2: 0.94094), z: -2147483648)</td>
+<td>0763-03</td>
+</tr>
+<tr>
+<td>Left(2147483647)</td>
+<td>[(a: 0, nested: (num num: 1, the text 0 item: &quot;dB`&quot;))]</td>
+<td>2031-05-20 08:50:48.148590077 Africa/Ouagadougou</td>
+<td>(inner: (t 1: &quot;6󽟡[&quot;, t 2: 6847), z: -2147483647)</td>
+<td>9202-09</td>
+</tr>
+<tr>
+<td>Left(221931213093)</td>
+<td>[(a: 0.887367, nested: (num num: 221, the text 0 item: &quot;Date&quot;))]</td>
+<td>1987-06-01 05:42:22 -10:05</td>
+<td>(inner: (t 1: &quot; &quot;, t 2: 32767), z: 3)</td>
+<td>8384-08</td>
+</tr>
+<tr>
+<td>Left(-128)</td>
+<td>[(a: -32767, nested: (num num: -9223372036854775809, the text 0 item: &quot;𡨶^c&quot;)), (a: 127, nested: (num num: 531593339, the text 0 item: &quot;BEGIN&quot;)), (a: 153, nested: (num num: -9223372036854775807, the text 0 item: &quot;𩞕󰀏$-.gSM&quot;))]</td>
+<td>8656-06-25 20:46:00 +05:52</td>
+<td>(inner: (t 1: &quot;󼑥𩋋&quot;, t 2: 0.864689), z: -9223372036854775808)</td>
+<td>9904-06</td>
+</tr>
+<tr>
+<td>Left(1)</td>
+<td>[(a: -9223372036854775807, nested: (num num: 0.136102, the text 0 item: &quot;l9rr&quot;)), (a: -9223372036854775809, nested: (num num: 5, the text 0 item: &quot;;6,󵼎𡡴𮌶&gt;EY󺔝Sy􀒢f)𲮕􋴆!2󷮙&quot;))]</td>
+<td>5490-01-25 06:11:45.400339713 America/Montserrat</td>
+<td>(inner: (t 1: &quot;$/i&quot;, t 2: -9223372036854775808), z: 19)</td>
+<td>5380-02</td>
+</tr>
+<tr>
+<td>Left(68698)</td>
+<td>[(a: 0.708924, nested: (num num: -32767, the text 0 item: &quot;INCOMPLETE&quot;)), (a: 0, nested: (num num: 120, the text 0 item: &quot;;1𓄮𫊆*􅰇o&quot;)), (a: 213632550241525, nested: (num num: 2536027119017, the text 0 item: &quot;invalidtypeops&quot;)), (a: -2147483649, nested: (num num: 12, the text 0 item: &quot;END&quot;))]</td>
+<td>2031-09-02 05:46:49.343886995 Asia/Irkutsk</td>
+<td>(inner: (t 1: &quot;$B눖&quot;, t 2: 1), z: 712)</td>
+<td>2663-11</td>
+</tr>
+<tr>
+<td>Left(28783908245517105)</td>
+<td>[(a: -9223372036854775809, nested: (num num: -2147483647, the text 0 item: &quot;zZ9anaZr0Z&quot;))]</td>
+<td>1997-04-14 07:14:38.683284022 +04:39</td>
+<td>(inner: (t 1: &quot;q99 r000ar&quot;, t 2: -1), z: 341058070236839378)</td>
+<td>7801-07</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775809)</td>
+<td>[(a: 963174, nested: (num num: -1, the text 0 item: &quot;𮓋~􌃞H4𥩮-+?𦮹ㅁ+󺟪뗭8&lt;㣆􀔡&quot;)), (a: 93323515483290, nested: (num num: 23036039110918, the text 0 item: &quot;DateYM&quot;))]</td>
+<td>2031-01-08 12:10:31.754838406 +11:01</td>
+<td>(inner: (t 1: &quot;c9ZnZ&quot;, t 2: -9223372036854775808), z: 2147483648)</td>
+<td>4034-11</td>
+</tr>
+<tr>
+<td>Left(0.605447)</td>
+<td>[(a: 10492574, nested: (num num: 7973, the text 0 item: &quot;w􃍐z􈯥🬹l#0f&quot;)), (a: -32767, nested: (num num: 1378, the text 0 item: &quot;sar&quot;)), (a: 227, nested: (num num: -9223372036854775809, the text 0 item: &quot;A&quot;))]</td>
+<td>2040-01-19 08:45:23.654589323 -09:38</td>
+<td>(inner: (t 1: &quot;DATA&quot;, t 2: -32767), z: 560889763554597)</td>
+<td>3146-05</td>
+</tr>
+<tr>
+<td>Right(-1)</td>
+<td>[(a: -1, nested: (num num: 127, the text 0 item: &quot;i0nn0rr&quot;)), (a: -9223372036854775807, nested: (num num: -128, the text 0 item: &quot;by(6&quot;)), (a: 4434, nested: (num num: 918, the text 0 item: &quot;LxS?󹺐]2o^c Q\?&quot;))]</td>
+<td>1903-06-07 20:25:00 -02:34</td>
+<td>(inner: (t 1: &quot;z99Zar09aa&quot;, t 2: 1), z: 0.551325)</td>
+<td>5776-09</td>
+</tr>
+<tr>
+<td>Left(4120957941618878304)</td>
+<td>[(a: 1, nested: (num num: 2, the text 0 item: &quot;DISPLAY&quot;))]</td>
+<td>1031-10-30 01:29:00 Egypt</td>
+<td>(inner: (t 1: &quot;hZ0099a0r&quot;, t 2: 132229), z: -32768)</td>
+<td>6477-10</td>
+</tr>
+<tr>
+<td>Right(9223372036854775807)</td>
+<td>[(a: 60, nested: (num num: -2147483649, the text 0 item: &quot;9Y` ]𪷠9&quot;)), (a: 2147483648, nested: (num num: 17, the text 0 item: &quot;END&quot;))]</td>
+<td>1918-05-11 01:00:58 -04:29</td>
+<td>(inner: (t 1: &quot;ora&quot;, t 2: 41657623951), z: 0)</td>
+<td>1351-04</td>
+</tr>
+<tr>
+<td>Left(127)</td>
+<td>[(a: 45879768, nested: (num num: 28843, the text 0 item: &quot;t,gV&quot;)), (a: 73, nested: (num num: -32767, the text 0 item: &quot;u􄲨R*𲪵&quot;)), (a: 1139, nested: (num num: 92579562190, the text 0 item: &quot;YhNU𪲳8w,𜺜M󵛡𩍩|ht?!&quot;)), (a: -32767, nested: (num num: 1, the text 0 item: &quot;INCOMPLETE&quot;))]</td>
+<td>7436-07-26 00:49:00 +00:11</td>
+<td>(inner: (t 1: &quot;DateTime&quot;, t 2: 0.792287), z: 186)</td>
+<td>7507-10</td>
+</tr>
+<tr>
+<td>Right(-127)</td>
+<td>[(a: 0, nested: (num num: 2147483647, the text 0 item: &quot;z9 Z9Za0r0n&quot;)), (a: 610, nested: (num num: -9223372036854775807, the text 0 item: &quot;qa&quot;))]</td>
+<td>1905-02-20 22:54:08 -06:00</td>
+<td>(inner: (t 1: &quot;VALUES&quot;, t 2: -9223372036854775807), z: -32768)</td>
+<td>7881-11</td>
+</tr>
+<tr>
+<td>Right(2147483648)</td>
+<td>[(a: 8392062, nested: (num num: 9223372036854775808, the text 0 item: &quot;n9 a90&quot;)), (a: 32767, nested: (num num: 9223372036854775807, the text 0 item: &quot;apply&quot;))]</td>
+<td>2042-10-30 18:32:00 -07:45</td>
+<td>(inner: (t 1: &quot;VERSION&quot;, t 2: 0.943615), z: 0.728047)</td>
+<td>9495-04</td>
+</tr>
+<tr>
+<td>Right(30469)</td>
+<td>[(a: 2147483648, nested: (num num: -1, the text 0 item: &quot;^a𣓠&quot;)), (a: 2147483648, nested: (num num: 9223372036854775808, the text 0 item: &quot;=x&quot;))]</td>
+<td>3949-02-28 14:17:19 +05:13</td>
+<td>(inner: (t 1: &quot;OH&quot;, t 2: 2147483647), z: 2)</td>
+<td>0237-11</td>
+</tr>
+<tr>
+<td>Left(0.377591)</td>
+<td>[(a: -2147483648, nested: (num num: 14691, the text 0 item: &quot;p00anZ99 a&quot;)), (a: -128, nested: (num num: -2147483648, the text 0 item: &quot;jr&quot;))]</td>
+<td>1966-09-04 17:23:00 America/Montserrat</td>
+<td>(inner: (t 1: &quot;TRANSFORMATION&quot;, t 2: 0), z: 70)</td>
+<td>5000-05</td>
+</tr>
+<tr>
+<td>Left(0.962516)</td>
+<td>[(a: 127, nested: (num num: -2147483647, the text 0 item: &quot;Bj􉥣',V跆&quot;)), (a: 0.4589, nested: (num num: -127, the text 0 item: &quot;hw𦷛`嚼󺮶kDj&quot;)), (a: 9223372036854775808, nested: (num num: 0, the text 0 item: &quot;󿗿q&quot;))]</td>
+<td>2002-07-10 12:29:41 +10:54</td>
+<td>(inner: (t 1: &quot;Q&quot;, t 2: 3061), z: 9223372036854775807)</td>
+<td>0999-09</td>
+</tr>
+<tr>
+<td>Right(-1)</td>
+<td>[(a: 948452189, nested: (num num: 32767, the text 0 item: &quot;COMMENT&quot;)), (a: 465, nested: (num num: -1, the text 0 item: &quot;[eObY𖵚[h&quot;)), (a: 2147483647, nested: (num num: -2147483649, the text 0 item: &quot;𥝳a?\R&quot;))]</td>
+<td>3912-12-19 22:26:12.719939851 Pacific/Tahiti</td>
+<td>(inner: (t 1: &quot;Boolean&quot;, t 2: 127), z: -2147483647)</td>
+<td>8849-05</td>
+</tr>
+<tr>
+<td>Left(447270)</td>
+<td>[(a: 15925, nested: (num num: -9223372036854775808, the text 0 item: &quot;EKK&quot;)), (a: 8, nested: (num num: -127, the text 0 item: &quot;f𝤮𫄉寢󻟵&quot;)), (a: 2688762, nested: (num num: -2147483649, the text 0 item: &quot;[ &quot;)), (a: -9223372036854775807, nested: (num num: -2147483648, the text 0 item: &quot;Q&amp;w&quot;))]</td>
+<td>2033-04-28 16:42:08.264167102 Pacific/Majuro</td>
+<td>(inner: (t 1: &quot;o9&quot;, t 2: 0.462824), z: 0.448541)</td>
+<td>4151-02</td>
+</tr>
+<tr>
+<td>Left(0.922143)</td>
+<td>[(a: 19, nested: (num num: 369, the text 0 item: &quot;grZ999&quot;))]</td>
+<td>1982-11-06 00:47:00 Etc/GMT</td>
+<td>(inner: (t 1: &quot;END&quot;, t 2: 0.421127), z: 9223372036854775808)</td>
+<td>9757-03</td>
+</tr>
+<tr>
+<td>Left(1)</td>
+<td>[(a: 0.906152, nested: (num num: -32767, the text 0 item: &quot;i0rn00009a&quot;)), (a: -9223372036854775808, nested: (num num: 0.725853, the text 0 item: &quot;LINKED&quot;)), (a: 0.929116, nested: (num num: 2147483647, the text 0 item: &quot;vn&quot;)), (a: 237, nested: (num num: 9223372036854775808, the text 0 item: &quot;+􉨼3𪚦9r$𫕈NJ?𗴝i𑎁t&quot;))]</td>
+<td>1996-09-27 01:02:36.11012972 -07:11</td>
+<td>(inner: (t 1: &quot;apply&quot;, t 2: 3607), z: 1)</td>
+<td>2129-03</td>
+</tr>
+<tr>
+<td>Left(-32768)</td>
+<td>[(a: 1, nested: (num num: -2147483649, the text 0 item: &quot;h Z0aa&quot;)), (a: 0.769298, nested: (num num: 14, the text 0 item: &quot;/&quot;))]</td>
+<td>2397-06-21 04:23:52.846401277 +05:25</td>
+<td>(inner: (t 1: &quot;iZZ0&quot;, t 2: 49), z: 2147483648)</td>
+<td>5988-08</td>
+</tr>
+<tr>
+<td>Left(-128)</td>
+<td>[(a: -127, nested: (num num: -9223372036854775809, the text 0 item: &quot;0&quot;)), (a: 0, nested: (num num: 3, the text 0 item: &quot;r&gt;􌷢xk𘫰𞺑Lp=H􎅩:B秮X8&quot;))]</td>
+<td>1974-07-10 23:25:19.439545723 Etc/GMT+7</td>
+<td>(inner: (t 1: &quot;_k&quot;, t 2: 0.477767), z: -1)</td>
+<td>8858-05</td>
+</tr>
+<tr>
+<td>Left(6)</td>
+<td>[(a: 363481323, nested: (num num: 391, the text 0 item: &quot;舷:n쨱Z}c聍DdhP뎧?&quot;)), (a: 145600, nested: (num num: 0, the text 0 item: &quot;DateTimeZoned&quot;))]</td>
+<td>3780-12-26 21:51:34 +05:32</td>
+<td>(inner: (t 1: &quot;zar00&quot;, t 2: 2413080), z: 3230724)</td>
+<td>4000-07</td>
+</tr>
+<tr>
+<td>Right(2147483648)</td>
+<td>[(a: 33870429747, nested: (num num: 32767, the text 0 item: &quot;g9nn0Zr&quot;))]</td>
+<td>5516-08-17 09:12:22.191922417 Asia/Singapore</td>
+<td>(inner: (t 1: &quot;g🗌0-:1JJ&quot;, t 2: 13), z: 0.772096)</td>
+<td>1125-09</td>
+</tr>
+<tr>
+<td>Left(-2147483647)</td>
+<td>[(a: 1, nested: (num num: 207, the text 0 item: &quot;}Q&quot;)), (a: 0, nested: (num num: 1, the text 0 item: &quot;󵈛Jy󸭤~&quot;))]</td>
+<td>1981-01-07 06:01:42.594442205 -04:09</td>
+<td>(inner: (t 1: &quot;a&quot;, t 2: 2147483648), z: 14)</td>
+<td>5739-02</td>
+</tr>
+<tr>
+<td>Right(-2147483647)</td>
+<td>[(a: 0, nested: (num num: -9223372036854775808, the text 0 item: &quot;COLUMN&quot;))]</td>
+<td>1989-05-24 05:05:00 -08:55</td>
+<td>(inner: (t 1: &quot;SOURCE&quot;, t 2: -9223372036854775808), z: 0)</td>
+<td>0513-09</td>
+</tr>
+<tr>
+<td>Right(-2147483648)</td>
+<td>[(a: 2147483648, nested: (num num: 298, the text 0 item: &quot;Pd`󶹕𮣍&quot;)), (a: 0, nested: (num num: 5, the text 0 item: &quot;c&quot;)), (a: 1, nested: (num num: 0, the text 0 item: &quot;xra009aZZ&quot;))]</td>
+<td>1937-11-25 02:32:00 +03:40</td>
+<td>(inner: (t 1: &quot;n90rr r&quot;, t 2: -9223372036854775807), z: 0.71715)</td>
+<td>0053-07</td>
+</tr>
+<tr>
+<td>Left(-127)</td>
+<td>[(a: 0, nested: (num num: 3577115, the text 0 item: &quot;iZ 0r&quot;))]</td>
+<td>1997-11-03 12:13:54 -06:43</td>
+<td>(inner: (t 1: &quot;taa&quot;, t 2: 2147483648), z: 0)</td>
+<td>9118-05</td>
+</tr>
+<tr>
+<td>Right(-128)</td>
+<td>[(a: 2147483647, nested: (num num: 0.45771, the text 0 item: &quot;~o󽝛􏓢&quot;)), (a: 2147483647, nested: (num num: -9223372036854775807, the text 0 item: &quot;urZn9ZZ9n0&quot;)), (a: 490424, nested: (num num: 9, the text 0 item: &quot;B|]&quot;))]</td>
+<td>2017-03-08 03:10:19 Europe/Saratov</td>
+<td>(inner: (t 1: &quot;,Pk矦􀌄𥐱&quot;, t 2: 0), z: 0)</td>
+<td>7393-08</td>
+</tr>
+<tr>
+<td>Right(0.812746)</td>
+<td>[(a: -1, nested: (num num: -32768, the text 0 item: &quot;C'z󷳻%㕇`wwW𨉘&quot;)), (a: 247, nested: (num num: 336362958224, the text 0 item: &quot;U&quot;)), (a: -9223372036854775809, nested: (num num: 14, the text 0 item: &quot;PD妅)m􏾄ir𲊡󴚠1𦠧4覞6l?C𘮔&quot;))]</td>
+<td>1842-07-04 19:41:00 US/East-Indiana</td>
+<td>(inner: (t 1: &quot;cEꄺ2󸻵R&quot;, t 2: 234), z: -127)</td>
+<td>6156-12</td>
+</tr>
+<tr>
+<td>Left(45683550513)</td>
+<td>[(a: 0, nested: (num num: 6, the text 0 item: &quot;sn0nrnZ0a&quot;)), (a: 26531288, nested: (num num: 9223372036854775808, the text 0 item: &quot;mn 99rnZ00&quot;))]</td>
+<td>1918-02-06 02:04:27.315195769 America/Mexico_City</td>
+<td>(inner: (t 1: &quot;s00a09n 9n&quot;, t 2: 32767), z: 0.383863)</td>
+<td>4379-10</td>
+</tr>
+<tr>
+<td>Left(2147483647)</td>
+<td>[(a: 0.940914, nested: (num num: -128, the text 0 item: &quot;i0 rn09Zn9&quot;)), (a: 83750, nested: (num num: 72161200573893159, the text 0 item: &quot;wrZ0a90&quot;)), (a: 212843120650346358, nested: (num num: 2147483648, the text 0 item: &quot;CONTENT&quot;)), (a: 11, nested: (num num: 420589, the text 0 item: &quot;lZ9r&quot;))]</td>
+<td>1953-01-27 08:04:39 Pacific/Johnston</td>
+<td>(inner: (t 1: &quot;COMMENT&quot;, t 2: 1), z: 5538)</td>
+<td>4398-09</td>
+</tr>
+<tr>
+<td>Left(0)</td>
+<td>[(a: -127, nested: (num num: 901012, the text 0 item: &quot;䮵𘚨0Xo5l^af8bi&amp;l\𘏠󰬫0𧂄H^c𢛥$&quot;)), (a: -9223372036854775808, nested: (num num: -32768, the text 0 item: &quot;INCOMPLETE&quot;)), (a: 3752709761, nested: (num num: -2147483648, the text 0 item: &quot;ji&gt;&quot;)), (a: -2147483647, nested: (num num: 12, the text 0 item: &quot;COMMENT&quot;))]</td>
+<td>1946-10-04 12:07:00 Europe/Kiev</td>
+<td>(inner: (t 1: &quot;qa Za9Zarn&quot;, t 2: -32768), z: -9223372036854775808)</td>
+<td>0517-10</td>
+</tr>
+<tr>
+<td>Left(22)</td>
+<td>[(a: 9223372036854775808, nested: (num num: 5, the text 0 item: &quot;O*&gt;5fn&quot;))]</td>
+<td>1928-07-14 23:27:00 -00:54</td>
+<td>(inner: (t 1: &quot;xp7Nj$Iv4󱪎&quot;, t 2: -1), z: 9223372036854775807)</td>
+<td>4970-08</td>
+</tr>
+<tr>
+<td>Right(-128)</td>
+<td>[(a: -128, nested: (num num: -9223372036854775808, the text 0 item: &quot;H'􌦑𦨔&quot;)), (a: 3, nested: (num num: 15393677513, the text 0 item: &quot;S*gmV(𞴝˙8𤵶j[􁺂&quot;)), (a: 27143, nested: (num num: 15, the text 0 item: &quot;CONTENT&quot;)), (a: -9223372036854775809, nested: (num num: 0, the text 0 item: &quot;2!'&quot;))]</td>
+<td>2025-03-18 06:39:37.338332773 -06:48</td>
+<td>(inner: (t 1: &quot;X0𢁢j킑&quot;, t 2: 127), z: -9223372036854775808)</td>
+<td>2316-06</td>
+</tr>
+<tr>
+<td>Right(325030)</td>
+<td>[(a: 67344, nested: (num num: -32768, the text 0 item: &quot;paZZ&quot;)), (a: -2147483648, nested: (num num: 21218, the text 0 item: &quot;COLUMNAL&quot;)), (a: 0.288178, nested: (num num: -128, the text 0 item: &quot;%&quot;)), (a: 39393, nested: (num num: 1563, the text 0 item: &quot;xa0a0&quot;))]</td>
+<td>1901-08-18 14:04:00 +03:44</td>
+<td>(inner: (t 1: &quot;Hk樝:IXs&quot;, t 2: 0), z: 242183539)</td>
+<td>5960-10</td>
+</tr>
+<tr>
+<td>Right(127)</td>
+<td>[(a: -2147483647, nested: (num num: 2, the text 0 item: &quot;apply&quot;)), (a: 18933, nested: (num num: 4052802073, the text 0 item: &quot;x&quot;)), (a: 95, nested: (num num: 2147483647, the text 0 item: &quot;arr9&quot;)), (a: 3032555298, nested: (num num: 38262, the text 0 item: &quot;pZaZaZZ 0Z&quot;))]</td>
+<td>2008-02-16 12:07:28 Africa/Freetown</td>
+<td>(inner: (t 1: &quot;p&quot;, t 2: -32767), z: 0)</td>
+<td>5585-09</td>
+</tr>
+<tr>
+<td>Right(-32767)</td>
+<td>[(a: -9223372036854775809, nested: (num num: 127, the text 0 item: &quot;DateYM&quot;)), (a: -2147483649, nested: (num num: 3854022025, the text 0 item: &quot;a&quot;)), (a: 1, nested: (num num: -9223372036854775807, the text 0 item: &quot;LY1/􅆤𣆈(􅍙M(rB􈐸.&quot;)), (a: 0.106715, nested: (num num: -1, the text 0 item: &quot;&amp;&quot;))]</td>
+<td>7284-01-26 17:50:00 Europe/Sofia</td>
+<td>(inner: (t 1: &quot;Z&quot;, t 2: -2147483647), z: -2147483647)</td>
+<td>7731-10</td>
+</tr>
+<tr>
+<td>Left(-2147483648)</td>
+<td>[(a: 127, nested: (num num: -9223372036854775808, the text 0 item: &quot;a&quot;)), (a: -9223372036854775807, nested: (num num: -32768, the text 0 item: &quot;vraaZ&quot;)), (a: 5, nested: (num num: 0.089637, the text 0 item: &quot;𠡵&quot;)), (a: 0.814077, nested: (num num: 9, the text 0 item: &quot;TYPES&quot;))]</td>
+<td>1960-06-16 10:15:29.916318955 America/Thunder_Bay</td>
+<td>(inner: (t 1: &quot;lr&quot;, t 2: -9223372036854775807), z: 1)</td>
+<td>9672-11</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775807)</td>
+<td>[(a: -1, nested: (num num: -2147483647, the text 0 item: &quot;}e\𦲸J64aST2&quot;)), (a: 9223372036854775807, nested: (num num: 0, the text 0 item: &quot;LuL􋽥r/Yp􋞮c=󰶸󳬢M􌶚xoZ&quot;)), (a: -127, nested: (num num: -2147483649, the text 0 item: &quot;𠗴𰗫~^a땲ⵃ𨼙}󶫴}X2&quot;)), (a: 921672266043083, nested: (num num: 796, the text 0 item: &quot;𨸤&quot;))]</td>
+<td>8333-03-08 13:52:57 +09:20</td>
+<td>(inner: (t 1: &quot;W𣐑&lt;&quot;, t 2: 21917312), z: 40)</td>
+<td>2341-09</td>
+</tr>
+<tr>
+<td>Right(0.895866)</td>
+<td>[(a: 32549, nested: (num num: 89572546, the text 0 item: &quot;COMMENT&quot;))]</td>
+<td>2023-08-30 01:25:35.569528625 +07:03</td>
+<td>(inner: (t 1: &quot;DateTime&quot;, t 2: -32767), z: 1812784)</td>
+<td>8452-03</td>
+</tr>
+<tr>
+<td>Right(0.978331)</td>
+<td>[(a: -32767, nested: (num num: 1, the text 0 item: &quot;srn0rn a&quot;)), (a: -2147483647, nested: (num num: 0.270269, the text 0 item: &quot;x3PZPsHtN􄩾AYAvTn/W念XJ{󾏛&quot;)), (a: 0.847562, nested: (num num: 45276533, the text 0 item: &quot;gre𢴣y7-}6㮷d⣋,砏𱦮_(󾒃!&amp;g􃛅ﯲb')󱗾?`*|귳&quot;)), (a: 32767, nested: (num num: 0.194677, the text 0 item: &quot;y Z 0 nn&quot;))]</td>
+<td>2015-07-26 05:23:55.214182673 Zulu</td>
+<td>(inner: (t 1: &quot; 8𐲇𭣘󲙙55b-l󼉪^c;Qv3&quot;, t 2: 1879639305409), z: 127)</td>
+<td>8456-07</td>
+</tr>
+<tr>
+<td>Left(-1)</td>
+<td>[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: &quot;COLUMNAL&quot;))]</td>
+<td>2005-10-07 19:40:14.463072189 -02:47</td>
+<td>(inner: (t 1: &quot;%N􆙎7􉵾󴍓􁼺&quot;, t 2: 739734415022), z: 421141099239)</td>
+<td>8706-12</td>
+</tr>
+<tr>
+<td>Right(772755734)</td>
+<td>[(a: -127, nested: (num num: -128, the text 0 item: &quot;tn 9 n0&quot;)), (a: 241051, nested: (num num: 215654, the text 0 item: &quot;𩹠&quot;)), (a: 1, nested: (num num: 0.533176, the text 0 item: &quot;TYPE&quot;)), (a: -2147483647, nested: (num num: 0, the text 0 item: &quot;𳆃Kruf󵌸t&quot;))]</td>
+<td>1925-10-11 03:32:37.971194959 America/Cayenne</td>
+<td>(inner: (t 1: &quot;th|UD'𬎒O􃰸X&quot;, t 2: -2147483649), z: -9223372036854775809)</td>
+<td>8106-11</td>
+</tr>
+<tr>
+<td>Right(77)</td>
+<td>[(a: 41869, nested: (num num: -128, the text 0 item: &quot;𒁬uQqg4&quot;))]</td>
+<td>1961-02-27 13:55:55 -11:58</td>
+<td>(inner: (t 1: &quot;7&quot;, t 2: 1), z: 2577)</td>
+<td>0080-10</td>
+</tr>
+<tr>
+<td>Left(9)</td>
+<td>[(a: 127, nested: (num num: -32767, the text 0 item: &quot;dZ&quot;))]</td>
+<td>2040-08-24 15:42:00 Pacific/Kwajalein</td>
+<td>(inner: (t 1: &quot;&gt;4&quot;, t 2: 112196355973), z: -2147483648)</td>
+<td>6108-10</td>
+</tr>
+<tr>
+<td>Left(2147483647)</td>
+<td>[(a: 3, nested: (num num: 98, the text 0 item: &quot;rZr&quot;)), (a: -1, nested: (num num: -127, the text 0 item: &quot;L(-𨗢G挗.􅊦&quot;))]</td>
+<td>1967-08-17 07:39:44.508977208 -10:23</td>
+<td>(inner: (t 1: &quot;aF}তKb~&quot;, t 2: -2147483648), z: 0.185358)</td>
+<td>2029-07</td>
+</tr>
+<tr>
+<td>Right(25)</td>
+<td>[(a: 36, nested: (num num: 328710, the text 0 item: &quot;pᎤ}&quot;))]</td>
+<td>2022-09-26 08:42:00 +03:08</td>
+<td>(inner: (t 1: &quot;LINKED&quot;, t 2: -2147483648), z: 0.402317)</td>
+<td>6099-03</td>
+</tr>
+<tr>
+<td>Right(9223372036854775808)</td>
+<td>[(a: 51758, nested: (num num: 147972, the text 0 item: &quot;AD궘y&quot;)), (a: 3608, nested: (num num: 127, the text 0 item: &quot;ta0ZaZ9&quot;))]</td>
+<td>6758-05-27 02:24:01.983603371 +02:04</td>
+<td>(inner: (t 1: &quot;3󺊨𬱛&quot;, t 2: 0), z: 466)</td>
+<td>0738-08</td>
+</tr>
+<tr>
+<td>Left(136976386)</td>
+<td>[(a: 32767, nested: (num num: 499, the text 0 item: &quot;BEGIN&quot;))]</td>
+<td>1925-09-01 20:09:00 Pacific/Midway</td>
+<td>(inner: (t 1: &quot;iUV&quot;, t 2: 12), z: -32767)</td>
+<td>9818-09</td>
+</tr>
+<tr>
+<td>Left(921895)</td>
+<td>[(a: 1, nested: (num num: 8, the text 0 item: &quot;𡯖t&gt;&quot;)), (a: 32767, nested: (num num: 26090, the text 0 item: &quot;va n00&quot;))]</td>
+<td>1912-11-29 03:50:46 -00:08</td>
+<td>(inner: (t 1: &quot;END&quot;, t 2: -9223372036854775809), z: 9223372036854775808)</td>
+<td>7709-09</td>
+</tr>
+<tr>
+<td>Right(309)</td>
+<td>[(a: 0, nested: (num num: 230483, the text 0 item: &quot;DISPLAY&quot;))]</td>
+<td>2007-07-06 20:11:13.344982342 -00:05</td>
+<td>(inner: (t 1: &quot;2bu󷦸&quot;, t 2: 0.134399), z: 1)</td>
+<td>6071-11</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775808)</td>
+<td>[(a: 9, nested: (num num: 5206959565255297, the text 0 item: &quot;LINKED&quot;))]</td>
+<td>3486-10-14 17:08:00 +08:23</td>
+<td>(inner: (t 1: &quot;LINKED&quot;, t 2: 32767), z: -127)</td>
+<td>8659-09</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775809)</td>
+<td>[(a: -9223372036854775809, nested: (num num: 129122033930839796622, the text 0 item: &quot;^aB󱕕4B5)F󱗌t𫶘^a!Y&quot;)), (a: -2147483649, nested: (num num: 9223372036854775807, the text 0 item: &quot;DEFAULT&quot;)), (a: 4534093, nested: (num num: 83001, the text 0 item: &quot;Ml&quot;))]</td>
+<td>1927-04-02 23:42:00 +02:51</td>
+<td>(inner: (t 1: &quot;܀Q$𔒛&quot;, t 2: -9223372036854775808), z: 23168)</td>
+<td>6933-01</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775807)</td>
+<td>[(a: 9223372036854775807, nested: (num num: 432, the text 0 item: &quot;TRANSFORMATION&quot;)), (a: -128, nested: (num num: 2147483648, the text 0 item: &quot;𤥇󵬼x ubA&quot;))]</td>
+<td>1986-08-31 02:17:00 +01:25</td>
+<td>(inner: (t 1: &quot;DEFAULT&quot;, t 2: 16625246541554973642), z: 14)</td>
+<td>1269-11</td>
+</tr>
+<tr>
+<td>Left(663)</td>
+<td>[(a: 29935112739, nested: (num num: 229, the text 0 item: &quot;㘙&quot;)), (a: 24, nested: (num num: 2147483648, the text 0 item: &quot;INCOMPLETE&quot;)), (a: 99379278169, nested: (num num: 0.305731, the text 0 item: &quot;Number&quot;))]</td>
+<td>1135-02-11 02:36:09 Indian/Chagos</td>
+<td>(inner: (t 1: &quot;Qib𤠋-dJ&lt;&quot;, t 2: 3), z: -9223372036854775808)</td>
+<td>6580-08</td>
+</tr>
+<tr>
+<td>Right(32767)</td>
+<td>[(a: -9223372036854775809, nested: (num num: 25, the text 0 item: &quot;;󼇋&quot;)), (a: 264667236552518, nested: (num num: -127, the text 0 item: &quot;󰏹&quot;))]</td>
+<td>1860-12-14 23:29:51.481581769 Europe/Dublin</td>
+<td>(inner: (t 1: &quot;Wr&lt;]𔅊&quot;, t 2: 1207851062), z: 0.934604)</td>
+<td>6118-07</td>
+</tr>
+<tr>
+<td>Left(-32767)</td>
+<td>[(a: -32768, nested: (num num: 0.496777, the text 0 item: &quot;VERSION&quot;)), (a: 2147483648, nested: (num num: -9223372036854775807, the text 0 item: &quot;/衁y_^a7NiFt$󵯮.𮟗S&quot;)), (a: 254587765152645, nested: (num num: 0.078624, the text 0 item: &quot;Boolean&quot;))]</td>
+<td>5587-07-09 00:41:00 America/Argentina/Buenos_Aires</td>
+<td>(inner: (t 1: &quot;󽨹An}D芽⫖&quot;, t 2: 412663920), z: 9223372036854775808)</td>
+<td>8692-02</td>
+</tr>
+<tr>
+<td>Left(1)</td>
+<td>[(a: 9223372036854775807, nested: (num num: -9223372036854775808, the text 0 item: &quot;󲔳삎b1f&quot;)), (a: 1652936, nested: (num num: 1011746, the text 0 item: &quot;Text&quot;))]</td>
+<td>2026-02-14 05:19:33.401944267 America/Mazatlan</td>
+<td>(inner: (t 1: &quot;𱭇𢻔/^aDz󽸉8D.M󶊚vLx?al[A􄏓𲇪lb𗐤輹􋖇鸂/I&quot;, t 2: 99056684842302), z: 76930478)</td>
+<td>2131-09</td>
+</tr>
+<tr>
+<td>Right(1552)</td>
+<td>[(a: 1, nested: (num num: 32767, the text 0 item: &quot;q90Zn&quot;))]</td>
+<td>1956-07-25 21:53:30.709828952 -02:26</td>
+<td>(inner: (t 1: &quot;^a#E&quot;, t 2: -2147483647), z: -1)</td>
+<td>9733-09</td>
+</tr>
+<tr>
+<td>Right(-9223372036854775808)</td>
+<td>[(a: -9223372036854775809, nested: (num num: 44459, the text 0 item: &quot;}􈴒𔇫r&quot;)), (a: -32767, nested: (num num: -32767, the text 0 item: &quot;l90rZr&quot;))]</td>
+<td>9645-01-02 14:34:00.742492025 -08:00</td>
+<td>(inner: (t 1: &quot;g900r&quot;, t 2: -9223372036854775807), z: 126)</td>
+<td>9860-10</td>
+</tr>
+<tr>
+<td>Right(-128)</td>
+<td>[(a: -9223372036854775807, nested: (num num: 2474, the text 0 item: &quot;VGZp􀲏y)E&quot;))]</td>
+<td>1913-10-15 15:12:00 -01:34</td>
+<td>(inner: (t 1: &quot;dr&quot;, t 2: -1), z: 1)</td>
+<td>3655-01</td>
+</tr>
+<tr>
+<td>Left(0)</td>
+<td>[(a: 0.794994, nested: (num num: 176989668658, the text 0 item: &quot; 𜲷x?^a&quot;)), (a: -9223372036854775809, nested: (num num: 2147483648, the text 0 item: &quot;f+󾷾絧&quot;)), (a: 3, nested: (num num: 0, the text 0 item: &quot;𳃕vZ!X&quot;)), (a: -2147483647, nested: (num num: 10584, the text 0 item: &quot;l99ra0990&quot;))]</td>
+<td>2050-09-20 10:50:59 -08:02</td>
+<td>(inner: (t 1: &quot;m`&quot;, t 2: 41), z: -2147483649)</td>
+<td>2933-04</td>
+</tr>
+<tr>
+<td>Left(1)</td>
+<td>[(a: 9223372036854775808, nested: (num num: 6485229776, the text 0 item: &quot;n99&quot;)), (a: 2147483647, nested: (num num: 144, the text 0 item: &quot;COLUMNAL&quot;)), (a: 4290061192814, nested: (num num: -9223372036854775809, the text 0 item: &quot;c 9&quot;)), (a: 9223372036854775807, nested: (num num: 7, the text 0 item: &quot;`fdV+&gt;&quot;))]</td>
+<td>2042-06-07 19:17:10.834173371 +06:12</td>
+<td>(inner: (t 1: &quot;oaZan090&quot;, t 2: -2147483649), z: -32767)</td>
+<td>2288-01</td>
+</tr>
+<tr>
+<td>Right(61)</td>
+<td>[(a: 123388049847258572, nested: (num num: 0, the text 0 item: &quot;TYPE&quot;)), (a: 0.220846, nested: (num num: -9223372036854775807, the text 0 item: &quot;)𡡃&lt;7?'A&quot;))]</td>
+<td>1980-08-21 23:38:00 -10:50</td>
+<td>(inner: (t 1: &quot;ian&quot;, t 2: 1), z: 0.534557)</td>
+<td>9281-04</td>
+</tr>
+<tr>
+<td>Left(-1)</td>
+<td>[(a: 0.680234, nested: (num num: 32767, the text 0 item: &quot;r0n09 aZr&quot;))]</td>
+<td>9218-08-18 06:13:00 -00:45</td>
+<td>(inner: (t 1: &quot;DateTime&quot;, t 2: -2147483648), z: 127)</td>
+<td>8145-04</td>
+</tr>
+<tr>
+<td>Left(15)</td>
+<td>[(a: -9223372036854775808, nested: (num num: -9223372036854775808, the text 0 item: &quot;LaT&quot;))]</td>
+<td>1972-10-24 08:36:14 -04:35</td>
+<td>(inner: (t 1: &quot;tr 99n&quot;, t 2: 34195498594061), z: 2147483647)</td>
+<td>1469-12</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775809)</td>
+<td>[(a: 9, nested: (num num: 9223372036854775807, the text 0 item: &quot;Time&quot;)), (a: 32767, nested: (num num: 439, the text 0 item: &quot;𥑥#T&quot;))]</td>
+<td>1923-01-11 09:34:15.454265444 Africa/Abidjan</td>
+<td>(inner: (t 1: &quot;END&quot;, t 2: 184), z: 32767)</td>
+<td>5754-05</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: 32767, nested: (num num: -127, the text 0 item: &quot;TEXTFILE&quot;)), (a: 17, nested: (num num: 1, the text 0 item: &quot;DateTimeZoned&quot;))]</td>
+<td>8797-09-15 07:26:52 +00:21</td>
+<td>(inner: (t 1: &quot;󸺳&quot;, t 2: 804), z: 0.852928)</td>
+<td>4018-08</td>
+</tr>
+<tr>
+<td>Left(127)</td>
+<td>[(a: -9223372036854775809, nested: (num num: 0, the text 0 item: &quot;{Gvr)OU&quot;)), (a: 2, nested: (num num: 3903714781332524230054, the text 0 item: &quot;wr90aZa r&quot;)), (a: -32767, nested: (num num: 0, the text 0 item: &quot;&amp;`LH^a&quot;)), (a: -2147483647, nested: (num num: 2147483647, the text 0 item: &quot;a&quot;))]</td>
+<td>2007-09-16 05:08:45 -03:35</td>
+<td>(inner: (t 1: &quot;Z&quot;, t 2: 1174170), z: 5895)</td>
+<td>4059-02</td>
+</tr>
+<tr>
+<td>Left(-9223372036854775807)</td>
+<td>[(a: -32767, nested: (num num: 9223372036854775807, the text 0 item: &quot;MG&lt;UL&quot;))]</td>
+<td>1951-01-25 08:17:47.141355838 -09:09</td>
+<td>(inner: (t 1: &quot;COLUMN&quot;, t 2: 41), z: 1836)</td>
+<td>4336-12</td>
+</tr>
+<tr>
+<td>Left(63972018)</td>
+<td>[(a: 0.505237, nested: (num num: -2147483648, the text 0 item: &quot;􃗓𗞜&gt;𠡯&gt;Se &quot;)), (a: 24, nested: (num num: -127, the text 0 item: &quot;pran0r&quot;)), (a: 1024388943818667, nested: (num num: 9223372036854775808, the text 0 item: &quot;TRANSFORMATION&quot;))]</td>
+<td>1960-04-06 11:32:07 -04:08</td>
+<td>(inner: (t 1: &quot;SKIP&quot;, t 2: 12740), z: 130752485)</td>
+<td>2431-11</td>
+</tr>
+<tr>
+<td>Right(-2147483649)</td>
+<td>[(a: 381859309062723486, nested: (num num: -32768, the text 0 item: &quot;f9r9arrraZ&quot;)), (a: 0.411456, nested: (num num: 9223372036854775808, the text 0 item: &quot;𰯭5d&quot;)), (a: 1, nested: (num num: 290261763, the text 0 item: &quot;CONTENT&quot;)), (a: 8259472058844, nested: (num num: 32767, the text 0 item: &quot;;j5l󺉁u^a&quot;))]</td>
+<td>2020-03-02 02:46:00 Pacific/Samoa</td>
+<td>(inner: (t 1: &quot;VERSION&quot;, t 2: 248), z: 0)</td>
+<td>4026-02</td>
+</tr>
+<tr>
+<td>Right(-128)</td>
+<td>[(a: 9223372036854775807, nested: (num num: 2147483648, the text 0 item: &quot;END&quot;))]</td>
+<td>2004-07-03 10:51:45 -01:55</td>
+<td>(inner: (t 1: &quot;END&quot;, t 2: 1), z: 2147483648)</td>
+<td>0294-04</td>
+</tr>
+<tr>
+<td>Left(172071)</td>
+<td>[(a: -9223372036854775808, nested: (num num: 2147483647, the text 0 item: &quot;!􅃘&quot;)), (a: -1, nested: (num num: 31, the text 0 item: &quot;a99&quot;))]</td>
+<td>1907-02-15 19:21:00 Asia/Hong_Kong</td>
+<td>(inner: (t 1: &quot;^ca&quot;, t 2: 32767), z: -2147483647)</td>
+<td>8021-06</td>
+</tr>
+<tr>
+<td>Right(-128)</td>
+<td>[(a: 0, nested: (num num: 138, the text 0 item: &quot;|8'&gt;;+$T\𦥄􃊟󸏆=C&quot;)), (a: -32768, nested: (num num: -2147483647, the text 0 item: &quot;TRANSFORMATION&quot;)), (a: -9223372036854775809, nested: (num num: 32767, the text 0 item: &quot;O0묛y𘐁3?^c&quot;)), (a: -128, nested: (num num: 4392, the text 0 item: &quot;84\hp3z-&quot;))]</td>
+<td>2041-06-15 01:54:35.564207262 +00:37</td>
+<td>(inner: (t 1: &quot;1t덓B/&quot;, t 2: 659), z: 0)</td>
+<td>5598-11</td>
+</tr>
+<tr>
+<td>Right(-128)</td>
+<td>[(a: -1, nested: (num num: 2148, the text 0 item: &quot;c Zna9&quot;)), (a: 2147483648, nested: (num num: 0, the text 0 item: &quot;􌣉􈯒&quot;))]</td>
+<td>2047-10-29 07:12:00 Europe/Rome</td>
+<td>(inner: (t 1: &quot;w~3*𠨣{ &quot;, t 2: 0.133185), z: 1)</td>
+<td>5703-10</td>
+</tr>
+<tr>
+<td>Right(1)</td>
+<td>[(a: 1, nested: (num num: 61, the text 0 item: &quot;󺜯uT&quot;))]</td>
+<td>1960-02-22 20:56:55 +07:10</td>
+<td>(inner: (t 1: &quot;kZ&quot;, t 2: 112973), z: 127)</td>
+<td>7675-01</td>
+</tr>
+<tr>
+<td>Right(66)</td>
+<td>[(a: 9223372036854775807, nested: (num num: -9223372036854775809, the text 0 item: &quot;ln0aZ0Za&quot;)), (a: 262, nested: (num num: 0, the text 0 item: &quot;ᏳEC&quot;)), (a: 9223372036854775807, nested: (num num: -2147483647, the text 0 item: &quot;B)/EX&quot;)), (a: 25, nested: (num num: -2147483649, the text 0 item: &quot;|6c&quot;))]</td>
+<td>1998-11-12 17:43:49.447086829 +05:55</td>
+<td>(inner: (t 1: &quot;v9r0nZ&quot;, t 2: 5), z: 32767)</td>
+<td>1813-02</td>
+</tr>
+<tr>
+<td>Right(1916)</td>
+<td>[(a: 9223372036854775808, nested: (num num: 127, the text 0 item: &quot;Z$hQH&quot;))]</td>
+<td>7330-01-01 09:26:32 +05:21</td>
+<td>(inner: (t 1: &quot;brnr9aa&quot;, t 2: 5302831457164), z: 1787)</td>
+<td>9383-10</td>
+</tr>
+<tr>
+<td>Left(1991311331781)</td>
+<td>[(a: 47480033176279, nested: (num num: 1, the text 0 item: &quot;DATA&quot;)), (a: -2147483649, nested: (num num: -9223372036854775809, the text 0 item: &quot;DateTimeZoned&quot;))]</td>
+<td>2021-03-16 02:22:00 America/Argentina/Catamarca</td>
+<td>(inner: (t 1: &quot;o&quot;, t 2: 1), z: 88)</td>
+<td>9845-09</td>
+</tr>
+<tr>
+<td>Right(-2147483647)</td>
+<td>[(a: 1, nested: (num num: -128, the text 0 item: &quot;􄮩􋰛]􆽬&quot;)), (a: -1, nested: (num num: 9223372036854775807, the text 0 item: &quot;^a𢈷J􋹨󳻯NO𰩄𛋢8U&quot;)), (a: 57, nested: (num num: 0, the text 0 item: &quot;^a11&quot;))]</td>
+<td>1741-10-30 11:25:04.735693947 Antarctica/Macquarie</td>
+<td>(inner: (t 1: &quot;HN󻼹Hb偈o\󼆐𮁇&quot;, t 2: -1), z: 944)</td>
+<td>1202-02</td>
+</tr>
+<tr>
+<td>Left(13959)</td>
+<td>[(a: 179, nested: (num num: 32767, the text 0 item: &quot;DATA&quot;)), (a: 1, nested: (num num: 155, the text 0 item: &quot;,󶌥=3\&quot;)), (a: 33805101011247818, nested: (num num: -2147483648, the text 0 item: &quot;END&quot;)), (a: 54, nested: (num num: 0.916606, the text 0 item: &quot;𪒽]󽜇&quot;))]</td>
+<td>3721-04-06 14:15:47.967958294 +07:01</td>
+<td>(inner: (t 1: &quot;I\[󵻌%^a𦪇[b7:^c8V&quot;, t 2: 2827061), z: -32768)</td>
+<td>7351-09</td>
+</tr>
+</tbody>
+</table>
+
+<p>Exported on (time)</p></body>
+</html>
+END HTML
+EXCEL
+source trim <trim, vert +1 -0 horiz +0 -0> names [A, B, C, D, E]
+  columns A|B|C|D|E
+  types Text Text Text Text Text
+  length 236
+  "GenCol 27" | "GenCol 28" | "GenCol 29" | "GenCol 30" | "GenCol 31"
+  "Right(-127)" | "[(a: 461358, nested: (num num: 956799, the text 0 item: ^q􊾒*^q)), (a: 13573159, nested: (num num: 0.543885, the text 0 item: ^qlrZZ Z0r^q))]" | "2020-11-02" | "(inner: (t 1: ^q􁞙~:Z 8^q, t 2: 705529326), z: 504945473330930697)" | "7601-12"
+  "Right(-32768)" | "[(a: 112, nested: (num num: 0.037401, the text 0 item: ^q=^q)), (a: 0, nested: (num num: -2147483648, the text 0 item: ^qBEGIN^q))]" | "-1.000000" | "(inner: (t 1: ^q𡭬f'𢦦^q, t 2: 840), z: 1)" | "2361-07"
+  "Left(-9223372036854775807)" | "[(a: 0.604594, nested: (num num: 0.545087, the text 0 item: ^qp r9r^q)), (a: 189, nested: (num num: -9223372036854775808, the text 0 item: ^qd𣩰r톦^q))]" | "1980-01-26" | "(inner: (t 1: ^q豳􏽵C􂒼^q, t 2: 0.906518), z: 1022437348)" | "6635-04"
+  "Left(127)" | "[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: ^qJCdY􊉏zo^q))]" | "2030-02-03" | "(inner: (t 1: ^qa'8g%Ok!󰩿#^q, t 2: 0.595867), z: -32767)" | "8180-05"
+  "Left(2)" | "[(a: 8679619903515, nested: (num num: 0.862723, the text 0 item: ^qEND^q)), (a: -127, nested: (num num: 1, the text 0 item: ^q完𒒰^cc5^q)), (a: 312071, nested: (num num: -127, the text 0 item: ^qTEXTFILE^q)), (a: 32767, nested: (num num: 2147483647, the text 0 item: ^qFORMAT^q))]" | "7727-02-09" | "(inner: (t 1: ^q2nM^q, t 2: 8085235), z: 5270)" | "3605-04"
+  "Left(-9223372036854775808)" | "[(a: -9223372036854775807, nested: (num num: 11300, the text 0 item: ^q𖡎wQ􌪢UUXI_OE|3{𲉦􇧪^q))]" | "8261-12-20" | "(inner: (t 1: ^q?O𨂧^q, t 2: 1286082), z: -128)" | "1015-12"
+  "Left(193000156802835)" | "[(a: 0.987967, nested: (num num: 30, the text 0 item: ^qCOLUMN^q))]" | "1995-12-25" | "(inner: (t 1: ^qud^q, t 2: 0.479025), z: 987)" | "4035-01"
+  "Right(-2147483647)" | "[(a: 7201104865, nested: (num num: 16832820857636, the text 0 item: ^qr90rn^q)), (a: -9223372036854775809, nested: (num num: -9223372036854775808, the text 0 item: ^qa^q)), (a: 14363, nested: (num num: 9223372036854775808, the text 0 item: ^qD𩀔󻔒]?^q))]" | "1950-06-26" | "(inner: (t 1: ^qtna^q, t 2: -128), z: 1)" | "7948-11"
+  "Right(0.833452)" | "[(a: 2, nested: (num num: 0.625099, the text 0 item: ^q󶿹\^q)), (a: 9223372036854775808, nested: (num num: -2147483649, the text 0 item: ^qj0r rrZna^q)), (a: -127, nested: (num num: 2147483648, the text 0 item: ^qS􄄬2kUi=d#^q)), (a: -9223372036854775809, nested: (num num: 0.376992, the text 0 item: ^qDATA^q))]" | "4147-09-10" | "(inner: (t 1: ^qO%3l#.&uomb욠𮬯8U􄲵P🈷80]𒒰5^q, t 2: -128), z: 127)" | "4801-03"
+  "Left(0.756475)" | "[(a: 0.216113, nested: (num num: 603, the text 0 item: ^qbrZ0nar 0^q))]" | "1960-01-10" | "(inner: (t 1: ^qo^q, t 2: -32767), z: -2147483649)" | "8105-12"
+  "Right(127)" | "[(a: 171, nested: (num num: 1094208408272, the text 0 item: ^q𗅧ꪦ^q))]" | "1967-12-14" | "(inner: (t 1: ^qf09a99^q, t 2: 32767), z: 2147483648)" | "4438-01"
+  "Left(9223372036854775808)" | "[(a: -2147483649, nested: (num num: 280, the text 0 item: ^qm^q)), (a: -9223372036854775809, nested: (num num: 430, the text 0 item: ^qa^q)), (a: 195, nested: (num num: -2147483647, the text 0 item: ^qcafaD𜶦$^q))]" | "2008-12-15" | "(inner: (t 1: ^qEND^q, t 2: 545667936245), z: 11)" | "8220-07"
+  "Right(27638)" | "[(a: -9223372036854775809, nested: (num num: 0.671, the text 0 item: ^q𓩑](K􎢕􉦭9𠞶^q))]" | "1930-03-24" | "(inner: (t 1: ^qSOURCE^q, t 2: 0), z: 0.484047)" | "4121-07"
+  "Right(119)" | "[(a: 6319, nested: (num num: 136, the text 0 item: ^q뵙,(^q)), (a: 1, nested: (num num: 16629314, the text 0 item: ^qa^q))]" | "1978-03-08" | "(inner: (t 1: ^q𤴗Ǣ}%MUTIᯍ𓁟萕e^q, t 2: 32308835214523842668298), z: 0)" | "8261-09"
+  "Left(-1)" | "[(a: 0.223873, nested: (num num: 54250, the text 0 item: ^q5ax]$KO^q)), (a: 59166, nested: (num num: 10249, the text 0 item: ^qTime^q)), (a: 2147483648, nested: (num num: 562, the text 0 item: ^qDateTime^q))]" | "1979-08-12" | "(inner: (t 1: ^q􆴃]^q, t 2: -1), z: 13)" | "8945-08"
+  "Right(1189987824)" | "[(a: -32768, nested: (num num: -1, the text 0 item: ^q#^caK[0^cc𓈛^q)), (a: 0.011613, nested: (num num: 2, the text 0 item: ^qCONTENT^q))]" | "2003-09-02" | "(inner: (t 1: ^qqd^ccB`h󲊗]u𢌾2%s^q, t 2: 2147483647), z: 14544)" | "2320-05"
+  "Left(2147483647)" | "[(a: 1, nested: (num num: 0, the text 0 item: ^qinrZ 09 0Z^q)), (a: 0, nested: (num num: 0.533633, the text 0 item: ^qDate^q)), (a: 2147483648, nested: (num num: -9223372036854775807, the text 0 item: ^qT󵾩^ca󷵗^q))]" | "5952-06-25" | "(inner: (t 1: ^qE=^q, t 2: 1337658108900497), z: 1)" | "1133-10"
+  "Right(-2147483647)" | "[(a: -127, nested: (num num: 17, the text 0 item: ^qX𮊭]m6􆡝UBgrTb^q)), (a: -32768, nested: (num num: 0.213295, the text 0 item: ^qv999 0 n^q))]" | "1966-06-10" | "(inner: (t 1: ^qy9 na r^q, t 2: -32768), z: 2147483647)" | "9503-08"
+  "Left(5)" | "[(a: 5089557, nested: (num num: 13766439, the text 0 item: ^q󵪓n(f^q)), (a: 6, nested: (num num: 10850, the text 0 item: ^q𐭸m=^q)), (a: -32768, nested: (num num: 672, the text 0 item: ^q:o{L^q)), (a: 46, nested: (num num: 0, the text 0 item: ^qcarZ^q))]" | "5078-03-16" | "(inner: (t 1: ^qI^q, t 2: -128), z: -2147483649)" | "9321-10"
+  "Right(-1)" | "[(a: 3, nested: (num num: 0.165223, the text 0 item: ^qc9 Zn^q)), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: ^q>^q))]" | "1902-09-18" | "(inner: (t 1: ^qy0a nZa9an^q, t 2: 5), z: 0)" | "1443-04"
+  "Right(127)" | "[(a: 0, nested: (num num: 0.096263, the text 0 item: ^qnY3v_𓪊IS%C^q))]" | "2046-07-29" | "(inner: (t 1: ^qT^q, t 2: -9223372036854775807), z: 32767)" | "5730-02"
+  "Right(-9223372036854775809)" | "[(a: -32768, nested: (num num: 319, the text 0 item: ^qZ^q)), (a: 9223372036854775808, nested: (num num: 25556, the text 0 item: ^qY^q)), (a: 0, nested: (num num: -2147483649, the text 0 item: ^qwnrn^q)), (a: 271, nested: (num num: -32767, the text 0 item: ^qjZrn^q))]" | "1911-05-23" | "(inner: (t 1: ^qTEXTFILE^q, t 2: -1), z: 2147483647)" | "5937-02"
+  "Right(127)" | "[(a: 15, nested: (num num: -127, the text 0 item: ^qj2xo&0l󶌃^cc^q))]" | "1939-12-15" | "(inner: (t 1: ^qm0aa9^q, t 2: -2147483649), z: 0)" | "3723-10"
+  "Right(-32767)" | "[(a: 57098033, nested: (num num: -127, the text 0 item: ^qr 9a 0^q)), (a: 0.330566, nested: (num num: -2147483649, the text 0 item: ^qqZ09^q)), (a: 3, nested: (num num: 5, the text 0 item: ^qDateTimeZoned^q))]" | "1955-05-09" | "(inner: (t 1: ^qc^q, t 2: 130953), z: 9223372036854775808)" | "8303-07"
+  "Right(-32768)" | "[(a: -2147483648, nested: (num num: 52396, the text 0 item: ^qrZ9aZZ00a^q)), (a: 104204525, nested: (num num: 56044243535281381, the text 0 item: ^q^cc^q)), (a: 2147483647, nested: (num num: -127, the text 0 item: ^qtagged^q))]" | "1937-04-14" | "(inner: (t 1: ^qTRANSFORMATION^q, t 2: 2), z: -2147483648)" | "2064-08"
+  "Right(2467)" | "[(a: 12, nested: (num num: -9223372036854775807, the text 0 item: ^qa^q)), (a: -2147483647, nested: (num num: 9223372036854775807, the text 0 item: ^qf9aZ9Zn a^q)), (a: 127, nested: (num num: 2165, the text 0 item: ^qDateTime^q)), (a: 12, nested: (num num: 93961, the text 0 item: ^q𩩫Q𠂪<U_䰏󷉹Q谳省𗃨B􊎓^q))]" | "1980-08-17" | "(inner: (t 1: ^qFORMAT^q, t 2: 1964), z: -127)" | "8132-06"
+  "Right(18704084981)" | "[(a: 691, nested: (num num: 10094, the text 0 item: ^qsy; 𞟢^q)), (a: 4, nested: (num num: 9223372036854775808, the text 0 item: ^q\c^q)), (a: 643, nested: (num num: 9223372036854775807, the text 0 item: ^qSOURCE^q))]" | "1931-07-15" | "(inner: (t 1: ^q3􋙲2^q, t 2: 11641040), z: -2147483647)" | "5091-06"
+  "Right(-127)" | "[(a: 9, nested: (num num: -1, the text 0 item: ^q>c􋴟q^q))]" | "2017-08-10" | "(inner: (t 1: ^q󲲓G^q, t 2: 370400), z: -9223372036854775809)" | "1107-08"
+  "Left(-9223372036854775808)" | "[(a: 0.652745, nested: (num num: -1, the text 0 item: ^q5qlZ;鋾A⻳|󾮱RD^q))]" | "2039-11-12" | "(inner: (t 1: ^qpaa9Z^q, t 2: 9223372036854775808), z: -32768)" | "1556-07"
+  "Left(58835976)" | "[(a: 9223372036854775807, nested: (num num: -2147483647, the text 0 item: ^q3v^q)), (a: 4179926, nested: (num num: -2147483647, the text 0 item: ^qNumber^q)), (a: 0.138586, nested: (num num: -2147483647, the text 0 item: ^q2􎜁^q)), (a: 0.956075, nested: (num num: -9223372036854775809, the text 0 item: ^q`?^q))]" | "1937-04-07" | "(inner: (t 1: ^qsxL𭴱Lb$󷜩5j^q, t 2: 0.498568), z: 703148595)" | "3572-02"
+  "Right(-128)" | "[(a: -1, nested: (num num: 4460929750738421, the text 0 item: ^q)M^q))]" | "1962-03-16" | "(inner: (t 1: ^q󲦍Mp.^q, t 2: -128), z: 0)" | "2779-01"
+  "Left(0.726799)" | "[(a: 47, nested: (num num: 1590, the text 0 item: ^qkn9ZnZ a^q)), (a: -2147483647, nested: (num num: -32768, the text 0 item: ^qvrr0^q)), (a: 0.959485, nested: (num num: 127, the text 0 item: ^qUNITS^q))]" | "3542-08-22" | "(inner: (t 1: ^qCOLUMNAL^q, t 2: -2147483647), z: 81)" | "0330-10"
+  "Left(0)" | "[(a: -2147483648, nested: (num num: -9223372036854775808, the text 0 item: ^qR/^q)), (a: 36255646, nested: (num num: -9223372036854775809, the text 0 item: ^qINCOMPLETE^q))]" | "2030-02-01" | "(inner: (t 1: ^qm r^q, t 2: -9223372036854775809), z: 127)" | "8713-08"
+  "Right(1)" | "[(a: 2, nested: (num num: -2147483649, the text 0 item: ^q/%􁔜yV5l D7􋟸𰉦^q))]" | "1923-11-07" | "(inner: (t 1: ^qNumber^q, t 2: 718), z: 32767)" | "0967-01"
+  "Left(6789)" | "[(a: -128, nested: (num num: -127, the text 0 item: ^qBEGIN^q)), (a: 2147483648, nested: (num num: 404, the text 0 item: ^q𤯵^q))]" | "1934-10-28" | "(inner: (t 1: ^qu 9^q, t 2: -2147483647), z: 230126481905)" | "4036-07"
+  "Right(7)" | "[(a: 2147483648, nested: (num num: 9223372036854775808, the text 0 item: ^qM􄅅n/^q))]" | "1923-04-03" | "(inner: (t 1: ^qlu^q, t 2: -2147483649), z: -9223372036854775807)" | "6308-02"
+  "Right(9223372036854775807)" | "[(a: 2147483647, nested: (num num: -9223372036854775807, the text 0 item: ^q7􅦯^q)), (a: 2392, nested: (num num: 2031533, the text 0 item: ^qTRANSFORMATION^q)), (a: -2147483648, nested: (num num: -9223372036854775808, the text 0 item: ^qtn^q)), (a: -32767, nested: (num num: 0, the text 0 item: ^qr𮕭*폴Q^q))]" | "8826-05-24" | "(inner: (t 1: ^qDateTimeZoned^q, t 2: -128), z: 6)" | "2226-11"
+  "Right(174055825123325)" | "[(a: -1, nested: (num num: 2147483648, the text 0 item: ^q𨣸𦙬m󽚲^q)), (a: 9223372036854775807, nested: (num num: -32767, the text 0 item: ^qunnn9^q))]" | "1925-08-06" | "(inner: (t 1: ^qtagged^q, t 2: 322037), z: -2147483648)" | "2469-03"
+  "Left(-2147483649)" | "[(a: 1, nested: (num num: 127, the text 0 item: ^qX^q)), (a: 7101, nested: (num num: -128, the text 0 item: ^qfZ Z^q))]" | "1964-09-21" | "(inner: (t 1: ^q'PoLFKvkZuJ=G􂣉챙}[r🃇𣀗\^q, t 2: 2), z: -127)" | "4715-01"
+  "Right(-32768)" | "[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: ^q󾛞 󾊳󵺚|IaM󰈠I𲟀7C𡒔#*fL𝥓j[𗃦D^q))]" | "2025-10-20" | "(inner: (t 1: ^qyn0raZ9^q, t 2: 442292410497767098051), z: -127)" | "7664-12"
+  "Left(-2147483649)" | "[(a: 2106896, nested: (num num: -32768, the text 0 item: ^qa^q)), (a: 0.415984, nested: (num num: 31686684464954658768, the text 0 item: ^q6W^q))]" | "2687-03-09" | "(inner: (t 1: ^qR5{^q, t 2: 0.598802), z: 105597)" | "0400-03"
+  "Right(-2147483648)" | "[(a: 0, nested: (num num: 127, the text 0 item: ^qCOLUMN^q)), (a: -9223372036854775807, nested: (num num: 9223372036854775807, the text 0 item: ^qZ>^q)), (a: -2147483649, nested: (num num: 6060228, the text 0 item: ^q+}N􁻴P{^q)), (a: 32490, nested: (num num: -9223372036854775807, the text 0 item: ^qg9ar9a r^q))]" | "8972-04-04" | "(inner: (t 1: ^q)󼅯^q, t 2: -2147483649), z: 0.956357)" | "7247-09"
+  "Right(3)" | "[(a: -127, nested: (num num: -32768, the text 0 item: ^qy0 nra00^q))]" | "2031-06-28" | "(inner: (t 1: ^q󺊯^q, t 2: 9223372036854775808), z: 127)" | "3022-01"
+  "Left(-32767)" | "[(a: 127, nested: (num num: 0.957399, the text 0 item: ^qAja𧸙^q)), (a: -32768, nested: (num num: 0, the text 0 item: ^qBoolean^q)), (a: 0.943392, nested: (num num: -2147483649, the text 0 item: ^q*8uW󰯝I;Q]刄B𥡒>{^q))]" | "1908-07-05" | "(inner: (t 1: ^q✓y􁉼S􍋄󻢺^q, t 2: 1), z: 12)" | "3878-01"
+  "Right(8885008)" | "[(a: 0.960664, nested: (num num: 2147483647, the text 0 item: ^qEP^q)), (a: 7, nested: (num num: 509, the text 0 item: ^qd(#s{^q)), (a: -9223372036854775808, nested: (num num: 9223372036854775807, the text 0 item: ^qCOLUMNAL^q)), (a: 127, nested: (num num: 1, the text 0 item: ^qunitvar^q))]" | "1931-06-14" | "(inner: (t 1: ^qTime^q, t 2: -127), z: 9223372036854775808)" | "0849-04"
+  "Left(9223372036854775807)" | "[(a: 0.279333, nested: (num num: 219303838, the text 0 item: ^qTEXTFILE^q)), (a: -2147483649, nested: (num num: 0.720876, the text 0 item: ^q{1&S?灱^q)), (a: -9223372036854775807, nested: (num num: 0.470358, the text 0 item: ^qk^q))]" | "2050-10-19" | "(inner: (t 1: ^qun00^q, t 2: 2147483647), z: 132)" | "3954-12"
+  "Right(0)" | "[(a: 217374292551, nested: (num num: 5719, the text 0 item: ^qa^q))]" | "1932-11-23" | "(inner: (t 1: ^q-#~G1^q, t 2: -2147483647), z: -2147483648)" | "9812-11"
+  "Left(5640531)" | "[(a: 0.721197, nested: (num num: 334472, the text 0 item: ^q0X,]nM4 ^q)), (a: -32768, nested: (num num: -1, the text 0 item: ^qCOLUMNAL^q))]" | "1999-05-02" | "(inner: (t 1: ^qhZ 9r 9 rn^q, t 2: 10), z: 2147483647)" | "3879-03"
+  "Right(2671)" | "[(a: 783995, nested: (num num: 9223372036854775808, the text 0 item: ^qv99Z r9r99r^q)), (a: 127, nested: (num num: -2147483649, the text 0 item: ^qdnZ^q)), (a: 0, nested: (num num: 9223372036854775808, the text 0 item: ^q7Tfnムh^q)), (a: 9223372036854775808, nested: (num num: -2147483647, the text 0 item: ^qTYPES^q))]" | "1940-06-09" | "(inner: (t 1: ^qDateYM^q, t 2: -128), z: 9223372036854775808)" | "4740-05"
+  "Right(-2147483649)" | "[(a: 11, nested: (num num: 253, the text 0 item: ^qznr9009Zn^q)), (a: -127, nested: (num num: 32767, the text 0 item: ^q􃟾10E4Q9 ^q)), (a: -2147483647, nested: (num num: 0, the text 0 item: ^qapply^q))]" | "1941-09-06" | "(inner: (t 1: ^qs'l.9?\I󹺤S𮃝^q, t 2: 32677), z: 17020)" | "0827-10"
+  "Right(-9223372036854775807)" | "[(a: 7862, nested: (num num: -128, the text 0 item: ^qpr00rr^q)), (a: 3, nested: (num num: 6, the text 0 item: ^qja^q)), (a: 0.070006, nested: (num num: 7290, the text 0 item: ^qDEFAULT^q))]" | "2011-08-24" | "(inner: (t 1: ^q9I󸀹󳝃𧹞9}霡^q, t 2: 6), z: -2147483647)" | "1330-06"
+  "Left(0)" | "[(a: 2147483648, nested: (num num: -127, the text 0 item: ^qn󳒡I^q)), (a: 502905097319, nested: (num num: 386, the text 0 item: ^q8^q)), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: ^qv^cc𪃻^q))]" | "1906-11-15" | "(inner: (t 1: ^qq Zrn nn^q, t 2: 0.762886), z: 1)" | "5377-07"
+  "Left(48)" | "[(a: -2147483648, nested: (num num: 2147483648, the text 0 item: ^q􈇄𭄧o^q))]" | "1919-10-23" | "(inner: (t 1: ^qva^q, t 2: 23224962), z: 2147483647)" | "2654-05"
+  "Left(-32768)" | "[(a: 167, nested: (num num: 2147483648, the text 0 item: ^q𫗥P𠦮𧘓]lB]~c5ﵞ{ MyⳲ'2^q)), (a: 0.068239, nested: (num num: -2147483647, the text 0 item: ^q𝋌M/?𓶛%1^q)), (a: -32768, nested: (num num: 7401725734, the text 0 item: ^q]-𱫻ra.JuⲜLS臾%*𛆽􄷂> d9^q))]" | "1992-11-25" | "(inner: (t 1: ^qj0^q, t 2: 2666), z: 0.404686)" | "6362-08"
+  "Left(120)" | "[(a: 46, nested: (num num: -2147483647, the text 0 item: ^qTime^q)), (a: 38, nested: (num num: 0, the text 0 item: ^qinvalidtypeops^q)), (a: 423392202177115836, nested: (num num: 9223372036854775808, the text 0 item: ^qn9a0 a9nZ^q))]" | "1914-04-15" | "(inner: (t 1: ^q!r^q, t 2: 4), z: -1)" | "4492-08"
+  "Right(-2147483649)" | "[(a: 9223372036854775807, nested: (num num: 2694000995475377921, the text 0 item: ^qa9nr90a 0n^q)), (a: 2147483647, nested: (num num: 1, the text 0 item: ^qa^q)), (a: 941007, nested: (num num: -32767, the text 0 item: ^qa􃞻^q)), (a: 1, nested: (num num: -9223372036854775808, the text 0 item: ^qcr9n0^q))]" | "1994-09-30" | "(inner: (t 1: ^qTYPE^q, t 2: 15), z: 2)" | "5636-07"
+  "Left(2147483647)" | "[(a: -2147483648, nested: (num num: 0.574356, the text 0 item: ^q󳤇􈙝Ul[(>&􃼚_cO^q)), (a: 0, nested: (num num: 0, the text 0 item: ^q􆖞󲼽Z+{'#궺C}t𤗺[]𨥋^q))]" | "1936-03-24" | "(inner: (t 1: ^q㗱Qf!eg󻗏^q, t 2: 5849250322033), z: 130216048609625978)" | "9938-02"
+  "Left(53886901308828)" | "[(a: 0.808254, nested: (num num: 48, the text 0 item: ^q.x,/?4[b𦗙=XVJ^q))]" | "1947-08-11" | "(inner: (t 1: ^qZ^q, t 2: 32767), z: -9223372036854775808)" | "5079-07"
+  "Left(2098930612883740671)" | "[(a: 1, nested: (num num: -2147483649, the text 0 item: ^qDateTime^q)), (a: 8804, nested: (num num: 1, the text 0 item: ^qTRANSFORMATION^q)), (a: 1, nested: (num num: -2147483649, the text 0 item: ^qn^q))]" | "1945-06-16" | "(inner: (t 1: ^qVERSION^q, t 2: -2147483649), z: -2147483649)" | "7385-03"
+dest <trim, vert +1 -0 horiz +0 -0>
+  column GenCol 27: Text
+  column GenCol 28: Text
+  column GenCol 29: Text
+  column GenCol 30: Text
+  column GenCol 31: Text
+  columns GenCol 27|GenCol 28|GenCol 29|GenCol 30|GenCol 31
+  types Text Text Text Text Text
+  length 235
+  "Right(-127)" | "[(a: 461358, nested: (num num: 956799, the text 0 item: ^q􊾒*^q)), (a: 13573159, nested: (num num: 0.543885, the text 0 item: ^qlrZZ Z0r^q))]" | "2020-11-02" | "(inner: (t 1: ^q􁞙~:Z 8^q, t 2: 705529326), z: 504945473330930697)" | "7601-12"
+  "Right(-32768)" | "[(a: 112, nested: (num num: 0.037401, the text 0 item: ^q=^q)), (a: 0, nested: (num num: -2147483648, the text 0 item: ^qBEGIN^q))]" | "-1.000000" | "(inner: (t 1: ^q𡭬f'𢦦^q, t 2: 840), z: 1)" | "2361-07"
+  "Left(-9223372036854775807)" | "[(a: 0.604594, nested: (num num: 0.545087, the text 0 item: ^qp r9r^q)), (a: 189, nested: (num num: -9223372036854775808, the text 0 item: ^qd𣩰r톦^q))]" | "1980-01-26" | "(inner: (t 1: ^q豳􏽵C􂒼^q, t 2: 0.906518), z: 1022437348)" | "6635-04"
+  "Left(127)" | "[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: ^qJCdY􊉏zo^q))]" | "2030-02-03" | "(inner: (t 1: ^qa'8g%Ok!󰩿#^q, t 2: 0.595867), z: -32767)" | "8180-05"
+  "Left(2)" | "[(a: 8679619903515, nested: (num num: 0.862723, the text 0 item: ^qEND^q)), (a: -127, nested: (num num: 1, the text 0 item: ^q完𒒰^cc5^q)), (a: 312071, nested: (num num: -127, the text 0 item: ^qTEXTFILE^q)), (a: 32767, nested: (num num: 2147483647, the text 0 item: ^qFORMAT^q))]" | "7727-02-09" | "(inner: (t 1: ^q2nM^q, t 2: 8085235), z: 5270)" | "3605-04"
+  "Left(-9223372036854775808)" | "[(a: -9223372036854775807, nested: (num num: 11300, the text 0 item: ^q𖡎wQ􌪢UUXI_OE|3{𲉦􇧪^q))]" | "8261-12-20" | "(inner: (t 1: ^q?O𨂧^q, t 2: 1286082), z: -128)" | "1015-12"
+  "Left(193000156802835)" | "[(a: 0.987967, nested: (num num: 30, the text 0 item: ^qCOLUMN^q))]" | "1995-12-25" | "(inner: (t 1: ^qud^q, t 2: 0.479025), z: 987)" | "4035-01"
+  "Right(-2147483647)" | "[(a: 7201104865, nested: (num num: 16832820857636, the text 0 item: ^qr90rn^q)), (a: -9223372036854775809, nested: (num num: -9223372036854775808, the text 0 item: ^qa^q)), (a: 14363, nested: (num num: 9223372036854775808, the text 0 item: ^qD𩀔󻔒]?^q))]" | "1950-06-26" | "(inner: (t 1: ^qtna^q, t 2: -128), z: 1)" | "7948-11"
+  "Right(0.833452)" | "[(a: 2, nested: (num num: 0.625099, the text 0 item: ^q󶿹\^q)), (a: 9223372036854775808, nested: (num num: -2147483649, the text 0 item: ^qj0r rrZna^q)), (a: -127, nested: (num num: 2147483648, the text 0 item: ^qS􄄬2kUi=d#^q)), (a: -9223372036854775809, nested: (num num: 0.376992, the text 0 item: ^qDATA^q))]" | "4147-09-10" | "(inner: (t 1: ^qO%3l#.&uomb욠𮬯8U􄲵P🈷80]𒒰5^q, t 2: -128), z: 127)" | "4801-03"
+  "Left(0.756475)" | "[(a: 0.216113, nested: (num num: 603, the text 0 item: ^qbrZ0nar 0^q))]" | "1960-01-10" | "(inner: (t 1: ^qo^q, t 2: -32767), z: -2147483649)" | "8105-12"
+  "Right(127)" | "[(a: 171, nested: (num num: 1094208408272, the text 0 item: ^q𗅧ꪦ^q))]" | "1967-12-14" | "(inner: (t 1: ^qf09a99^q, t 2: 32767), z: 2147483648)" | "4438-01"
+  "Left(9223372036854775808)" | "[(a: -2147483649, nested: (num num: 280, the text 0 item: ^qm^q)), (a: -9223372036854775809, nested: (num num: 430, the text 0 item: ^qa^q)), (a: 195, nested: (num num: -2147483647, the text 0 item: ^qcafaD𜶦$^q))]" | "2008-12-15" | "(inner: (t 1: ^qEND^q, t 2: 545667936245), z: 11)" | "8220-07"
+  "Right(27638)" | "[(a: -9223372036854775809, nested: (num num: 0.671, the text 0 item: ^q𓩑](K􎢕􉦭9𠞶^q))]" | "1930-03-24" | "(inner: (t 1: ^qSOURCE^q, t 2: 0), z: 0.484047)" | "4121-07"
+  "Right(119)" | "[(a: 6319, nested: (num num: 136, the text 0 item: ^q뵙,(^q)), (a: 1, nested: (num num: 16629314, the text 0 item: ^qa^q))]" | "1978-03-08" | "(inner: (t 1: ^q𤴗Ǣ}%MUTIᯍ𓁟萕e^q, t 2: 32308835214523842668298), z: 0)" | "8261-09"
+  "Left(-1)" | "[(a: 0.223873, nested: (num num: 54250, the text 0 item: ^q5ax]$KO^q)), (a: 59166, nested: (num num: 10249, the text 0 item: ^qTime^q)), (a: 2147483648, nested: (num num: 562, the text 0 item: ^qDateTime^q))]" | "1979-08-12" | "(inner: (t 1: ^q􆴃]^q, t 2: -1), z: 13)" | "8945-08"
+  "Right(1189987824)" | "[(a: -32768, nested: (num num: -1, the text 0 item: ^q#^caK[0^cc𓈛^q)), (a: 0.011613, nested: (num num: 2, the text 0 item: ^qCONTENT^q))]" | "2003-09-02" | "(inner: (t 1: ^qqd^ccB`h󲊗]u𢌾2%s^q, t 2: 2147483647), z: 14544)" | "2320-05"
+  "Left(2147483647)" | "[(a: 1, nested: (num num: 0, the text 0 item: ^qinrZ 09 0Z^q)), (a: 0, nested: (num num: 0.533633, the text 0 item: ^qDate^q)), (a: 2147483648, nested: (num num: -9223372036854775807, the text 0 item: ^qT󵾩^ca󷵗^q))]" | "5952-06-25" | "(inner: (t 1: ^qE=^q, t 2: 1337658108900497), z: 1)" | "1133-10"
+  "Right(-2147483647)" | "[(a: -127, nested: (num num: 17, the text 0 item: ^qX𮊭]m6􆡝UBgrTb^q)), (a: -32768, nested: (num num: 0.213295, the text 0 item: ^qv999 0 n^q))]" | "1966-06-10" | "(inner: (t 1: ^qy9 na r^q, t 2: -32768), z: 2147483647)" | "9503-08"
+  "Left(5)" | "[(a: 5089557, nested: (num num: 13766439, the text 0 item: ^q󵪓n(f^q)), (a: 6, nested: (num num: 10850, the text 0 item: ^q𐭸m=^q)), (a: -32768, nested: (num num: 672, the text 0 item: ^q:o{L^q)), (a: 46, nested: (num num: 0, the text 0 item: ^qcarZ^q))]" | "5078-03-16" | "(inner: (t 1: ^qI^q, t 2: -128), z: -2147483649)" | "9321-10"
+  "Right(-1)" | "[(a: 3, nested: (num num: 0.165223, the text 0 item: ^qc9 Zn^q)), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: ^q>^q))]" | "1902-09-18" | "(inner: (t 1: ^qy0a nZa9an^q, t 2: 5), z: 0)" | "1443-04"
+  "Right(127)" | "[(a: 0, nested: (num num: 0.096263, the text 0 item: ^qnY3v_𓪊IS%C^q))]" | "2046-07-29" | "(inner: (t 1: ^qT^q, t 2: -9223372036854775807), z: 32767)" | "5730-02"
+  "Right(-9223372036854775809)" | "[(a: -32768, nested: (num num: 319, the text 0 item: ^qZ^q)), (a: 9223372036854775808, nested: (num num: 25556, the text 0 item: ^qY^q)), (a: 0, nested: (num num: -2147483649, the text 0 item: ^qwnrn^q)), (a: 271, nested: (num num: -32767, the text 0 item: ^qjZrn^q))]" | "1911-05-23" | "(inner: (t 1: ^qTEXTFILE^q, t 2: -1), z: 2147483647)" | "5937-02"
+  "Right(127)" | "[(a: 15, nested: (num num: -127, the text 0 item: ^qj2xo&0l󶌃^cc^q))]" | "1939-12-15" | "(inner: (t 1: ^qm0aa9^q, t 2: -2147483649), z: 0)" | "3723-10"
+  "Right(-32767)" | "[(a: 57098033, nested: (num num: -127, the text 0 item: ^qr 9a 0^q)), (a: 0.330566, nested: (num num: -2147483649, the text 0 item: ^qqZ09^q)), (a: 3, nested: (num num: 5, the text 0 item: ^qDateTimeZoned^q))]" | "1955-05-09" | "(inner: (t 1: ^qc^q, t 2: 130953), z: 9223372036854775808)" | "8303-07"
+  "Right(-32768)" | "[(a: -2147483648, nested: (num num: 52396, the text 0 item: ^qrZ9aZZ00a^q)), (a: 104204525, nested: (num num: 56044243535281381, the text 0 item: ^q^cc^q)), (a: 2147483647, nested: (num num: -127, the text 0 item: ^qtagged^q))]" | "1937-04-14" | "(inner: (t 1: ^qTRANSFORMATION^q, t 2: 2), z: -2147483648)" | "2064-08"
+  "Right(2467)" | "[(a: 12, nested: (num num: -9223372036854775807, the text 0 item: ^qa^q)), (a: -2147483647, nested: (num num: 9223372036854775807, the text 0 item: ^qf9aZ9Zn a^q)), (a: 127, nested: (num num: 2165, the text 0 item: ^qDateTime^q)), (a: 12, nested: (num num: 93961, the text 0 item: ^q𩩫Q𠂪<U_䰏󷉹Q谳省𗃨B􊎓^q))]" | "1980-08-17" | "(inner: (t 1: ^qFORMAT^q, t 2: 1964), z: -127)" | "8132-06"
+  "Right(18704084981)" | "[(a: 691, nested: (num num: 10094, the text 0 item: ^qsy; 𞟢^q)), (a: 4, nested: (num num: 9223372036854775808, the text 0 item: ^q\c^q)), (a: 643, nested: (num num: 9223372036854775807, the text 0 item: ^qSOURCE^q))]" | "1931-07-15" | "(inner: (t 1: ^q3􋙲2^q, t 2: 11641040), z: -2147483647)" | "5091-06"
+  "Right(-127)" | "[(a: 9, nested: (num num: -1, the text 0 item: ^q>c􋴟q^q))]" | "2017-08-10" | "(inner: (t 1: ^q󲲓G^q, t 2: 370400), z: -9223372036854775809)" | "1107-08"
+  "Left(-9223372036854775808)" | "[(a: 0.652745, nested: (num num: -1, the text 0 item: ^q5qlZ;鋾A⻳|󾮱RD^q))]" | "2039-11-12" | "(inner: (t 1: ^qpaa9Z^q, t 2: 9223372036854775808), z: -32768)" | "1556-07"
+  "Left(58835976)" | "[(a: 9223372036854775807, nested: (num num: -2147483647, the text 0 item: ^q3v^q)), (a: 4179926, nested: (num num: -2147483647, the text 0 item: ^qNumber^q)), (a: 0.138586, nested: (num num: -2147483647, the text 0 item: ^q2􎜁^q)), (a: 0.956075, nested: (num num: -9223372036854775809, the text 0 item: ^q`?^q))]" | "1937-04-07" | "(inner: (t 1: ^qsxL𭴱Lb$󷜩5j^q, t 2: 0.498568), z: 703148595)" | "3572-02"
+  "Right(-128)" | "[(a: -1, nested: (num num: 4460929750738421, the text 0 item: ^q)M^q))]" | "1962-03-16" | "(inner: (t 1: ^q󲦍Mp.^q, t 2: -128), z: 0)" | "2779-01"
+  "Left(0.726799)" | "[(a: 47, nested: (num num: 1590, the text 0 item: ^qkn9ZnZ a^q)), (a: -2147483647, nested: (num num: -32768, the text 0 item: ^qvrr0^q)), (a: 0.959485, nested: (num num: 127, the text 0 item: ^qUNITS^q))]" | "3542-08-22" | "(inner: (t 1: ^qCOLUMNAL^q, t 2: -2147483647), z: 81)" | "0330-10"
+  "Left(0)" | "[(a: -2147483648, nested: (num num: -9223372036854775808, the text 0 item: ^qR/^q)), (a: 36255646, nested: (num num: -9223372036854775809, the text 0 item: ^qINCOMPLETE^q))]" | "2030-02-01" | "(inner: (t 1: ^qm r^q, t 2: -9223372036854775809), z: 127)" | "8713-08"
+  "Right(1)" | "[(a: 2, nested: (num num: -2147483649, the text 0 item: ^q/%􁔜yV5l D7􋟸𰉦^q))]" | "1923-11-07" | "(inner: (t 1: ^qNumber^q, t 2: 718), z: 32767)" | "0967-01"
+  "Left(6789)" | "[(a: -128, nested: (num num: -127, the text 0 item: ^qBEGIN^q)), (a: 2147483648, nested: (num num: 404, the text 0 item: ^q𤯵^q))]" | "1934-10-28" | "(inner: (t 1: ^qu 9^q, t 2: -2147483647), z: 230126481905)" | "4036-07"
+  "Right(7)" | "[(a: 2147483648, nested: (num num: 9223372036854775808, the text 0 item: ^qM􄅅n/^q))]" | "1923-04-03" | "(inner: (t 1: ^qlu^q, t 2: -2147483649), z: -9223372036854775807)" | "6308-02"
+  "Right(9223372036854775807)" | "[(a: 2147483647, nested: (num num: -9223372036854775807, the text 0 item: ^q7􅦯^q)), (a: 2392, nested: (num num: 2031533, the text 0 item: ^qTRANSFORMATION^q)), (a: -2147483648, nested: (num num: -9223372036854775808, the text 0 item: ^qtn^q)), (a: -32767, nested: (num num: 0, the text 0 item: ^qr𮕭*폴Q^q))]" | "8826-05-24" | "(inner: (t 1: ^qDateTimeZoned^q, t 2: -128), z: 6)" | "2226-11"
+  "Right(174055825123325)" | "[(a: -1, nested: (num num: 2147483648, the text 0 item: ^q𨣸𦙬m󽚲^q)), (a: 9223372036854775807, nested: (num num: -32767, the text 0 item: ^qunnn9^q))]" | "1925-08-06" | "(inner: (t 1: ^qtagged^q, t 2: 322037), z: -2147483648)" | "2469-03"
+  "Left(-2147483649)" | "[(a: 1, nested: (num num: 127, the text 0 item: ^qX^q)), (a: 7101, nested: (num num: -128, the text 0 item: ^qfZ Z^q))]" | "1964-09-21" | "(inner: (t 1: ^q'PoLFKvkZuJ=G􂣉챙}[r🃇𣀗\^q, t 2: 2), z: -127)" | "4715-01"
+  "Right(-32768)" | "[(a: 0, nested: (num num: 9223372036854775808, the text 0 item: ^q󾛞 󾊳󵺚|IaM󰈠I𲟀7C𡒔#*fL𝥓j[𗃦D^q))]" | "2025-10-20" | "(inner: (t 1: ^qyn0raZ9^q, t 2: 442292410497767098051), z: -127)" | "7664-12"
+  "Left(-2147483649)" | "[(a: 2106896, nested: (num num: -32768, the text 0 item: ^qa^q)), (a: 0.415984, nested: (num num: 31686684464954658768, the text 0 item: ^q6W^q))]" | "2687-03-09" | "(inner: (t 1: ^qR5{^q, t 2: 0.598802), z: 105597)" | "0400-03"
+  "Right(-2147483648)" | "[(a: 0, nested: (num num: 127, the text 0 item: ^qCOLUMN^q)), (a: -9223372036854775807, nested: (num num: 9223372036854775807, the text 0 item: ^qZ>^q)), (a: -2147483649, nested: (num num: 6060228, the text 0 item: ^q+}N􁻴P{^q)), (a: 32490, nested: (num num: -9223372036854775807, the text 0 item: ^qg9ar9a r^q))]" | "8972-04-04" | "(inner: (t 1: ^q)󼅯^q, t 2: -2147483649), z: 0.956357)" | "7247-09"
+  "Right(3)" | "[(a: -127, nested: (num num: -32768, the text 0 item: ^qy0 nra00^q))]" | "2031-06-28" | "(inner: (t 1: ^q󺊯^q, t 2: 9223372036854775808), z: 127)" | "3022-01"
+  "Left(-32767)" | "[(a: 127, nested: (num num: 0.957399, the text 0 item: ^qAja𧸙^q)), (a: -32768, nested: (num num: 0, the text 0 item: ^qBoolean^q)), (a: 0.943392, nested: (num num: -2147483649, the text 0 item: ^q*8uW󰯝I;Q]刄B𥡒>{^q))]" | "1908-07-05" | "(inner: (t 1: ^q✓y􁉼S􍋄󻢺^q, t 2: 1), z: 12)" | "3878-01"
+  "Right(8885008)" | "[(a: 0.960664, nested: (num num: 2147483647, the text 0 item: ^qEP^q)), (a: 7, nested: (num num: 509, the text 0 item: ^qd(#s{^q)), (a: -9223372036854775808, nested: (num num: 9223372036854775807, the text 0 item: ^qCOLUMNAL^q)), (a: 127, nested: (num num: 1, the text 0 item: ^qunitvar^q))]" | "1931-06-14" | "(inner: (t 1: ^qTime^q, t 2: -127), z: 9223372036854775808)" | "0849-04"
+  "Left(9223372036854775807)" | "[(a: 0.279333, nested: (num num: 219303838, the text 0 item: ^qTEXTFILE^q)), (a: -2147483649, nested: (num num: 0.720876, the text 0 item: ^q{1&S?灱^q)), (a: -9223372036854775807, nested: (num num: 0.470358, the text 0 item: ^qk^q))]" | "2050-10-19" | "(inner: (t 1: ^qun00^q, t 2: 2147483647), z: 132)" | "3954-12"
+  "Right(0)" | "[(a: 217374292551, nested: (num num: 5719, the text 0 item: ^qa^q))]" | "1932-11-23" | "(inner: (t 1: ^q-#~G1^q, t 2: -2147483647), z: -2147483648)" | "9812-11"
+  "Left(5640531)" | "[(a: 0.721197, nested: (num num: 334472, the text 0 item: ^q0X,]nM4 ^q)), (a: -32768, nested: (num num: -1, the text 0 item: ^qCOLUMNAL^q))]" | "1999-05-02" | "(inner: (t 1: ^qhZ 9r 9 rn^q, t 2: 10), z: 2147483647)" | "3879-03"
+  "Right(2671)" | "[(a: 783995, nested: (num num: 9223372036854775808, the text 0 item: ^qv99Z r9r99r^q)), (a: 127, nested: (num num: -2147483649, the text 0 item: ^qdnZ^q)), (a: 0, nested: (num num: 9223372036854775808, the text 0 item: ^q7Tfnムh^q)), (a: 9223372036854775808, nested: (num num: -2147483647, the text 0 item: ^qTYPES^q))]" | "1940-06-09" | "(inner: (t 1: ^qDateYM^q, t 2: -128), z: 9223372036854775808)" | "4740-05"
+  "Right(-2147483649)" | "[(a: 11, nested: (num num: 253, the text 0 item: ^qznr9009Zn^q)), (a: -127, nested: (num num: 32767, the text 0 item: ^q􃟾10E4Q9 ^q)), (a: -2147483647, nested: (num num: 0, the text 0 item: ^qapply^q))]" | "1941-09-06" | "(inner: (t 1: ^qs'l.9?\I󹺤S𮃝^q, t 2: 32677), z: 17020)" | "0827-10"
+  "Right(-9223372036854775807)" | "[(a: 7862, nested: (num num: -128, the text 0 item: ^qpr00rr^q)), (a: 3, nested: (num num: 6, the text 0 item: ^qja^q)), (a: 0.070006, nested: (num num: 7290, the text 0 item: ^qDEFAULT^q))]" | "2011-08-24" | "(inner: (t 1: ^q9I󸀹󳝃𧹞9}霡^q, t 2: 6), z: -2147483647)" | "1330-06"
+  "Left(0)" | "[(a: 2147483648, nested: (num num: -127, the text 0 item: ^qn󳒡I^q)), (a: 502905097319, nested: (num num: 386, the text 0 item: ^q8^q)), (a: 1, nested: (num num: 9223372036854775808, the text 0 item: ^qv^cc𪃻^q))]" | "1906-11-15" | "(inner: (t 1: ^qq Zrn nn^q, t 2: 0.762886), z: 1)" | "5377-07"
+  "Left(48)" | "[(a: -2147483648, nested: (num num: 2147483648, the text 0 item: ^q􈇄𭄧o^q))]" | "1919-10-23" | "(inner: (t 1: ^qva^q, t 2: 23224962), z: 2147483647)" | "2654-05"
+  "Left(-32768)" | "[(a: 167, nested: (num num: 2147483648, the text 0 item: ^q𫗥P𠦮𧘓]lB]~c5ﵞ{ MyⳲ'2^q)), (a: 0.068239, nested: (num num: -2147483647, the text 0 item: ^q𝋌M/?𓶛%1^q)), (a: -32768, nested: (num num: 7401725734, the text 0 item: ^q]-𱫻ra.JuⲜLS臾%*𛆽􄷂> d9^q))]" | "1992-11-25" | "(inner: (t 1: ^qj0^q, t 2: 2666), z: 0.404686)" | "6362-08"
+  "Left(120)" | "[(a: 46, nested: (num num: -2147483647, the text 0 item: ^qTime^q)), (a: 38, nested: (num num: 0, the text 0 item: ^qinvalidtypeops^q)), (a: 423392202177115836, nested: (num num: 9223372036854775808, the text 0 item: ^qn9a0 a9nZ^q))]" | "1914-04-15" | "(inner: (t 1: ^q!r^q, t 2: 4), z: -1)" | "4492-08"
+  "Right(-2147483649)" | "[(a: 9223372036854775807, nested: (num num: 2694000995475377921, the text 0 item: ^qa9nr90a 0n^q)), (a: 2147483647, nested: (num num: 1, the text 0 item: ^qa^q)), (a: 941007, nested: (num num: -32767, the text 0 item: ^qa􃞻^q)), (a: 1, nested: (num num: -9223372036854775808, the text 0 item: ^qcr9n0^q))]" | "1994-09-30" | "(inner: (t 1: ^qTYPE^q, t 2: 15), z: 2)" | "5636-07"
+  "Left(2147483647)" | "[(a: -2147483648, nested: (num num: 0.574356, the text 0 item: ^q󳤇􈙝Ul[(>&􃼚_cO^q)), (a: 0, nested: (num num: 0, the text 0 item: ^q􆖞󲼽Z+{'#궺C}t𤗺[]𨥋^q))]" | "1936-03-24" | "(inner: (t 1: ^q㗱Qf!eg󻗏^q, t 2: 5849250322033), z: 130216048609625978)" | "9938-02"
+  "Left(53886901308828)" | "[(a: 0.808254, nested: (num num: 48, the text 0 item: ^q.x,/?4[b𦗙=XVJ^q))]" | "1947-08-11" | "(inner: (t 1: ^qZ^q, t 2: 32767), z: -9223372036854775808)" | "5079-07"
+  "Left(2098930612883740671)" | "[(a: 1, nested: (num num: -2147483649, the text 0 item: ^qDateTime^q)), (a: 8804, nested: (num num: 1, the text 0 item: ^qTRANSFORMATION^q)), (a: 1, nested: (num num: -2147483649, the text 0 item: ^qn^q))]" | "1945-06-16" | "(inner: (t 1: ^qVERSION^q, t 2: -2147483649), z: -2147483649)" | "7385-03"
+  "Right(1096974090172)" | "[(a: 4842, nested: (num num: 0.83442, the text 0 item: ^qa^q)), (a: 0.106409, nested: (num num: -1, the text 0 item: ^qlr^q)), (a: 6, nested: (num num: 4, the text 0 item: ^qh0^q)), (a: 9223372036854775808, nested: (num num: 40449426, the text 0 item: ^qa^q))]" | "2049-11-07" | "(inner: (t 1: ^q+,&PjW(ib<^q, t 2: 205888204), z: 57410220)" | "9077-05"
+END EXCEL

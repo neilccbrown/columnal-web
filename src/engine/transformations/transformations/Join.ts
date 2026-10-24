@@ -214,11 +214,12 @@ export class Join extends VisitableTransformation
         return "join";
     }
 
-    // PORT-NOTE: as in Java, the column names are saved without applying the renames.
-    protected override saveDetail(_destination: JavaFile | null, _renames: TableAndColumnRenames): readonly string[]
+    // PORT-NOTE: bug fix.  Java saved the column names without applying the renames, so renaming
+    // a column in a source table broke the join.
+    protected override saveDetail(_destination: JavaFile | null, renames: TableAndColumnRenames): readonly string[]
     {
         return Utility.prependToList(this.keepPrimaryWithNoMatch ? "LEFTJOIN" : "INNERJOIN",
-            Utility.mapListI(this.columnsToMatch, p => OutputBuilder.quoted(p.getFirst().getRaw()) + " EQUALS " + OutputBuilder.quoted(p.getSecond().getRaw()))
+            Utility.mapListI(this.columnsToMatch, p => OutputBuilder.quoted(renames.columnId(this.primarySource, p.getFirst(), null).getSecond().getRaw()) + " EQUALS " + OutputBuilder.quoted(renames.columnId(this.secondarySource, p.getSecond(), null).getSecond().getRaw()))
         );
     }
 
@@ -293,10 +294,10 @@ export class Join extends VisitableTransformation
         return Join.suggestedName(this.columnsToMatch);
     }
 
-    // PORT-NOTE: as in Java, both halves of the name come from the primary column.
+    // PORT-NOTE: bug fix.  Java took both halves of the name from the primary column.
     public static suggestedName(columnsToMatch: readonly Pair<ColumnId, ColumnId>[]): TableId
     {
-        return new TableId(IdentifierUtility.spaceSeparated("Join", columnsToMatch.map(p => IdentifierUtility.spaceSeparated(IdentifierUtility.shorten(p.getFirst().getRaw()), "to", IdentifierUtility.shorten(p.getFirst().getRaw())))[0] ?? "none"));
+        return new TableId(IdentifierUtility.spaceSeparated("Join", columnsToMatch.map(p => IdentifierUtility.spaceSeparated(IdentifierUtility.shorten(p.getFirst().getRaw()), "to", IdentifierUtility.shorten(p.getSecond().getRaw())))[0] ?? "none"));
     }
 }
 

@@ -312,6 +312,15 @@ example test.
 - Fixed Java bug, agreed with the project owner: `Utility.compareNumbers` with `EpsilonType.RELATIVE`
   (used only by `PropRunExpression`) said every pair of numbers was equal.  With the fix,
   `PropRunExpression` passes its 2,000 trials, so the bug was not hiding any failures.
+- Fixed Java bugs, agreed with the project owner (tested in `test/engine/transformations/BugFixes.test.ts`
+  and `test/engine/r-interop/BugFixes.test.ts`): `Check.transformationEquals` compared only the
+  expression, so Checks with different check types or source tables were equal (which weakened
+  `PropLoadSaveTransformation`); `Join` saved its column names without applying
+  renames (so renaming a source column broke the join), and its suggested name used the primary column
+  twice; `ConvertFromR.getTaggedTypeForFactors` tried the same type name 100 times, so a factor couldn't
+  be imported if that name was taken; `RUtility.dateVector` put a time before 1970 with a fraction of a
+  second late by twice the fraction; `TestRLoadSave.testRoundTrip` quoted R's expression as if for a
+  shell, so R never rewrote the file (it now does, and the round trip passes).
 - `TestRLoadSave` (in `tests-gui-r`) doesn't use the GUI, so it is a Vitest engine test, with its fixtures
   in `test/engine/tests-gui-r/importExport/resources/`.  Its round trip through the R executable only
   runs where R is installed (`PORT-DEFERRED` until Phase 12).
@@ -321,12 +330,6 @@ example test.
 against the `.rds`/`.Rdata` fixtures, and the R round trip).
 
 Carried over from Phase 5:
-- Java bugs found and kept (each marked with a `PORT-NOTE`), not yet decided by the project owner:
-  `Check.transformationEquals` ignores the check type; `Join` saves its column names without applying
-  renames, and its suggested name uses the primary column twice; `ConvertFromR.getTaggedTypeForFactors`
-  tries the same type name 100 times; `RUtility.dateVector` puts a negative time with a fractional
-  second a second out; `TestRLoadSave.testRoundTrip` quotes R's expression as if for a shell, so R never
-  actually rewrites the file.
 - Java quirk, matched by the port: a column reference in an Aggregate or Check expression alternates
   between having its table name and not each time the file is saved and loaded.
 - `TestRExecution` and the rest of `tests-gui-r` need R, in Phase 12.

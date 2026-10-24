@@ -304,9 +304,12 @@ export class RUtility
                 if (Number.isNaN(d))
                     return null;
                 const bd = RUtility.doubleToValue(d).times(new Decimal(60.0 * 60.0 * 24.0));
-                // PORT-NOTE: as in Java, the nanoseconds are taken from the absolute value of the
-                // fraction, so a negative time with a fraction of a second is a second out.
-                const date: TemporalAccessor = LocalDateTime.ofEpochSecond(Number(longValue(bd)), Math.abs(nanoPart(bd)), ZoneOffset.UTC);
+                // PORT-NOTE: bug fix.  Java rounded the seconds towards zero and took the absolute
+                // value of the (negative) fraction, so a time before 1970 with a fraction of a
+                // second came out late by twice the fraction: -0.25 seconds became +0.25.  The
+                // seconds are now rounded down, leaving a positive fraction.
+                const seconds = bd.floor();
+                const date: TemporalAccessor = LocalDateTime.ofEpochSecond(Number(longValue(seconds)), Number(longValue(bd.minus(seconds).times(1e9))), ZoneOffset.UTC);
                 return date;
             });
             return {

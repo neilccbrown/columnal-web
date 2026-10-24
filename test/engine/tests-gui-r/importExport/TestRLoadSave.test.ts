@@ -226,10 +226,10 @@ describe("TestRLoadSave", () =>
                         if (kind === 2)
                         {
                             const lenBefore = statSync(f).size;
-                            // PORT-NOTE: as in Java, the expression is passed in single quotes (as if to
-                            // a shell, but there is none), so R just evaluates a string literal and the
-                            // file is not rewritten.
-                            const command = ["-e", "'saveRDS(readRDS(\"" + javaReplace(f, "\\", "\\\\") + "\"),\"" + javaReplace(f, "\\", "\\\\") + "\");'"];
+                            // PORT-NOTE: bug fix.  Java passed the expression in single quotes (as if to a
+                            // shell, but there is none), so R just evaluated a string literal and never
+                            // rewrote the file.
+                            const command = ["-e", "saveRDS(readRDS(\"" + javaReplace(f, "\\", "\\\\") + "\"),\"" + javaReplace(f, "\\", "\\\\") + "\");"];
                             const process = spawnSync("R", command, { encoding: "utf8" });
                             assertEquals("stdout: " + process.stdout + "stderr: " + process.stderr, 0, process.status);
                             const lenAfter = statSync(f).size;

@@ -275,8 +275,8 @@ export class ConvertFromR
         }());
     }
 
-    // PORT-NOTE: as in Java, the type names tried (up to 100 times) are all the same, so if the
-    // first registration fails, they all do.
+    // PORT-NOTE: bug fix.  Java tried the same type name 100 times, so if a type with that name
+    // but different tags already existed, the import failed.  Later tries add a number.
     private static getTaggedTypeForFactors(levelNames: readonly string[], typeManager: TypeManager): TaggedTypeDefinition
     {
         const processedNames = levelNames.map((s, i) => IdentifierUtility.fixExpressionIdentifier(s, IdentifierUtility.identNum("Factor", i)));
@@ -294,12 +294,12 @@ export class ConvertFromR
         {
             const hint: ExpressionIdentifier = "F " + i;
             const firstSorted = [...levelNames].sort(javaStringCompare)[0] ?? "F";
-            const typeName = IdentifierUtility.fixExpressionIdentifier(firstSorted + " " + levelNames.length, hint);
+            const typeName = IdentifierUtility.fixExpressionIdentifier(firstSorted + " " + levelNames.length + (i === 0 ? "" : " " + i), hint);
             const taggedTypeDefinition = typeManager.registerTaggedType(typeName, [], levelNames.map(s => new TagType<JellyType>(IdentifierUtility.fixExpressionIdentifier(s, "Factor"), null)));
             if (taggedTypeDefinition !== null)
                 return taggedTypeDefinition;
         }
-        throw new UserException("Type named F1 through F100 already exists but with different tags");
+        throw new UserException("Types for these factor levels already exist (up to 100) but with different tags");
     }
 
     public static convertRToColumn(typeManager: TypeManager, rValue: RValue, columnName: ColumnId): Pair<SimulationFunction<RecordSet, EditableColumn>, number>

@@ -347,16 +347,20 @@ export class Check extends VisitableTransformation implements SingleSourceTransf
         return this.explanation;
     }
 
+    // PORT-NOTE: bug fix.  Java compared (and hashed) only the expression, so Checks with
+    // different check types or source tables were equal.
     protected override transformationHashCode(): number
     {
-        return this.checkExpression.hashCode();
+        let result = this.srcTableId.hashCode();
+        result = (Math.imul(31, result) + this.checkType.ordinal) | 0;
+        result = (Math.imul(31, result) + this.checkExpression.hashCode()) | 0;
+        return result;
     }
 
-    // PORT-NOTE: as in Java, only the expression is compared (not the check type).
     protected override transformationEquals(obj: Transformation): boolean
     {
         if (obj instanceof Check)
-            return this.checkExpression.equals(obj.checkExpression);
+            return this.srcTableId.equals(obj.srcTableId) && this.checkType === obj.checkType && this.checkExpression.equals(obj.checkExpression);
         return false;
     }
 

@@ -59,7 +59,8 @@ const MAX_ROWS = 60;
 // in PLAN.md, Phase 6): 1, a text file's last line without a newline counted twice; 2, a boolean
 // column in a text file; 3, repeated column names in an HTML or Excel table; 4, CSV export tripling
 // quotes; 5, CSV and HTML export failing on an invalid value; 7, an unreadable Excel file (here,
-// not a spreadsheet at all) giving an uncaught exception; 10, Excel numbers formatted with "%f".
+// not a spreadsheet at all) giving an uncaught exception; 10, Excel numbers formatted with "%f";
+// 15, the guess of a text file's header taking a value with "%" or quote marks for a header.
 const KNOWN_DIFFERENCES = new Map<string, string>([
     ["html-01.html", "3"],
     ["html-02.html", "3"],
@@ -76,17 +77,19 @@ const KNOWN_DIFFERENCES = new Map<string, string>([
     ["rec-05.rec", "4, 10"],
     ["rec-06.rec", "5, 10"],
     ["txt-01.txt", "1"],
+    ["txt-02.txt", "15"],
     ["txt-03.txt", "1"],
+    ["txt-05.txt", "15"],
     ["txt-06.txt", "1"],
     ["txt-08.txt", "1"],
-    ["txt-10.txt", "1"],
+    ["txt-10.txt", "1, 15"],
     ["txt-11.txt", "1"],
     ["txt-12.txt", "1"],
     ["txt-14.txt", "1"],
     ["txt-15.txt", "1"],
     ["txt-16.txt", "1"],
     ["txt-17.txt", "1"],
-    ["txt-18.txt", "1"],
+    ["txt-18.txt", "1, 15"],
     ["txt-20.txt", "1"],
     ["txt-23.txt", "2"],
     ["txt-24.txt", "1"],
@@ -98,7 +101,7 @@ const KNOWN_DIFFERENCES = new Map<string, string>([
     ["txt-35.txt", "1"],
     ["txt-37.txt", "1"],
     ["txt-38.txt", "1"],
-    ["txt-39.txt", "1"],
+    ["txt-39.txt", "1, 15"],
     ["xlsx-02.xlsx", "10"],
     ["xlsx-03.xlsx", "10"],
     ["xlsx-04.xlsx", "10"],

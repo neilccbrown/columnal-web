@@ -166,4 +166,12 @@ describe("Java bug fixes", () =>
     {
         expect(contents(importText("Name,Amount\nA,1\nB,5%\nC,6%\nD,7\nE,12%\n"))).toEqual(["Name: Text = \"A\", \"B\", \"C\", \"D\", \"E\"", "Amount: Number = 1, 5, 6, 7, 12"]);
     });
+
+    // Java's GuessFormat.guessTrim counted "%" as punctuation, so a number column whose first values
+    // had a "%" suffix (and some later ones didn't) lost those values to the guessed header.
+    test("header of a number column with a suffix", () =>
+    {
+        expect(contents(importText("Amount\n5%\n6%\n7\n12%\n3%\n4%\n"))).toEqual(["Amount: Number = 5, 6, 7, 12, 3, 4"]);
+        expect(contents(importText("Name,Amount\nA,5%\nB,6%\nC,7\nD,12%\nE,3%\n"))).toEqual(["Name: Text = \"A\", \"B\", \"C\", \"D\", \"E\"", "Amount: Number = 5, 6, 7, 12, 3"]);
+    });
 });

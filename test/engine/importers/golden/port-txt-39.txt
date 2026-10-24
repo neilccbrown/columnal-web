@@ -1,6 +1,6 @@
 FILE txt-39.txt
 guessed InitialTextFormat{charset=UTF-8, separator=' ', quote='null'}
-source trim <trim, vert +2 -0 horiz +0 -0> names null
+source trim <trim, vert +0 -0 horiz +0 -0> names null
   columns Col 1|Col 2
   types Text Text
   length 28
@@ -32,12 +32,14 @@ source trim <trim, vert +2 -0 horiz +0 -0> names null
   "^q£189970^q" | ""
   "£" | "198026"
   "£" | "423174"
-dest InitialTextFormat{charset=UTF-8, separator=' ', quote='null'} <trim, vert +2 -0 horiz +0 -0>
-  column N404589: Text
+dest InitialTextFormat{charset=UTF-8, separator=' ', quote='null'} <trim, vert +0 -0 horiz +0 -0>
   column C 1: Text
-  columns N404589|C 1
+  column C 2: Text
+  columns C 1|C 2
   types Text Text
-  length 26
+  length 28
+  "£439466" | ""
+  "^q£404589^q" | ""
   "£" | "657590"
   "£" | "136765"
   "£" | "158084"
@@ -65,9 +67,11 @@ dest InitialTextFormat{charset=UTF-8, separator=' ', quote='null'} <trim, vert +
   "£" | "198026"
   "£" | "423174"
 text file:
-  columns N404589|C 1
+  columns C 1|C 2
   types Text Text
-  length 26
+  length 28
+  "£439466" | ""
+  "^q£404589^q" | ""
   "£" | "657590"
   "£" | "136765"
   "£" | "158084"

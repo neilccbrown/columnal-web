@@ -419,6 +419,12 @@ Carried over from Phase 5:
       name, where it is ambiguous; now only a tag name of one type is offered without it.
   14. Test only: `GenFormattedData` escaped U+2329 and U+232A as HTML 4's `&lang;` and `&rang;`, which
       HTML5 (and jsoup) read as other characters. With 1 and 14 fixed, `PropFormatNoGUI` runs.
+  15. `GuessFormat.guessTrim`, which guesses where a text file's header is, counted "%" (and quote
+      marks left on values) as punctuation, so in a number column with a "%" suffix on some values,
+      or a quoted value, it took a row of data for the header: for "Amount", "5%", "6%", "7", "12%"
+      it named the column `C6` and left out "Amount" and "5%". Now "%" counts as part of a number
+      (as currency symbols already did) and quote marks are ignored. Of the importer golden files,
+      five text files change, each now keeping all its rows and, where it has one, finding its header.
 
 **Tests:** the non-GUI halves of the format tests (`TestFormat`, and `PropFormat` as
 `PropFormatNoGUI`), and new Vitest unit tests for each gui-logic module, derived from the GUI tests
@@ -426,17 +432,13 @@ that exercise it: `TestNumberColumnDisplay`, `TestCellReadWrite` and `TestDocume
 `test/gui-logic/stf/`), `TestVirtualGridLayout`, `TestKeyboardMovement` and `PropGridOverlap`. These GUI
 tests are ported whole, with the editor in place of the screen: all of `tests-gui-type-editor`, and
 `TestExpressionEditorSyntaxError`, `…TypeError`, `…Completion` and `TestExpressionQuickFixSyntax` from
-`tests-gui-expression-editor-further`. In all, 259 gui-logic tests and 117 importer and format tests.
+`tests-gui-expression-editor-further`. In all, 259 gui-logic tests and 118 importer and format tests.
 
 **Milestone:** the engine is complete and headless. A Node CLI can load a `.rec` file,
 recompute everything and export it, and the results can be compared against Java
 outputs on real-world files.
 
 Carried over from Phase 6:
-- Java bug found in Phase 6 (after the fixes), reported to the project owner and awaiting a decision:
-  `GuessFormat`'s guess of the header row skips the first values of a number column with a suffix
-  (such as `%`): for a column "Amount", "5%", "6%", "7", "12%", it takes "6%" as the header (naming
-  the column `C6`) and leaves out "Amount" and "5%". The port does the same.
 - The rest of the expression editor tests, which need typing a generated expression
   (`EnterExpressionTrait`), the clipboard or the screen, are left for Phase 10: `TestExpressionEditor`,
   `…Delete`, `…Position`, `…Resolution`, `…Invalid` and `PropExpressionEditor`. The ported editor tests

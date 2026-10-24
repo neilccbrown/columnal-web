@@ -286,9 +286,20 @@ export class GuessFormat
         const r = new Set<AlphabetItem>();
         for (const n of codePoints(s))
         {
-            if (isDigit(n) || isCurrencySymbol(n))
+            // PORT-NOTE: bug fix.  Java counted "%" as punctuation, so in a number column where
+            // some values have a "%" suffix and the row guessTrim starts from doesn't, the first
+            // row with a "%" above it looked like a header: rows of data were left out, and one
+            // was taken for the column's name.  Here "%" counts as part of a number, as a currency
+            // symbol does (and as guessBodyFormat takes both as a number's suffix).  Quote marks
+            // (left on values when no quote character was guessed) are ignored, so that a quoted
+            // "55%" doesn't look like a header either.
+            if (isDigit(n) || isCurrencySymbol(n) || n === 0x25 /* '%' */)
             {
                 r.add(AlphabetItem.NUMERIC);
+            }
+            else if (n === 0x22 /* '"' */ || n === 0x27 /* "'" */)
+            {
+                // Ignore
             }
             else if (isLetter(n))
             {

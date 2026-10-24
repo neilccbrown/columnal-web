@@ -1,0 +1,35 @@
+FILE txt-02.txt
+guessed InitialTextFormat{charset=UTF-8, separator='null', quote='null'}
+source trim <trim, vert +0 -0 horiz +0 -0> names null
+  columns Col 1
+  types Text
+  length 6
+  "-311.849"
+  "^q995.866^q"
+  "119.59"
+  "-6.32"
+  "-923.207"
+  "157.42"
+dest InitialTextFormat{charset=UTF-8, separator='null', quote='null'} <trim, vert +0 -0 horiz +0 -0>
+  column C 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=2, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns C 1
+  types @apply   Optional ( Number )
+  length 6
+  Is(-311.849)
+  None
+  Is(119.59)
+  Is(-6.32)
+  Is(-923.207)
+  Is(157.42)
+text file:
+  columns C 1
+  types @apply   Optional ( Number )
+  length 8
+  INVALID 
+  Is(-311.849)
+  INVALID 
+  None
+  Is(119.59)
+  Is(-6.32)
+  Is(-923.207)
+  Is(157.42)

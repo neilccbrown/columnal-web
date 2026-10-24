@@ -1,6 +1,6 @@
 FILE txt-10.txt
 guessed InitialTextFormat{charset=UTF-8, separator='|', quote='null'}
-source trim <trim, vert +2 -0 horiz +0 -0> names null
+source trim <trim, vert +1 -0 horiz +0 -0> names null
   columns Col 1|Col 2|Col 3|Col 4
   types Text Text Text Text
   length 6
@@ -10,22 +10,24 @@ source trim <trim, vert +2 -0 horiz +0 -0> names null
   "£805255" | "10 5 54" | "12abc" | "138597"
   "^q£ 534563^q" | "11 10 20" | "Yes" | "-728852"
   "£998403" | "10 18 94" | "apple" | "NA"
-dest InitialTextFormat{charset=UTF-8, separator='|', quote='null'} <trim, vert +2 -0 horiz +0 -0>
-  column N716716: Text
-  column C1 5 65: CleanDate #9 YEARMONTHDAY true
-  column Banana split: Text
-  column N779771: Text
-  columns N716716|C1 5 65|Banana split|N779771
+dest InitialTextFormat{charset=UTF-8, separator='|', quote='null'} <trim, vert +1 -0 horiz +0 -0>
+  column Col 0: Text
+  column Col 1: CleanDate #9 YEARMONTHDAY true
+  column C1st: Text
+  column Col 3: Text
+  columns Col 0|Col 1|C1st|Col 3
   types Text Date Text Text
-  length 4
+  length 5
+  "^q£716716^q" | 1965-01-05 | "Banana split" | "-779771"
   "£540796" | 1985-02-04 | "東京" | ""
   "£805255" | 1954-10-05 | "12abc" | "138597"
   "^q£ 534563^q" | 2020-11-10 | "Yes" | "-728852"
   "£998403" | 1994-10-18 | "apple" | "NA"
 text file:
-  columns N716716|C1 5 65|Banana split|N779771
+  columns Col 0|Col 1|C1st|Col 3
   types Text Date Text Text
-  length 4
+  length 5
+  "^q£716716^q" | 1965-01-05 | "Banana split" | "-779771"
   "£540796" | 1985-02-04 | "東京" | ""
   "£805255" | 1954-10-05 | "12abc" | "138597"
   "^q£ 534563^q" | 2020-11-10 | "Yes" | "-728852"

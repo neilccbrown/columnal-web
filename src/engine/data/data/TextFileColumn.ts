@@ -13,6 +13,7 @@ import { FetchException } from "../../utility-error/error/FetchException.js";
 import type { TaggedValue } from "../../utility/utility/TaggedValue.js";
 import { Utility, type ReadState } from "../../utility/utility/Utility.js";
 import { Column } from "./Column.js";
+import { BooleanColumnStorage } from "./BooleanColumnStorage.js";
 import type { ColumnStorage } from "./ColumnStorage.js";
 import { NumericColumnStorage } from "./NumericColumnStorage.js";
 import type { RecordSet } from "./RecordSet.js";
@@ -103,6 +104,18 @@ export class TextFileColumn extends Column
         return new TextFileColumn(recordSet, reader, sep, quote, columnName, columnIndex, totalColumns,
             fill => new StringColumnStorage(fill as ColumnStorage.BeforeGet<StringColumnStorage> | null, true),
             (storage, values) => (storage as StringColumnStorage).addAll(values.map(x => Either.right<string, string>(x)))
+        );
+    }
+
+    /**
+     * PORT-NOTE: bug fix.  Java has no boolean text file column, so TextImporter could not import a
+     * column guessed to be boolean (see TextImporter.makeRecordSet).
+     */
+    public static booleanColumn(recordSet: RecordSet, reader: ReadState, sep: string | null, quote: string | null, columnName: ColumnId, columnIndex: number, totalColumns: number, parse: (s: string) => Either<string, boolean>): TextFileColumn
+    {
+        return new TextFileColumn(recordSet, reader, sep, quote, columnName, columnIndex, totalColumns,
+            fill => new BooleanColumnStorage(fill as ColumnStorage.BeforeGet<BooleanColumnStorage> | null, true),
+            (storage, values) => (storage as BooleanColumnStorage).addAll(values.map(parse))
         );
     }
 

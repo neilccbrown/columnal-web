@@ -1,0 +1,37 @@
+FILE html-15.html
+TABLE 0
+names 
+row 1,234|paratwo|1,234|a\nb
+row true||1,234|line\nbreak
+trim whitespace true
+source trim <trim, vert +1 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4]
+  columns C 1|C 2|C 3|C 4
+  types Text Text Text Text
+  length 2
+  "1,234" | "paratwo" | "1,234" | "a^nb"
+  "true" | "" | "1,234" | "line^nbreak"
+dest <trim, vert +1 -0 horiz +0 -0>
+  column N1 234: Boolean[true]
+  column paratwo: Blank
+  column N1 234 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column a b: Text
+  columns N1 234|paratwo|N1 234 1|a b
+  types Boolean Text Number Text
+  length 1
+  true | "" | 1234 | "line^nbreak"
+trim whitespace false
+source trim <trim, vert +1 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4]
+  columns C 1|C 2|C 3|C 4
+  types Text Text Text Text
+  length 2
+  "1,234" | "paratwo" | "1,234" | "a^nb"
+  "true" | "" | "1,234" | "line^nbreak"
+dest <trim, vert +1 -0 horiz +0 -0>
+  column N1 234: Boolean[true]
+  column paratwo: Blank
+  column N1 234 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column a b: Text
+  columns N1 234|paratwo|N1 234 1|a b
+  types Boolean Text Number Text
+  length 1
+  true | "" | 1234 | "line^nbreak"

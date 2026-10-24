@@ -8,6 +8,10 @@
 # Exits with 1 if any file differs; the differences are printed.
 #
 # Known differences:
+#  - The Java bugs the port fixes (PLAN.md, Phase 6): CSV export doubles quotes (Java tripled them);
+#    CSV and HTML export write an invalid value as entered (Java failed, writing an .error.txt);
+#    Excel export writes a date and time as it is (Java moved it by the system's offset from UTC)
+#    and a date before 1900 as text (Java wrote -1).
 #  - Excel exports of date-times after 2499 can differ by an hour: the port's time-zone data (from
 #    js-joda) has no daylight saving after 2499, whereas Java continues the rules.
 #  - Java lists the column types in Concatenate's "differing types" error in an order

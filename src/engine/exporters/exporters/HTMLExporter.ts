@@ -7,6 +7,7 @@ import { DateTimeFormatter, LocalDateTime } from "../../java/time/JavaTime.js";
 import { DataTypeUtility } from "../../types/data/datatype/DataTypeUtility.js";
 import { TranslationUtility } from "../../utility/utility/TranslationUtility.js";
 import type { Value } from "../../utility/utility/Value.js";
+import { CSVExporter } from "./CSVExporter.js";
 import type { Exporter } from "./Exporter.js";
 
 export class HTMLExporter implements Exporter
@@ -24,12 +25,18 @@ export class HTMLExporter implements Exporter
             for (const column of rs.getColumns())
             {
                 tableBody += "<td>";
-                const collapsed: Value = column.getType().getCollapsed(i);
-                // Don't quote Text type unless part of compound type:
-                if (typeof collapsed === "string")
-                    tableBody += this.e(collapsed);
-                else
-                    tableBody += this.e(DataTypeUtility.valueToString(collapsed));
+                // PORT-NOTE: bug fix.  Java let the exception for an invalid value through, so the
+                // whole export failed; now the invalid value is exported as it was entered (see
+                // CSVExporter.valueOrInvalid).
+                tableBody += this.e(CSVExporter.valueOrInvalid(() =>
+                {
+                    const collapsed: Value = column.getType().getCollapsed(i);
+                    // Don't quote Text type unless part of compound type:
+                    if (typeof collapsed === "string")
+                        return collapsed;
+                    else
+                        return DataTypeUtility.valueToString(collapsed);
+                }));
                 tableBody += "</td>\n";
             }
             tableBody += "</tr>\n";

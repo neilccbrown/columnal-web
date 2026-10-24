@@ -1,0 +1,29 @@
+FILE xlsx-06.xlsx
+source trim <trim, vert +5 -0 horiz +0 -0> names [A, B, C]
+  columns A|B|C
+  types Text Text Text
+  length 11
+  "When" | "1948-01-14" | "Total (£)"
+  "FALSE" | "1917-04-10" | "-209840"
+  "" | "1920-03-24" | "149679"
+  "FALSE" | "1942-08-24" | "958557"
+  "FALSE" | "1989-10-05" | "-286238"
+  "-342798" | "1973-08-03" | "-606886"
+  "" | "2061-10-20" | "603607"
+  "n" | "2002-03-08" | "-732482"
+  "1986-06-06" | "1986-06-06" | "-869843"
+  "1986-06-06" | "1986-06-06" | ""
+  "1986-06-06" | "1986-06-06" | ""
+dest <trim, vert +5 -0 horiz +0 -0>
+  column FALSE: Text
+  column N1989 10 05: CleanDate #5 YEARMONTHDAY true
+  column C: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns FALSE|N1989 10 05|C
+  types Text Date @apply   Optional ( Number )
+  length 6
+  "-342798" | 1973-08-03 | Is(-606886)
+  "" | 2061-10-20 | Is(603607)
+  "n" | 2002-03-08 | Is(-732482)
+  "1986-06-06" | 1986-06-06 | Is(-869843)
+  "1986-06-06" | 1986-06-06 | None
+  "1986-06-06" | 1986-06-06 | None

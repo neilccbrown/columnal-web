@@ -53,11 +53,12 @@ describe("AppUtility.valueToExpression", () =>
         check(c, new TaggedValue(1, new Decimal(5), cDefinition));
         check(DataType.array(c), new ListExList([new TaggedValue(0, null, cDefinition), new TaggedValue(1, new Decimal(-2), cDefinition)]));
     });
-    // Java bug: a tagged value of a type with type variables (such as Optional) is wrapped in
-    // "as type" with a list of its type, so the expression fails to type check.
-    test("tagged with type variables (Java bug: fails to type check)", () =>
+    // (Java's failed to type check: see BugFixes.test.ts)
+    test("tagged with type variables", () =>
     {
         const optionalNumber = typeManager.getMaybeType().instantiate([Either.right(DataType.NUMBER)], typeManager);
-        expect(() => roundTrip(optionalNumber, new TaggedValue(1, new Decimal(5), typeManager.getMaybeType()))).toThrow("Type mismatch: List(Optional(Number{1})) versus Optional");
+        check(optionalNumber, new TaggedValue(1, new Decimal(5), typeManager.getMaybeType()));
+        check(optionalNumber, new TaggedValue(0, null, typeManager.getMaybeType()));
+        check(DataType.array(optionalNumber), new ListExList([new TaggedValue(1, new Decimal(5), typeManager.getMaybeType())]));
     });
 });

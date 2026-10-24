@@ -602,10 +602,11 @@ export class GuessFormat
                             // Take off suffix and continue:
                             val = val.substring(0, val.length - commonSuffix.length);
                         }
-                        // PORT-NOTE: Java tests Character.isDigit(val.length() - 1), which treats the
-                        // length as a code point (so is false unless the length is 49 to 58, or the
-                        // like), not whether the last character is a digit.  That is kept.
-                        else if (commonSuffix !== null && !isDigit(val.length - 1))
+                        // PORT-NOTE: bug fix.  Java tested Character.isDigit(val.length() - 1), which
+                        // treats the length as a code point (so was false unless the length was 49 to
+                        // 58, or the like), not whether the last character is a digit; so a column such
+                        // as "5%", "7" was not guessed to be a number.
+                        else if (commonSuffix !== null && !(val.length > 0 && isDigit(codePoints(val).at(-1)!)))
                         {
                             // We thought we had a prefix, but we haven't found it here, so give up:
                             commonSuffix = null;
@@ -724,7 +725,10 @@ export class GuessFormat
             let columnName: ColumnId;
             if (getColumnName !== null)
             {
-                columnName = getColumnName(trimChoice, columnIndex);
+                // PORT-NOTE: bug fix.  Java used the name as given, so a table with two columns of
+                // the same name (as an HTML or Excel table can have) failed to import ("Duplicate
+                // column names found"); now a repeated name gets a number, as text files' do.
+                columnName = GuessFormat.uniqueName(usedNames, getColumnName(trimChoice, columnIndex));
             }
             else
             {
@@ -757,6 +761,22 @@ export class GuessFormat
             usedNames.add(columnName);
         }
         return columns;
+    }
+
+    /**
+     * The name, or if it is already used, the name with the first number (from 1) that makes it unused.
+     * PORT-NOTE: new, for the bug fix in guessBodyFormat (and ImportPlainTable.loadSource).
+     */
+    public static uniqueName(usedNames: HashSet<ColumnId>, name: ColumnId): ColumnId
+    {
+        let prospectiveName = name;
+        let appendNum = 1;
+        while (usedNames.has(prospectiveName))
+        {
+            prospectiveName = new ColumnId(IdentifierUtility.identNum(name.getRaw(), appendNum));
+            appendNum += 1;
+        }
+        return prospectiveName;
     }
 
     private static findName(usedNames: HashSet<ColumnId>, stringBuilder: string): ColumnId

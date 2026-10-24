@@ -1,0 +1,35 @@
+FILE xlsx-07.xlsx
+source trim <trim, vert +7 -0 horiz +0 -0> names [A, B, C, D, E]
+  columns A|B|C|D|E
+  types Text Text Text Text Text
+  length 14
+  "Amount" | "Name" | "TRUE" | "1974-01-22" | "Col 4"
+  "12abc" | "" | "FALSE" | "2044-04-26" | "-114800.28571428571"
+  "-695717" | "TRUE" | "FALSE" | "1962-09-11" | "-163421.33333333334"
+  "x" | "FALSE" | "FALSE" | "1930-08-02" | "106434.33333333333"
+  "" | "TRUE" | "FALSE" | "1907-09-12" | "93768.6"
+  "" | "FALSE" | "FALSE" | "1994-12-13" | "99816.28571428571"
+  "it's" | "TRUE" | "TRUE" | "" | "233.262"
+  "FALSE" | "" | "FALSE" | "2047-04-11" | "113271.33333333333"
+  "FALSE" | "FALSE" | "TRUE" | "1902-09-18" | "-65184.28571428572"
+  "404588" | "FALSE" | "TRUE" | "2049-05-05" | "9502.99"
+  "335325" | "TRUE" | "FALSE" | "1988-04-02" | "16363.6"
+  "FALSE" | "FALSE" | "TRUE" | "1977-01-28" | "-9632.97"
+  "FALSE" | "TRUE" | "FALSE" | "2024-11-02" | ""
+  "FALSE" | "" | "FALSE" | "1996-06-27" | "-110934.28571428571"
+dest <trim, vert +7 -0 horiz +0 -0>
+  column it s: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column TRUE: Text
+  column TRUE 1: Boolean[true]
+  column D: CleanDate #5 YEARMONTHDAY true
+  column N233 262: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=1, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns it s|TRUE|TRUE 1|D|N233 262
+  types @apply   Optional ( Number ) Text Boolean Date @apply   Optional ( Number )
+  length 7
+  None | "" | false | 2047-04-11 | Is(113271.33333333333)
+  None | "FALSE" | true | 1902-09-18 | Is(-65184.28571428572)
+  Is(404588) | "FALSE" | true | 2049-05-05 | Is(9502.99)
+  Is(335325) | "TRUE" | false | 1988-04-02 | Is(16363.6)
+  None | "FALSE" | true | 1977-01-28 | Is(-9632.97)
+  None | "TRUE" | false | 2024-11-02 | None
+  None | "" | false | 1996-06-27 | Is(-110934.28571428571)

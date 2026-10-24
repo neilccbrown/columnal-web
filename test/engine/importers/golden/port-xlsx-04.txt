@@ -1,0 +1,49 @@
+FILE xlsx-04.xlsx
+source trim <trim, vert +1 -0 horiz +1 -0> names [A, B]
+  columns A|B
+  types Text Text
+  length 20
+  "" | "When"
+  "" | "-787166"
+  "" | "-798184"
+  "" | "166478"
+  "" | "-84715"
+  "" | "-716209"
+  "" | "69267"
+  "" | "818761"
+  "" | "785072"
+  "" | "-873750"
+  "" | "107190"
+  "" | "96183"
+  "" | "590138"
+  "" | "390018"
+  "" | "556517"
+  "" | "222072"
+  "" | "281167"
+  "" | "639831"
+  "" | "453639"
+  "" | "-200132"
+dest <trim, vert +1 -0 horiz +1 -0>
+  column A: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns A
+  types Number
+  length 19
+  -787166
+  -798184
+  166478
+  -84715
+  -716209
+  69267
+  818761
+  785072
+  -873750
+  107190
+  96183
+  590138
+  390018
+  556517
+  222072
+  281167
+  639831
+  453639
+  -200132

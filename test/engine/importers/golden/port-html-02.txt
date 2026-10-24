@@ -1,0 +1,89 @@
+FILE html-02.html
+TABLE 0
+names 
+row 12|2021-03-04|-7|
+row shown|1,234|-7|
+row   pre  formatted |12|12|
+row & <x>  yé|1,234|3.25|
+row & <x> yé|plain|1,234|& <x>  yé
+row $5|2021-03-04|blockafter|
+row a\nb|xy|a\nb|
+row xy|Name[1]|12|
+row Name[1]|  pre  formatted |a\nb| padded  text 
+row paratwo|a\nb|12|
+trim whitespace true
+source trim <trim, vert +5 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4]
+  columns C 1|C 2|C 3|C 4
+  types Text Text Text Text
+  length 10
+  "12" | "2021-03-04" | "-7" | ""
+  "shown" | "1,234" | "-7" | ""
+  "  pre  formatted " | "12" | "12" | ""
+  "& <x>  yé" | "1,234" | "3.25" | ""
+  "& <x> yé" | "plain" | "1,234" | "& <x>  yé"
+  "$5" | "2021-03-04" | "blockafter" | ""
+  "a^nb" | "xy" | "a^nb" | ""
+  "xy" | "Name[1]" | "12" | ""
+  "Name[1]" | "  pre  formatted " | "a^nb" | " padded  text "
+  "paratwo" | "a^nb" | "12" | ""
+dest <trim, vert +5 -0 horiz +0 -0>
+  column x yé: Text
+  column plain: Text
+  column N1 234: Text
+  column x yé 1: Text
+  columns x yé|plain|N1 234|x yé 1
+  types Text Text Text Text
+  length 5
+  "$5" | "2021-03-04" | "blockafter" | ""
+  "a^nb" | "xy" | "a^nb" | ""
+  "xy" | "Name[1]" | "12" | ""
+  "Name[1]" | "pre  formatted" | "a^nb" | "padded  text"
+  "paratwo" | "a^nb" | "12" | ""
+trim whitespace false
+source trim <trim, vert +5 -0 horiz +0 -0> names [C 1, C 2, C 3, C 4]
+  columns C 1|C 2|C 3|C 4
+  types Text Text Text Text
+  length 10
+  "12" | "2021-03-04" | "-7" | ""
+  "shown" | "1,234" | "-7" | ""
+  "  pre  formatted " | "12" | "12" | ""
+  "& <x>  yé" | "1,234" | "3.25" | ""
+  "& <x> yé" | "plain" | "1,234" | "& <x>  yé"
+  "$5" | "2021-03-04" | "blockafter" | ""
+  "a^nb" | "xy" | "a^nb" | ""
+  "xy" | "Name[1]" | "12" | ""
+  "Name[1]" | "  pre  formatted " | "a^nb" | " padded  text "
+  "paratwo" | "a^nb" | "12" | ""
+dest <trim, vert +5 -0 horiz +0 -0>
+  column x yé: Text
+  column plain: Text
+  column N1 234: Text
+  column x yé 1: Text
+  columns x yé|plain|N1 234|x yé 1
+  types Text Text Text Text
+  length 5
+  "$5" | "2021-03-04" | "blockafter" | ""
+  "a^nb" | "xy" | "a^nb" | ""
+  "xy" | "Name[1]" | "12" | ""
+  "Name[1]" | "  pre  formatted " | "a^nb" | " padded  text "
+  "paratwo" | "a^nb" | "12" | ""
+TABLE 2
+names Col 0|Col 1|Price ($)|Name
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0

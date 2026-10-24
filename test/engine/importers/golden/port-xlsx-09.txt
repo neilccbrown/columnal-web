@@ -1,0 +1,19 @@
+FILE xlsx-09.xlsx
+source trim <trim, vert +1 -0 horiz +1 -0> names [A, B]
+  columns A|B
+  types Text Text
+  length 5
+  "" | "Date"
+  "" | "569.8"
+  "" | "-75851.42857142857"
+  "" | "4404.72"
+  "" | "5328.97"
+dest <trim, vert +1 -0 horiz +1 -0>
+  column A: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=1, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns A
+  types Number
+  length 4
+  569.8
+  -75851.42857142857
+  4404.72
+  5328.97

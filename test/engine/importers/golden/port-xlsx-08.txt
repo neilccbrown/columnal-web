@@ -1,0 +1,53 @@
+FILE xlsx-08.xlsx
+source trim <trim, vert +1 -0 horiz +1 -0> names [A, B, C, D, E, F]
+  columns A|B|C|D|E|F
+  types Text Text Text Text Text Text
+  length 20
+  "" | "Date" | "Name" | "Name" | "Name" | "FALSE"
+  "" | "492498" | "1441306" | "n" | "1899-12-31" | ""
+  "" | "1674508" | "-955584" | "apple" | "1899-12-31" | "FALSE"
+  "" | "122484" | "811288" | "Banana split" | "1899-12-31" | "FALSE"
+  "" | "1242510" | "-997132" | "£5" | "1899-12-31" | "TRUE"
+  "" | "-850676" | "-1492012" | "#1" | "1899-12-31" | "FALSE"
+  "" | "-164548" | "-1651056" | "100%" | "1899-12-31" | ""
+  "" | "-1289472" | "" | "apple" | "1899-12-31" | "FALSE"
+  "" | "-684938" | "-1122104" | "cherry" | "1899-12-31" | "FALSE"
+  "" | "1901788" | "130598" | "£5" | "1899-12-31" | "TRUE"
+  "" | "-122992" | "-1808186" | "東京" | "1899-12-31" | "FALSE"
+  "" | "-138106" | "294986" | "" | "1899-12-31" | "FALSE"
+  "" | "-6480" | "" | "apple" | "1899-12-31" | "FALSE"
+  "" | "1176064" | "-1898544" | "Dürer" | "1899-12-31" | "FALSE"
+  "" | "72312" | "-456480" | "£5" | "1899-12-31" | "FALSE"
+  "" | "-1768922" | "" | "say ^qhi^q" | "1899-12-31" | "FALSE"
+  "" | "-977910" | "-323904" | "#1" | "1899-12-31" | ""
+  "" | "1171272" | "-743710" | "Dürer" | "1899-12-31" | "FALSE"
+  "" | "" | "26892" | "100%" | "1899-12-31" | "FALSE"
+  "" | "-1524452" | "-123194" | "a, b" | "1899-12-31" | "FALSE"
+dest <trim, vert +1 -0 horiz +1 -0>
+  column A: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Date: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Name: Text
+  column Name 1: CleanDate #5 YEARMONTHDAY true
+  column Name 2: Text
+  columns A|Date|Name|Name 1|Name 2
+  types @apply   Optional ( Number ) @apply   Optional ( Number ) Text Date Text
+  length 19
+  Is(492498) | Is(1441306) | "n" | 1899-12-31 | ""
+  Is(1674508) | Is(-955584) | "apple" | 1899-12-31 | "FALSE"
+  Is(122484) | Is(811288) | "Banana split" | 1899-12-31 | "FALSE"
+  Is(1242510) | Is(-997132) | "£5" | 1899-12-31 | "TRUE"
+  Is(-850676) | Is(-1492012) | "#1" | 1899-12-31 | "FALSE"
+  Is(-164548) | Is(-1651056) | "100%" | 1899-12-31 | ""
+  Is(-1289472) | None | "apple" | 1899-12-31 | "FALSE"
+  Is(-684938) | Is(-1122104) | "cherry" | 1899-12-31 | "FALSE"
+  Is(1901788) | Is(130598) | "£5" | 1899-12-31 | "TRUE"
+  Is(-122992) | Is(-1808186) | "東京" | 1899-12-31 | "FALSE"
+  Is(-138106) | Is(294986) | "" | 1899-12-31 | "FALSE"
+  Is(-6480) | None | "apple" | 1899-12-31 | "FALSE"
+  Is(1176064) | Is(-1898544) | "Dürer" | 1899-12-31 | "FALSE"
+  Is(72312) | Is(-456480) | "£5" | 1899-12-31 | "FALSE"
+  Is(-1768922) | None | "say ^qhi^q" | 1899-12-31 | "FALSE"
+  Is(-977910) | Is(-323904) | "#1" | 1899-12-31 | ""
+  Is(1171272) | Is(-743710) | "Dürer" | 1899-12-31 | "FALSE"
+  None | Is(26892) | "100%" | 1899-12-31 | "FALSE"
+  Is(-1524452) | Is(-123194) | "a, b" | 1899-12-31 | "FALSE"

@@ -1,0 +1,25 @@
+FILE xlsx-02.xlsx
+source trim <trim, vert +1 -0 horiz +0 -0> names [A, B, C]
+  columns A|B|C
+  types Text Text Text
+  length 7
+  "2043-12-24" | "-823325" | "When"
+  "2048-04-12" | "320589" | "-331191"
+  "1913-01-14" | "-779497" | "52913.1"
+  "2046-09-24" | "-768825" | "-635.73"
+  "" | "826562" | "-189121.33333333334"
+  "2056-08-24" | "31886" | "10705.42857142857"
+  "2007-02-11" | "331396" | "248.214"
+dest <trim, vert +1 -0 horiz +0 -0>
+  column N2043 12 24: Text
+  column B: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column When: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns N2043 12 24|B|When
+  types Text Number Number
+  length 6
+  "2048-04-12" | 320589 | -331191
+  "1913-01-14" | -779497 | 52913.1
+  "2046-09-24" | -768825 | -635.73
+  "" | 826562 | -189121.33333333334
+  "2056-08-24" | 31886 | 10705.42857142857
+  "2007-02-11" | 331396 | 248.214

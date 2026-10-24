@@ -1,0 +1,90 @@
+FILE rec-06.rec
+TABLE Test 0
+CSV
+"GenCol 32","GenCol 33","GenCol 34","GenCol 35","GenCol 36","GenCol 37","GenCol 38","GenCol 39"
+"true","true","@1275062114","(a: -9223372036854775807, b: 9223372036854775807)","1995-07-28 08:40:18","@-1916860627","5737-06-01 02:50:58.712256397","Single"
+"@-1944785265","@15371762","(inner: (t 1: ""h9 9 9"", t 2: 1), z: 2)","(a: 883, b: 127)","@-501051211","@1325732346","@END","@-1346708018"
+"false","@-2069692480","@769589945","(a: 470, b: -9223372036854775809)","2018-11-24 18:55:00","@-1340791341","@1139465011","@-1472224969"
+END CSV
+HTML
+<!DOCTYPE html>
+<html>
+<head><title>Test 0</title></head>
+<body>
+<table>
+<caption>Test 0</caption>
+<thead>
+<tr>
+<td><b>GenCol 32</b></td>
+<td><b>GenCol 33</b></td>
+<td><b>GenCol 34</b></td>
+<td><b>GenCol 35</b></td>
+<td><b>GenCol 36</b></td>
+<td><b>GenCol 37</b></td>
+<td><b>GenCol 38</b></td>
+<td><b>GenCol 39</b></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>true</td>
+<td>true</td>
+<td>@1275062114</td>
+<td>(a: -9223372036854775807, b: 9223372036854775807)</td>
+<td>1995-07-28 08:40:18</td>
+<td>@-1916860627</td>
+<td>5737-06-01 02:50:58.712256397</td>
+<td>Single</td>
+</tr>
+<tr>
+<td>@-1944785265</td>
+<td>@15371762</td>
+<td>(inner: (t 1: &quot;h9 9 9&quot;, t 2: 1), z: 2)</td>
+<td>(a: 883, b: 127)</td>
+<td>@-501051211</td>
+<td>@1325732346</td>
+<td>@END</td>
+<td>@-1346708018</td>
+</tr>
+<tr>
+<td>false</td>
+<td>@-2069692480</td>
+<td>@769589945</td>
+<td>(a: 470, b: -9223372036854775809)</td>
+<td>2018-11-24 18:55:00</td>
+<td>@-1340791341</td>
+<td>@1139465011</td>
+<td>@-1472224969</td>
+</tr>
+</tbody>
+</table>
+
+<p>Exported on (time)</p></body>
+</html>
+END HTML
+EXCEL
+source trim <trim, vert +0 -0 horiz +0 -0> names [A, B, C, D, E, F, G, H]
+  columns A|B|C|D|E|F|G|H
+  types Text Text Text Text Text Text Text Text
+  length 4
+  "GenCol 32" | "GenCol 33" | "GenCol 34" | "GenCol 35" | "GenCol 36" | "GenCol 37" | "GenCol 38" | "GenCol 39"
+  "TRUE" | "TRUE" | "Error: Invalid value: ^a1275062114" | "(a: -9223372036854775807, b: 9223372036854775807)" | "1995-07-28" | "Error: Invalid value: ^a-1916860627" | "5737-06-01" | "Single"
+  "Error: Invalid value: ^a-1944785265" | "Error: Invalid value: ^a15371762" | "(inner: (t 1: ^qh9 9 9^q, t 2: 1), z: 2)" | "(a: 883, b: 127)" | "Error: Invalid value: ^a-501051211" | "Error: Invalid value: ^a1325732346" | "Error: Invalid value: ^aEND" | "Error: Invalid value: ^a-1346708018"
+  "FALSE" | "Error: Invalid value: ^a-2069692480" | "Error: Invalid value: ^a769589945" | "(a: 470, b: -9223372036854775809)" | "2018-11-24" | "Error: Invalid value: ^a-1340791341" | "Error: Invalid value: ^a1139465011" | "Error: Invalid value: ^a-1472224969"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column A: Text
+  column B: Text
+  column C: Text
+  column D: Text
+  column E: Text
+  column F: Text
+  column G: Text
+  column H: Text
+  columns A|B|C|D|E|F|G|H
+  types Text Text Text Text Text Text Text Text
+  length 4
+  "GenCol 32" | "GenCol 33" | "GenCol 34" | "GenCol 35" | "GenCol 36" | "GenCol 37" | "GenCol 38" | "GenCol 39"
+  "TRUE" | "TRUE" | "Error: Invalid value: ^a1275062114" | "(a: -9223372036854775807, b: 9223372036854775807)" | "1995-07-28" | "Error: Invalid value: ^a-1916860627" | "5737-06-01" | "Single"
+  "Error: Invalid value: ^a-1944785265" | "Error: Invalid value: ^a15371762" | "(inner: (t 1: ^qh9 9 9^q, t 2: 1), z: 2)" | "(a: 883, b: 127)" | "Error: Invalid value: ^a-501051211" | "Error: Invalid value: ^a1325732346" | "Error: Invalid value: ^aEND" | "Error: Invalid value: ^a-1346708018"
+  "FALSE" | "Error: Invalid value: ^a-2069692480" | "Error: Invalid value: ^a769589945" | "(a: 470, b: -9223372036854775809)" | "2018-11-24" | "Error: Invalid value: ^a-1340791341" | "Error: Invalid value: ^a1139465011" | "Error: Invalid value: ^a-1472224969"
+END EXCEL

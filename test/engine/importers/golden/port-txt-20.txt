@@ -1,0 +1,74 @@
+FILE txt-20.txt
+guessed InitialTextFormat{charset=UTF-8, separator=' ', quote='null'}
+source trim <trim, vert +2 -0 horiz +0 -0> names null
+  columns Col 1|Col 2|Col 3
+  types Text Text Text
+  length 20
+  "Notes:" | "see" | "below"
+  "Name" | "" | ""
+  "2025" | "Nov" | "24"
+  "1997" | "Sep" | "28"
+  "2000" | "Mar" | "15"
+  "2027" | "Jan" | "2"
+  "2003" | "Oct" | "23"
+  "2012" | "Sep" | "25"
+  "1973" | "Jul" | "11"
+  "2013" | "May" | "21"
+  "1997" | "Jan" | "5"
+  "1957" | "Sep" | "11"
+  "2016" | "Jan" | "11"
+  "1969" | "Jan" | "2"
+  "1959" | "Feb" | "4"
+  "1974" | "Apr" | "23"
+  "2000" | "Sep" | "27"
+  "1990" | "Feb" | "9"
+  "1990" | "Apr" | "6"
+  "1952" | "Jun" | "24"
+dest InitialTextFormat{charset=UTF-8, separator=' ', quote='null'} <trim, vert +2 -0 horiz +0 -0>
+  column Name: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column C 1: Text
+  column C 2: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns Name|C 1|C 2
+  types Number Text Number
+  length 18
+  2025 | "Nov" | 24
+  1997 | "Sep" | 28
+  2000 | "Mar" | 15
+  2027 | "Jan" | 2
+  2003 | "Oct" | 23
+  2012 | "Sep" | 25
+  1973 | "Jul" | 11
+  2013 | "May" | 21
+  1997 | "Jan" | 5
+  1957 | "Sep" | 11
+  2016 | "Jan" | 11
+  1969 | "Jan" | 2
+  1959 | "Feb" | 4
+  1974 | "Apr" | 23
+  2000 | "Sep" | 27
+  1990 | "Feb" | 9
+  1990 | "Apr" | 6
+  1952 | "Jun" | 24
+text file:
+  columns Name|C 1|C 2
+  types Number Text Number
+  length 19
+  2025 | "Nov" | 24
+  1997 | "Sep" | 28
+  2000 | "Mar" | 15
+  2027 | "Jan" | 2
+  2003 | "Oct" | 23
+  2012 | "Sep" | 25
+  1973 | "Jul" | 11
+  2013 | "May" | 21
+  1997 | "Jan" | 5
+  1957 | "Sep" | 11
+  2016 | "Jan" | 11
+  1969 | "Jan" | 2
+  INVALID  | "" | INVALID 
+  1959 | "Feb" | 4
+  1974 | "Apr" | 23
+  2000 | "Sep" | 27
+  1990 | "Feb" | 9
+  1990 | "Apr" | 6
+  1952 | "Jun" | 24

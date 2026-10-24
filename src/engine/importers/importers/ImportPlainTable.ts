@@ -4,6 +4,7 @@ import { TextColumnType } from "../../data/data/columntype/ColumnTypes.js";
 import type { RecordSet } from "../../data/data/RecordSet.js";
 import type { TableManager } from "../../data/data/TableManager.js";
 import type { ColumnId } from "../../identifiers/id/ColumnId.js";
+import { HashSet } from "../../java/HashMap.js";
 import { SimpleObjectProperty, type ObjectExpression } from "../../java/JavaFXBeans.js";
 import { Pair } from "../../utility-adt/utility/adt/Pair.js";
 import { UnitType } from "../../utility/utility/UnitType.js";
@@ -37,10 +38,15 @@ export abstract class ImportPlainTable implements GuessFormat.Import<UnitType, I
         const trimChoice = GuessFormat.guessTrim(this.vals);
         const columns: ColumnInfo[] = [];
         const columnDisplayNames: Localized[] = [];
+        // PORT-NOTE: bug fix.  Java used the names as given, so a table with two columns of the same
+        // name (as an HTML table's header can have) failed to show; now a repeated name gets a number.
+        const usedNames = new HashSet<ColumnId>();
         for (let i = 0; i < this.numSrcColumns; i++)
         {
             const name = this.srcColumnName(i);
-            columns.push(new ColumnInfo(new TextColumnType(), name.getFirst()));
+            const columnName = GuessFormat.uniqueName(usedNames, name.getFirst());
+            usedNames.add(columnName);
+            columns.push(new ColumnInfo(new TextColumnType(), columnName));
             columnDisplayNames.push(name.getSecond());
         }
         const recordSet = ImporterUtility.makeEditableRecordSet(this.mgr.getTypeManager(), this.vals, columns);

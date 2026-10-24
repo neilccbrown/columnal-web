@@ -7,7 +7,7 @@ import * as XLSX from "xlsx";
 import type { ExpressionIdentifier, Localized } from "../../anns/Annotations.js";
 import type { Table } from "../../data/data/Table.js";
 import { doubleValue, type Decimal } from "../../java/JavaBigDecimal.js";
-import { javaSystemDefaultZone, LocalDate, LocalDateTime, LocalTime, YearMonth, ZonedDateTime, ZoneOffset, type Instant } from "../../java/time/JavaTime.js";
+import { javaSystemDefaultZone, LocalDate, LocalDateTime, LocalTime, YearMonth, ZonedDateTime } from "../../java/time/JavaTime.js";
 import type { TemporalAccessor } from "../../java/time/TemporalAccessor.js";
 import { DataType, type TagType } from "../../types/data/datatype/DataType.js";
 import { DataTypeUtility } from "../../types/data/datatype/DataTypeUtility.js";
@@ -98,29 +98,41 @@ export class ExcelExporter implements Exporter
 
                         date(dateTimeInfo: DateTimeInfo, g: GetValue<TemporalAccessor>): UnitType
                         {
+                            // PORT-NOTE: bug fix.  Java put a date before 1900 (which Excel's dates
+                            // can't show) as -1; here it is written as text, as a year and month is.
+                            const putDate = (format: string, local: LocalDateTime, value: TemporalAccessor): void =>
+                            {
+                                const excelDate = ExcelExporter.excelDate(local);
+                                if (excelDate === null)
+                                    setCellValue(DataTypeUtility.valueToString(value));
+                                else
+                                {
+                                    setCellStyle(format);
+                                    setCellValue(excelDate);
+                                }
+                            };
+                            const value = g.get(rowIndexFinal);
                             switch (dateTimeInfo.getType())
                             {
                                 case DateTimeInfo.DateTimeType.YEARMONTHDAY:
-                                    setCellStyle("yyyy-MM-dd");
-                                    setCellValue(ExcelExporter.excelDate(LocalDate.from(g.get(rowIndexFinal)).atStartOfDay(javaSystemDefaultZone()).toInstant()));
+                                    putDate("yyyy-MM-dd", LocalDate.from(value).atStartOfDay(), value);
                                     break;
                                 case DateTimeInfo.DateTimeType.YEARMONTH:
-                                    setCellValue(YearMonth.from(g.get(rowIndexFinal)).toString());
+                                    setCellValue(YearMonth.from(value).toString());
                                     break;
                                 case DateTimeInfo.DateTimeType.TIMEOFDAY:
                                     setCellStyle("HH:mm:ss");
-                                    setCellValue(LocalTime.from(g.get(rowIndexFinal)).toNanoOfDay() / (1_000_000_000.0 * 24.0 * 60.0 * 60.0));
+                                    setCellValue(LocalTime.from(value).toNanoOfDay() / (1_000_000_000.0 * 24.0 * 60.0 * 60.0));
                                     break;
                                 case DateTimeInfo.DateTimeType.DATETIME:
-                                    setCellStyle("yyyy-MM-dd HH:mm:ss");
-                                    // PORT-NOTE: the date and time are taken as UTC, then shown in the
-                                    // system time zone by excelDate, so they move by its offset from UTC.
-                                    // That is kept.
-                                    setCellValue(ExcelExporter.excelDate(LocalDateTime.from(g.get(rowIndexFinal)).toInstant(ZoneOffset.UTC)));
+                                    // PORT-NOTE: bug fix.  Java took the date and time as UTC, and then
+                                    // wrote it in the system time zone, so it moved by the zone's offset
+                                    // from UTC; here it is written as it is.
+                                    putDate("yyyy-MM-dd HH:mm:ss", LocalDateTime.from(value), value);
                                     break;
                                 case DateTimeInfo.DateTimeType.DATETIMEZONED:
-                                    setCellStyle("yyyy-MM-dd HH:mm:ss");
-                                    setCellValue(ExcelExporter.excelDate(ZonedDateTime.from(g.get(rowIndexFinal)).toInstant()));
+                                    // The moment, as a date and time in the system time zone (as in Java):
+                                    putDate("yyyy-MM-dd HH:mm:ss", LocalDateTime.ofInstant(ZonedDateTime.from(value).toInstant(), javaSystemDefaultZone()), value);
                                     break;
                             }
                             return UnitType.UNIT;
@@ -162,15 +174,14 @@ export class ExcelExporter implements Exporter
     }
 
     /**
-     * POI's DateUtil.getExcelDate(Date): Excel's number for the moment, as a date and time in the
-     * system time zone (whole days since the start of 1900, counting Excel's 29 February 1900, plus
-     * the fraction of the day).  Before 1900 it is -1, as in POI.
+     * POI's DateUtil.getExcelDate(Date), for a date and time (whole days since the start of 1900,
+     * counting Excel's 29 February 1900, plus the fraction of the day).  Null before 1900, which
+     * Excel's dates can't show (POI gives -1).
      */
-    private static excelDate(instant: Instant): number
+    private static excelDate(local: LocalDateTime): number | null
     {
-        const local = LocalDateTime.ofInstant(instant, javaSystemDefaultZone());
         if (local.year() < 1900)
-            return -1;
+            return null;
         const fraction = (((local.hour() * 60 + local.minute()) * 60 + local.second()) * 1000 + Math.trunc(local.nano() / 1_000_000)) / DAY_MILLISECONDS;
         // POI's absoluteDay(cal, false): the day of the year plus the days in the years since 1900
         const yr = local.year();

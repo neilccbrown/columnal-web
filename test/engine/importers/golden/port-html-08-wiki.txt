@@ -1,0 +1,262 @@
+FILE html-08-wiki.html
+TABLE 1
+names Name|Price ($)|Price ($)|Price ($)|Name
+row 3.25|12|1,234|Name[1]|  |||
+row shown|blockafter|12|plain|bold and italic|||
+row 3.25|line\nbreak|Value [a 2] [3]|Name[1]|1,234|||
+row line break|blockafter|xy| padded  text ||Name[1]||
+row line break|block after|block after|  |Value [a 2] [3]|12|a\nb|$5
+row a\nb|bold and italic|12|2021-03-04|line\nbreak|||
+row shown|true|Name[1]|$5|Value [a 2] [3]|||
+row $5|paratwo|blockafter|true|paratwo|12||
+row $5|12|plain|$5|Name[1]|shown|shown|
+trim whitespace true
+source trim <trim, vert +4 -0 horiz +0 -0> names [Name, Price ($), Price ($), Price ($), Name, C 6, C 7, C 8]
+  columns Name|Price|Price 1|Price 2|Name 1|C 6|C 7|C 8
+  types Text Text Text Text Text Text Text Text
+  length 9
+  "3.25" | "12" | "1,234" | "Name[1]" | "  " | "" | "" | ""
+  "shown" | "blockafter" | "12" | "plain" | "bold and italic" | "" | "" | ""
+  "3.25" | "line^nbreak" | "Value [a 2] [3]" | "Name[1]" | "1,234" | "" | "" | ""
+  "line break" | "blockafter" | "xy" | " padded  text " | "" | "Name[1]" | "" | ""
+  "line break" | "block after" | "block after" | "  " | "Value [a 2] [3]" | "12" | "a^nb" | "$5"
+  "a^nb" | "bold and italic" | "12" | "2021-03-04" | "line^nbreak" | "" | "" | ""
+  "shown" | "true" | "Name[1]" | "$5" | "Value [a 2] [3]" | "" | "" | ""
+  "$5" | "paratwo" | "blockafter" | "true" | "paratwo" | "12" | "" | ""
+  "$5" | "12" | "plain" | "$5" | "Name[1]" | "shown" | "shown" | ""
+dest <trim, vert +4 -0 horiz +0 -0>
+  column Name: Text
+  column Price: Text
+  column Price 1: Text
+  column Price 2: Text
+  column Name 1: Text
+  column Name 1 1: Text
+  column C 7: Text
+  column C 8: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='$', commonSuffix='null'})
+  columns Name|Price|Price 1|Price 2|Name 1|Name 1 1|C 7|C 8
+  types Text Text Text Text Text Text Text @apply   Optional ( Number )
+  length 5
+  "line break" | "block after" | "block after" | "" | "Value " | "12" | "a^nb" | Is(5)
+  "a^nb" | "bold and italic" | "12" | "2021-03-04" | "line^nbreak" | "" | "" | None
+  "shown" | "true" | "Name" | "$5" | "Value " | "" | "" | None
+  "$5" | "paratwo" | "blockafter" | "true" | "paratwo" | "12" | "" | None
+  "$5" | "12" | "plain" | "$5" | "Name" | "shown" | "shown" | None
+trim whitespace false
+source trim <trim, vert +4 -0 horiz +0 -0> names [Name, Price ($), Price ($), Price ($), Name, C 6, C 7, C 8]
+  columns Name|Price|Price 1|Price 2|Name 1|C 6|C 7|C 8
+  types Text Text Text Text Text Text Text Text
+  length 9
+  "3.25" | "12" | "1,234" | "Name[1]" | "  " | "" | "" | ""
+  "shown" | "blockafter" | "12" | "plain" | "bold and italic" | "" | "" | ""
+  "3.25" | "line^nbreak" | "Value [a 2] [3]" | "Name[1]" | "1,234" | "" | "" | ""
+  "line break" | "blockafter" | "xy" | " padded  text " | "" | "Name[1]" | "" | ""
+  "line break" | "block after" | "block after" | "  " | "Value [a 2] [3]" | "12" | "a^nb" | "$5"
+  "a^nb" | "bold and italic" | "12" | "2021-03-04" | "line^nbreak" | "" | "" | ""
+  "shown" | "true" | "Name[1]" | "$5" | "Value [a 2] [3]" | "" | "" | ""
+  "$5" | "paratwo" | "blockafter" | "true" | "paratwo" | "12" | "" | ""
+  "$5" | "12" | "plain" | "$5" | "Name[1]" | "shown" | "shown" | ""
+dest <trim, vert +4 -0 horiz +0 -0>
+  column Name: Text
+  column Price: Text
+  column Price 1: Text
+  column Price 2: Text
+  column Name 1: Text
+  column Name 1 1: Text
+  column C 7: Text
+  column C 8: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='$', commonSuffix='null'})
+  columns Name|Price|Price 1|Price 2|Name 1|Name 1 1|C 7|C 8
+  types Text Text Text Text Text Text Text @apply   Optional ( Number )
+  length 5
+  "line break" | "block after" | "block after" | "  " | "Value " | "12" | "a^nb" | Is(5)
+  "a^nb" | "bold and italic" | "12" | "2021-03-04" | "line^nbreak" | "" | "" | None
+  "shown" | "true" | "Name" | "$5" | "Value " | "" | "" | None
+  "$5" | "paratwo" | "blockafter" | "true" | "paratwo" | "12" | "" | None
+  "$5" | "12" | "plain" | "$5" | "Name" | "shown" | "shown" | None
+TABLE 3
+names Amount[1]|Amount[1]||Col 3|Price ($)
+row a\nb|paratwo|shown| padded  text |  ||
+row true|line\nbreak|  |-7|$5||
+row $5|blockafter|1,234||$5||
+row $5|-7|1,234|Value [a 2] [3]|Name[1]|-7|
+row $5|-7|12|blockafter|$5|a\nb|  pre  formatted 
+row   |line\nbreak||a\nb|xy||
+row 12|||  pre  formatted |blockafter||
+row pre  formatted|blockafter|1,234|Name[1]|  pre  formatted |xy|
+row   |plain||1,234|& <x>  yé||
+trim whitespace true
+source trim <trim, vert +4 -0 horiz +0 -0> names [Amount[1], Amount[1], , Col 3, Price ($), C 6, C 7]
+  columns Amount 1|Amount 1 1|Col 2|Col 3|Price|C 6|C 7
+  types Text Text Text Text Text Text Text
+  length 9
+  "a^nb" | "paratwo" | "shown" | " padded  text " | "  " | "" | ""
+  "true" | "line^nbreak" | "  " | "-7" | "$5" | "" | ""
+  "$5" | "blockafter" | "1,234" | "" | "$5" | "" | ""
+  "$5" | "-7" | "1,234" | "Value [a 2] [3]" | "Name[1]" | "-7" | ""
+  "$5" | "-7" | "12" | "blockafter" | "$5" | "a^nb" | "  pre  formatted "
+  "  " | "line^nbreak" | "" | "a^nb" | "xy" | "" | ""
+  "12" | "" | "" | "  pre  formatted " | "blockafter" | "" | ""
+  "pre  formatted" | "blockafter" | "1,234" | "Name[1]" | "  pre  formatted " | "xy" | ""
+  "  " | "plain" | "" | "1,234" | "& <x>  yé" | "" | ""
+dest <trim, vert +4 -0 horiz +0 -0>
+  column Amount: Text
+  column Amount 1: Text
+  column Col 2: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Col 3: Text
+  column Price: Text
+  column C 6: Text
+  column C 7: Text
+  columns Amount|Amount 1|Col 2|Col 3|Price|C 6|C 7
+  types Text Text @apply   Optional ( Number ) Text Text Text Text
+  length 5
+  "$5" | "-7" | Is(12) | "blockafter" | "$5" | "a^nb" | "pre  formatted"
+  "" | "line^nbreak" | None | "a^nb" | "xy" | "" | ""
+  "12" | "" | None | "pre  formatted" | "blockafter" | "" | ""
+  "pre  formatted" | "blockafter" | Is(1234) | "Name" | "pre  formatted" | "xy" | ""
+  "" | "plain" | None | "1,234" | "& <x>  yé" | "" | ""
+trim whitespace false
+source trim <trim, vert +4 -0 horiz +0 -0> names [Amount[1], Amount[1], , Col 3, Price ($), C 6, C 7]
+  columns Amount 1|Amount 1 1|Col 2|Col 3|Price|C 6|C 7
+  types Text Text Text Text Text Text Text
+  length 9
+  "a^nb" | "paratwo" | "shown" | " padded  text " | "  " | "" | ""
+  "true" | "line^nbreak" | "  " | "-7" | "$5" | "" | ""
+  "$5" | "blockafter" | "1,234" | "" | "$5" | "" | ""
+  "$5" | "-7" | "1,234" | "Value [a 2] [3]" | "Name[1]" | "-7" | ""
+  "$5" | "-7" | "12" | "blockafter" | "$5" | "a^nb" | "  pre  formatted "
+  "  " | "line^nbreak" | "" | "a^nb" | "xy" | "" | ""
+  "12" | "" | "" | "  pre  formatted " | "blockafter" | "" | ""
+  "pre  formatted" | "blockafter" | "1,234" | "Name[1]" | "  pre  formatted " | "xy" | ""
+  "  " | "plain" | "" | "1,234" | "& <x>  yé" | "" | ""
+dest <trim, vert +4 -0 horiz +0 -0>
+  column Amount: Text
+  column Amount 1: Text
+  column Col 2: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Col 3: Text
+  column Price: Text
+  column C 6: Text
+  column C 7: Text
+  columns Amount|Amount 1|Col 2|Col 3|Price|C 6|C 7
+  types Text Text @apply   Optional ( Number ) Text Text Text Text
+  length 5
+  "$5" | "-7" | Is(12) | "blockafter" | "$5" | "a^nb" | "  pre  formatted "
+  "  " | "line^nbreak" | None | "a^nb" | "xy" | "" | ""
+  "12" | "" | None | "  pre  formatted " | "blockafter" | "" | ""
+  "pre  formatted" | "blockafter" | Is(1234) | "Name" | "  pre  formatted " | "xy" | ""
+  "  " | "plain" | None | "1,234" | "& <x>  yé" | "" | ""
+TABLE 5
+names Name|Amount[1]|Col 2|Amount[1]
+row Name[1]|12|$5|blockafter|
+row   |paratwo||  |
+row 2021-03-04|paratwo|12|bold and italic|
+row 2021-03-04|3.25|shown|bold and italic|2021-03-04
+row 2021-03-04|  pre  formatted |xy|bold and italic|
+row 2021-03-04|blockafter|  pre  formatted |true|& <x>  yé
+trim whitespace true
+source trim <trim, vert +3 -0 horiz +0 -0> names [Name, Amount[1], Col 2, Amount[1], C 5]
+  columns Name|Amount 1|Col 2|Amount 1 1|C 5
+  types Text Text Text Text Text
+  length 6
+  "Name[1]" | "12" | "$5" | "blockafter" | ""
+  "  " | "paratwo" | "" | "  " | ""
+  "2021-03-04" | "paratwo" | "12" | "bold and italic" | ""
+  "2021-03-04" | "3.25" | "shown" | "bold and italic" | "2021-03-04"
+  "2021-03-04" | "  pre  formatted " | "xy" | "bold and italic" | ""
+  "2021-03-04" | "blockafter" | "  pre  formatted " | "true" | "& <x>  yé"
+dest <trim, vert +3 -0 horiz +0 -0>
+  column Name: CleanDate #5 YEARMONTHDAY true
+  column Amount: Text
+  column Col 2: Text
+  column Amount 1: Text
+  column C 5: Text
+  columns Name|Amount|Col 2|Amount 1|C 5
+  types Date Text Text Text Text
+  length 3
+  2021-03-04 | "3.25" | "shown" | "bold and italic" | "2021-03-04"
+  2021-03-04 | "pre  formatted" | "xy" | "bold and italic" | ""
+  2021-03-04 | "blockafter" | "pre  formatted" | "true" | "& <x>  yé"
+trim whitespace false
+source trim <trim, vert +3 -0 horiz +0 -0> names [Name, Amount[1], Col 2, Amount[1], C 5]
+  columns Name|Amount 1|Col 2|Amount 1 1|C 5
+  types Text Text Text Text Text
+  length 6
+  "Name[1]" | "12" | "$5" | "blockafter" | ""
+  "  " | "paratwo" | "" | "  " | ""
+  "2021-03-04" | "paratwo" | "12" | "bold and italic" | ""
+  "2021-03-04" | "3.25" | "shown" | "bold and italic" | "2021-03-04"
+  "2021-03-04" | "  pre  formatted " | "xy" | "bold and italic" | ""
+  "2021-03-04" | "blockafter" | "  pre  formatted " | "true" | "& <x>  yé"
+dest <trim, vert +3 -0 horiz +0 -0>
+  column Name: CleanDate #5 YEARMONTHDAY true
+  column Amount: Text
+  column Col 2: Text
+  column Amount 1: Text
+  column C 5: Text
+  columns Name|Amount|Col 2|Amount 1|C 5
+  types Date Text Text Text Text
+  length 3
+  2021-03-04 | "3.25" | "shown" | "bold and italic" | "2021-03-04"
+  2021-03-04 | "  pre  formatted " | "xy" | "bold and italic" | ""
+  2021-03-04 | "blockafter" | "  pre  formatted " | "true" | "& <x>  yé"
+TABLE 6
+names Name|Name|Amount[1]
+row blockafter|blockafter|  pre  formatted |
+row shown|2021-03-04|$5|
+row bold and italic|2021-03-04|1,234|
+row 1,234|2021-03-04|-7|2021-03-04
+row bold and italic|  pre  formatted |true|
+row xy|xy|plain|
+row |a\nb||
+row Value [a 2] [3]|2021-03-04|xy|
+row line\nbreak| padded  text |a\nb|
+trim whitespace true
+source trim <trim, vert +4 -0 horiz +0 -1> names [Name, Name, Amount[1], C 4]
+  columns Name|Name 1|Amount 1|C 4
+  types Text Text Text Text
+  length 9
+  "blockafter" | "blockafter" | "  pre  formatted " | ""
+  "shown" | "2021-03-04" | "$5" | ""
+  "bold and italic" | "2021-03-04" | "1,234" | ""
+  "1,234" | "2021-03-04" | "-7" | "2021-03-04"
+  "bold and italic" | "  pre  formatted " | "true" | ""
+  "xy" | "xy" | "plain" | ""
+  "" | "a^nb" | "" | ""
+  "Value [a 2] [3]" | "2021-03-04" | "xy" | ""
+  "line^nbreak" | " padded  text " | "a^nb" | ""
+dest <trim, vert +4 -0 horiz +0 -1>
+  column Name: Text
+  column Name 1: Text
+  column Amount: Text
+  columns Name|Name 1|Amount
+  types Text Text Text
+  length 5
+  "bold and italic" | "pre  formatted" | "true"
+  "xy" | "xy" | "plain"
+  "" | "a^nb" | ""
+  "Value " | "2021-03-04" | "xy"
+  "line^nbreak" | "padded  text" | "a^nb"
+trim whitespace false
+source trim <trim, vert +4 -0 horiz +0 -1> names [Name, Name, Amount[1], C 4]
+  columns Name|Name 1|Amount 1|C 4
+  types Text Text Text Text
+  length 9
+  "blockafter" | "blockafter" | "  pre  formatted " | ""
+  "shown" | "2021-03-04" | "$5" | ""
+  "bold and italic" | "2021-03-04" | "1,234" | ""
+  "1,234" | "2021-03-04" | "-7" | "2021-03-04"
+  "bold and italic" | "  pre  formatted " | "true" | ""
+  "xy" | "xy" | "plain" | ""
+  "" | "a^nb" | "" | ""
+  "Value [a 2] [3]" | "2021-03-04" | "xy" | ""
+  "line^nbreak" | " padded  text " | "a^nb" | ""
+dest <trim, vert +4 -0 horiz +0 -1>
+  column Name: Text
+  column Name 1: Text
+  column Amount: Text
+  columns Name|Name 1|Amount
+  types Text Text Text
+  length 5
+  "bold and italic" | "  pre  formatted " | "true"
+  "xy" | "xy" | "plain"
+  "" | "a^nb" | ""
+  "Value " | "2021-03-04" | "xy"
+  "line^nbreak" | " padded  text " | "a^nb"

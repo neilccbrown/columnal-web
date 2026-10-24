@@ -1,0 +1,23 @@
+FILE txt-14.txt
+guessed InitialTextFormat{charset=UTF-8, separator=':', quote='null'}
+source trim <trim, vert +2 -0 horiz +0 -1> names null
+  columns Col 1|Col 2
+  types Text Text
+  length 4
+  "Notes" | " see below"
+  "Name" | ""
+  "^q3.5^q" | ""
+  "-" | ""
+dest InitialTextFormat{charset=UTF-8, separator=':', quote='null'} <trim, vert +2 -0 horiz +0 -1>
+  column Name: Text
+  columns Name
+  types Text
+  length 2
+  "^q3.5^q"
+  "-"
+text file:
+  columns Name
+  types Text
+  length 2
+  "^q3.5^q"
+  "-"

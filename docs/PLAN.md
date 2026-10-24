@@ -384,10 +384,41 @@ Carried over from Phase 5:
   Node, recomputes every table and writes it saved again, the contents of every table and each table
   exported as CSV, HTML, Excel and R. `scripts/compare-with-java.sh <file.rec>...` runs it and the
   original engine (`scripts/golden/java/CliHarness.java`) on any files and compares everything they
-  write. On the golden saved files, everything is the same apart from the two known differences
-  listed in the script.
+  write. On the golden saved files, everything was the same apart from the two known differences
+  listed in the script (before the bug fixes below, which add the differences the script also lists).
 - New circular imports, as in Java, checked by `test/gui-logic/ModuleLoading.test.ts`: each lexer and
   its saver, and `LexAutoComplete` with `LexAutoCompleteWindow`.
+- Fixed Java bugs, agreed with the project owner (tested in `test/engine/importers/BugFixes.test.ts`,
+  `test/gui-logic/lex-editor/BugFixes.test.ts` and `test/gui-logic/app/BugFixes.test.ts`; the importer
+  golden test lists the inputs they change, with the port's reviewed output in `golden/port-*.txt`):
+  1. `Utility.countLines` counted a last line without a newline twice, so a text file that didn't end
+     in a newline failed to import (silently).
+  2. `TextImporter.makeRecordSet` had no case for a boolean column, so a text file with one failed to
+     import (silently). The port adds `TextFileColumn.booleanColumn`.
+  3. An HTML or Excel table with two columns of the same name failed to import ("Duplicate column
+     names found"); now a repeated name gets a number, as in text files.
+  4. `CSVExporter` tripled quotes instead of doubling them, so every text value (written in quotes)
+     was read back with two quotes each side.
+  5. The CSV and HTML exporters failed on a table with an invalid value; now it is exported as entered.
+  6. `ExcelImporter`'s column names after Z were wrong (Z was followed by BA, and names repeated after
+     676 columns); now they are Excel's.
+  7. `.xls` files were offered for import but couldn't be read (an uncaught exception); SheetJS now
+     reads them, and a file that isn't a spreadsheet is ignored like a broken one.
+  8. `ExcelExporter` shifted date-times by the system's offset from UTC, and wrote dates before 1900
+     (which Excel can't show) as -1; now they are written as they are, and dates before 1900 as text.
+  9. `GuessFormat` tested `isDigit(length - 1)` where it meant the last character, so a number column
+     where some values lacked the common suffix (such as `%`) was imported as text.
+  10. Excel import formatted numbers with `%f`: six decimal places, losing any beyond and adding
+      trailing zeros (so the column was guessed to show six). Now numbers are written in full.
+  11. The expression editor's `UndoManager` kept undone states after a new edit, and counted undo and
+      redo as edits, so redo after an edit brought back undone text.
+  12. `AppUtility.valueToExpression` gave a tagged value of a type with type variables (such as
+      Optional) "as type" with a list of its type, so unwrapping an Optional column whose inner type
+      was such a type, with a default value, made a Calculate with a type error.
+  13. Expression completions offered a tag name shared by an even number of types without its type
+      name, where it is ambiguous; now only a tag name of one type is offered without it.
+  14. Test only: `GenFormattedData` escaped U+2329 and U+232A as HTML 4's `&lang;` and `&rang;`, which
+      HTML5 (and jsoup) read as other characters. With 1 and 14 fixed, `PropFormatNoGUI` runs.
 
 **Tests:** the non-GUI halves of the format tests (`TestFormat`, and `PropFormat` as
 `PropFormatNoGUI`), and new Vitest unit tests for each gui-logic module, derived from the GUI tests
@@ -395,43 +426,17 @@ that exercise it: `TestNumberColumnDisplay`, `TestCellReadWrite` and `TestDocume
 `test/gui-logic/stf/`), `TestVirtualGridLayout`, `TestKeyboardMovement` and `PropGridOverlap`. These GUI
 tests are ported whole, with the editor in place of the screen: all of `tests-gui-type-editor`, and
 `TestExpressionEditorSyntaxError`, `…TypeError`, `…Completion` and `TestExpressionQuickFixSyntax` from
-`tests-gui-expression-editor-further`. In all, 256 gui-logic tests and 102 importer and format tests.
+`tests-gui-expression-editor-further`. In all, 259 gui-logic tests and 117 importer and format tests.
 
 **Milestone:** the engine is complete and headless. A Node CLI can load a `.rec` file,
 recompute everything and export it, and the results can be compared against Java
 outputs on real-world files.
 
 Carried over from Phase 6:
-- Java bugs found in Phase 6, reported to the project owner and awaiting a decision (preserved, with
-  `PORT-NOTE`s, until then):
-  1. `Utility.countLines` counts a last line without a newline twice, so importing a text file which
-     doesn't end in a newline fails (silently).
-  2. `TextImporter.makeRecordSet` has no case for `BoolColumnType`, so a CSV file with a boolean
-     column fails to import (silently).
-  3. Importing an HTML or Excel table with two columns of the same name fails ("Duplicate column
-     names found"); the text importer renames them.
-  4. `CSVExporter` triples quotes in values instead of doubling them, so a value with a quote is
-     exported wrongly.
-  5. The CSV and HTML exporters fail on a table that contains an invalid value, instead of exporting
-     the rest.
-  6. `ExcelImporter`'s column names after Z are wrong (Z is followed by BA, and names repeat after
-     676 columns).
-  7. `.xls` files are offered for import but can't be read (an uncaught exception).
-  8. `ExcelExporter` shifts date-times by the system's time-zone offset, and dates before 1900 by a
-     day.
-  9. `GuessFormat` checks `isDigit(length - 1)` where it means the last character (minor).
-  10. Excel import formats numbers with `%f`, which loses precision beyond 6 decimal places.
-  11. The expression editor's `UndoManager` keeps the redo history after a new edit, so redo after
-      an edit restores old text.
-  12. `AppUtility.valueToExpression` wraps a tagged value of a type with type variables (such as
-      Optional) in "as type" with a list of the type, so the expression has a type error. It is used
-      when unwrapping an Optional column with a default value, so doing that to a column whose inner
-      type is such a type (for example Optional(Optional(Number))) makes a Calculate with a type error.
-  13. Expression completions offer a tag name shared by two types unqualified (although ambiguous),
-      and don't offer one shared by three types.
-  14. Test-only: `GenFormattedData` uses `&lang;`/`&rang;`, which jsoup (HTML5) and HTML4 read
-      differently.
-  `PropFormatNoGUI`'s three tests are skipped until 1 and 14 are decided (they pass with both fixed).
+- Java bug found in Phase 6 (after the fixes), reported to the project owner and awaiting a decision:
+  `GuessFormat`'s guess of the header row skips the first values of a number column with a suffix
+  (such as `%`): for a column "Amount", "5%", "6%", "7", "12%", it takes "6%" as the header (naming
+  the column `C6`) and leaves out "Amount" and "5%". The port does the same.
 - The rest of the expression editor tests, which need typing a generated expression
   (`EnterExpressionTrait`), the clipboard or the screen, are left for Phase 10: `TestExpressionEditor`,
   `…Delete`, `…Position`, `…Resolution`, `…Invalid` and `PropExpressionEditor`. The ported editor tests

@@ -10,7 +10,7 @@ import type { DataSource } from "../../data/data/DataSource.js";
 import { ImmediateDataSource } from "../../data/data/DataSources.js";
 import type { TableManager } from "../../data/data/TableManager.js";
 import { ColumnId } from "../../identifiers/id/ColumnId.js";
-import { decimalFromDouble, Decimal } from "../../java/JavaBigDecimal.js";
+import { decimalFromDouble } from "../../java/JavaBigDecimal.js";
 import { javaListGet } from "../../java/JavaCollections.js";
 import type { JavaFile } from "../../java/JavaFile.js";
 import { LocalDate } from "../../java/time/JavaTime.js";
@@ -26,19 +26,6 @@ import type { Importer } from "./Importer.js";
 import type { ImporterDialogs } from "./ImporterDialogs.js";
 import { ImporterUtility } from "./ImporterUtility.js";
 import { ImportPlainTable } from "./ImportPlainTable.js";
-
-/**
- * The exception POI throws when asked to open a file that isn't in an Office Open XML format,
- * such as an .xls file (org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException).
- */
-export class NotOfficeXmlFileException extends Error
-{
-    public constructor(message: string)
-    {
-        super(message);
-        this.name = "NotOfficeXmlFileException";
-    }
-}
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
@@ -94,7 +81,7 @@ export class ExcelImporter implements Importer
      *
      * PORT-NOTE: split out of importFile (which then shows the import dialog), so that it can be
      * tested without the GUI.  Throws InvalidFormatException if the file can't be read (Java:
-     * IOException or InvalidFormatException, which importFile ignores), or NotOfficeXmlFileException.
+     * IOException or InvalidFormatException, which importFile ignores).
      */
     public readFirstSheet(src: JavaFile): string[][]
     {
@@ -158,17 +145,20 @@ export class ExcelImporter implements Importer
     }
 
     /**
-     * Java: new XSSFWorkbook(src).  Like POI's, it only reads the Office Open XML formats, which are
-     * zip files: anything else (such as an .xls file) throws NotOfficeXmlFileException.
+     * Java: new XSSFWorkbook(src), which only reads the Office Open XML formats (zip files).
      *
-     * PORT-NOTE: Java lets that exception through, uncaught (so nothing happens for the user); here
-     * it is thrown to importFile's caller.
+     * PORT-NOTE: bug fix.  Java offered .xls files for import, but couldn't read them: POI threw a
+     * NotOfficeXmlFileException, uncaught (so nothing happened for the user).  Here the older Excel
+     * format (an OLE2 compound file, such as .xls) is read too, and any other file throws
+     * InvalidFormatException, like a broken spreadsheet.
      */
     private static readWorkbook(bytes: Uint8Array): XLSX.WorkBook
     {
-        const isZip = bytes.length >= 4 && bytes[0] === 0x50 && bytes[1] === 0x4B && bytes[2] === 0x03 && bytes[3] === 0x04;
-        if (!isZip)
-            throw new NotOfficeXmlFileException("No valid entries or contents found, this is not a valid OOXML (Office Open XML) file");
+        const startsWith = (magic: readonly number[]): boolean => bytes.length >= magic.length && magic.every((b, i) => bytes[i] === b);
+        const isZip = startsWith([0x50, 0x4B, 0x03, 0x04]);
+        const isOLE2 = startsWith([0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]);
+        if (!isZip && !isOLE2)
+            throw new ExcelImporter.InvalidFormatException("Not an Excel file");
         try
         {
             return XLSX.read(bytes, { type: "array", cellNF: true, cellDates: false, cellFormula: false, dense: false });
@@ -221,26 +211,22 @@ export class ExcelImporter implements Importer
     }
 
     /**
-     * PORT-NOTE: Java's naming is wrong after column Z: the column after Z (index 26) is "BA" (Excel's
-     * is "AA"), and so on.  That is kept.
+     * PORT-NOTE: bug fix.  Java's naming was wrong after column Z: the column after Z (index 26) was
+     * "BA" (Excel's is "AA"), and so on, and names repeated after 676 columns.  Here the names are
+     * Excel's (bijective base 26: A to Z, AA to ZZ, AAA, ...).
      */
     /** @internal */
     public static excelColumnName(columnIndex: number): ColumnId
     {
         const A = "A".charCodeAt(0);
         let s = "";
-        if (columnIndex >= 26 * 26)
+        let remaining = columnIndex + 1;
+        while (remaining > 0)
         {
-            const thirdDig = Math.trunc(columnIndex / (26 * 26));
-            s += String.fromCharCode(thirdDig + A);
-            columnIndex -= thirdDig * 26 * 26;
+            const digit = (remaining - 1) % 26;
+            s = String.fromCharCode(digit + A) + s;
+            remaining = Math.trunc((remaining - 1) / 26);
         }
-        if (columnIndex >= 26)
-        {
-            s += String.fromCharCode(Math.trunc(columnIndex / 26) + A);
-            columnIndex = columnIndex % 26;
-        }
-        s += String.fromCharCode(columnIndex + A);
         return new ColumnId(s);
     }
 
@@ -258,7 +244,7 @@ export class ExcelImporter implements Importer
                 if (ExcelImporter.isCellDateFormatted(currentCell, value))
                     return ExcelImporter.formatDateF(ExcelImporter.getJavaDate(value, date1904));
                 else
-                    return ExcelImporter.formatF(value);
+                    return ExcelImporter.formatNumber(value);
             }
             case "s":
                 return String(currentCell.v ?? "");
@@ -319,19 +305,20 @@ export class ExcelImporter implements Importer
     }
 
     /**
-     * Java's String.format("%f", d): six decimal places, rounded half up from the double's
-     * (shortest) decimal representation.
+     * PORT-NOTE: bug fix.  Java formatted the number with String.format("%f", d): always six decimal
+     * places, so a number with more lost the rest (0.0000001 became 0.000000) and every number got
+     * trailing zeros (1.5 became 1.500000, so the column was guessed to have six decimal places).
+     * Here the number is written in full, as its shortest decimal (Java's BigDecimal.valueOf(d)),
+     * without an exponent.
      */
     /** @internal */
-    public static formatF(d: number): string
+    public static formatNumber(d: number): string
     {
         if (Number.isNaN(d))
             return "NaN";
         if (!Number.isFinite(d))
             return d > 0 ? "Infinity" : "-Infinity";
-        const s = decimalFromDouble(d).toFixed(6, Decimal.ROUND_HALF_UP);
-        // Java keeps the sign of a negative number that rounds to zero:
-        return (d < 0 || Object.is(d, -0)) && !s.startsWith("-") ? "-" + s : s;
+        return decimalFromDouble(d).toFixed();
     }
 }
 

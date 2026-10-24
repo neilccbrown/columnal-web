@@ -28,16 +28,14 @@ export class AppUtility
         return AppUtility.valueToExpression(typeManager, functionLookup, dataType, value);
     }
 
-    /**
-     * PORT-NOTE: for a tagged type with type variables, Java wraps the expression in
-     * "as type" with a list of the type (asType always makes a list type, which is right for the
-     * empty list it is also used for), so the expression has a type error.  Kept as in Java.
-     */
     public static valueToExpression(typeManager: TypeManager, functionLookup: FunctionLookup, dataType: DataType, value: Value): Expression
     {
-        const asType = (inner: DataType, expression: Expression): CallExpression =>
+        // PORT-NOTE: bug fix.  Java's asType(inner, expression) always gave the expression a list of
+        // the type, which is right for an empty list, but for a tagged value (of a type with type
+        // variables, such as Optional) gave it a type error.  Here it takes the whole type.
+        const asType = (type: DataType, expression: Expression): CallExpression =>
         {
-            return new CallExpression(functionLookup, AsType.NAME, new TypeLiteralExpression(TypeExpression.fromDataType(DataType.array(inner))), expression);
+            return new CallExpression(functionLookup, AsType.NAME, new TypeLiteralExpression(TypeExpression.fromDataType(type)), expression);
         };
 
         return dataType.apply<Expression>({
@@ -103,7 +101,7 @@ export class AppUtility
                 }
 
                 if (size === 0)
-                    return asType(inner, new ArrayExpression(members));
+                    return asType(DataType.array(inner), new ArrayExpression(members));
                 else
                     return new ArrayExpression(members);
             },

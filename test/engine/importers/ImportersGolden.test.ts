@@ -5,6 +5,11 @@
 // imported or exported by the original classes in scripts/golden/importers.sh (ImportersHarness.java),
 // which wrote what they did to java-*.txt.  The port must do the same.
 //
+// The port fixes some of the Java's bugs (see KNOWN_DIFFERENCES), so for the inputs they affect the
+// port's output is checked against golden/port-*.txt instead: the port's output, each difference
+// from java-*.txt reviewed as coming from the fixes.  With DUMP_PORT_OUTPUT=<dir>, the port's output
+// for every input is written to <dir>/port-*.txt (to update those files after reviewing).
+//
 // With GENERATE_IMPORTER_INPUTS=1, this instead generates the input files (as importers.sh does).
 //
 // The time zone is Europe/London, as in importers.sh, as the Excel exporter uses it for dates.
@@ -24,7 +29,7 @@ import { CSVExporter } from "../../../src/engine/exporters/exporters/CSVExporter
 import { ExcelExporter } from "../../../src/engine/exporters/exporters/ExcelExporter.js";
 import { HTMLExporter } from "../../../src/engine/exporters/exporters/HTMLExporter.js";
 import type { ColumnInfo } from "../../../src/engine/importers/importers/ColumnInfo.js";
-import { ExcelImporter, NotOfficeXmlFileException } from "../../../src/engine/importers/importers/ExcelImporter.js";
+import { ExcelImporter } from "../../../src/engine/importers/importers/ExcelImporter.js";
 import { GuessFormat } from "../../../src/engine/importers/importers/GuessFormat.js";
 import { HTMLImporter } from "../../../src/engine/importers/importers/HTMLImporter.js";
 import { ImporterUtility } from "../../../src/engine/importers/importers/ImporterUtility.js";
@@ -49,6 +54,67 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const DIR = join(HERE, "golden") + "/";
 const DATA_GOLDEN = join(HERE, "..", "data", "golden", "rec") + "/";
 const MAX_ROWS = 60;
+
+// Inputs where the port's output differs from Java's because of the Java bugs it fixes (numbered as
+// in PLAN.md, Phase 6): 1, a text file's last line without a newline counted twice; 2, a boolean
+// column in a text file; 3, repeated column names in an HTML or Excel table; 4, CSV export tripling
+// quotes; 5, CSV and HTML export failing on an invalid value; 7, an unreadable Excel file (here,
+// not a spreadsheet at all) giving an uncaught exception; 10, Excel numbers formatted with "%f".
+const KNOWN_DIFFERENCES = new Map<string, string>([
+    ["html-01.html", "3"],
+    ["html-02.html", "3"],
+    ["html-06.html", "3"],
+    ["html-08-wiki.html", "3"],
+    ["html-10.html", "3"],
+    ["html-14.html", "3"],
+    ["html-15.html", "3"],
+    ["html-16-wiki.html", "3"],
+    ["rec-01.rec", "4, 10"],
+    ["rec-02.rec", "5, 10"],
+    ["rec-03.rec", "5, 10"],
+    ["rec-04.rec", "5, 10"],
+    ["rec-05.rec", "4, 10"],
+    ["rec-06.rec", "5, 10"],
+    ["txt-01.txt", "1"],
+    ["txt-03.txt", "1"],
+    ["txt-06.txt", "1"],
+    ["txt-08.txt", "1"],
+    ["txt-10.txt", "1"],
+    ["txt-11.txt", "1"],
+    ["txt-12.txt", "1"],
+    ["txt-14.txt", "1"],
+    ["txt-15.txt", "1"],
+    ["txt-16.txt", "1"],
+    ["txt-17.txt", "1"],
+    ["txt-18.txt", "1"],
+    ["txt-20.txt", "1"],
+    ["txt-23.txt", "2"],
+    ["txt-24.txt", "1"],
+    ["txt-27.txt", "1"],
+    ["txt-30.txt", "1"],
+    ["txt-31.txt", "2"],
+    ["txt-33.txt", "1"],
+    ["txt-34.txt", "1"],
+    ["txt-35.txt", "1"],
+    ["txt-37.txt", "1"],
+    ["txt-38.txt", "1"],
+    ["txt-39.txt", "1"],
+    ["xlsx-02.xlsx", "10"],
+    ["xlsx-03.xlsx", "10"],
+    ["xlsx-04.xlsx", "10"],
+    ["xlsx-05.xlsx", "10"],
+    ["xlsx-06.xlsx", "10"],
+    ["xlsx-07.xlsx", "3, 10"],
+    ["xlsx-08.xlsx", "3, 10"],
+    ["xlsx-09.xlsx", "10"],
+    ["xlsx-10.xlsx", "10"],
+    ["xlsx-11.xlsx", "10"],
+    ["xlsx-12.xlsx", "10"],
+    ["xlsx-notxml.xlsx", "7"],
+    ["xlsx-port-rec-01-Test_0.xlsx", "10"],
+    ["xlsx-port-rec-03-Test_0.xlsx", "10"],
+    ["xlsx-port-rec-05-Test_0.xlsx", "10"],
+]);
 const TEXT_COUNT = 40;
 const HTML_COUNT = 16;
 const EXCEL_COUNT = 12;
@@ -280,11 +346,6 @@ function excel(d: Dump, file: JavaFile): void
         {
             // Ignored by importFile, so the import dialog is not shown:
             d.line("no import");
-            return;
-        }
-        if (e instanceof NotOfficeXmlFileException)
-        {
-            d.line("EXCEPTION " + e.name);
             return;
         }
         throw e;
@@ -571,10 +632,26 @@ describe("ImportersGolden", () =>
         test(name, () =>
         {
             // (Known difference: the port's class names have no package, see javaClassName.)
-            const expected = readFileSync(DIR + "java-" + name.replace(/\.[a-z]+$/, "") + ".txt", "utf8").replace(/class xyz\.columnal\.[a-z.]*\.([A-Za-z]+)/g, "class $1");
-            expect(process_(name)).toEqual(expected);
+            const base = name.replace(/\.[a-z]+$/, "");
+            const expected = KNOWN_DIFFERENCES.has(name) ? readFileSync(DIR + "port-" + base + ".txt", "utf8") : readFileSync(DIR + "java-" + base + ".txt", "utf8").replace(/class xyz\.columnal\.[a-z.]*\.([A-Za-z]+)/g, "class $1");
+            const actual = process_(name);
+            if (process.env.DUMP_PORT_OUTPUT !== undefined)
+                writeFileSync(process.env.DUMP_PORT_OUTPUT + "/port-" + base + ".txt", actual);
+            expect(actual).toEqual(expected);
         });
     }
+
+    test("known differences", () =>
+    {
+        const portFiles = readdirSync(DIR).filter(f => f.startsWith("port-")).map(f => f.substring("port-".length).replace(/\.txt$/, "")).sort();
+        expect(portFiles).toEqual([...KNOWN_DIFFERENCES.keys()].map(n => n.replace(/\.[a-z]+$/, "")).sort());
+        // Each is still a difference from Java:
+        for (const name of KNOWN_DIFFERENCES.keys())
+        {
+            const base = name.replace(/\.[a-z]+$/, "");
+            expect(readFileSync(DIR + "port-" + base + ".txt", "utf8"), name).not.toEqual(readFileSync(DIR + "java-" + base + ".txt", "utf8").replace(/class xyz\.columnal\.[a-z.]*\.([A-Za-z]+)/g, "class $1"));
+        }
+    });
 
     // The port's Excel export of each table is read by Java (POI) just as Java's own export is:
     for (const name of inputs.filter(n => n.startsWith("xlsx-port-")))

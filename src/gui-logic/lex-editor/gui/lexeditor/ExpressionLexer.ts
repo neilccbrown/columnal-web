@@ -784,13 +784,14 @@ export class ExpressionLexer extends Lexer<Expression, ExpressionCompletionConte
     // PORT-NOTE: Java has a private insertBit(BitSet, int) here, which nothing calls; not ported.
 
     /**
-     * PORT-NOTE: the map's values (whether a tag name clashes between types) are never read, so a tag
-     * name shared by two types is still offered unqualified (where it is ambiguous), and one shared
-     * by three types is not.  Kept as in Java.
+     * PORT-NOTE: bug fix.  Java marked a tag name shared by two types as a clash, but still offered it
+     * without its type name (where it is ambiguous); with a third type it took the name out, and with
+     * a fourth put it back, and so on.  Here a tag name is offered without its type name only if one
+     * type has it.  (With its type name, it is always offered, as in Java.)
      */
     private getTagCompletions(knownTaggedTypes: ReadonlyMapLike<TypeId, TaggedTypeDefinition>): readonly TagCompletion[]
     {
-        // Optional.empty (here null) indicates a name clash for a simple key
+        // Null indicates a name clash for a simple key
         const completions = new TreeMap<TagCompletion, TaggedTypeDefinition | null>(undefined, (a, b) => a.compareTo(b));
 
         for (const value of knownTaggedTypes.values())
@@ -805,24 +806,12 @@ export class ExpressionLexer extends Lexer<Expression, ExpressionCompletionConte
                 const simpleKey = new TagCompletion(null, tag.getName(), tag.getInner() !== null);
                 const fullKey = new TagCompletion(value.getTaggedTypeName(), tag.getName(), tag.getInner() !== null);
                 completions.set(fullKey, value);
-                const prevSimple = completions.get(simpleKey);
-                completions.delete(simpleKey);
-                if (prevSimple === undefined)
-                {
-                    completions.set(simpleKey, value);
-                }
-                else
-                {
-                    if (prevSimple !== null)
-                    {
-                        // Note clash
-                        completions.set(simpleKey, null);
-                    }
-                }
+                // Note clash, if another type has the tag:
+                completions.set(simpleKey, completions.has(simpleKey) ? null : value);
             }
 
         }
-        return [...completions.keys()];
+        return [...completions.entries()].filter(([_k, v]) => v !== null).map(([k, _v]) => k);
     }
 
     private getNestedLiterals(lastWasNumber: boolean, insertListener: InsertListener): readonly Pair<string, (source: NestedLiteralSource) => LiteralOutcome>[]

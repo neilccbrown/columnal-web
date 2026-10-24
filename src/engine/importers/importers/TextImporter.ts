@@ -2,7 +2,7 @@
 import type { Localized, TableDataRowIndex } from "../../anns/Annotations.js";
 import { CellPosition } from "../../data/data/CellPosition.js";
 import type { Column } from "../../data/data/Column.js";
-import { NumericColumnType, OrBlankColumnType, TextColumnType, BlankColumnType, CleanDateColumnType } from "../../data/data/columntype/ColumnTypes.js";
+import { BlankColumnType, BoolColumnType, CleanDateColumnType, NumericColumnType, OrBlankColumnType, TextColumnType } from "../../data/data/columntype/ColumnTypes.js";
 import type { DataSource } from "../../data/data/DataSource.js";
 import { ImmediateDataSource } from "../../data/data/DataSources.js";
 import { EditableRecordSet } from "../../data/data/EditableRecordSet.js";
@@ -217,6 +217,12 @@ export class TextImporter implements Importer
                     const dateColumnType = type;
                     return TextFileColumn.dateColumn(rs, reader, format.initialTextFormat.separator, format.initialTextFormat.quote, columnInfo.title, columnIndexInSrc, totalColumns, dateColumnType.getDateTimeInfo(), s => dateColumnType.parse(s));
                 });
+            }
+            else if (type instanceof BoolColumnType)
+            {
+                // PORT-NOTE: bug fix.  Java had no case for a boolean column, so a text file with a
+                // column guessed to be boolean failed to import (with "Unhandled column type").
+                columns.push(rs => TextFileColumn.booleanColumn(rs, reader, format.initialTextFormat.separator, format.initialTextFormat.quote, columnInfo.title, columnIndexInSrc, totalColumns, s => type.parse(s)));
             }
             else
                 throw new InternalException("Unhandled column type: " + javaClassName(type));

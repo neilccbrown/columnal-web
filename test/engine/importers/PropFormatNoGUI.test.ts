@@ -7,12 +7,10 @@
 //
 // jsdom provides the browser's DOMParser for the HTML importer.
 //
-// The tests are skipped: they fail because of two bugs in the Java, both reported to the project
-// owner.  Utility.countLines counts a file's last line twice if it doesn't end in a newline (on Java
-// 16 or later), so such a text file fails to import: testAwkwardDate and testNumOrMissing always,
-// and testGuessFormat whenever the generated file has no trailing newline.  And GenFormattedData
-// escapes the HTML with HTML 4's entities, of which &lang; and &rang; mean different characters in
-// HTML5 (as jsoup also parses them), so testGuessFormat fails if a string contains one of them.
+// These tests found two Java bugs, which the port fixes: Utility.countLines counted a file's last
+// line twice if it didn't end in a newline, so such a text file failed to import; and
+// GenFormattedData wrote the characters U+2329 and U+232A as HTML 4's &lang; and &rang;, which
+// HTML5 (and jsoup) read as other characters.
 import { describe, test } from "vitest";
 import { CellPosition } from "../../../src/engine/data/data/CellPosition.js";
 import type { DataSource } from "../../../src/engine/data/data/DataSource.js";
@@ -121,7 +119,7 @@ async function testGuessFormatGUI(formatAndData: GenFormattedData.FormatAndData)
 
 describe("PropFormat (non-GUI)", () =>
 {
-    propertyTest.skip("testGuessFormat", [new GenFormattedData()], (formatAndData: GenFormattedData.FormatAndData) =>
+    propertyTest("testGuessFormat", [new GenFormattedData()], (formatAndData: GenFormattedData.FormatAndData) =>
     {
         const content = formatAndData.textContent.join("\n");
         const format = GuessFormat.guessTextFormat(DummyManager.make().getTypeManager(), DummyManager.make().getUnitManager(), new Map([[formatAndData.format.initialTextFormat.charset, formatAndData.textContent]]), formatAndData.format.initialTextFormat, formatAndData.format.trimChoice);
@@ -147,7 +145,7 @@ describe("PropFormat (non-GUI)", () =>
         checkDataValues(formatAndData, loaded[0]!.getData());
     }, { trials: 10 });
 
-    test.skip("testAwkwardDate", async () =>
+    test("testAwkwardDate", async () =>
     {
         const textRows = ["19/10/54", "30/12/34"];
         const target: Value[][] = [
@@ -160,7 +158,7 @@ describe("PropFormat (non-GUI)", () =>
         );
     });
 
-    test.skip("testNumOrMissing", async () =>
+    test("testNumOrMissing", async () =>
     {
         const typeManager = new TypeManager(new UnitManager());
         const textRows = ["1", "3", "NA", "-8910.444", "NA"];

@@ -169,7 +169,11 @@ export class GenFormattedData extends Generator<GenFormattedData.FormatAndData>
                     line += String(format.initialTextFormat.separator);
 
                 // <pre> to preserve whitespace and deal with awkward characters:
-                htmlContent += "<td><pre>" + escapeHtml4(entry) + "</pre></td>";
+                // PORT-NOTE: bug fix (test only).  Java used escapeHtml4 as it is, whose &lang; and
+                // &rang; (U+2329 and U+232A in HTML 4) are U+27E8 and U+27E9 in HTML5, as jsoup reads
+                // them, so a value with one of those characters was read back differently.  Here
+                // they are written as numeric references, which mean the same in both.
+                htmlContent += "<td><pre>" + escapeHtml4(entry).replaceAll("&lang;", "&#9001;").replaceAll("&rang;", "&#9002;") + "</pre></td>";
             }
 
             htmlContent += "</tr>\n";

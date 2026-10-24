@@ -1,0 +1,39 @@
+FILE xlsx-11.xlsx
+source trim <trim, vert +1 -0 horiz +1 -0> names [A, B, C, D]
+  columns A|B|C|D
+  types Text Text Text Text
+  length 14
+  "" | "-1989104" | "apple" | "Amount"
+  "" | "-571234" | "100%" | "397598"
+  "" | "-865918" | "€" | "50786"
+  "" | "405906" | "NA" | "50786"
+  "" | "227146" | "東京" | ""
+  "" | "788326" | "#1" | "-32916"
+  "" | "-1890864" | "x" | ""
+  "" | "-438236" | "it's" | "-384513"
+  "" | "-283758" | "£5" | "720366"
+  "" | "-1814908" | "Dürer" | "-257939"
+  "" | "" | "apple" | "18082"
+  "" | "-1357192" | "" | "277539"
+  "" | "2270" | "#1" | "361285"
+  "" | "1906496" | "say ^qhi^q" | "-649431"
+dest <trim, vert +1 -0 horiz +1 -0>
+  column A: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column B: Text
+  column apple: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns A|B|apple
+  types @apply   Optional ( Number ) Text @apply   Optional ( Number )
+  length 13
+  Is(-571234) | "100%" | Is(397598)
+  Is(-865918) | "€" | Is(50786)
+  Is(405906) | "NA" | Is(50786)
+  Is(227146) | "東京" | None
+  Is(788326) | "#1" | Is(-32916)
+  Is(-1890864) | "x" | None
+  Is(-438236) | "it's" | Is(-384513)
+  Is(-283758) | "£5" | Is(720366)
+  Is(-1814908) | "Dürer" | Is(-257939)
+  None | "apple" | Is(18082)
+  Is(-1357192) | "" | Is(277539)
+  Is(2270) | "#1" | Is(361285)
+  Is(1906496) | "say ^qhi^q" | Is(-649431)

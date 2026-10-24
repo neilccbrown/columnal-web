@@ -1,0 +1,67 @@
+FILE rec-04.rec
+TABLE Test 0
+CSV
+"GenCol 18","GenCol 19","GenCol 20","GenCol 21","GenCol 22","GenCol 23","GenCol 24","GenCol 25","GenCol 26"
+"@1035309735","@-730345442","@1816503303","@END","@1620939334","[-9223372036854775809]","@2117015773","@772176022","@END"
+END CSV
+HTML
+<!DOCTYPE html>
+<html>
+<head><title>Test 0</title></head>
+<body>
+<table>
+<caption>Test 0</caption>
+<thead>
+<tr>
+<td><b>GenCol 18</b></td>
+<td><b>GenCol 19</b></td>
+<td><b>GenCol 20</b></td>
+<td><b>GenCol 21</b></td>
+<td><b>GenCol 22</b></td>
+<td><b>GenCol 23</b></td>
+<td><b>GenCol 24</b></td>
+<td><b>GenCol 25</b></td>
+<td><b>GenCol 26</b></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@1035309735</td>
+<td>@-730345442</td>
+<td>@1816503303</td>
+<td>@END</td>
+<td>@1620939334</td>
+<td>[-9223372036854775809]</td>
+<td>@2117015773</td>
+<td>@772176022</td>
+<td>@END</td>
+</tr>
+</tbody>
+</table>
+
+<p>Exported on (time)</p></body>
+</html>
+END HTML
+EXCEL
+source trim <trim, vert +0 -0 horiz +0 -0> names [A, B, C, D, E, F, G, H, I]
+  columns A|B|C|D|E|F|G|H|I
+  types Text Text Text Text Text Text Text Text Text
+  length 2
+  "GenCol 18" | "GenCol 19" | "GenCol 20" | "GenCol 21" | "GenCol 22" | "GenCol 23" | "GenCol 24" | "GenCol 25" | "GenCol 26"
+  "Error: Invalid value: ^a1035309735" | "Error: Invalid value: ^a-730345442" | "Error: Invalid value: ^a1816503303" | "Error: Invalid value: ^aEND" | "Error: Invalid value: ^a1620939334" | "[-9223372036854775809]" | "Error: Invalid value: ^a2117015773" | "Error: Invalid value: ^a772176022" | "Error: Invalid value: ^aEND"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column A: Text
+  column B: Text
+  column C: Text
+  column D: Text
+  column E: Text
+  column F: Text
+  column G: Text
+  column H: Text
+  column I: Text
+  columns A|B|C|D|E|F|G|H|I
+  types Text Text Text Text Text Text Text Text Text
+  length 2
+  "GenCol 18" | "GenCol 19" | "GenCol 20" | "GenCol 21" | "GenCol 22" | "GenCol 23" | "GenCol 24" | "GenCol 25" | "GenCol 26"
+  "Error: Invalid value: ^a1035309735" | "Error: Invalid value: ^a-730345442" | "Error: Invalid value: ^a1816503303" | "Error: Invalid value: ^aEND" | "Error: Invalid value: ^a1620939334" | "[-9223372036854775809]" | "Error: Invalid value: ^a2117015773" | "Error: Invalid value: ^a772176022" | "Error: Invalid value: ^aEND"
+END EXCEL

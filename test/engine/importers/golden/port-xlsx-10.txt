@@ -1,0 +1,26 @@
+FILE xlsx-10.xlsx
+source trim <trim, vert +4 -0 horiz +0 -0> names [A, B, C]
+  columns A|B|C
+  types Text Text Text
+  length 9
+  "" | "-712.287" | "Amount"
+  "100%" | "915.966" | ""
+  "true" | "-224.317" | "2002.89"
+  "N/A" | "54305.8" | "3803"
+  "€" | "-256.869" | "-1235"
+  "-" | "25141.7" | "138059"
+  "NA" | "-36667.3" | "46150.2"
+  "cherry" | "97833.57142857143" | "-600.097"
+  "-" | "-200113.66666666666" | "-82086"
+dest <trim, vert +4 -0 horiz +0 -0>
+  column N A: Text
+  column N54305 8: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=1, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column N3803: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns N A|N54305 8|N3803
+  types Text Number Number
+  length 5
+  "€" | -256.869 | -1235
+  "-" | 25141.7 | 138059
+  "NA" | -36667.3 | 46150.2
+  "cherry" | 97833.57142857143 | -600.097
+  "-" | -200113.66666666666 | -82086

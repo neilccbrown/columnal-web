@@ -173,16 +173,16 @@ describe("ExcelImporter", () =>
 {
     test("excelColumnName", () =>
     {
-        expect([0, 1, 25, 26, 27, 51, 52, 675, 676, 677].map(i => ExcelImporter.excelColumnName(i).getRaw()))
-            // As in Java (wrong after Z, so index 676 gets the same name as 26):
-            .toEqual(["A", "B", "Z", "BA", "BB", "BZ", "CA", "ZZ", "BA", "BB"]);
+        // (Java's were wrong after Z: see BugFixes.test.ts)
+        expect([0, 1, 25, 26, 27, 51, 52, 701, 702, 703, 18277, 18278].map(i => ExcelImporter.excelColumnName(i).getRaw()))
+            .toEqual(["A", "B", "Z", "AA", "AB", "AZ", "BA", "ZZ", "AAA", "AAB", "ZZZ", "AAAA"]);
     });
 
-    test("formatF", () =>
+    test("formatNumber", () =>
     {
-        // Java's String.format("%f", d):
-        expect([0, 1, -1, 3.14159265, 0.0000005, 0.0000004, 2.5e-7, 123456789.12345679, 1e20, -0.0000001, 0.1 + 0.2].map(d => ExcelImporter.formatF(d)))
-            .toEqual(["0.000000", "1.000000", "-1.000000", "3.141593", "0.000001", "0.000000", "0.000000", "123456789.123457", "100000000000000000000.000000", "-0.000000", "0.300000"]);
+        // (Java's used "%f": see BugFixes.test.ts)
+        expect([0, -0, 1, -1, 3.14159265, 0.0000005, 2.5e-7, 123456789.12345679, 1e20, -0.0000001, 0.1 + 0.2].map(d => ExcelImporter.formatNumber(d)))
+            .toEqual(["0", "0", "1", "-1", "3.14159265", "0.0000005", "0.00000025", "123456789.12345679", "100000000000000000000", "-0.0000001", "0.30000000000000004"]);
     });
 
     test("an empty text file can't be imported", () =>

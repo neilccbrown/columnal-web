@@ -135,9 +135,10 @@ export class Utility
 
     // From http://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
     /**
-     * PORT-NOTE: Java counts with a LineNumberReader, which (since Java 16) also counts an
-     * unterminated last line, so this method counts such a line twice: "a" gives 2, but "a\n"
-     * gives 1.  That is preserved.  (A "\r\n" pair is one line ending, as in Java.)
+     * PORT-NOTE: bug fix.  Java counts with a LineNumberReader, which (since Java 16) also counts an
+     * unterminated last line, and then added one for it again: "a" gave 2 lines but "a\n" 1, so a
+     * text file that didn't end with a newline failed to import.  Here a last line counts once,
+     * whether or not it ends with a line ending ("\n", "\r\n" or "\r", as in Java).
      */
     public static countLines(filename: JavaFile, charset: Charset): number
     {
@@ -150,20 +151,9 @@ export class Utility
             if (c === "\n" || (c === "\r" && content[i + 1] !== "\n"))
                 lineNumber += 1;
         }
-        const empty = content.length === 0;
-        if (!empty && !content.endsWith("\n") && !content.endsWith("\r"))
+        if (content.length !== 0 && !content.endsWith("\n") && !content.endsWith("\r"))
             lineNumber += 1;
-        const lastWasNewline = content.endsWith("\n");
-
-        // Nothing at all; zero lines
-        if (empty)
-            return 0;
-        // Some content, no newline, must be one line:
-        else if (lineNumber === 0 && !empty)
-            return 1;
-        else
-        // Some content with newlines:
-            return lineNumber + (lastWasNewline ? 0 : 1);
+        return lineNumber;
     }
 
     // Given a table of values, skips the first "skipRows" rows,

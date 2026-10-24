@@ -1,0 +1,67 @@
+FILE html-01.html
+TABLE 0
+names ||Price ($)
+row line\nbreak|  |blockafter
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [, , Price ($)]
+  columns Col 0|Col 1|Price
+  types Text Text Text
+  length 1
+  "line^nbreak" | "  " | "blockafter"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Col 0: Text
+  column Col 1: Blank
+  column Price: Text
+  columns Col 0|Col 1|Price
+  types Text Text Text
+  length 1
+  "line^nbreak" | "" | "blockafter"
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [, , Price ($)]
+  columns Col 0|Col 1|Price
+  types Text Text Text
+  length 1
+  "line^nbreak" | "  " | "blockafter"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Col 0: Text
+  column Col 1: Blank
+  column Price: Text
+  columns Col 0|Col 1|Price
+  types Text Text Text
+  length 1
+  "line^nbreak" | "  " | "blockafter"
+TABLE 1
+names Amount[1]||Amount[1]|Name|Amount[1]
+row 1,234|  |2021-03-04|a\nb|12
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names [Amount[1], , Amount[1], Name, Amount[1]]
+  columns Amount 1|Col 1|Amount 1 1|Name|Amount 1 2
+  types Text Text Text Text Text
+  length 1
+  "1,234" | "  " | "2021-03-04" | "a^nb" | "12"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Amount 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column Col 1: Blank
+  column Amount 1 1: CleanDate #5 YEARMONTHDAY true
+  column Name: Text
+  column Amount 1 2: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns Amount 1|Col 1|Amount 1 1|Name|Amount 1 2
+  types Number Text Date Text Number
+  length 1
+  1234 | "" | 2021-03-04 | "a^nb" | 12
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names [Amount[1], , Amount[1], Name, Amount[1]]
+  columns Amount 1|Col 1|Amount 1 1|Name|Amount 1 2
+  types Text Text Text Text Text
+  length 1
+  "1,234" | "  " | "2021-03-04" | "a^nb" | "12"
+dest <trim, vert +0 -0 horiz +0 -0>
+  column Amount 1: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  column Col 1: Blank
+  column Amount 1 1: CleanDate #5 YEARMONTHDAY true
+  column Name: Text
+  column Amount 1 2: Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'}
+  columns Amount 1|Col 1|Amount 1 1|Name|Amount 1 2
+  types Number Text Date Text Number
+  length 1
+  1234 | "  " | 2021-03-04 | "a^nb" | 12

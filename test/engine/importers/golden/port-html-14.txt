@@ -1,0 +1,162 @@
+FILE html-14.html
+TABLE 0
+names Name|Name|Col 2|Name|Price ($)
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+TABLE 2
+names Name|
+row 12|12|
+row 3.25|Value [a 2] [3]|
+row Value [a 2] [3]|12|& <x>  yé
+row Value [a 2] [3]|3.25|Value [a 2] [3]
+row  padded  text |  |
+row a\nb|paratwo|
+row 1,234|Value [a 2] [3]|
+row & <x>  yé| padded  text |
+row 12|shown|
+row shown|3.25|Value [a 2] [3]
+row shown|Value [a 2] [3]|xy
+trim whitespace true
+source trim <trim, vert +4 -0 horiz +0 -0> names [Name, , C 3]
+  columns Name|Col 1|C 3
+  types Text Text Text
+  length 11
+  "12" | "12" | ""
+  "3.25" | "Value [a 2] [3]" | ""
+  "Value [a 2] [3]" | "12" | "& <x>  yé"
+  "Value [a 2] [3]" | "3.25" | "Value [a 2] [3]"
+  " padded  text " | "  " | ""
+  "a^nb" | "paratwo" | ""
+  "1,234" | "Value [a 2] [3]" | ""
+  "& <x>  yé" | " padded  text " | ""
+  "12" | "shown" | ""
+  "shown" | "3.25" | "Value [a 2] [3]"
+  "shown" | "Value [a 2] [3]" | "xy"
+dest <trim, vert +4 -0 horiz +0 -0>
+  column Name: Text
+  column Col 1: Text
+  column Value a 2 3: Text
+  columns Name|Col 1|Value a 2 3
+  types Text Text Text
+  length 7
+  "padded  text" | "" | ""
+  "a^nb" | "paratwo" | ""
+  "1,234" | "Value [a 2] [3]" | ""
+  "& <x>  yé" | "padded  text" | ""
+  "12" | "shown" | ""
+  "shown" | "3.25" | "Value [a 2] [3]"
+  "shown" | "Value [a 2] [3]" | "xy"
+trim whitespace false
+source trim <trim, vert +4 -0 horiz +0 -0> names [Name, , C 3]
+  columns Name|Col 1|C 3
+  types Text Text Text
+  length 11
+  "12" | "12" | ""
+  "3.25" | "Value [a 2] [3]" | ""
+  "Value [a 2] [3]" | "12" | "& <x>  yé"
+  "Value [a 2] [3]" | "3.25" | "Value [a 2] [3]"
+  " padded  text " | "  " | ""
+  "a^nb" | "paratwo" | ""
+  "1,234" | "Value [a 2] [3]" | ""
+  "& <x>  yé" | " padded  text " | ""
+  "12" | "shown" | ""
+  "shown" | "3.25" | "Value [a 2] [3]"
+  "shown" | "Value [a 2] [3]" | "xy"
+dest <trim, vert +4 -0 horiz +0 -0>
+  column Name: Text
+  column Col 1: Text
+  column Value a 2 3: Text
+  columns Name|Col 1|Value a 2 3
+  types Text Text Text
+  length 7
+  " padded  text " | "  " | ""
+  "a^nb" | "paratwo" | ""
+  "1,234" | "Value [a 2] [3]" | ""
+  "& <x>  yé" | " padded  text " | ""
+  "12" | "shown" | ""
+  "shown" | "3.25" | "Value [a 2] [3]"
+  "shown" | "Value [a 2] [3]" | "xy"
+TABLE 3
+names Price ($)|Col 1
+trim whitespace true
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+trim whitespace false
+source trim <trim, vert +0 -0 horiz +0 -0> names []
+  columns 
+  types
+  length 0
+dest <trim, vert +0 -0 horiz +0 -0>
+  columns 
+  types
+  length 0
+TABLE 4
+names Col 0|Price ($)|Price ($)|Price ($)|
+row Name[1]|paratwo|  pre  formatted | padded  text |-7|
+row line\nbreak||bold and italic|12|& <x>  yé|
+row line break|line\nbreak|& <x>  yé||line\nbreak|shown
+row line break|paratwo|-7|  |plain|12
+trim whitespace true
+source trim <trim, vert +2 -0 horiz +0 -0> names [Col 0, Price ($), Price ($), Price ($), , C 6]
+  columns Col 0|Price|Price 1|Price 2|Col 4|C 6
+  types Text Text Text Text Text Text
+  length 4
+  "Name[1]" | "paratwo" | "  pre  formatted " | " padded  text " | "-7" | ""
+  "line^nbreak" | "" | "bold and italic" | "12" | "& <x>  yé" | ""
+  "line break" | "line^nbreak" | "& <x>  yé" | "" | "line^nbreak" | "shown"
+  "line break" | "paratwo" | "-7" | "  " | "plain" | "12"
+dest <trim, vert +2 -0 horiz +0 -0>
+  column Col 0: Text
+  column Price: Text
+  column Price 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Price 2: Blank
+  column Col 4: Text
+  column C 6: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns Col 0|Price|Price 1|Price 2|Col 4|C 6
+  types Text Text @apply   Optional ( Number ) Text Text @apply   Optional ( Number )
+  length 2
+  "line break" | "line^nbreak" | None | "" | "line^nbreak" | None
+  "line break" | "paratwo" | Is(-7) | "" | "plain" | Is(12)
+trim whitespace false
+source trim <trim, vert +2 -0 horiz +0 -0> names [Col 0, Price ($), Price ($), Price ($), , C 6]
+  columns Col 0|Price|Price 1|Price 2|Col 4|C 6
+  types Text Text Text Text Text Text
+  length 4
+  "Name[1]" | "paratwo" | "  pre  formatted " | " padded  text " | "-7" | ""
+  "line^nbreak" | "" | "bold and italic" | "12" | "& <x>  yé" | ""
+  "line break" | "line^nbreak" | "& <x>  yé" | "" | "line^nbreak" | "shown"
+  "line break" | "paratwo" | "-7" | "  " | "plain" | "12"
+dest <trim, vert +2 -0 horiz +0 -0>
+  column Col 0: Text
+  column Price: Text
+  column Price 1: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  column Price 2: Blank
+  column Col 4: Text
+  column C 6: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns Col 0|Price|Price 1|Price 2|Col 4|C 6
+  types Text Text @apply   Optional ( Number ) Text Text @apply   Optional ( Number )
+  length 2
+  "line break" | "line^nbreak" | None | "" | "line^nbreak" | None
+  "line break" | "paratwo" | Is(-7) | "  " | "plain" | Is(12)

@@ -1,0 +1,24 @@
+FILE txt-11.txt
+guessed InitialTextFormat{charset=UTF-8, separator=' ', quote='null'}
+source trim <trim, vert +2 -0 horiz +0 -1> names null
+  columns Col 1|Col 2|Col 3
+  types Text Text Text
+  length 4
+  "#" | "Generated" | "report"
+  "^qAmount" | "(0)^q" | ""
+  "US$" | "250766" | ""
+  "^qUS$990514^q" | "" | ""
+dest InitialTextFormat{charset=UTF-8, separator=' ', quote='null'} <trim, vert +2 -0 horiz +0 -1>
+  column Amount: Text
+  column N0: Optional (Number{unit=1, displayInfo=NumberDisplayInfo{minimumDP=0, maximumDP=10, rightPadding=ZERO}, commonPrefix='null', commonSuffix='null'})
+  columns Amount|N0
+  types Text @apply   Optional ( Number )
+  length 2
+  "US$" | Is(250766)
+  "^qUS$990514^q" | None
+text file:
+  columns Amount|N0
+  types Text @apply   Optional ( Number )
+  length 2
+  "US$" | Is(250766)
+  "^qUS$990514^q" | None

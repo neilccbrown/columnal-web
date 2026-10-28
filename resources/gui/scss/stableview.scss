@@ -1,0 +1,48 @@
+/* stableview.scss */
+@import 'colors';
+@import 'fonts';
+
+.virt-grid-col-header, .virt-grid-row-number, .stable-view-top-left {
+    -fx-background-color: $table-header;
+    -fx-border-style: solid inside;
+    -fx-border-width: 0 1 1 0;
+}
+.virt-grid-row-container, .virt-grid-col-container {
+    -fx-background-color: $table-header;
+    -fx-border-style: solid inside;
+}
+.virt-grid-row-container {
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: $table-header-border;
+}
+.virt-grid-col-container {
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: $table-header-border;
+}
+
+
+.virt-grid-col-header:hover, .virt-grid-row-number:hover{
+    -fx-background-color: $table-header-hover;
+}
+
+.virt-grid-col-header {
+    -fx-border-color: transparent $table-header-divider $table-header-border transparent;
+    -fx-text-alignment: center;
+    -fx-alignment: top-center;
+    &:primary-selected-cell .label {
+       -fx-text-fill: $focus-color-text;
+    }
+}
+.virt-grid-row-number {
+    -fx-border-color: transparent $table-header-border $table-header-divider transparent;
+    -fx-alignment: baseline-right;
+    -fx-font-family: "Droid Sans Mono";
+    -fx-font-size: 10pt;
+    .virt-grid-menu {
+        -fx-font-family: $font-main;
+        -fx-font-size: 12pt;
+    }
+    &:primary-selected-cell .label {
+       -fx-text-fill: $focus-color-text;
+    }
+}

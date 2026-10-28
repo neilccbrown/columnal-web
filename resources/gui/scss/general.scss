@@ -1,0 +1,322 @@
+@import 'colors';
+@import 'fonts';
+
+.root {
+    -fx-font-family: $font-main;
+    -fx-font-size: 16px;
+
+    -fx-focus-color: $focus-color;
+    -fx-faint-focus-color: $faint-focus-color;
+    
+    -fx-background: $pane-background;
+    -fx-text-background-color: $text-color;
+    
+    -fx-control-inner-background: $control-background;
+        /* Version of -fx-control-inner-background for alternative rows */
+    -fx-control-inner-background-alt: $control-background-dark;
+    
+    -fx-base: $base-color;
+}
+
+/* Need this for case when context menu shows on something with
+   a custom text colour (e.g. selected column header) */
+.context-menu .label {
+    -fx-text-fill: $text-color !important;
+}
+
+/* Reduce the oversize padding on menu items that JavaFX adds by default: */
+.menu, .menu-item {
+    -fx-padding: 3 5 3 5;
+}
+.context-menu {
+    -fx-padding: 1;
+    -fx-background-color: $control-border, $control-background;
+    -fx-background-insets: 0, 1;
+}
+/* Change menu colours to our scheme: */
+.menu-item, .menu {
+    &:focused {
+        -fx-background-insets: 0;
+        -fx-background-color: $focus-color;
+        & .label {
+            -fx-text-fill: $focus-color-text !important; 
+        }
+    }
+}
+.menu-bar {
+    -fx-background-color: $control-border, $control-background;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+.menu-bar > .container > .menu-button {
+    -fx-background-color:  transparent;
+    -fx-text-fill: $text-color;
+}
+.menu-bar > .container > .menu-button:hover,
+.menu-bar > .container > .menu-button:focused,
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color:  $focus-color;
+    -fx-text-fill: $focus-color-text;
+}
+
+.list-view {
+    -fx-background-color: -fx-box-border, $list-background;
+}
+.list-view:focused {
+    -fx-background-color: -fx-faint-focus-color, -fx-focus-color, $list-background;
+}
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    &:empty {
+        -fx-background-color: transparent;
+    }
+    &:filled:selected {
+        -fx-background-color: $list-selection-unfocused;
+        -fx-text-fill: $focus-color-text;
+    }
+}
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    &:filled:selected {
+        -fx-background-color: $list-selection-focused;
+        -fx-text-fill: $focus-color-text;
+    }
+}
+
+.labelled-wrapper {
+    -fx-alignment: center-left;
+    & > .label {
+        -fx-padding: 0 2em 0 0;
+    }
+}
+.labelled-wrapper-vertical {
+    & > .label {
+        -fx-padding: 0 0 0.5em 0;
+    }
+}
+.labelled-grid {
+    -fx-vgap: 0.6em;
+    -fx-hgap: 0.5em;
+}
+.errorable-text-field {
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+}
+.errorable-text-field:has-warnings {
+    -fx-border-color: orange;
+    -fx-border-width: 2px;
+}
+.errorable-text-field:has-error {
+    -fx-border-color: $error-outline;
+    -fx-border-width: 2px;
+}
+
+.popover {
+    -fx-cursor: move;
+
+    .title > .icon > .graphics {
+        -fx-cursor: hand;
+    }
+
+    /* Important to not have shadow above the arrow as it messes with the mouse over detection
+       on the original node: */
+    & > .border {
+       -fx-effect: dropshadow(gaussian, rgba(0,0,0,.2), 5.0, 0.3, 5.0, 5.0) !important;
+    }
+}
+
+.errorable-text-field-popup {
+    .errorable-text-field:has-error & .border {
+        -fx-stroke: $error-outline;
+        -fx-stroke-width: 2;
+    }
+    .errorable-text-field:has-warnings & .border {
+        -fx-stroke: orange;
+        -fx-stroke-width: 2;
+    }
+    .popup-error-pane {
+        -fx-padding: 0.5em 1em 0.5em 1em;
+    }
+    
+    .errorable-sub-explanation {
+        -fx-fill: grey(60%);
+        -fx-font-size: 80%;
+    }
+}
+
+.help-box {
+    .circle {
+        -fx-cursor: hand;
+        -fx-fill: hsb(0, 0%, 90%);
+    	-fx-effect: innershadow(gaussian, rgba(0,0,0,.1), 3, 0.5, 1.0, 1.0);
+    	&:hover {
+    	    -fx-fill: hsb(0, 0%, 95%);
+    	}
+    }
+
+    .question {
+        -fx-fill: hsb(0, 0%, 40%);
+    }
+
+    .help-popup {
+        -fx-min-height: 0;
+
+        & > .border {
+            -fx-stroke-width: 1;
+        }
+        .help-content {
+            -fx-padding: 0.75em;
+            -fx-max-width: 400px;
+            .short {
+                -fx-font-weight: bold;
+            }
+            .more {
+                -fx-font-size: 80%;
+                -fx-fill: hsb(0, 0%, 60%);
+            }
+        }
+    }
+}
+
+.stf-number-int, .stf-number-dot, .stf-number-frac {
+    -fx-font-family: "Noto Mono";
+}
+.stf-cell-number {
+    /* -fx-spacing: 2; */
+    -fx-alignment: baseline-right;
+    -fx-font-family: "Noto Mono";
+    -fx-background-color: transparent;
+
+    .paragraph-text {
+        -fx-text-alignment: right;
+    }
+}
+.stf-number-frac {
+    -fx-font-size: 85%;
+}
+.stf-number-dot {
+    -fx-font-family: $font-main;
+    -fx-font-size: 85%;
+    &.stf-number-dot-invisible {
+        visibility:hidden;
+    }
+}
+
+.string-display {
+    -fx-background-color: transparent;
+}
+.string-display-quote {
+    -fx-text-fill: gray(70%);
+    -fx-font-family: "Source Code Pro";
+    -fx-font-weight: 600;
+    -fx-font-size: 80%;
+}
+
+.hide-columns-lists {
+    .hidden-columns-list-view {
+         .cell .label .text {
+             -fx-strikethrough: true;
+         }
+    }
+}
+.fix-list-heading {
+    -fx-text-fill: grey(40%);
+}
+.quick-fix-row {
+    -fx-padding: 0 0 0 2em;
+    -fx-cursor: hand;
+    .styled-text {
+        -fx-underline: true;
+        -fx-fill: grey(40%);
+    }
+}
+.error-label {
+    -fx-fill: $error-text;
+}
+
+.styled-text {
+     &.styled-text-clickable {
+         -fx-cursor: hand;
+     }
+}
+
+.tooltip {
+    -fx-background-insets: 0, 1;
+    -fx-background-color: hsba(32, 10%, 60%), hsb(32, 5%, 98%);
+    -fx-background-radius: 0;
+    -fx-padding: 1 4 1 4;
+    -fx-text-fill: hsb(32, 10%, 50%);
+    /* Note: if you make shadow too big, the tooltip can steal mouse focus from item and disappear too easily! */
+    -fx-effect: dropshadow( three-pass-box , hsba(32,10%,40%,0.7) , 8, 0.6 , 2 , 2 );
+}
+.instruction > .instruction-label {
+    -fx-background-insets: 0, 1;
+    -fx-background-color: grey(70%), white;
+    -fx-text-fill: grey(30%);
+    -fx-label-padding: 3;
+    -fx-font-size: 75%;
+}
+
+.styled-text.expression-error {
+    -fx-strikethrough: true;
+    -fx-fill: darkred !important;
+}
+
+.text-editor {
+    -fx-cursor: text;
+    .document-caret {
+        -fx-stroke: $focus-color;
+    }
+    .document-selection {
+        -fx-fill: $focus-color;
+        -fx-stroke: null;
+    }
+    .fade-overlay {
+        -fx-fill: transparent;
+    }
+    .document-text-flow {
+        -fx-cursor: text;
+        & > .document-text {
+            -fx-fill: black;
+        }
+    }
+    .selection-pane, .inverter-pane {
+        -fx-background-color: black;
+    }
+    .error-underline {
+        -fx-stroke: $editor-error-stroke;
+        -fx-fill: $editor-error-background;
+        &:contains-caret {
+            -fx-stroke: $editor-error-background;
+        }
+    }
+}
+
+.small-delete {
+    -fx-cursor: hand;
+}
+.small-delete-circle {
+    .small-delete > & {
+        -fx-fill: transparent;
+    }
+    .small-delete:hover > &, .fancy-list-cell:my_hover_sel .small-delete > & {
+        -fx-fill: darkred;
+    }
+}
+.small-delete-cross {
+    -fx-stroke-width: 2;
+
+    .small-delete > & {
+        -fx-stroke: grey;
+
+    }
+    .small-delete:hover > &, .fancy-list-cell:my_hover_sel .small-delete > &,
+      .fancy-list-cell:selected & {
+        -fx-stroke: white;
+    }
+}
+.upgrade-banner {
+    -fx-background-color: grey(40%), pink;
+    -fx-background-insets: 0, 0 0 1 0;
+    .download-link {
+        -fx-underline: true;
+        -fx-fill: blue;
+    }
+}

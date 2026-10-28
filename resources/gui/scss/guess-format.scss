@@ -1,0 +1,25 @@
+@import 'colors';
+
+.guess-format-content {
+    -fx-pref-width: 800px;
+    -fx-pref-height: 600px;
+}
+
+.import-split-and-labels {
+    -fx-padding: 20px 0 0 0;
+}
+.import-split-labels {
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10px 0;
+}
+.import-undo-reset-panel {
+    -fx-spacing: 10px;
+    -fx-alignment: baseline-left;
+    -fx-padding: 8px 0 5px 0;
+}
+.import-arrow {
+    -fx-stroke: $import-arrow;
+    -fx-stroke-width: 3;
+    -fx-stroke-line-join: round;
+    -fx-stroke-line-cap: round;
+}

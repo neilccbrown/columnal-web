@@ -12,6 +12,7 @@ export default defineConfig(
             "reference/**",
             "src/engine/parsers/generated/**",
             "playwright-report/**",
+            ".vitest/**",
             "test-results/**",
         ],
     },

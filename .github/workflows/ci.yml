@@ -26,6 +26,6 @@ jobs:
       - uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: gui-test-failures
+          path: .vitest/
           retention-days: 14

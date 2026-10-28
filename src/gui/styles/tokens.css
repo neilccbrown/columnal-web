@@ -1,0 +1,108 @@
+/*
+ * Design tokens: the colours, fonts and sizes of the Java original, from its SCSS
+ * (resources/gui/scss/light/_colors.scss, general.scss and virtual-grid.scss).  Each token is named
+ * after its SCSS variable.  JavaFX's hsb() and derive() colours are converted to rgb().
+ */
+:root {
+    /* Fonts (general.scss .root: Noto Sans 16px) */
+    --font-main: "Noto Sans", "Noto Sans Symbols", "Noto Sans Symbols2", sans-serif;
+    --font-mono: "Noto Mono", monospace;
+    --font-code: "Source Code Pro", monospace;
+    --font-size-main: 16px;
+
+    /* General */
+    --focus-color: rgb(81 27 186);
+    --focus-color-text: white;
+    --focus-color-text-faint: rgb(191 191 191);
+    --faint-focus-color: rgb(81 27 186 / 0.25);
+    --control-background: white;
+    --control-background-dark: rgb(245 245 245);
+    --control-border: rgb(128 128 128);
+    --base-color: #ececec;
+    --pane-background: rgb(241 241 241); /* derive($base-color, 26.4%) */
+    --text-color: #333;
+    --text-color-faint: rgb(128 128 128);
+
+    /* Initial window and logo */
+    --initial-heading-color: #777;
+    --logo-border: rgb(153 153 153);
+    --logo-background: white;
+
+    /* Lists */
+    --list-even: rgb(252 252 252);
+    --list-odd: rgb(247 247 247);
+    --list-background: rgb(224 224 224); /* derive(white, -12%) */
+    --list-selection-focused: var(--focus-color);
+    --list-selection-unfocused: rgb(120 118 128);
+    --list-selection-text: white;
+
+    /* Tables */
+    --table-empty-background: rgb(217 217 217);
+    --table-cell: rgb(242 242 242);
+    --table-cell-hover: rgb(140 122 203);
+    --table-cell-editing: white;
+    --table-divider: rgb(204 204 204);
+    --table-header: rgb(217 217 217);
+    --table-header-hover: rgb(230 230 230);
+    --table-header-divider: rgb(153 153 153);
+    --table-header-border: rgb(153 153 153);
+    --table-header-text-color: white;
+    --table-header-background-color: rgb(154 183 237);
+    --table-header-transformation-background-color: rgb(94 128 83); /* hsb(105, 35%, 50%) */
+    --table-header-background-color-selected: var(--focus-color);
+    --table-header-background-color-check-failing: rgb(128 31 34); /* hsb(358, 76%, 50%) */
+    --table-header-name-border-color: rgb(217 217 217);
+    --table-header-shadow: rgb(178 178 178);
+    --table-border-color: rgb(128 128 128);
+    --table-row-label-background-color: rgb(230 230 230);
+    --table-row-label-border-color: var(--table-border-color);
+    --table-row-label-text-color: rgb(128 128 128);
+    --table-pick-overlay-stroke: rgb(117 63 21);
+    --table-pick-overlay-fill: rgb(117 63 21 / 0.5);
+    --table-source-overlay-stroke: rgb(19 76 0);
+    --table-source-overlay-fill: rgb(19 76 0 / 0.35);
+    --column-header-background-color: rgb(202 211 227); /* hsb(218, 11%, 89%) */
+    --column-header-text-color: rgb(45 57 76); /* hsb(218, 41%, 30%) */
+    --expand-arrow-color: rgb(153 153 153);
+    --expand-arrow-color-hover: white;
+    --grid-comment: rgb(241 242 194);
+    --grid-comment-hover: rgb(251 252 202);
+    --cell-error: rgb(204 82 82); /* virtual-grid.scss .table-data-cell:has-error, hsb(0, 60%, 80%) */
+
+    /* Grid sizes (VirtualGrid.rowHeight, and the row labels' font in virtual-grid.scss) */
+    --grid-row-height: 24px;
+    --row-label-font-size: 10px;
+
+    /* Status bar */
+    --status-bar-background: rgb(230 230 230);
+    --status-bar-border: rgb(153 153 153);
+
+    /* Dialogs */
+    --light-dialog-background: rgb(242 242 242);
+    --light-dialog-background-dark: rgb(235 235 235);
+
+    /* Errors */
+    --error-outline: rgb(87 17 24); /* hsb(354, 80%, 34%) */
+    --error-text: rgb(87 17 24);
+
+    /* Expression editor */
+    --editor-error-background: rgb(255 204 212);
+    --editor-error-stroke: rgb(153 8 32);
+    --editor-popup-error: rgb(250 237 239);
+    --editor-popup-error-border: var(--editor-error-stroke);
+    --editor-popup-information: rgb(199 235 235);
+    --editor-popup-information-border: rgb(19 107 107);
+    --editor-popup-prompt: rgb(222 230 218);
+    --editor-popup-prompt-border: rgb(64 117 40);
+
+    --recipe-background: rgb(242 230 182);
+    --recipe-text: rgb(51 48 0);
+    --doc-header-background: rgb(144 108 217);
+    --import-arrow: rgb(128 128 128);
+
+    /* Autocomplete */
+    --autocomplete-background-color: white;
+    --autocomplete-border-color: var(--control-border);
+    --autocomplete-instruction-border-text: rgb(178 178 178);
+    --autocomplete-fade: rgb(153 153 153);
+}

@@ -1,0 +1,214 @@
+@import 'colors';
+@import 'fonts';
+
+body {
+    font-family: $font-main;
+    font-size: 13pt;
+    
+    &.indiv {
+        font-size: 11pt;
+    }
+}
+
+.index-entry {
+    display: block;
+}
+
+.function-group-item {
+    display: none;
+}
+.function-item, .operator-item, .type-item, .syntax-item, .variable-item, .literal-item {
+    padding: 25pt;
+}
+body.indiv {
+    .function-item, .operator-item, .type-item, .column-item, .syntax-item, .variable-item, .literal-item {
+        padding: 5pt;
+    }
+}
+
+.function-item, .operator-item, .type-item, .column-item, .syntax-item, .variable-item, .literal-item {
+    border-width: 0 0 1px 0;
+    border-color: lightgray;
+    border-style: solid;
+}
+
+.function-header {
+    .function-name-header, .bracket, .comma {
+        font-weight: bold;
+    }
+}
+
+.syntax-keyword, .type-name-header, .operator-name-header, .variable-name-header, .column-header, .literal-name-header {
+    font-weight: bold;
+}
+.function-header, .function-type, 
+.syntax-type, .operator-type, .operator-name-header, .syntax-name-header, .column-header, .variable-name-header, .literal-name-header, .type-name-header {
+    display:block;
+}
+.type-name-header, .function-header, .operator-type, .syntax-name-header, .operator-name-header, .variable-name-header, .literal-name-header, .column-header {
+    font-size: 18pt;
+    background-color: $doc-header-background;
+    padding: 8;
+}
+.function-type, .syntax-type {
+    padding: 3 0 0 14;
+    .type {
+        padding: 0 0 0 15;
+    }
+}
+
+body.indiv {
+    .type-name-header, .function-header, .operator-type, .syntax-name-header, .variable-name-header, .column-header {
+     font-size: 14pt;
+    }
+    .function-type {
+        font-size: 11pt;
+    }
+}
+
+.function-name-type, .function-type, .operator-type {
+    .type-var, .unit-var {
+        display: inline;
+        position: relative;
+        /* From https://www.webdesignerdepot.com/2012/11/how-to-create-a-simple-css3-tooltip/ */
+        &:hover:after{
+             font-size: 10pt;
+             background: #333;
+             background: rgba(0,0,0,.8);
+             border-radius: 5px;
+             top: 120%;
+             color: #fff;
+             content: "Can be any type/unit";
+             left: 20%;
+             padding: 5px;
+             position: absolute;
+             z-index: 98;
+             width: 120px;
+        }
+    }
+    .type-var:hover:after {
+        content: "Can be any type";
+    }
+    .unit-var:hover:after {
+        content: "Can be any unit";
+    }
+}
+.type-var, .unit-var {
+    color: grey(60%);
+}
+.function-arrow {
+        padding-left: 7pt;
+        padding-right: 7pt;
+    }
+.function-arrow::before {
+    /*content: "\27F6";*/
+    /*content: "->";*/
+    content: "\2192";
+    font-family: 'Noto Sans Symbols';
+}
+.example-arrow {
+    font-family: 'Noto Sans Symbols';
+} 
+.type {
+    font-family: 'Noto Mono';
+    color: #555;
+    a, a:visited, a:hover {
+        color: #555;
+        text-decoration: none;
+    }
+    a:hover {
+        background-color: #eee;
+        text-decoration: underline;
+    }
+}
+.expression-bracket {
+    font-family: 'Noto Mono';
+}
+
+body.indiv .examples .examples-header {
+    font-size: 13pt;
+}
+
+html.autocomplete span.insertable-expression {
+    cursor: pointer;
+    &:hover {
+        background: grey(80%);
+    }
+}
+
+.examples {
+    .examples-header {
+        font-size: 14pt;
+        font-weight: bold;
+    }
+    .examples-header-hint {
+        visibility: hidden;
+    }
+    html.autocomplete & .examples-header-hint {
+        visibility: visible;
+        display: block;
+        font-size: 80%;
+        color: grey(70%);
+    }
+    & .example {
+        margin-top: 10pt;
+        margin-bottom: 10pt;
+        .example-call {
+            padding-left: 20pt;
+        }
+        html.autocomplete & .example-description {
+            font-size: 80%;
+        }
+        .example-description {
+            display: block;
+            color: grey(60%);
+            padding-left: 40pt;
+        }
+    }
+    & .example-arrow {
+        vertical-align: middle;
+        position: relative;
+        top: -0.1em;
+        font-size: 300%;
+        line-height: 0;
+        color: grey(60%);
+        padding-left: 8pt;
+        padding-right: 8pt;
+    }
+}
+
+.seeAlso {
+    .seeAlsoHeader {
+        display: block;
+        font-weight: bold;
+        font-size: 14pt;
+    }
+
+}
+body.indiv .seeAlso .seeAlsoHeader {
+    font-size: 11pt;
+}
+.seeAlso a, .index a {
+    margin-left: 20pt;
+    display: block;
+    &, &:visited, &:hover {
+        color: black;
+    }
+}
+
+code {
+    background-color: grey(95%);
+    font-family: "Noto Sans";
+}
+
+div.section {
+    p, .examples {
+        padding-left: 20pt;
+    }
+}
+span.title {
+    font-size: 150%;
+    font-weight: bold;
+    padding-top: 15pt;
+    padding-bottom: 10pt; 
+}

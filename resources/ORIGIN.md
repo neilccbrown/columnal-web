@@ -10,11 +10,20 @@ These files are copied unchanged from the Java original,
 | `data/builtin_units.txt` | `data/src/main/resources/builtin_units.txt` |
 | `funcdoc/*` | `xml/src/main/funcdoc/*` |
 | `help/*` | `xml/src/main/help/*` |
+| `gui/fonts/*.ttf` | `app/src/main/resources/*.ttf` |
+| `gui/images/*.png` | `app/src/main/resources/*.png` |
+| `gui/scss/**` | `app/src/main/scss/**` |
 
 The ANTLR grammars come from `parsers/src/main/antlr/`. They live in `src/engine/parsers/antlr/` and have
 been modified; see [docs/CONVENTIONS.md](../docs/CONVENTIONS.md#grammars).
 
-The GUI assets (fonts, images, SCSS) will be added in Phase 7. The fonts (Noto, Source Code Pro and
-Kalam) are under the SIL Open Font License, which requires the licence text to be distributed with
-them. The original repository doesn't include those licence files, so they will need to be added at
-the same time.
+The SCSS is JavaFX CSS, kept only as a reference for the rebuilt GUI's styles (its colours, fonts
+and spacing); it is not built.
+
+The fonts (Noto Sans, Noto Sans Symbols, Noto Sans Symbols2, Noto Mono, Source Code Pro and Kalam)
+are under the SIL Open Font License 1.1, which requires the copyright notice and licence text to be
+distributed with them. The original repository doesn't include them, so `gui/fonts/OFL-*.txt` were
+written for this project: each has the copyright notices from its fonts' `name` tables, and the
+licence text that Source Code Pro's `name` table contains.
+
+The images (the logo and the transformation previews) are copyright Neil Brown, as in the original.

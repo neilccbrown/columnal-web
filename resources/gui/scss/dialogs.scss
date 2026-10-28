@@ -1,0 +1,312 @@
+@import 'colors';
+
+.label, .text-field, .hbox-row {
+    -fx-alignment: baseline-left;
+}
+/* This needs to be top left to make it work with baseline-left: */
+.radio-button {
+    -fx-alignment: top-left;
+}
+.hbox-row {
+    -fx-spacing: 1em;
+}
+
+.light-dialog-pane {
+    -fx-padding: 20;
+    -fx-background-radius: 5;
+    -fx-background-insets: 20, 21;
+    -fx-background-color: grey(40%), $light-dialog-background;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,.2), 5.0, 0.3, 5.0, 5.0) !important;
+}
+
+.side-button-bar {
+    -fx-spacing: 20;
+    -fx-padding: 20 20 20 8;
+}
+.edit-column-content {
+    -fx-spacing: 10;
+    -fx-fill-width: true;
+}
+
+.explanation-button {
+    -fx-graphic-text-gap: -2;
+}
+.explanation-button-explanation {
+    -fx-font-size: 8pt;
+    -fx-text-fill: grey(40%);
+}
+/* Should perhaps move these to specific file for the appropriate dialogs: */
+.new-button-list {
+    -fx-spacing: 10px;
+}
+.new-explanation {
+    -fx-label-padding: 0 0 10px 0;
+}
+
+.pick-transformation-tile-pane {
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+    -fx-padding: 0 5px 0 0;
+}
+.pick-transformation-scroll-pane-wrapper {
+    -fx-padding: 10px;
+}
+.pick-transformation-scroll-pane {
+    -fx-background-insets: 0, 0 1 1 0;
+    -fx-padding: 0 1 1 0;
+}
+
+.pick-table-dialog .button-bar .container {
+    -fx-padding: 0;
+}
+.pick-html-table-dialog-pane {
+    .pick-html-table-instruction {
+        & > * {
+            -fx-font-size: 150%;
+            -fx-font-weight: bold;
+            -fx-fill: pink;
+            -fx-stroke: darkred;
+            -fx-stroke-width: 0.5;
+            -fx-text-alignment: center;
+            -fx-underline: true;
+        }
+    }
+    .pick-html-webview-wrapper {
+        -fx-border-style: solid outside;
+        -fx-border-color: $control-border;
+        -fx-border-width: 1;
+    }
+}
+.table-list-dialog .table-list, .sort-list-dialog .sort-list {
+    -fx-background-color: $control-border, $control-background;
+    -fx-background-insets: 0, 1;
+    & .fancy-list-end {
+        -fx-background: transparent;
+        -fx-border-color: black, transparent;
+        -fx-border-style: solid inside;
+        -fx-border-width: 1 0 0 0, 1 0 0 0;
+    }
+    & .viewport {
+        -fx-background-color: $control-background;
+    }
+    & .fancy-list-cell {
+        -fx-border-color: transparent;
+        -fx-border-style: solid inside;
+        -fx-border-width: 2 0 0 0;
+        & .pick-table-pane {
+            /* Left padding to allow drag */
+            -fx-padding: 0 10 2 10;
+            -fx-cursor: default;
+        }
+        & .text-field {
+            -fx-padding: 3;
+            -fx-cursor: text;
+        }
+    }
+}
+.table-list-dialog .table-list .fancy-list-cell:even, .sort-list-dialog .sort-list .fancy-list-cell:even {
+    -fx-background-color: $list-even;
+    & .text-field {
+        -fx-background-color: $list-even;
+    }
+}
+.table-list-dialog .table-list .fancy-list-cell:odd, .sort-list-dialog .sort-list .fancy-list-cell:odd {
+    -fx-background-color: $list-odd;
+    & .text-field {
+        -fx-background-color: $list-odd;
+    }
+}
+.table-list-dialog .table-list, .sort-list-dialog .sort-list {
+    & .fancy-list-cell:drag-target, & .fancy-list-end:drag-target {
+        -fx-border-color: black;
+        -fx-border-style: dashed inside;
+        -fx-border-width: 2 0 0 0;
+    }
+}
+
+.table-list-dialog .table-list .fancy-list-cell:selected, .sort-list-dialog .sort-list .fancy-list-cell:selected {
+    -fx-background-color: $focus-color;
+    &:even .pick-table-pane .text-field, &:odd .pick-table-pane .text-field,
+    &:even .sort-pane .text-field, &:odd .sort-pane .text-field {
+        -fx-background-color: $focus-color, $focus-color;
+        &:hover {
+            -fx-background-color: white, $focus-color;
+        }
+    }
+    & .text-field, & .label {
+         -fx-text-fill: $focus-color-text;
+    }
+    & .sort-direction-button {
+        -fx-background-color: $focus-color;
+        -fx-background-insets: 0;
+        -fx-text-fill: $focus-color-text;
+        .sort-direction-icon {
+            -fx-fill: $focus-color-text;
+        }
+    }
+}
+.table-list-dialog .fancy-list-cell, .sort-list-dialog .fancy-list-cell {
+    &:even .pick-table-pane > .text-field, &:even .sort-pane > .text-field {
+        -fx-background-color: $list-even, $list-even;
+        -fx-background-insets: 0, 1;
+        &:hover {
+            -fx-background-color: $control-border, $list-even;
+        }
+        &:focused {
+            -fx-background-color: $control-border, white;
+        }
+    }
+    &:odd .pick-table-pane > .text-field, &:odd .sort-pane > .text-field {
+        -fx-background-color: $list-odd, $list-odd;
+        -fx-background-insets: 0, 1;
+        &:hover {
+            -fx-background-color: $control-border, $list-odd;
+        }
+        &:focused {
+            -fx-background-color: $control-border, white;
+        }
+    }
+    & .pick-table-pane > .label, & .sort-pane > .label {
+        -fx-font-size: 80%;
+    }
+}
+.sort-list-dialog .sort-direction-button {
+    .label {
+        -fx-font-size: 60%;
+        -fx-padding: -1 0 -1 0;
+    }
+    -fx-padding: 3 5 3 5;    
+    .sort-direction-icon {
+        -fx-fill: grey(60%);
+    }
+}
+
+.import-link-contents {
+    -fx-spacing: 8px;
+}
+.import-link-field {
+    -fx-min-width: 450px;
+}
+
+.default-value {
+    -fx-padding: 3px;
+    -fx-background-insets: 0, 1;
+    -fx-background-color: grey(80%), white;
+    -fx-background-radius: 2, 2; 
+}
+.default-value:disabled {
+    -fx-background-color: grey(80%), grey(88%);
+}
+
+.edit-column-content .top-level-editor-scroll-pane,
+  .edit-column-expression-content .top-level-editor-scroll-pane {
+    -fx-min-height: 60px;
+}
+.edit-column-content .edit-column-details {
+    -fx-background-insets: 0, 1;
+    -fx-background-color: grey(70%), $light-dialog-background-dark;
+    -fx-padding: 10px;
+    .label {
+        -fx-text-alignment: right;
+    }
+}
+.edit-column-top-message {
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid inside;
+    -fx-border-color: grey(70%); 
+}
+.edit-column-expression-root .split-by-pane {
+    -fx-background-color: $control-border, grey(85%);
+    -fx-background-insets: 0, 1;
+    -fx-padding: 6;
+    .scroll-pane-fill {
+        -fx-background-color: grey(85%);
+        -fx-background-insets: 0;
+        & > .viewport {
+            -fx-background-color: grey(85%);
+        }
+    }
+}
+
+/*
+.units-dialog-content {
+    .units-dialog-user-defined, .units-dialog-built-in {
+        -fx-padding: 10px;
+    }
+}
+*/
+
+.types-dialog-content {
+    .types-list {
+        -fx-min-width: 350px;
+    }
+}
+.edit-type-dialog-content {
+    -fx-spacing: 1em;
+    
+    .plain-tags-label {
+        -fx-padding: 1em 0 0.4em 0;
+    }
+    
+    .inner-values-tab-content {
+        .inner-values-type-args-pane {
+            -fx-padding: 1em 0 1em 0;
+        }
+        .inner-values-list-header-pane {
+            -fx-padding: 0 4em 0.4em 2em;
+        }
+    
+        .fancy-list-children {
+            -fx-spacing: 1.5em;
+    
+            .tag-value-edit {
+                .top-level-editor-scroll-pane {
+                    -fx-min-height: 60px;
+                    -fx-hbar-policy: never;
+                }
+            }
+        }
+    }
+}
+
+/* Loading dialog */
+.loading-error-detail {
+    -fx-font-family: "Noto Mono";
+}
+
+.edit-unit-dialog {
+    .name-label {
+        -fx-text-alignment: left;
+    }
+    .full-detail-grid, .alias-detail-grid {
+        visibility: hidden;
+        &:selected {
+            visibility:visible;
+        }
+    }
+}
+
+.edit-join-content {
+    .table-label {
+        -fx-alignment: center;
+        -fx-text-alignment: center;
+        -fx-max-width: 9999.0;
+        -fx-text-fill: grey(60%);
+    }
+    .fancy-list {
+        -fx-min-height: 150px;
+    }
+}
+
+.edit-r {
+    .r-insertable-header {
+        -fx-fill: black;
+    }
+    .r-insertable-link {
+        -fx-underline: true;
+        -fx-fill: #666;
+        &:hover {
+            -fx-fill: black;
+        }
+    }
+}

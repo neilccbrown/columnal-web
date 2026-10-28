@@ -17,7 +17,7 @@ reviewed side by side with the Java. Refactoring comes after a module works and 
 | Vue GUI (rebuilt, not ported) | `src/gui/` |
 | `parsers/src/main/antlr/X.g4` | `src/engine/parsers/antlr/X.g4` (generated output: `src/engine/parsers/generated/`, not committed) |
 | `tests-x/src/test/java/test/<path>/X.java` (`tests-basic`, `tests-functions`, `tests-tables`) | `test/engine/tests-x/<path>/X.test.ts` |
-| `tests-x/src/test/java/test/<path>/X.java` (`tests-gui-*`) | `test/gui/tests-x/<path>/X.spec.ts` |
+| `tests-x/src/test/java/test/<path>/X.java` (`tests-gui-*`) | `test/gui/tests-x/<path>/X.test.ts` (Vitest browser mode) |
 | `tests-x/src/test/java/test/<path>/X.java` (`tests-gui-*` that only need `src/gui-logic`) | `test/gui-logic/tests-x/<path>/X.test.ts` |
 | `tests-x/src/testFixtures/java/(test\|xyz/columnal)/<path>/X.java` | `test/(engine\|gui)/tests-x/fixtures/<path>/X.ts` |
 | Resources (`*.properties`, `builtin_units.txt`, funcdoc and help XML) | `resources/` (see [resources/ORIGIN.md](../resources/ORIGIN.md)) |
@@ -354,7 +354,7 @@ install and before `dev`, `build`, `test` and `typecheck`.
   A test that fails because of a Java bug awaiting a decision is also skipped, with the bug.
 - Tests that need `DOMParser` (the HTML importer) start with `// @vitest-environment jsdom`.
 - A helper class in a test directory (one with no test methods, such as a generator) is a plain
-  module, `X.ts`, not a `.test.ts` or `.spec.ts` file.
+  module, `X.ts`, not a `.test.ts` file.
 - `java.util.Random` is `JavaRandom`, which is bit-for-bit compatible. So tests with fixed seeds generate
   the same data as on the JVM.
 - **Golden values:** where Java behaviour is subtle, generate expected values from the real JVM rather
@@ -389,10 +389,23 @@ install and before `dev`, `build`, `test` and `typecheck`.
   (`scripts/golden/java/CliHarness.java`) on any files, such as real-world ones, and shows the
   differences. The script lists the known ones.
 - New TS-only tests (for code with no Java test) go in `test/engine/<module>/`.
-- GUI tests (Playwright) are ported per test method, at the level of behaviour (PLAN.md §3b).
+- GUI tests are ported per test method, at the level of behaviour (PLAN.md §3b), as Vitest browser mode tests
+  (`npm run test:gui`, `vitest.browser.config.ts`, type-checked by `tsconfig.browser-tests.json`). They run in
+  Chromium with the app: a test mounts the component it needs (`render` from `vitest-browser-vue`), acts
+  through `userEvent` and `page` (`vitest/browser`), and checks the engine's objects directly. Tests in one
+  file share the engine's module state (as the Java tests shared a JVM). `userEvent.click(element)` turns the
+  element into a selector, which can become ambiguous if the page changes before it runs; prefer locators
+  (`page.getByRole`, `getByTestId`), or wait for the engine to finish (`Workers.getTaskList()` empty) first.
 
 ## GUI (from Phase 7)
 
-- Vue 3 with `<script setup lang="ts">`.
+- Vue 3 with `<script setup lang="ts">`, and Reka UI for headless components (dialogs, menus, tooltips,
+  combo boxes).
+- Design tokens (the Java SCSS's colours, fonts and sizes) are CSS custom properties in
+  `src/gui/styles/tokens.css`, named after the SCSS variables; the fonts are in `src/gui/styles/fonts.css`.
+- Keyboard shortcuts are the Java app's, except those a browser keeps for itself (decided in Phase 7): Exit
+  (Ctrl/Cmd+Q) is dropped, as closing the tab does it; New project (Ctrl/Cmd+N), Close project (Ctrl/Cmd+W)
+  and Task Manager (Shift+Esc) become Alt+Shift+N, Alt+Shift+W and Alt+Shift+Esc; the grid's F11 (copy) is
+  dropped, leaving Ctrl/Cmd+C. Open, Save as, Undo and Find keep their Java shortcuts.
 - Engine objects must never be made reactive. Don't wrap them in `reactive()` or a deep `ref()`; use
   `markRaw`/`shallowRef`. The UI tracks engine changes through version counters (PLAN.md §2b).

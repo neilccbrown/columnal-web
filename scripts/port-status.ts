@@ -6,7 +6,7 @@
 //   <module>/src/main/java/xyz/columnal/<path>/X.java  -> src/engine/<module>/<path>/X.ts      (engine modules)
 //                                                       -> src/gui-logic/<module>/<path>/X.ts   (GUI modules: logic only)
 //   tests-x/src/test/java/test/<path>/X.java            -> test/engine/tests-x/<path>/X.test.ts (engine test modules)
-//                                                       -> test/gui/tests-x/<path>/X.spec.ts    (GUI test modules,
+//                                                       -> test/gui/tests-x/<path>/X.test.ts    (GUI test modules,
 //                                                          except ENGINE_TESTS_IN_GUI_MODULES and GUI_LOGIC_TESTS_IN_GUI_MODULES)
 //   tests-x/src/testFixtures/java/(test|xyz/columnal)/<path>/X.java -> test/(engine|gui)/tests-x/fixtures/<path>/X.ts
 // Test methods (@Test/@Property) count as ported when the TS test file has a test with the same name.

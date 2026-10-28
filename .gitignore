@@ -27,3 +27,7 @@ yarn-error.log*
 # Editors
 .vscode/*
 .DS_Store
+
+# Vitest browser mode (failure screenshots, traces)
+.vitest/
+__traces__/

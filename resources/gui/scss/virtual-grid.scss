@@ -1,0 +1,350 @@
+/* virtual-grid.scss */
+@import 'colors';
+@import 'fonts';
+
+.main-view-grid {
+    -fx-background-color: $table-empty-background;
+}
+
+.virt-grid-line {
+    -fx-stroke-width: 1;
+    -fx-stroke: $table-divider;
+    .view:empty & {
+        -fx-stroke: derive($table-divider, -15%);
+    }
+}
+
+
+.table-display-table-title {
+    -fx-background-color: $table-header-background-color;
+    &.transformation-table-title, &.check-table-title {
+        -fx-background-color: $table-header-transformation-background-color;
+        &:check-failing {
+            -fx-background-color: $table-header-background-color-check-failing;
+            & .text-field {
+                -fx-background-color: $table-header-background-color-check-failing;
+            }
+            & .text-field:hover, & .text-field:focused {
+                -fx-background-color: $table-header-name-border-color, $table-header-background-color-check-failing;
+            }
+        }
+        &:table-selected, &:check-failing:table-selected {
+            -fx-background-color: $table-header-background-color-selected;
+            & .text-field {
+                -fx-background-color: $table-header-background-color-selected;
+            }
+            & .text-field:hover, & .text-field:focused {
+                -fx-background-color: $table-header-name-border-color, $table-header-background-color-selected;
+            }
+        }
+    }
+    &.transformation-table-title .text-field, &.check-table-title .text-field {
+        -fx-background-color: $table-header-transformation-background-color, $table-header-transformation-background-color;
+        &:focused, &:hover {
+            -fx-background-color: $table-header-name-border-color, $table-header-transformation-background-color;
+        }
+    }
+    
+    &:table-selected {
+        -fx-cursor: move;
+        -fx-background-color: $table-header-background-color-selected;
+        .text-field {
+            -fx-background-color: $table-header-background-color-selected, $table-header-background-color-selected;
+            &:focused, &:hover {
+                -fx-background-color: $table-header-name-border-color, $table-header-background-color-selected;
+            }
+        }
+    }
+    .text-field {
+        -fx-text-fill: $table-header-text-color;
+        -fx-background-color: $table-header-background-color, $table-header-background-color;
+        &:focused, &:hover {
+            -fx-background-color: $table-header-name-border-color, $table-header-background-color;
+        }
+        -fx-background-insets: 0, 1;
+        -fx-padding: -1 1 -1 1;
+    }
+    
+    .table-display-rerun {
+        -fx-cursor: hand;
+        -fx-text-fill: $table-header-text-color;
+        & .label {
+            -fx-text-fill: $table-header-text-color;
+            -fx-cursor: hand;
+            -fx-font-family: 'Noto Sans Symbols2';
+        }
+        &:hover {
+            -fx-underline: true;
+        }
+        & > .text {
+            -fx-font-size: 80%;
+        }
+    }
+}
+
+.table-display-column-title, .table-display-column-type {
+    -fx-background-color: $column-header-background-color;
+    -fx-text-fill: $column-header-text-color;
+    &.table-display-column-type {
+        -fx-font-size: 85%;
+    }
+    -fx-label-padding: 0 1 0 2;
+    
+    &.column-title-overwritten {
+        -fx-font-weight: bold;
+    }
+    
+    &.column-title-edit {
+        -fx-cursor: hand;
+        &:hover {
+            -fx-underline: true;
+        }
+    }
+    
+    &:column-header-floating {
+        -fx-effect: dropshadow(gaussian, $table-header-shadow, 10, 0.4, 0, 3);
+    }
+}
+
+.table-data-cell {
+    -fx-background-color: $table-divider, $table-cell;
+    -fx-background-insets: 0, 0 1 1 0;
+    &:hover {
+        -fx-background-color: $table-cell-hover, $table-cell-hover;
+    }
+    &:focused {
+        -fx-background-color: $table-divider, $table-cell;
+    }
+    &:table-drag-source {
+        -fx-effect: blur;
+    }
+    
+    .document-text-flow {
+        -fx-padding: 0 2 0 2;
+    }
+    
+    &:expanded {
+        -fx-background-color: hsb(213, 20%, 70%), hsb(213, 3%, 100%); 
+        -fx-background-insets: 0, 1;
+        -fx-background-radius: 0 5 5 5, 0 5 5 5;
+        -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 12.0, 0.7, 1.0, 1.0);
+        
+        .inverter-pane, .selection-pane {
+            -fx-background-color: white, black;
+            -fx-background-radius: 0, 0 5 5 5;
+        }
+        
+        .fade-overlay:more-above {
+            -fx-fill: linear-gradient(to bottom, $table-cell 0%, fade-out($table-cell, 0.4) 10%, fade-out($table-cell, 1) 20%, fade-out($table-cell, 1) 100%);
+        }
+        .fade-overlay:more-below {
+            -fx-fill: linear-gradient(to bottom, fade-out($table-cell, 1) 0%, fade-out($table-cell, 1) 80%, fade-out($table-cell, 0.4) 90%, $table-cell 100%);
+        }
+        .fade-overlay:more-above:more-below {
+            -fx-fill: linear-gradient(to bottom, $table-cell 0%, fade-out($table-cell, 0.4) 10%, fade-out($table-cell, 1) 20%, fade-out($table-cell, 1) 80%, fade-out($table-cell, 0.4) 90%, $table-cell 100%);
+        }
+                
+    }
+    
+    &:has-error {
+        -fx-background-color: $table-divider, hsb(0, 60%, 80%), $table-cell;
+        -fx-background-insets: 0, 0 1 1 0, 1 2 2 1;    
+    }
+}
+
+.grid-comment-field {
+    -fx-background-color: $table-divider, $grid-comment;
+    -fx-background-insets: 0, 0 1 1 0;
+    &:hover {
+        -fx-background-color: $grid-comment-hover, $grid-comment-hover;
+    }
+    &:focused, &:resizing {
+        -fx-background-color: $table-divider, $grid-comment;
+    }
+    
+    .document-text-flow {
+        -fx-padding: 0 2 0 2;
+    }
+}
+
+.expand-arrow {
+    -fx-padding: 0;
+    -fx-background-color: $table-cell;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-text-fill: $expand-arrow-color;
+    -fx-cursor: hand;
+    &:expand-down:hovering-expand-down, &:expand-right:hovering-expand-right {
+        -fx-background-color: $expand-arrow-color-hover;
+    }
+}
+
+.create-table-grid-button {
+    /* Default insets: -fx-background-insets: 0 0 -1 0, 0, 1, 2; */
+    -fx-background-insets: 2 2 1 2, 2, 3, 4;
+    -fx-padding: 0;
+    -fx-font-size: 14px;
+}
+
+.table-border-overlay {
+    -fx-fill: transparent;
+    -fx-stroke: $table-border-color;
+    -fx-stroke-width: 1;
+    -fx-stroke-type: outside;
+}
+
+/* Drop shadows: */
+.table-border-overlay, .table-row-label-border {
+    -fx-effect: dropshadow(gaussian, grey(40%), 15, 0.7, 2, 2);
+}
+.table-hat, .explanation-pane {
+    -fx-effect: dropshadow(gaussian, grey(70%), 6, 0.2, 1, 1);
+}
+.table-error-message-container {
+    -fx-effect: dropshadow(gaussian, grey(50%), 8, 0.4, 2, 2);
+}
+
+.virt-grid-selection-overlay {
+    -fx-fill: transparent;
+    -fx-stroke-width: 3;
+    -fx-stroke: $focus-color;
+    -fx-stroke-type: outside;
+}
+.move-table-dest-overlay-snapped {
+    -fx-fill: null;
+    -fx-stroke: black;
+    -fx-stroke-width: 3;
+    -fx-stroke-type: outside;
+}
+.move-table-dest-overlay-free {
+    -fx-fill: hsba(0, 0%, 0%, 0.1);
+    -fx-stroke: null;
+}
+
+.pick-table-overlay, .prospective-import-rectangle {
+    -fx-fill: $table-pick-overlay-fill;
+    -fx-stroke-width: 3;
+    -fx-stroke: $table-pick-overlay-stroke;
+}
+.pick-table-overlay {    
+    -fx-stroke-type: outside;
+}
+.pick-table-overlay:pick-source {
+    -fx-fill: $table-source-overlay-fill;
+    -fx-stroke: $table-source-overlay-stroke;
+}
+.table-highlight-arrow {
+    -fx-stroke-width: 3;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+    &:pick-select {
+        -fx-stroke: $table-pick-overlay-stroke;
+    }
+    &:pick-source {
+        -fx-stroke: $table-source-overlay-stroke;
+    }
+    
+}
+
+.virt-grid-row-label {
+    /* First is colour of vertical separator between rows */
+    -fx-background-color: $table-divider, $table-row-label-background-color;
+    -fx-background-insets: 0, 0 1 1 0;
+    -fx-label-padding: 0 2 0 5;
+    -fx-text-fill: $table-row-label-text-color;
+    -fx-font-size: 10px;
+    -fx-alignment: baseline-right;
+    -fx-font-family: "Noto Mono";
+    &:row-header-floating {
+        -fx-effect: dropshadow(gaussian, grey(70%), 10, 0.4, 3, 0);
+    }
+}
+.table-row-label-border {
+    -fx-fill: transparent;
+    -fx-stroke: $table-row-label-border-color;
+    -fx-stroke-width: 1;
+    -fx-stroke-type: outside;
+}
+
+.table-hat {
+    -fx-background-radius: 5;
+    -fx-background-insets: 0, 1;
+    -fx-background-color: $table-row-label-border-color, $table-row-label-background-color;
+}
+.table-hat-text-flow {
+    -fx-font-size: 90%;
+    .styled-text, .table-hat-collapse {
+        /* Without this the font rendering on text is awful at small size on Mac: */
+        -fx-font-smoothing-type: lcd;
+        
+        -fx-fill: $table-row-label-text-color;
+        
+        &.styled-text-clickable {
+             -fx-underline: true;
+        }
+    }
+}
+.table-hat-collapse {
+    -fx-cursor: hand;
+    
+    -fx-fill: $table-row-label-text-color;
+    &:hover {
+        -fx-fill: derive($table-row-label-text-color, 30%);
+    }
+}
+
+.explanation-pane {
+    -fx-background-radius: 5;
+    -fx-background-insets: 0, 1;
+    -fx-background-color: $table-row-label-border-color, $table-row-label-background-color;
+    
+    .explanation-flow {
+        .styled-text-clickable {
+            -fx-underline: true;
+        }
+        .explained-expression {
+            -fx-fill: #263e87;
+            &:highlight {
+                -fx-fill: royalblue;
+                -fx-underline: true;
+            }
+        }
+    }
+}
+
+.table-error-message-container {
+    -fx-background-color: white, hsb(13, 94%, 43%);
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+    -fx-font-size: 80%;
+    &:hover {
+        -fx-cursor: hand;
+        .table-error-message-text-flow .styled-text {
+            -fx-underline: true;
+        }
+    }
+    .table-error-message-text-flow .styled-text {
+        -fx-fill: white;
+    }
+}
+
+.resizable-column-header {
+    -fx-background-color: derive($table-empty-background, -20%), derive($table-empty-background, 20%);
+    -fx-background-insets: 0, 0 0 1 0;
+    .column-header-line {
+        -fx-stroke: derive($table-empty-background, -20%);
+    }
+    .column-header-arrow {
+        -fx-stroke: derive($table-empty-background, -20%);
+    }
+}
+
+.virtual-grid-tooltip-flow {
+    -fx-background-color: black, hsb(65, 8%, 100%);
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 5, 5;
+    -fx-padding: 3;
+    -fx-effect: dropshadow(gaussian, grey(70%), 6, 0.2, 1, 1);
+    -fx-font-size: 80%;
+}

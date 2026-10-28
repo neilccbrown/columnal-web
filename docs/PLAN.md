@@ -100,13 +100,13 @@ completion lists.
 
 | Concern | JavaFX original | Web replacement (recommended) | Why |
 |---|---|---|---|
-| UI framework | JavaFX + ControlsFX + WellBehavedFX | **Vue 3** (Composition API, `<script setup lang="ts">`) with **Reka UI** or **Ark UI** headless components | Decided. The project owner knows Vue best, which matters because they'll review all the GUI code and behaviour drift is the main GUI risk. Vue's fine-grained reactivity suits "the engine changed, so update exactly the affected cells". Reka UI and Ark UI provide accessible dialogs, menus, context menus, popovers, combo boxes and tooltips, which is most of what ControlsFX and WellBehavedFX did. Ark UI is built on Zag.js state machines, which also support React and Solid. Choose between Reka UI and Ark UI in Phase 7. **Fallback:** Solid, if the Phase 7 grid prototype shows Vue can't keep up with very large tables. |
+| UI framework | JavaFX + ControlsFX + WellBehavedFX | **Vue 3** (Composition API, `<script setup lang="ts">`) with **Reka UI** or **Ark UI** headless components | Decided. The project owner knows Vue best, which matters because they'll review all the GUI code and behaviour drift is the main GUI risk. Vue's fine-grained reactivity suits "the engine changed, so update exactly the affected cells". Reka UI and Ark UI provide accessible dialogs, menus, context menus, popovers, combo boxes and tooltips, which is most of what ControlsFX and WellBehavedFX did. Ark UI is built on Zag.js state machines, which also support React and Solid. Reka UI was chosen in Phase 7. **Fallback:** Solid, if the Phase 7 grid prototype shows Vue can't keep up with very large tables. |
 | Engine → UI updates | FX properties and listeners | A small **store adapter**: engine listeners increment a per-table or per-column version held in a `shallowRef`, and components read it in a `computed` | The engine stays mutable and framework-free. **Rule:** engine objects are never made reactive (no `reactive()` or deep `ref()` around them; use `markRaw`/`shallowRef`). Vue's Proxies would break `#private` fields and change object identity. A lint rule enforces this where it can. |
 | Table canvas (VirtualGrid) | Custom virtualised grid with its own scrolling and floating layers | **One native scroll container.** Tables are absolutely positioned on a shared logical grid of rows and columns (widths shared per grid column). Headers and row labels use `position: sticky`. Each table only renders the rows currently visible (TanStack Virtual or a hand-rolled version). Cells are real DOM, not canvas. | Native scrolling, sticky positioning and the browser's layout replace `SmoothScroller`, `ScrollGroup` and the floating suppliers. Real DOM cells keep accessibility and test selectors. The logical grid model (cell positions, table placement, selection) is ported as pure TS. |
 | Cell editing (DocumentTextField) | Custom document and text field per cell | **One active editor overlaid on the cell being edited**, built on an `<input>` or a lightweight CodeMirror instance. It uses the **ported recognisers** for parsing and error highlighting. | Same behaviour, and far less code. |
 | Expression/type/unit editor (lex-editor) | Custom token display, caret and completion | **CodeMirror 6** using the ported lexers: tokens become decorations, the completion source uses the ported ranking, savers produce diagnostics, and quick fixes become CodeMirror actions | CodeMirror already handles editing, selection, undo, IME, completion popups and tooltips. |
 | Styling | JavaFX CSS from SCSS | Fresh CSS (SCSS or CSS modules), built on design tokens taken from the original SCSS | Matches the look, not the rule structure. |
-| GUI tests | testjavafx (FxRobot) | **Playwright Test**, page objects, and a test-only `window.__test` bridge | Decided, and to be reviewed after the Phase 7 comparison with Vitest browser mode. Values cross the bridge in the `.rec` file format's lossless text form, which Node parses back with the same engine code. Generators and expected values run in Node, which can import the engine. Elements are found by ARIA role or `data-testid`, not by CSS classes copied from JavaFX. |
+| GUI tests | testjavafx (FxRobot) | **Vitest browser mode** (Chromium through Playwright) | Decided in Phase 7, after writing the same tests in Playwright Test (which needed a `window.__test` bridge for every check on the engine). Tests mount components and read the engine's objects directly, and the ported generators run in the page. Elements are found by ARIA role or `data-testid`, not by CSS classes copied from JavaFX. |
 
 ## 3. Working approach
 
@@ -508,6 +508,65 @@ Carried over from Phase 6:
 - **Decide on browser-reserved shortcuts** (Ctrl/Cmd+N/W/T/Q cannot be captured) and
   record the remappings.
 
+Part A (the evidence for the decisions) is done, and the project owner decided (§6): stay with Vue, use Reka
+UI and Vitest browser mode, accept the proposed shortcut remappings (CONVENTIONS.md "GUI"), and look at
+running the engine off the main thread soon (before the production grid in Phase 8). The GUI tests now run in
+Vitest browser mode (`npm run test:gui`, `test/gui/`); Playwright's test runner and the prototype's
+`window.__test` bridge were removed. Still to remove in Part B: Ark UI (`@ark-ui/vue`) and the Ark half of the
+component prototype. The prototypes are throwaway
+and live in `src/gui/prototype/` (grid, components), with their scripts in `scripts/prototype/`; delete them
+once Phase 8 has the production grid. Kept from Part A: the fonts, images and SCSS (`resources/gui/`, with
+OFL licence files), the design tokens and font faces (`src/gui/styles/`), and the store adapter
+(`src/gui/store/EngineStore.ts`).
+
+- **Grid prototype** (`/src/gui/prototype/grid/` on the dev server; `?big=N` adds an N-row data table). Vue,
+  one native scroll container, tables absolutely placed by the ported `VirtualGrid` (which also does the
+  selection and keyboard), rows and columns windowed in blocks of 16, column names and row labels sticky
+  (CSS `position: sticky`), widths shared per grid column, a cell editor using the ported recognisers, and
+  edits re-running dependents (`TableManager.reRun`) through the store adapter. Measured in Chromium with
+  `scripts/prototype/measure-grid.mjs` and `profile-grid.mjs`, on input-01.rec (a 190,512-row join) plus a
+  200,000-row data table:
+  - Scrolling at 100 px a frame: 60 fps over both tables (at 4× CPU slowdown: mean 22 ms a frame over the join).
+    Flinging at 2,000 px a frame: 60 fps over the data table, mean 25 ms over the join. About 1,200 DOM nodes
+    whatever the table size.
+  - Where the time goes in the worst case (the join, 2,000 px a frame): engine (computing values) 2.6 s, browser
+    style and layout 3.5 s, garbage collection 0.8 s, Vue (with its DOM operations) about 1 s, so Vue is about
+    12%. **Vue is not the bottleneck; Solid would not help.**
+  - Keyboard: 2 ms to handle a key, median 24 ms from key down to paint.
+  - An edit that re-runs the join blocks the page for about 270 ms (two long frames), as the engine runs on the
+    main thread (Java ran it on a worker thread).
+  - Loading a 200,000-row file takes 8.7 s (Java: 1.8 s warm, 2.8 s cold). The profile shows engine costs:
+    about 1.1 s constructing `NumberFormatException`s (stack traces), 2–3 s in ANTLR's lexer ATN simulation
+    (suggesting its DFA cache is not reused), and about 1.2 s creating a `CharStream` per line.
+  - Native scrolling is limited by the browser's maximum element height: 33.5 M px in Chromium (1.4 M rows of
+    24 px); Firefox's is lower (about 17.9 M px, 745 k rows). Larger tables would need a scaled-scroll fallback.
+- **Reka UI vs Ark UI** (`/src/gui/prototype/components/`): a LightDialog frame (modal, draggable), a column
+  context menu with a submenu, a tooltip shown when a label is cut short, and a combo box for picking a table,
+  in each. `scripts/prototype/compare-components.mjs` runs the same 11 keyboard, mouse and ARIA checks on both,
+  and both pass all of them (focus trap and return, Escape, staying open on an outside click as Java's
+  window-modal dialogs did, typeahead, disabled items, submenus, accent-insensitive filtering). Differences:
+  Reka adds 45 KB gzipped for the four, Ark 64 KB; Reka's combo box filters by itself, Ark's needs a collection
+  and filter wired up; Ark focuses and positions menus a frame or two after opening (tests must wait) and keeps
+  closed submenus in the DOM; Ark needs an explicit Teleport and Positioner per popup. Ark has more components
+  (date picker, tree view, splitter, floating panel). The code is the same size (191 and 205 lines).
+- **Playwright vs Vitest browser mode** (Playwright's version since removed): the same three tests of the grid prototype (entering a number and
+  checking the dependent Calculate, keyboard movement between tables and empty cells, and a fast-check property
+  entering 20 random decimals) in `test/gui/prototype/` (Playwright, with a page object and the `window.__test`
+  bridge in `src/gui/prototype/grid/testBridge.ts`) and `test/gui-vitest/prototype/` (`npm run test:gui-vitest`,
+  `vitest.browser.config.ts`, `tsconfig.browser-tests.json`). Both pass reliably (3 runs each); Vitest takes
+  about 4.8 s, Playwright 6 s. Vitest's tests mount the component and read the engine's objects directly (no
+  bridge, values compared with `javaEquals`), but share module state (the engine's singletons) between the tests
+  in a file, need their own tsconfig, and `userEvent.click(element)` turns the element into a selector by its
+  text, which became ambiguous when a dependent table re-rendered the same number (the property test needed a
+  wait). Playwright gives each test a fresh page and has CSS locators, but every check on the engine goes
+  through the bridge as text. Both record Playwright traces. Only two test helpers use Node APIs
+  (`GenFile.ts`, `test/support/charsets.ts`), so the ported generators could run in the browser.
+- **Browser-reserved shortcuts.** The Java app's accelerators (`resources/i18n/main_en.properties`): New
+  project Ctrl/Cmd+N, Open Ctrl/Cmd+O, Save as Ctrl/Cmd+Alt+S, Close project Ctrl/Cmd+W, Exit Ctrl/Cmd+Q, Undo
+  Ctrl/Cmd+Z, Find Ctrl/Cmd+F, Task Manager Shift+Esc; and the grid copies with F11 as well as Ctrl/Cmd+C.
+  A page can't capture Ctrl/Cmd+N, W, Q (or T, Tab); F11 is full screen; and Shift+Esc opens Chrome's task
+  manager on Windows and Linux.
+
 ### Phase 8: Table canvas and cell editing (rebuilds `stf` and `table-gui`)
 - Build the production table canvas from the prototype:
   - the logical grid (from gui-logic), native scrolling, sticky headers and row labels
@@ -613,8 +672,8 @@ Decided:
 - Dates and times use js-joda rather than Temporal (Phase 2).
 - Generated ANTLR output is not committed. `npm run gen:parsers` runs on install and before
   dev, build, test and typecheck, and takes under a second.
-- Engine tests use Vitest (Node). GUI tests use Playwright Test, to be reviewed after the
-  Phase 7 comparison with Vitest browser mode.
+- Engine tests use Vitest (Node). GUI tests use Vitest browser mode (decided in Phase 7, after comparing it
+  with Playwright Test).
 - The engine is ported faithfully. The GUI is rebuilt natively in HTML to the same
   effect, not translated from JavaFX.
 - The UI framework is Vue 3. Solid is the fallback if the Phase 7 grid prototype shows
@@ -624,9 +683,14 @@ Decided:
   fix them (Phase 4). Fixed ones are marked with a `PORT-NOTE`, and the golden tests list them as
   known differences.
 
+- Phase 7, from the evidence of Part A: Vue stays (the grid prototype showed Vue is not the bottleneck); Reka UI
+  for headless components; GUI tests in Vitest browser mode rather than Playwright's runner; browser-reserved
+  shortcuts remapped as in CONVENTIONS.md "GUI"; and running the engine off the main thread is to be looked at
+  soon, before Phase 8's production grid, rather than in Phase 13.
+
 Open:
-- Reka UI vs. Ark UI for headless components (Phase 7).
-- How to handle browser-reserved shortcuts.
+- How to run the engine off the main thread (a Web Worker, or time-slicing), and whether to optimise its file
+  loading (3–5× slower than Java's) at the same time.
 - Whether webR's download size is acceptable, or R support should be optional or
   deferred.
 - Supported browsers. The File System Access API is Chromium-only, and other browsers

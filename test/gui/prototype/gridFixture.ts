@@ -1,0 +1,35 @@
+// Phase 7 (throwaway): a small saved file for the grid prototype's tests (GridPrototype.test.ts).  A data table T at column 1, and a Calculate C
+// at column 4 that doubles T's numbers.
+export const GRID_FIXTURE = `COLUMNAL
+VERSION 3
+
+DATA @BEGIN TAB
+TAB "T"
+TAB FORMAT @BEGIN
+TAB @COLUMN N @TYPE Number @DEFAULT 0
+TAB @COLUMN Name @TYPE Text @DEFAULT ""
+TAB @END FORMAT
+TAB VALUES @BEGIN
+TAB   1 , "a"
+TAB   2.5 , "b"
+TAB   -3 , "c"
+TAB @END VALUES
+TAB DISPLAY @BEGIN
+TAB POSITION 1 1
+TAB SHOWCOLUMNS ALL
+TAB @END DISPLAY
+@END TAB DATA
+
+TRANSFORMATION @BEGIN CAL
+CAL "C"
+CAL calculate
+CAL SOURCE "T"
+CAL @BEGIN
+CAL CALCULATE "Double" @EXPRESSION column\\\\N * 2
+CAL @END
+CAL DISPLAY @BEGIN
+CAL POSITION 4 1
+CAL SHOWCOLUMNS ALL
+CAL @END DISPLAY
+@END CAL TRANSFORMATION
+`;

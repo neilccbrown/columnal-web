@@ -1,0 +1,112 @@
+@import 'colors';
+@import 'fonts';
+
+$selected-expression-border-color: $focus-color;
+$function-color: paleturquoise;
+$match-color: lightpink;
+$if-color: seagreen;
+$column-color: lightsteelblue;
+$string-color: hsb(116, 100%, 40%) /*saddlebrown*/;
+
+.top-level-editor {
+    -fx-font-family: $font-main;
+    -fx-font-size: 12pt;
+
+    -fx-alignment: top-left;
+    -fx-row-valignment: bottom;
+    -fx-vgap: 1px;
+    -fx-cursor: text;
+    -fx-background-color: grey(50%), white;
+    -fx-background-insets: 0, 1;
+    &:focus-within {
+        -fx-border-width: 1;
+        -fx-border-color: $focus-color;
+        -fx-border-style: solid outside;
+    }
+    & .viewport {
+        -fx-background-color: white;
+    }
+    &:disabled {
+        /* Matches what JavaFX itself does: */
+        -fx-opacity: 0.4;
+    }
+}
+.top-level-editor-scroll-pane {
+    -fx-min-height: 200px;
+}
+
+.expression-info-popup.popover {
+    -fx-cursor: null;
+    & > .border {
+        -fx-stroke-width: 1.5;
+    }
+    
+    &.error > .content {
+        -fx-background-color: $editor-popup-error;
+    }
+    &.error > .border {
+        -fx-stroke: $editor-popup-error-border;
+    }
+    
+    &.information > .content {
+        -fx-background-color: $editor-popup-information;
+    }
+    &.information > .border {
+        -fx-stroke: $editor-popup-information-border;
+    }
+    
+    &.prompt > .content {
+        -fx-background-color: $editor-popup-prompt;
+    }
+    &.prompt > .border {
+        -fx-stroke: $editor-popup-prompt-border;
+    }
+}
+
+.expression-info-error {
+    -fx-text-fill: black;
+}
+.expression-info-content {
+    -fx-padding: 0.5em 1em 0.5em 1em;
+}
+
+.function-info {
+    -fx-background-color: rgb(210, 210, 210);
+
+    & .function-info-name {
+        -fx-font-size: 200%;
+        -fx-fill: black;
+    }
+    & .function-info-short-description {
+        -fx-fill: rgb(40, 40, 40);
+    }
+}
+
+.expression-editor {
+    .expression-at {
+        -fx-opacity: 30%;
+    }
+    .expression-indent, .expression-if, .expression-then, .expression-else, .expression-endif, .expression-define, .expression-enddefine, .expression-match, .expression-case, .expression-orcase, .expression-given, .expression-endmatch, .expression-function, .expression-endfunction {
+        -fx-fill: hsb(120, 44%, 40%);
+        -fx-font-family: "Noto Mono";
+    }
+    .expression-string-literal {
+        -fx-fill: $string-color;
+    }
+    .expression-column {
+        -fx-fill: $column-header-text-color;
+    }
+    .expression-column-background {
+        -fx-fill: $column-header-background-color;
+        -fx-stroke: $column-header-background-color;
+    }
+}
+
+.entry-prompt-bold {
+    -fx-font-weight: bold;
+}
+.show-doc-link {
+    -fx-font-size: 80%;
+    -fx-fill: grey(50%);
+    -fx-underline: true;
+}

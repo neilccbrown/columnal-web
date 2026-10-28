@@ -1,5 +1,5 @@
 {
-  // Code that runs in Node: tests (Vitest engine tests and Playwright GUI tests),
+  // Code that runs in Node: tests (Vitest engine and gui-logic tests),
   // scripts and tool configuration.  Tests import from src, which is also checked here.
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
@@ -8,5 +8,8 @@
     "lib": ["ES2023", "DOM"],
     "types": ["node", "vite/client"]
   },
-  "include": ["test/**/*.ts", "scripts/**/*.ts", "*.config.ts", "src/engine/**/*.ts", "src/gui-logic/**/*.ts"]
+  "exclude": ["test/gui/**"],
+  "include": ["test/**/*.ts", "scripts/**/*.ts", "*.config.ts", "src/engine/**/*.ts", "src/gui-logic/**/*.ts",
+    // (Used by scripts/prototype/profile-load.ts)
+    "src/gui/prototype/grid/bigTable.ts"]
 }

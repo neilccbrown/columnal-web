@@ -1,0 +1,197 @@
+/* mainview.scss */
+@import 'colors';
+
+/* The window-like wrapper around a table view */
+.table-wrapper {
+    -fx-border-color: gray;
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+    -fx-background-color: lightgray;
+    -fx-background-radius: 5;
+    
+    .table-header {
+        -fx-background-radius: 5 5 0 0;
+        -fx-background-color: steelblue;
+        -fx-padding: 6 6 0 6;
+        & .button {
+            -fx-cursor: default;
+        }
+    }
+    
+    &:has-right-snap {
+        -fx-border-width: 1 0 1 1;
+        -fx-border-radius: 5 0 0 5;
+        -fx-background-radius: 5 0 0 5;
+        .table-header {
+            -fx-background-radius: 5 0 0 0;
+        }
+    }
+    &:has-left-snap {
+        -fx-border-width: 1 1 1 0;
+        -fx-border-radius: 0 5 5 0;
+        -fx-background-radius: 0 5 5 0;
+        .table-header {
+            -fx-background-radius: 0 5 0 0;
+        }
+    }
+    &:has-left-snap:has-right-snap {
+        -fx-border-width: 1 0 1 0;
+        -fx-border-radius: 0;
+        -fx-background-radius: 0;
+        .table-header {
+            -fx-background-radius: 0;
+        }
+    }
+}
+.table-body {
+    -fx-padding: 6 6 6 6;
+    -fx-background-color: transparent;
+}
+
+.table-title {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: transparent;
+
+    -fx-min-width: 6em;
+    -fx-text-overrun: ellipsis;
+}
+
+.transformation-arrow {
+    -fx-fill: null;
+    -fx-stroke: black;
+    -fx-stroke-width: 3;
+}
+
+.view-pick-pane {
+    -fx-background-color: rgba(40, 40, 40, 0.3);
+}
+
+.line-snap-guide {
+    -fx-stroke: black;
+    -fx-stroke-width: 5;
+    -fx-stroke-dash-array: 12 16;
+    -fx-stroke-line-cap: round;
+}
+.rectangle-snap-guide {
+    -fx-fill: hsba(0, 0%, 60%, 0.6);
+    -fx-arc-height: 15;
+    -fx-arc-width: 15;
+    -fx-stroke: grey(40%);
+    -fx-stroke-width: 4;
+}
+.main-hint {
+    -fx-text-fill: grey(40%);
+    -fx-font-size: 20pt;
+}
+.main-sub-hint {
+    -fx-text-fill: grey(40%);
+    -fx-font-size: 11pt;
+}
+.main-hint-container {
+    -fx-padding: 6pt 10pt 6pt 10pt;
+    -fx-background-color: derive($table-empty-background, 5%), $table-empty-background;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 20px;
+}
+
+.view {
+    -fx-background-color: $table-empty-background;
+}
+.banner-message {
+    -fx-background-color: beige;
+    .banner-message-text {
+        -fx-fill: black;
+    }
+    &:error {
+        -fx-background-color: darkred;
+        .banner-message-text {
+            -fx-fill: white;
+        }
+    }
+    -fx-padding: 6 10 6 10;
+}
+
+.guidance-root {
+    -fx-padding: 1em;
+    -fx-cursor: move;
+    .button {
+        -fx-cursor: default;
+    }
+}
+.guidance-highlight {
+    -fx-background-color: blue;
+}
+
+
+.recipe-menu-item, .recipe-header-menu-item, .recipe-header-menu-item:disabled, .recipe-header-menu-item:disabled:focused, .recipe-button {
+    -fx-font-family: "Kalam";
+    -fx-opacity: 1.0; /* Counter-act disabled state in default CSS */
+    & .label {
+        -fx-text-fill: $recipe-text !important;
+        -fx-opacity: 1.0; /* Counter-act disabled state in default CSS */
+    } 
+}
+.recipe-header-menu-item, .recipe-header-menu-item:disabled:focused {
+    -fx-background-insets: 0;
+    -fx-background-color: linear-gradient(from 0px 0px to 0px 7px, $control-background 0%, $recipe-background 99%, $recipe-background);
+    /* Reduce our usual padding: */
+    -fx-padding: 2 5 1 5;
+    & .label {
+        -fx-underline: true;
+    }
+}
+.recipe-menu-item {
+    -fx-background-insets: 0;
+    -fx-background-color: $recipe-background;
+    & .label {
+        -fx-label-padding: 0 0 0 10px;
+    }
+}
+.recipe-button {
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 5;
+    -fx-background-color: grey(50%), $recipe-background;
+    -fx-padding: 0 4 0 4;
+}
+
+.status-bar {
+    -fx-background-color: $status-bar-border, $status-bar-background;
+    -fx-background-insets: 0, 1 0 0 0;
+    -fx-padding: 0 0 0 8px;
+    .check-summary-counts {
+        &:failing {
+            -fx-text-fill: $table-header-background-color-check-failing;
+        }
+        &:hover {
+            -fx-underline:true;
+            -fx-cursor: hand;
+        }
+    }
+}
+.checks-list {
+    -fx-background-color: $status-bar-border, $status-bar-background;
+    -fx-background-insets: 0, 0 1 0 0;
+    -fx-padding: 5px;
+    -fx-fill-width: true;
+    -fx-spacing: 5;
+    .checks-top-header {
+        -fx-font-size: 140%;
+    }
+    .checks-list-header {
+        -fx-label-padding: 10px 0 3px 0;
+    }
+    .checks-list-entry {
+        -fx-label-padding: 0 5px 0 5px;
+        -fx-max-width: 9999px;
+        -fx-background-color: $table-header-transformation-background-color;
+        -fx-text-fill: $table-header-text-color;
+        &:failing {
+            -fx-background-color: $table-header-background-color-check-failing;
+        }
+        &:hover {
+            -fx-underline: true;
+            -fx-cursor: hand;
+        }
+    }
+}

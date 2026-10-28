@@ -6,17 +6,18 @@
 import { computed, inject } from "vue";
 import { VirtualGrid } from "../../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import type { VersionCounter } from "../../store/EngineStore.js";
-import { ProtoTableDisplay } from "./ProtoTableDisplay.js";
+import type { GridTableModel } from "./GridTableModel.js";
+import { TableAreaBase } from "./TableAreaBase.js";
 import { VIEWPORT } from "./viewport.js";
 
 const props = defineProps<{
-    display: ProtoTableDisplay,
+    display: GridTableModel,
     grid: VirtualGrid,
     layout: VersionCounter,
 }>();
 
 const ROW = VirtualGrid.rowHeight;
-const HEADER = ProtoTableDisplay.HEADER_ROWS;
+const HEADER = TableAreaBase.HEADER_ROWS;
 // Rows and columns are added and removed in blocks, so that the DOM changes only every few rows:
 const ROW_BLOCK = 16;
 const viewport = inject(VIEWPORT)!;
@@ -29,7 +30,7 @@ const geometry = computed(() =>
     const left = props.grid.sumColumnWidths(0, pos.columnIndex);
     const columnLefts: number[] = [];
     const columnWidths: number[] = [];
-    for (let i = 0; i < props.display.columns.length; i++)
+    for (let i = 0; i < props.display.columnNames.length; i++)
     {
         columnLefts.push(props.grid.sumColumnWidths(0, pos.columnIndex + i) - left);
         columnWidths.push(props.grid.getColumnWidth(pos.columnIndex + i));
@@ -97,19 +98,9 @@ function cell(row: number, column: number)
     return props.display.getCell(row, column);
 }
 
-const tableName = props.display.table.getId().getRaw();
-const columnNames = props.display.columns.map(c => c.getName().getRaw());
-const columnTypes = props.display.columns.map(c =>
-{
-    try
-    {
-        return c.getType().getType().toString();
-    }
-    catch (e)
-    {
-        return e instanceof Error ? e.message : String(e);
-    }
-});
+const tableName = props.display.tableName;
+const columnNames = props.display.columnNames;
+const columnTypes = props.display.columnTypes;
 
 // Column resizing: dragging the right edge of a column name (Java: the resizable column bar).
 function startResize(column: number, e: PointerEvent): void

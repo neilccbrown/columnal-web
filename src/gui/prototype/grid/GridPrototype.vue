@@ -4,13 +4,13 @@
 // the golden file input-01.rec; ?big=N adds a data table of N rows (and a Calculate on it).
 // window.__proto has the measurements that scripts/prototype/measure-grid.mjs runs.
 import { markRaw, onBeforeUnmount, shallowRef, useTemplateRef, watch } from "vue";
-import type { CellPosition } from "../../../engine/data/data/CellPosition.js";
 import { TableManager } from "../../../engine/data/data/TableManager.js";
 import { Workers } from "../../../engine/utility/utility/Workers.js";
 import { TransformationManager } from "../../../engine/transformations/transformations/TransformationManager.js";
 import { VirtualGrid } from "../../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { TableManagerStore, VersionCounter } from "../../store/EngineStore.js";
 import GridView from "./GridView.vue";
+import { installMeasurements } from "./measurements.js";
 import { fetchTime, ProtoTableDisplay, timings } from "./ProtoTableDisplay.js";
 import type { GridPrototypeApp } from "./GridPrototypeApp.js";
 
@@ -67,110 +67,12 @@ onBeforeUnmount(() => clearInterval(timer));
 
 const gridView = useTemplateRef<InstanceType<typeof GridView>>("gridView");
 
-// --- Measurements, for scripts/prototype/measure-grid.ts -----------------------------------------
-
-interface FrameStats
-{
-    frames: number;
-    meanMs: number;
-    p95Ms: number;
-    maxMs: number;
-    over20Ms: number;
-    over50Ms: number;
-}
-
-function stats(intervals: number[]): FrameStats
-{
-    const sorted = [...intervals].sort((a, b) => a - b);
-    return {
-        frames: sorted.length,
-        meanMs: sorted.reduce((a, b) => a + b, 0) / Math.max(1, sorted.length),
-        p95Ms: sorted[Math.floor(sorted.length * 0.95)] ?? 0,
-        maxMs: sorted.at(-1) ?? 0,
-        over20Ms: sorted.filter(x => x > 20).length,
-        over50Ms: sorted.filter(x => x > 50).length,
-    };
-}
-
-// Scrolls by (dx, dy) every frame for the given number of frames, and times the frames.
-function scrollBenchmark(dx: number, dy: number, frames: number): Promise<FrameStats>
-{
-    const scroller = gridView.value!.scroller()!;
-    return new Promise(resolve =>
-    {
-        const intervals: number[] = [];
-        let last = -1;
-        let n = 0;
-        const step = (t: number): void =>
-        {
-            if (last >= 0)
-                intervals.push(t - last);
-            last = t;
-            if (n++ >= frames)
-            {
-                resolve(stats(intervals));
-                return;
-            }
-            scroller.scrollBy(dx, dy);
-            requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-    });
-}
-
-// Times each frame until the engine's work queue and the render have settled:
-function framesUntilIdle(maxFrames: number): Promise<FrameStats>
-{
-    return new Promise(resolve =>
-    {
-        const intervals: number[] = [];
-        let last = -1;
-        let quiet = 0;
-        const step = (t: number): void =>
-        {
-            if (last >= 0)
-                intervals.push(t - last);
-            last = t;
-            quiet = workQueueIdle() ? quiet + 1 : 0;
-            if (quiet >= 10 || intervals.length >= maxFrames)
-                resolve(stats(intervals));
-            else
-                requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-    });
-}
-
-function workQueueIdle(): boolean
-{
-    return Workers.getTaskList().length === 0;
-}
-
-function tablePosition(name: string): CellPosition | null
-{
-    return displays.value.find(d => d.table.getId().getRaw() === name)?.getPosition() ?? null;
-}
-
-function scrollToTable(name: string, row: number): void
-{
-    const d = displays.value.find(x => x.table.getId().getRaw() === name);
-    const scroller = gridView.value!.scroller()!;
-    if (d !== undefined)
-        scroller.scrollTo({ left: grid.sumColumnWidths(0, d.getPosition().columnIndex) - 50, top: (d.getPosition().rowIndex + row) * VirtualGrid.rowHeight, behavior: "instant" });
-}
-
-Object.assign(window, {
-    __proto: {
-        timings,
-        fetchTime,
-        scrollBenchmark,
-        framesUntilIdle,
-        tablePosition,
-        scrollToTable,
-        selection: () => grid.getSelection()?.toString() ?? null,
-        tableLength: (name: string) => displays.value.find(d => d.table.getId().getRaw() === name)?.currentKnownRows ?? null,
-        domNodes: () => document.querySelectorAll("*").length,
-    },
+installMeasurements({
+    scroller: () => gridView.value!.scroller()!,
+    grid,
+    displays: () => displays.value,
+    idle: () => Workers.getTaskList().length === 0,
+    extra: { fetchTime },
 });
 </script>
 
@@ -189,7 +91,6 @@ Object.assign(window, {
       :grid="grid"
       :displays="displays"
       :layout="layout"
-      :table-manager="tableManager"
     />
   </div>
 </template>

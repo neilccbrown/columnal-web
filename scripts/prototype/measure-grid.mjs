@@ -1,12 +1,14 @@
 // Measures the Phase 7 grid prototype (src/gui/prototype/grid) in Chromium: loading, scrolling,
 // keyboard movement and editing, on the golden file with the 190,512-row join, plus a generated
 // data table.  Needs the dev server: npx vite --port 5190, then
-//   node scripts/prototype/measure-grid.mjs [bigRows] [cpuSlowdown]
+//   node scripts/prototype/measure-grid.mjs [bigRows] [cpuSlowdown] [worker]
 import { chromium } from "playwright";
 
 const bigRows = Number(process.argv[2] ?? 200000);
 const slowdown = Number(process.argv[3] ?? 1);
-const url = `http://localhost:5190/src/gui/prototype/grid/?big=${bigRows}`;
+// "worker" runs the engine in a Web Worker (the worker spike):
+const worker = process.argv[4] === "worker";
+const url = `http://localhost:5190/src/gui/prototype/grid/?big=${bigRows}` + (worker ? "&worker" : "");
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
@@ -18,7 +20,7 @@ const t0 = Date.now();
 await page.goto(url, { timeout: 600_000 });
 await page.waitForFunction(() => window.__proto?.tableLength("Big") > 0 || window.__proto?.tableLength("Trans 4") > 0, null, { timeout: 600_000 });
 await page.evaluate(() => window.__proto.framesUntilIdle(600));
-console.log(`CPU slowdown ${slowdown}x, big table ${bigRows} rows; page ready in ${Date.now() - t0} ms`);
+console.log(`${worker ? "Engine in a worker" : "Engine on the main thread"}, CPU slowdown ${slowdown}x, big table ${bigRows} rows; page ready in ${Date.now() - t0} ms`);
 for (const t of await page.evaluate(() => window.__proto.timings))
     console.log(`  ${t.what}: ${t.ms.toFixed(0)} ms`);
 console.log(`  DOM nodes: ${await page.evaluate(() => window.__proto.domNodes())}`);
@@ -36,7 +38,7 @@ async function measured(run)
     const fetchAfter = await page.evaluate(() => ({ ...window.__proto.fetchTime }));
     const ms = name => ((after[name] - before[name]) * 1000);
     const fetchMs = fetchAfter.ms - fetchBefore.ms;
-    return fmt(result) + `\n      main thread: engine values ${fetchMs.toFixed(0)} ms (${fetchAfter.cells - fetchBefore.cells} cells), other script ${(ms("ScriptDuration") - fetchMs).toFixed(0)} ms, style ${ms("RecalcStyleDuration").toFixed(0)} ms, layout ${ms("LayoutDuration").toFixed(0)} ms, total task ${ms("TaskDuration").toFixed(0)} ms`;
+    return fmt(result) + `\n      ${worker ? "worker" : "main thread"}: engine values ${fetchMs.toFixed(0)} ms (${fetchAfter.cells - fetchBefore.cells} cells), other script ${(ms("ScriptDuration") - fetchMs).toFixed(0)} ms, style ${ms("RecalcStyleDuration").toFixed(0)} ms, layout ${ms("LayoutDuration").toFixed(0)} ms, total task ${ms("TaskDuration").toFixed(0)} ms`;
 }
 
 const fmt = s => `${s.frames} frames, mean ${s.meanMs.toFixed(1)} ms, p95 ${s.p95Ms.toFixed(1)} ms, max ${s.maxMs.toFixed(1)} ms, >20ms: ${s.over20Ms}, >50ms: ${s.over50Ms}`;
@@ -53,6 +55,9 @@ for (const table of ["Trans 4", "Big"])
     console.log("  right 40 px/frame:  " + await measured(() => window.__proto.scrollBenchmark(40, 0, 100)));
     console.log("  left 40 px/frame:   " + await measured(() => window.__proto.scrollBenchmark(-40, 0, 100)));
     console.log(`  DOM nodes after: ${await page.evaluate(() => window.__proto.domNodes())}`);
+    const f = await page.evaluate(() => window.__proto.fetchTime);
+    if (f.requests > 0)
+        console.log(`  rows from the worker so far: ${f.requests} requests, mean ${(f.roundTripMs / f.requests).toFixed(0)} ms from asking to arriving`);
 }
 
 // Keyboard: input-to-paint latency of keydowns (the Event Timing API reports events over 16 ms).

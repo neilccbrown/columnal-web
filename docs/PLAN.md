@@ -540,6 +540,25 @@ OFL licence files), the design tokens and font faces (`src/gui/styles/`), and th
     (suggesting its DFA cache is not reused), and about 1.2 s creating a `CharStream` per line.
   - Native scrolling is limited by the browser's maximum element height: 33.5 M px in Chromium (1.4 M rows of
     24 px); Firefox's is lower (about 17.9 M px, 745 k rows). Larger tables would need a scaled-scroll fallback.
+- **Worker spike** (`/src/gui/prototype/grid/?worker`, code in `src/gui/prototype/worker/`): the same grid
+  with the engine in a Web Worker, which owns the TableManager. The engine ran there unchanged (only the HTML
+  importer needs the DOM: `DOMParser` doesn't exist in workers). The GUI sees tables' shapes (`TableInfo`:
+  name, position, column names and types) and asks for a table's length and for blocks of 64 rows of cell
+  text, which show empty until they arrive (Java showed "Loading..."); edits are sent as text and parsed in the
+  worker; a replaced table gets a new version and keeps its place. The worker skips all but the newest two
+  fetches per table, so a fling doesn't leave it computing rows out of view. The grid view is shared with the
+  synchronous version through `GridTableModel`. Measured with `measure-grid.mjs 200000 1 worker`:
+  - Every frame stays at 60 fps in every test, including flinging over the join (before: mean 25 ms) and
+    edits that re-run the join (before: two frames of about 130 ms).
+  - Rows arrive a mean of 35 ms after being asked for while flinging over the join (15 ms over the data table).
+  - Loading the 200,000-row file takes as long (9.6 s) but the page stays responsive (longest frame 33 ms);
+    it shows nothing until the whole file is loaded.
+  - (Chrome's CPU slowdown applies only to the main thread, so 4× runs don't slow the worker.)
+  - What it means for the GUI: every engine call from the GUI becomes a message, so the GUI code can't hold
+    engine objects (tables, columns, values, types). The gui-logic that needs engine types (recognisers,
+    expression lexers and completion, which use the TypeManager) would either run in the worker, behind
+    messages, or keep a copy of the type information on the main thread. The GUI tests could no longer read
+    the engine's objects directly, and would need queries sent to the worker.
 - **Reka UI vs Ark UI** (`/src/gui/prototype/components/`): a LightDialog frame (modal, draggable), a column
   context menu with a submenu, a tooltip shown when a label is cut short, and a combo box for picking a table,
   in each. `scripts/prototype/compare-components.mjs` runs the same 11 keyboard, mouse and ARIA checks on both,
@@ -687,10 +706,16 @@ Decided:
   for headless components; GUI tests in Vitest browser mode rather than Playwright's runner; browser-reserved
   shortcuts remapped as in CONVENTIONS.md "GUI"; and running the engine off the main thread is to be looked at
   soon, before Phase 8's production grid, rather than in Phase 13.
+- After the worker spike: the engine runs in a Web Worker, which owns the TableManager, and the GUI talks to it
+  by messages. Editors that need engine types while the user types (the expression editor's checking and
+  completion, cell editors' recognisers) run on the main thread against a copy of the type information
+  (tables' columns and types, the TypeManager's types, units), taken when the editor opens: while it is open,
+  nothing changes except by the user. The copy is taken once the worker is idle, so it includes any re-run
+  still going from an earlier edit. Anything that needs table data rather than types is a request to the worker.
 
 Open:
-- How to run the engine off the main thread (a Web Worker, or time-slicing), and whether to optimise its file
-  loading (3–5× slower than Java's) at the same time.
+- Whether to optimise the engine's file loading (3–5× slower than Java's). In the worker it no longer freezes
+  the page, but nothing shows until the whole file is loaded.
 - Whether webR's download size is acceptable, or R support should be optional or
   deferred.
 - Supported browsers. The File System Access API is Chromium-only, and other browsers

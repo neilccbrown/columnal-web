@@ -1,8 +1,10 @@
 // Grid prototype (Phase 7, throwaway): see GridPrototype.vue.  Shows the golden file input-01.rec
-// (fetched from the dev server), plus a generated data table of N rows with ?big=N.
+// (fetched from the dev server), plus a generated data table of N rows with ?big=N.  With ?worker, the
+// engine runs in a Web Worker (the worker spike, ../worker).
 import { createApp } from "vue";
 import { bigTableFile } from "./bigTable.js";
 import GridPrototype from "./GridPrototype.vue";
+import WorkerGridPrototype from "../worker/WorkerGridPrototype.vue";
 import { timings } from "./ProtoTableDisplay.js";
 
 const params = new URLSearchParams(location.search);
@@ -13,5 +15,5 @@ const params = new URLSearchParams(location.search);
     const fileText = input01 + (bigRows > 0 ? "\n" + bigTableFile(bigRows) : "");
     if (bigRows > 0)
         timings.push({ what: `generate file of ${bigRows} rows (${(fileText.length / 1e6).toFixed(1)} MB)`, ms: performance.now() - start });
-    createApp(GridPrototype, { fileText }).mount("#app");
+    createApp(params.has("worker") ? WorkerGridPrototype : GridPrototype, { fileText }).mount("#app");
 }

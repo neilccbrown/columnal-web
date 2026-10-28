@@ -11,44 +11,31 @@ import type { Table } from "../../../engine/data/data/Table.js";
 import type { ColumnId } from "../../../engine/identifiers/id/ColumnId.js";
 import type { DataType } from "../../../engine/types/data/datatype/DataType.js";
 import type { Pair } from "../../../engine/utility-adt/utility/adt/Pair.js";
-import { DataTypeUtility } from "../../../engine/types/data/datatype/DataTypeUtility.js";
 import { Either } from "../../../engine/utility-adt/utility/adt/Either.js";
 import type { Value } from "../../../engine/utility/utility/Value.js";
 import { Workers } from "../../../engine/utility/utility/Workers.js";
 import { Platform } from "../../../engine/java/Platform.js";
-import type { CellSelection } from "../../../gui-logic/stf/gui/grid/CellSelection.js";
-import { GridArea } from "../../../gui-logic/stf/gui/grid/GridArea.js";
-import { RectangleBounds } from "../../../gui-logic/stf/gui/grid/RectangleBounds.js";
-import { RectangularTableCellSelection } from "../../../gui-logic/stf/gui/grid/RectangularTableCellSelection.js";
-import { EntireTableSelection } from "../../../gui-logic/table-gui/gui/table/EntireTableSelection.js";
-import { VersionCounter } from "../../store/EngineStore.js";
+import { TableAreaBase } from "./TableAreaBase.js";
+import { type CellContent, fetchCell } from "./cellContent.js";
+import type { GridTableModel } from "./GridTableModel.js";
+import { ParseProgress } from "../../../engine/utility/utility/ParseProgress.js";
+import { TableDisplayUtility } from "../../../gui-logic/stf/gui/dtf/TableDisplayUtility.js";
 
-export interface CellContent
+
+export class ProtoTableDisplay extends TableAreaBase implements Table.TableDisplayBase, GridTableModel
 {
-    readonly text: string;
-    readonly kind: "number" | "text" | "other" | "error";
-}
-
-export class ProtoTableDisplay extends GridArea implements Table.TableDisplayBase
-{
-    public static readonly HEADER_ROWS = 3;
-
+    public readonly tableName: string;
+    public readonly columnNames: readonly string[];
+    public readonly columnTypes: readonly string[];
     public readonly table: Table;
     public readonly recordSet: RecordSet | null;
     public readonly columns: readonly Column[];
     public readonly error: string | null;
     public readonly editable: boolean;
-    public currentKnownRows = 0;
     private currentKnownRowsIsFinal = false;
     private queuedUpdateRows = false;
-    // Bumped when the table's data changes (Java: the RecordSetListener):
-    public readonly dataVersion = new VersionCounter();
-    // Bumped when the table's size changes:
-    public readonly sizeVersion = new VersionCounter();
     // Values fetched so far (Java: EditorKitCache), keyed by row * column count + column:
     private readonly cache = new Map<number, CellContent>();
-
-    private readonly dataSelectionLimits: RectangularTableCellSelection.TableSelectionLimits;
 
     public constructor(table: Table)
     {
@@ -77,6 +64,19 @@ export class ProtoTableDisplay extends GridArea implements Table.TableDisplayBas
             this.error ??= e instanceof Error ? e.message : String(e);
         }
         this.columns = columns;
+        this.tableName = table.getId().getRaw();
+        this.columnNames = columns.map(c => c.getName().getRaw());
+        this.columnTypes = columns.map(c =>
+        {
+            try
+            {
+                return c.getType().getType().toString();
+            }
+            catch (e)
+            {
+                return e instanceof Error ? e.message : String(e);
+            }
+        });
         table.setDisplay(this);
         recordSet?.setListener({
             modifiedDataItems: () => { this.cache.clear(); this.dataVersion.bump(); },
@@ -92,18 +92,11 @@ export class ProtoTableDisplay extends GridArea implements Table.TableDisplayBas
             addedColumn: () => {},
             removedColumn: () => {},
         });
-        this.dataSelectionLimits = {
-            getTopLeftIncl: () => this.getPosition().offsetByRowCols(ProtoTableDisplay.HEADER_ROWS, 0),
-            getBottomRightIncl: () => this.getPosition().offsetByRowCols(ProtoTableDisplay.HEADER_ROWS + Math.max(0, this.currentKnownRows - 1), Math.max(0, this.columns.length - 1)),
-            doCopy: () => {},
-            doDelete: () => {},
-            gotoRow: () => {},
-        };
     }
 
     protected override updateKnownRows(checkUpToRowInclGrid: GridAreaRowIndex, updateSizeAndPositions: () => void): void
     {
-        const checkUpToRowIncl = checkUpToRowInclGrid - ProtoTableDisplay.HEADER_ROWS;
+        const checkUpToRowIncl = checkUpToRowInclGrid - TableAreaBase.HEADER_ROWS;
         const recordSet = this.recordSet;
         if (!this.currentKnownRowsIsFinal && this.currentKnownRows < checkUpToRowIncl && recordSet !== null && !this.queuedUpdateRows)
         {
@@ -135,34 +128,6 @@ export class ProtoTableDisplay extends GridArea implements Table.TableDisplayBas
         }
     }
 
-    protected override recalculateBottomRightIncl(): CellPosition
-    {
-        return this.getPosition().offsetByRowCols(Math.max(0, this.currentKnownRows + (this.columns.length === 0 ? 0 : ProtoTableDisplay.HEADER_ROWS) - 1), Math.max(0, this.columns.length - 1));
-    }
-
-    public override getSelectionForSingleCell(cellPosition: CellPosition): CellSelection | null
-    {
-        if (!this.contains(cellPosition))
-            return null;
-        const us = this.getPosition();
-        if (cellPosition.rowIndex === us.rowIndex)
-        {
-            return new EntireTableSelection({
-                getPosition: () => this.getPosition(),
-                getBottomRightIncl: () => this.getBottomRightIncl(),
-                doCopy: () => {},
-                doDelete: () => {},
-                gotoRow: () => {},
-                flashHeader: () => {},
-            }, cellPosition.columnIndex);
-        }
-        else if (cellPosition.rowIndex >= us.rowIndex + ProtoTableDisplay.HEADER_ROWS && cellPosition.rowIndex < us.rowIndex + this.currentKnownRows + ProtoTableDisplay.HEADER_ROWS && cellPosition.columnIndex < us.columnIndex + this.columns.length)
-        {
-            return new RectangularTableCellSelection(cellPosition.rowIndex, cellPosition.columnIndex, this.dataSelectionLimits);
-        }
-        return new SingleCellSelection(cellPosition);
-    }
-
     // Table.TableDisplayBase:
     public loadPosition(position: CellPosition): void
     {
@@ -188,13 +153,6 @@ export class ProtoTableDisplay extends GridArea implements Table.TableDisplayBas
         return this.table.getId().getRaw();
     }
 
-    /** The data row shown at the given row of the grid, or null if it is not a data row. */
-    public dataRowAt(absRow: number): number | null
-    {
-        const row = absRow - this.getPosition().rowIndex - ProtoTableDisplay.HEADER_ROWS;
-        return row >= 0 && row < this.currentKnownRows ? row : null;
-    }
-
     public getCell(row: number, col: number): CellContent
     {
         const key = row * this.columns.length + col;
@@ -210,6 +168,25 @@ export class ProtoTableDisplay extends GridArea implements Table.TableDisplayBas
         return content;
     }
 
+    public commitEdit(row: number, col: number, text: string): Promise<string | null>
+    {
+        const start = performance.now();
+        const recogniser = TableDisplayUtility.recogniser(this.columns[col]!.getType().getType(), true).recogniser;
+        const result = recogniser.process(ParseProgress.fromStart(text), false).flatMap(s => s.requireEnd());
+        if (result.isLeft())
+            return Promise.resolve(result.getLeft("error").error.toPlain());
+        this.storeValue(row, col, result.getRight("value").value);
+        timings.push({ what: "store edited value", ms: performance.now() - start });
+        // Java: TableDisplay's onModify re-runs the dependent tables on the worker queue:
+        Workers.onWorkerThread("Updating dependents", Workers.Priority.FETCH, () =>
+        {
+            const reRunStart = performance.now();
+            this.table.getManager().reRun(this.table);
+            timings.push({ what: "reRun after edit", ms: performance.now() - reRunStart });
+        });
+        return Promise.resolve(null);
+    }
+
     /** Stores an edited value, then re-runs the dependent tables (Java: TableDisplay's onModify). */
     public storeValue(row: number, col: number, value: Value): void
     {
@@ -222,51 +199,3 @@ export class ProtoTableDisplay extends GridArea implements Table.TableDisplayBas
 export const timings: { what: string, ms: number }[] = [];
 // The total time spent fetching values from the engine, for the measurements:
 export const fetchTime = { ms: 0, cells: 0 };
-
-function fetchCell(column: Column, row: number): CellContent
-{
-    try
-    {
-        const value = column.getType().getCollapsed(row);
-        if (typeof value === "string")
-            return { text: value, kind: "text" };
-        const text = DataTypeUtility.valueToString(value);
-        return { text, kind: /^-?[0-9]/.test(text) && !text.includes(" ") && !text.includes("-", 1) ? "number" : "other" };
-    }
-    catch (e)
-    {
-        return { text: e instanceof Error ? e.message : String(e), kind: "error" };
-    }
-}
-
-// Java: DataDisplay.SingleCellSelection, for a column name or type
-class SingleCellSelection implements CellSelection
-{
-    private readonly pos: CellPosition;
-
-    public constructor(pos: CellPosition)
-    {
-        this.pos = pos;
-    }
-
-    public atHome(): CellSelection { return this; }
-    public atEnd(): CellSelection { return this; }
-    public move(extendSelection: boolean, byRows: number, byColumns: number): Either<CellPosition, CellSelection>
-    {
-        if (!extendSelection)
-            return Either.left(this.pos.offsetByRowCols(byRows, byColumns));
-        return Either.right(this);
-    }
-    public extendTo(): CellSelection | null { return null; }
-    public positionToEnsureInView(): CellPosition { return this.pos; }
-    public getSelectionDisplayRectangle(): RectangleBounds { return new RectangleBounds(this.pos, this.pos); }
-    public isExactly(cellPosition: CellPosition): boolean { return this.pos.equals(cellPosition); }
-    public includes(): boolean { return false; }
-    public gotoRow(): void {}
-    public doCopy(): void {}
-    public doPaste(): void {}
-    public doDelete(): void {}
-    public getActivateTarget(): CellPosition { return this.pos; }
-    public notifySelected(): void {}
-}
-

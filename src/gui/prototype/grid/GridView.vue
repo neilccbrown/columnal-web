@@ -4,24 +4,18 @@
 // selection, and moves the selection with the keyboard; this shows it, and is its Display.
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, shallowRef, useTemplateRef } from "vue";
 import { CellPosition } from "../../../engine/data/data/CellPosition.js";
-import type { TableManager } from "../../../engine/data/data/TableManager.js";
-import { ParseProgress } from "../../../engine/utility/utility/ParseProgress.js";
-import { Workers } from "../../../engine/utility/utility/Workers.js";
 import { Either } from "../../../engine/utility-adt/utility/adt/Either.js";
 import { Pair } from "../../../engine/utility-adt/utility/adt/Pair.js";
-import { TableDisplayUtility } from "../../../gui-logic/stf/gui/dtf/TableDisplayUtility.js";
 import { VirtualGrid } from "../../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { VersionCounter } from "../../store/EngineStore.js";
 import GridTable from "./GridTable.vue";
-import type { ProtoTableDisplay } from "./ProtoTableDisplay.js";
-import { timings } from "./ProtoTableDisplay.js";
+import type { GridTableModel } from "./GridTableModel.js";
 import { VIEWPORT } from "./viewport.js";
 
 const props = defineProps<{
     grid: VirtualGrid,
-    displays: readonly ProtoTableDisplay[],
+    displays: readonly GridTableModel[],
     layout: VersionCounter,
-    tableManager: TableManager,
 }>();
 
 const ROW = VirtualGrid.rowHeight;
@@ -106,7 +100,7 @@ const selectionRect = computed(() =>
 
 interface Editing
 {
-    readonly display: ProtoTableDisplay;
+    readonly display: GridTableModel;
     readonly row: number;
     readonly column: number;
     readonly position: CellPosition;
@@ -116,7 +110,7 @@ interface Editing
 const editing = shallowRef<Editing | null>(null);
 const editorInput = useTemplateRef<HTMLInputElement>("editorInput");
 
-function findDisplay(pos: CellPosition): ProtoTableDisplay | null
+function findDisplay(pos: CellPosition): GridTableModel | null
 {
     return props.displays.find(d => d.contains(pos)) ?? null;
 }
@@ -128,7 +122,7 @@ function startEdit(pos: CellPosition, character: string | null): void
         return;
     const row = display.dataRowAt(pos.rowIndex);
     const column = pos.columnIndex - display.getPosition().columnIndex;
-    if (row === null || column < 0 || column >= display.columns.length)
+    if (row === null || column < 0 || column >= display.columnNames.length)
         return;
     editing.value = { display, row, column, position: pos, initialText: character ?? display.getCell(row, column).text, error: null };
     void nextTick(() =>
@@ -157,32 +151,21 @@ const editorStyle = computed(() =>
     };
 });
 
-function commitEdit(moveDown: boolean): void
+async function commitEdit(moveDown: boolean): Promise<void>
 {
     const e = editing.value;
     const input = editorInput.value;
     if (e === null || input === null)
         return;
-    const start = performance.now();
-    const type = e.display.columns[e.column]!.getType().getType();
-    const recogniser = TableDisplayUtility.recogniser(type, true).recogniser;
-    const result = recogniser.process(ParseProgress.fromStart(input.value), false).flatMap(s => s.requireEnd());
-    if (result.isLeft())
+    const error = await e.display.commitEdit(e.row, e.column, input.value);
+    if (editing.value !== e)
+        return;
+    if (error !== null)
     {
-        editing.value = { ...e, error: result.getLeft("error").error.toPlain() };
+        editing.value = { ...e, error };
         return;
     }
-    e.display.storeValue(e.row, e.column, result.getRight("value").value);
     editing.value = null;
-    const table = e.display.table;
-    // Java: TableDisplay's onModify re-runs the dependent tables on the worker queue:
-    Workers.onWorkerThread("Updating dependents", Workers.Priority.FETCH, () =>
-    {
-        const reRunStart = performance.now();
-        props.tableManager.reRun(table);
-        timings.push({ what: "reRun after edit", ms: performance.now() - reRunStart });
-    });
-    timings.push({ what: "store edited value", ms: performance.now() - start });
     scroller.value?.focus({ preventScroll: true });
     // Java: Enter selects the cell below
     if (moveDown)
@@ -199,7 +182,7 @@ function onEditorKeyDown(e: KeyboardEvent): void
 {
     if (e.key === "Enter")
     {
-        commitEdit(true);
+        void commitEdit(true);
         e.preventDefault();
     }
     else if (e.key === "Escape")
@@ -290,7 +273,7 @@ function onMouseDown(e: MouseEvent): void
     if (e.button !== 0 || (e.target as HTMLElement).closest(".cell-editor, .resize-handle") !== null)
         return;
     if (editing.value !== null)
-        commitEdit(false);
+        void commitEdit(false);
     const rect = canvas.value!.getBoundingClientRect();
     const x = e.clientX - rect.left;
     let row = Math.floor((e.clientY - rect.top) / ROW);
@@ -391,7 +374,7 @@ defineExpose({ scroller: () => scroller.value });
         :value="editing.initialText"
         :title="editing.error ?? ''"
         @keydown="onEditorKeyDown"
-        @blur="commitEdit(false)"
+        @blur="void commitEdit(false)"
       >
     </div>
   </div>

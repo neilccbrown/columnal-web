@@ -402,6 +402,9 @@ install and before `dev`, `build`, `test` and `typecheck`.
   `vitest.browser.config.ts`): when Vite found one mid-run it reloaded with two copies of Vue. The test
   files run one at a time (`fileParallelism: false`): files in parallel share the browser's keyboard
   focus, so one file's typing can land in another's field.
+- The Java GUI tests' generic traits are helpers in `test/gui/base/` (one module per trait, e.g.
+  `selectGivenComboBoxItem` in `comboUtil.ts`); the traits for tables, types and expressions join them in the
+  phases that build those. The clipboard works in tests (the browser config grants the permissions).
 
 ## GUI (from Phase 7)
 

@@ -475,7 +475,7 @@ Carried over from Phase 6:
   `Damerau.ts`; `javaClassName` for anonymous classes; and checking each remaining `tests-gui-central`
   test for engine-level parts when its phase comes.
 
-### Phase 7: GUI foundations, grid prototype, test harness
+### Phase 7: GUI foundations, grid prototype, test harness (done)
 - **Grid prototype first.** This is the biggest GUI risk. Build a throwaway table canvas
   in Vue using the native-scroll design, fed with real data:
   - several tables, one with 100k+ rows
@@ -564,10 +564,17 @@ Part B, in steps (each a checkpoint with the project owner):
      (`docs/gui-spec/menus-and-tooltips.md`). Left for the phases that need them: menus opened from a
      button (JavaFX `ContextMenu.show(node, …)`) and the menu bar (Phase 9).
    - The component prototypes are deleted.
-6. Test helpers in `test/gui/base/` for the generic traits (`FocusOwnerTrait`, `PopupTrait`,
+6. Test helpers (done) in `test/gui/base/` for the generic traits (`FocusOwnerTrait`, `PopupTrait`,
    `TextFieldTrait`, `ListUtilTrait`, `ComboUtilTrait`, `ClipboardTrait`, `ScrollToTrait`). The traits that
    drive tables, types and expressions (`CreateDataTableTrait`, `EnterTypeTrait`, `EnterExpressionTrait`, …)
    come with the phase that builds what they drive (8–10).
+   - One module per trait (`focusOwner.ts`, `popup.ts`, `textField.ts`, `listUtil.ts`, `comboUtil.ts`,
+     `clipboard.ts`, `scrollTo.ts`), checked by `Helpers.test.ts` against small components. They work
+     through the DOM and ARIA roles: a ListView is a `listbox` whose arrow keys move the selection
+     (`aria-selected`), a ComboBox a `combobox` whose `aria-controls` list has the items, a dialog an
+     element with the `dialog` role. The list and combo components of later phases should behave so.
+   - Left for Phase 8: `ScrollToTrait.keyboardMoveTo`, which drives the grid (and F11, the grid's other
+     copy key, which `copyToClipboard` presses by default).
    Also: the grid prototype's tests failed now and then when the test files ran in parallel (they share
    the browser's keyboard focus), so `vitest.browser.config.ts` runs them one at a time (also much faster:
    about 10 s, not 3 minutes). `propEnterNumbers` finds cells by their text with `userEvent.click`, which

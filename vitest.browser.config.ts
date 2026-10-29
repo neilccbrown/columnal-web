@@ -20,7 +20,8 @@ export default defineConfig({
         include: ["test/gui/**/*.test.ts"],
         browser: {
             enabled: true,
-            provider: playwright(),
+            // (The clipboard permissions are for test/gui/base/clipboard.ts)
+            provider: playwright({ contextOptions: { permissions: ["clipboard-read", "clipboard-write"] } }),
             headless: true,
             instances: [{ browser: "chromium" }],
             viewport: { width: 1280, height: 800 },

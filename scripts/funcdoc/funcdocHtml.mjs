@@ -62,8 +62,9 @@ function makeLink(joined)
         if (node.hasAttribute("literal"))
             return link(joined ? `#literal-${a("literal")}` : `literal-${a("literal")}.html`, esc(a("literal")) + "{..}");
         if (node.hasAttribute("guide"))
-            // (The joined stylesheet uses @literal here, so the link goes to #guide-)
-            return link(joined ? `#guide-${a("literal")}` : `guide-${a("guide")}.html`, esc(a("guide")) + " guide");
+            // Java bug, fixed: the joined stylesheet's link was #guide-{@literal}, which is always #guide-,
+            // and the namespace pages don't have the guides anyway, so it goes to the guide's page:
+            return link(`guide-${a("guide")}.html`, esc(a("guide")) + " guide");
         if (node.hasAttribute("namespace"))
             return link(joined ? `#namespace-${a("namespace")}` : `${a("namespace")}.html`, esc(a("namespace")));
         if (node.hasAttribute("type"))

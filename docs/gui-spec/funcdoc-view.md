@@ -32,6 +32,8 @@ Web: `src/gui/components/FuncdocView.vue`, `src/gui/funcdoc.ts`, pages from `scr
 
 ## Web differences
 
+- Java bug, fixed: the namespace pages' guide links went to `#guide-` (the stylesheet used the wrong
+  attribute); they go to the guide's page.
 - External links (one, to Wikipedia) open in a new tab; WebView would have shown the site in the view.
 
 - The view emits `insert` with the text; the expression editor (Phase 10) decides where it goes.

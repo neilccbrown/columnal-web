@@ -14,6 +14,8 @@ const pages = funcdocPages(join(funcdoc, "_all.xml"), readdirSync(funcdoc).filte
 function normalise(html: string): string
 {
     return html
+        // A Java bug, fixed (see funcdocHtml.mjs):
+        .replace(/<a class="internal-link" href="#guide-">([^<]*) guide<\/a>/g, '<a class="internal-link" href="guide-$1.html">$1 guide</a>')
         // Namespace declarations copied from the source (see funcdocHtml.mjs):
         .replace(/ xmlns:\w+="[^"]*"/g, "")
         .replace(/\s+/g, " ")

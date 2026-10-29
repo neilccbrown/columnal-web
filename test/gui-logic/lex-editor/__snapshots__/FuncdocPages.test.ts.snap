@@ -6,7 +6,6 @@ exports[`links that go nowhere 1`] = `
   "comparison.html -> #operator-60",
   "comparison.html -> #type-Number",
   "comparison.html -> #type-typevar",
-  "conversion.html -> #guide-",
   "conversion.html -> #type-Number",
   "conversion.html -> #type-Text",
   "conversion.html -> #type-typevar",

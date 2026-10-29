@@ -109,7 +109,11 @@ function deleteCells(toDelete: readonly Cell[]): void
     setTimeout(() =>
     {
         const ids = new Set(toDelete.map(c => c.id));
+        // Java bug, fixed: the selection (kept by position) wasn't changed, so other cells became
+        // selected; it stays on the same cells:
+        const selectedIds = new Set(selectedCells().map(c => c.id));
         cells.value = cells.value.filter(c => !ids.has(c.id));
+        selection.value = new Set(cells.value.flatMap((c, i) => selectedIds.has(c.id) ? [i] : []));
         deleting.value = new Set([...deleting.value].filter(id => !ids.has(id)));
         changed();
     }, 200);
@@ -274,6 +278,7 @@ defineExpose({ addToEnd, focusAddButton, clearSelection, items: currentItems });
         class="small-delete"
         tabindex="-1"
         aria-label="Delete"
+        @mousedown.prevent
         @click="deleteClicked(cell, index)"
         @mouseenter="deleteHovered(index, true)"
         @mouseleave="deleteHovered(index, false)"

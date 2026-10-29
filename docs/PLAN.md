@@ -557,8 +557,8 @@ Part B, in steps (each a checkpoint with the project owner):
    - ErrorableTextField (done): the conversion ported to `gui-logic/.../ErrorableTextField.ts`, the field
      in `src/gui/components/ErrorableTextField.vue`, with `StyledText.vue` for StyledStrings
      (`docs/gui-spec/errorable-text-field.md`).
-   - FancyList (done): `src/gui/components/FancyList.vue` (`docs/gui-spec/fancy-list.md`). A Java bug
-     ported as is (the selection is kept by position across a delete), for a decision.
+   - FancyList (done): `src/gui/components/FancyList.vue` (`docs/gui-spec/fancy-list.md`), with a Java bug
+     fixed (the selection was kept by position across a delete).
    - Context menus and tooltips (done): `src/gui/components/menus/` (menus as data, as `GUI.menuItem`
      etc. make them, and `ContextMenu.vue`), `HoverTooltip.vue`, `AbbrevLabel.vue`
      (`docs/gui-spec/menus-and-tooltips.md`). Left for the phases that need them: menus opened from a

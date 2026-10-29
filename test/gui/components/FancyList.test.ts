@@ -54,6 +54,21 @@ describe("FancyList", () =>
         await expect.poll(() => items.value).toEqual(["a", "d"]);
     });
 
+    it("keeps the selection on the same cells after a delete", async () =>
+    {
+        const items = renderList(["a", "b", "c", "d"]);
+        await userEvent.click(cell("c"));
+        await userEvent.click(page.getByRole("button", { name: "Delete" }).first());
+        await expect.poll(() => items.value).toEqual(["b", "c", "d"]);
+        expect([...document.querySelectorAll(".fancy-list-cell.selected [data-testid=label]")].map(e => e.textContent)).toEqual(["c"]);
+        await userEvent.keyboard("{Delete}");
+        await expect.poll(() => items.value).toEqual(["b", "d"]);
+        expect(document.querySelectorAll(".fancy-list-cell.selected").length).toBe(0);
+        await userEvent.keyboard("{Delete}");
+        await new Promise(resolve => setTimeout(resolve, 300));
+        expect(items.value).toEqual(["b", "d"]);
+    });
+
     it("doesn't delete the selection on Backspace in a field", async () =>
     {
         const items = renderList(["a", "b"]);

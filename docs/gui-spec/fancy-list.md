@@ -28,15 +28,13 @@ Web: `src/gui/components/FancyList.vue`.
   selected cells there, in order, and clears the selection.
 - Add: adds a new item at the end, its cell editing straight away.
 
-## Known Java bug (ported as is)
-
-- Deleting doesn't change the selection, which is kept as positions: after deleting the selected cells
-  (or a cell before them), the cells now at those positions are selected, and Delete deletes them.
-  In Java they didn't look selected; here they do.
-
 ## Web differences
+
+- Java bug, fixed: deleting didn't change the selection, which was kept by position, so after deleting
+  the selected cells (or a cell before them), the cells then at those positions were selected (though
+  they didn't look it), and Delete deleted them. The selection now stays on the same cells.
 
 - The items are data (`v-model:items`); the `cell` slot shows one and calls `setItem` to change it.
   Cells are cleaned up when they unmount (Java: `cleanup`).
-- Pressing a cell gives the list the keyboard focus, so that Delete goes to it (in Java, a press on a
+- Pressing a cell gives the list the keyboard focus (and the cross doesn't take it), so that Delete goes to it (in Java, a press on a
   cell didn't move the focus, so Delete only worked if something in the list already had it).

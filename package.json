@@ -31,7 +31,6 @@
     "cli": "node --import tsx --import ./scripts/cli/register-resources.mjs scripts/cli/columnal-cli.ts"
   },
   "dependencies": {
-    "@ark-ui/vue": "^5.39.3",
     "@js-joda/core": "^6.3.0",
     "@js-joda/locale": "^5.3.2",
     "@js-joda/locale_en": "^5.3.2",

@@ -496,7 +496,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Module | Files | Lines |
 |---|---|---|
-| utility-gui | 1 / 32 | 137 / 6658 (2%) |
+| utility-gui | 4 / 32 | 2197 / 6658 (33%) |
 | ✅ lex-editor-completion | 7 / 7 | 1392 / 1392 (100%) |
 | stf | 24 / 42 | 6124 / 9337 (66%) |
 | lex-editor | 18 / 21 | 7958 / 8146 (98%) |
@@ -517,15 +517,15 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/ErrorLabel.java` | `src/gui-logic/utility-gui/utility/gui/ErrorLabel.ts` | 48 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/ErrorableDialog.java` | `src/gui-logic/utility-gui/utility/gui/ErrorableDialog.ts` | 107 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/ErrorableLightDialog.java` | `src/gui-logic/utility-gui/utility/gui/ErrorableLightDialog.ts` | 118 | – |
-| `utility-gui/src/main/java/xyz/columnal/utility/gui/ErrorableTextField.java` | `src/gui-logic/utility-gui/utility/gui/ErrorableTextField.ts` | 375 | – |
+| `utility-gui/src/main/java/xyz/columnal/utility/gui/ErrorableTextField.java` | `src/gui-logic/utility-gui/utility/gui/ErrorableTextField.ts` | 375 | ✅ (parts deferred) |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/ExplainedButton.java` | `src/gui-logic/utility-gui/utility/gui/ExplainedButton.ts` | 147 | – |
-| `utility-gui/src/main/java/xyz/columnal/utility/gui/FXUtility.java` | `src/gui-logic/utility-gui/utility/gui/FXUtility.ts` | 1582 | – |
+| `utility-gui/src/main/java/xyz/columnal/utility/gui/FXUtility.java` | `src/gui-logic/utility-gui/utility/gui/FXUtility.ts` | 1582 | ✅ (parts deferred) |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/FancyList.java` | `src/gui-logic/utility-gui/utility/gui/FancyList.ts` | 529 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/FixList.java` | `src/gui-logic/utility-gui/utility/gui/FixList.ts` | 126 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/FocusTracker.java` | `src/gui-logic/utility-gui/utility/gui/FocusTracker.ts` | 110 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/GUI.java` | `src/gui-logic/utility-gui/utility/gui/GUI.ts` | 505 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/HBoxRow.java` | `src/gui-logic/utility-gui/utility/gui/HBoxRow.ts` | 39 | – |
-| `utility-gui/src/main/java/xyz/columnal/utility/gui/Help.java` | `src/gui-logic/utility-gui/utility/gui/Help.ts` | 103 | – |
+| `utility-gui/src/main/java/xyz/columnal/utility/gui/Help.java` | `src/gui-logic/utility-gui/utility/gui/Help.ts` | 103 | ✅ |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/HelpBox.java` | `src/gui-logic/utility-gui/utility/gui/HelpBox.ts` | 214 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/HelpfulTextFlow.java` | `src/gui-logic/utility-gui/utility/gui/HelpfulTextFlow.ts` | 67 | – |
 | `utility-gui/src/main/java/xyz/columnal/utility/gui/Instruction.java` | `src/gui-logic/utility-gui/utility/gui/Instruction.ts` | 115 | – |

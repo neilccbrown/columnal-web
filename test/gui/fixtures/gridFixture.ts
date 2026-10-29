@@ -1,4 +1,4 @@
-// Phase 7 (throwaway): a small saved file for the grid prototype's tests (GridPrototype.test.ts).  A data table T at column 1, and a Calculate C
+// A small saved file for GUI tests: a data table T at column 1, and a Calculate C
 // at column 4 that doubles T's numbers.
 export const GRID_FIXTURE = `COLUMNAL
 VERSION 3

@@ -53,7 +53,7 @@ function* elementsByNameNS(root, ns, localName)
 const isWhitespaceOnly = s => /^[ \t\r\n]*$/.test(s);
 
 /** XPath string value, after xsl:strip-space elements="*" */
-function stringValue(node)
+export function stringValue(node)
 {
     if (node.nodeType === 2)
         return node.value;
@@ -69,7 +69,7 @@ function stringValue(node)
 }
 
 /** The child elements of node with the given name (XPath: name) */
-function children(node, name)
+export function children(node, name)
 {
     const r = [];
     for (let n = node.firstChild; n !== null; n = n.nextSibling)
@@ -81,7 +81,7 @@ function children(node, name)
 }
 
 /** XPath: a/b/c (child steps) */
-function path(node, ...names)
+export function path(node, ...names)
 {
     let nodes = [node];
     for (const name of names)
@@ -112,7 +112,7 @@ function attr(node, name)
 }
 
 /** <xsl:value-of select="..." separator="..."/> */
-function valueOf(items, separator = " ")
+export function valueOf(items, separator = " ")
 {
     return items.map(i => typeof i === "string" ? i : stringValue(i)).join(separator);
 }

@@ -1,0 +1,18 @@
+/* The page's base styles: the fonts, the design tokens, and the body. */
+@import "./fonts.css";
+@import "./tokens.css";
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--pane-background);
+    color: var(--text-color);
+}
+
+#app {
+    height: 100%;
+}

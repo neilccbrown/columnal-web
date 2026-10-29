@@ -4,6 +4,8 @@
 # their output to test/engine/functions/golden/funcdoc/:
 #   - function_*_en.properties, from funcdoc-types-and-mini.xsl applied to _all.xml
 #   - <name>.test, from extract-tests.xsl applied to each funcdoc file
+# and the dialog help to test/gui-logic/utility-gui/golden/help/:
+#   - <dialog>_en.properties, from make-help-indiv.xsl applied to each help file
 # test/engine/functions/Funcdoc.test.ts checks that scripts/funcdoc/funcdoc.mjs gives the same.
 # Usage: scripts/golden/funcdoc.sh   (needs Java 17+; run npm run fetch-reference first)
 set -euo pipefail
@@ -42,3 +44,33 @@ for f in "$XML"/funcdoc/*.xml; do
     java -cp "$CP" net.sf.saxon.Transform -xi:on -s:"$f" -xsl:"$XML/xslt/extract-tests.xsl" -o:"$OUT/$name.test"
 done
 ls "$OUT"
+
+HELP_OUT="$ROOT/test/gui-logic/utility-gui/golden/help"
+rm -rf "$HELP_OUT"
+mkdir -p "$HELP_OUT" "$TMP/help"
+for f in "$XML"/help/*.xml; do
+    java -cp "$CP" net.sf.saxon.Transform -s:"$f" -xsl:"$XML/xslt/make-help-indiv.xsl" -o:"$TMP/dummy.txt" myOutputDir="$TMP/help"
+done
+cp "$TMP"/help/*_en.properties "$HELP_OUT"/
+ls "$HELP_OUT"
+
+# The documentation pages, to test/gui-logic/lex-editor/golden/funcdoc-pages.json ({ file: { title,
+# bodyClass, body } }): funcdoc-indiv-html.xsl applied to _all.xml, and funcdoc-joined-html.xsl to each
+# file whose root is functionDocumentation.  scripts/funcdoc/funcdocHtml.mjs should give the same.
+PAGES_OUT="$ROOT/test/gui-logic/lex-editor/golden"
+mkdir -p "$PAGES_OUT" "$TMP/pages"
+java -cp "$CP" net.sf.saxon.Transform -xi:on -s:"$XML/funcdoc/_all.xml" -xsl:"$XML/xslt/funcdoc-indiv-html.xsl" -o:"$TMP/dummy.txt" myOutputDir="$TMP/pages"
+for f in "$XML"/funcdoc/*.xml; do
+    grep -q "<functionDocumentation" "$f" || continue
+    java -cp "$CP" net.sf.saxon.Transform -s:"$f" -xsl:"$XML/xslt/funcdoc-joined-html.xsl" -o:"$TMP/pages/$(basename "$f" .xml).html"
+done
+node -e '
+const fs = require("fs"), dir = process.argv[1], pages = {};
+for (const f of fs.readdirSync(dir).sort()) {
+    const html = fs.readFileSync(dir + "/" + f, "utf8");
+    const body = /<body( class="([^"]*)")?>([\s\S]*)<\/body>/.exec(html);
+    pages[f] = { title: /<title>([\s\S]*)<\/title>/.exec(html)[1], bodyClass: body[2] ?? null, body: body[3] };
+}
+fs.writeFileSync(process.argv[2], JSON.stringify(pages, null, 1) + "\n");
+console.log(Object.keys(pages).length + " pages");
+' "$TMP/pages" "$PAGES_OUT/funcdoc-pages.json"

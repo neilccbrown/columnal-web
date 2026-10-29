@@ -9,6 +9,7 @@
 # dev and build)
 /src/engine/parsers/generated/
 /src/engine/functions/generated/
+/src/gui-logic/utility-gui/generated/
 
 # The pinned Java original, fetched by scripts/fetch-reference.sh
 /reference/
@@ -31,3 +32,4 @@ yarn-error.log*
 # Vitest browser mode (failure screenshots, traces)
 .vitest/
 __traces__/
+/src/gui/generated/

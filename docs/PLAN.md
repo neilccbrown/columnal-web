@@ -512,12 +512,60 @@ Part A (the evidence for the decisions) is done, and the project owner decided (
 UI and Vitest browser mode, accept the proposed shortcut remappings (CONVENTIONS.md "GUI"), and look at
 running the engine off the main thread soon (before the production grid in Phase 8). The GUI tests now run in
 Vitest browser mode (`npm run test:gui`, `test/gui/`); Playwright's test runner and the prototype's
-`window.__test` bridge were removed. Still to remove in Part B: Ark UI (`@ark-ui/vue`) and the Ark half of the
+`window.__test` bridge were removed, and at the start of Part B so were Ark UI and the Ark half of the
 component prototype. The prototypes are throwaway
 and live in `src/gui/prototype/` (grid, components), with their scripts in `scripts/prototype/`; delete them
 once Phase 8 has the production grid. Kept from Part A: the fonts, images and SCSS (`resources/gui/`, with
 OFL licence files), the design tokens and font faces (`src/gui/styles/`), and the store adapter
 (`src/gui/store/EngineStore.ts`).
+
+Part B, in steps (each a checkpoint with the project owner):
+1. Remove Ark UI (done).
+2. Engine worker (done): `src/gui/engine/`, the worker that owns the TableManager (`EngineHost`), a typed
+   request/reply protocol with events (`protocol.ts`; for now: load, save, length, rows, idle, and a
+   "tables" event), and the GUI's client (`EngineClient`, with `EngineTablesStore` for Vue). Two transports
+   with the same messages: the Web Worker, and an in-page one for GUI tests (messages still go through
+   `structuredClone`), so tests can read the engine's objects directly as Java's tests did. Tested in
+   `test/gui/engine/`. Left for later phases: editing (Phase 8), the copy of the type information for
+   editors (Phases 8 and 10), and the HTML importer, which needs `DOMParser` (not in workers) and so must
+   parse on the main thread or without the DOM (Phase 11). The prototypes keep their own engine code.
+3. App shell (done): `App.vue` starts the engine (`provideEngine`; components call `useEngine()`), with
+   `styles/global.css`; `i18n.ts` (`t()`, and `label()` for menu items: text, mnemonic and shortcut);
+   `shortcuts.ts` (Java's accelerators through the ported `FXUtility.getStringAndShortcut`, the remappings,
+   matching key events with Cmd on macOS and Ctrl elsewhere, display text, `useShortcut`). The build puts the
+   OFL texts and the GPL in `dist/licences/`. Left for Phase 9: what the main window shows, and whether menus
+   show mnemonics (the labels keep the index). Left for Phase 13: the main bundle and the worker's each hold
+   the whole engine (about 1.3 MB gzipped each).
+4. Help and function docs (done): generate the help (Java: `make-help-*.xsl`) and function-doc HTML
+   (`funcdoc-*-html.xsl`) at build time, as `gen-funcdoc` does for the function details; a help box and
+   a function-doc view.
+   - Help (done): `scripts/funcdoc/help.mjs` ports `make-help-indiv.xsl`'s .properties output (checked
+     against Saxon's by `scripts/golden/funcdoc.sh`; its HTML pages weren't used by the app), `gen-funcdoc`
+     writes them to `src/gui-logic/utility-gui/generated/help/`, `Help.ts` ports `Help.java`, and
+     `src/gui/components/HelpBox.vue` rebuilds `HelpBox` (`docs/gui-spec/help-box.md`).
+   - Function docs (done): `scripts/funcdoc/funcdocHtml.mjs` ports `funcdoc-indiv-html.xsl` and
+     `funcdoc-joined-html.xsl` (all 120 pages checked against Saxon's, ignoring whitespace that HTML
+     ignores), `gen-funcdoc` writes them to `src/gui/generated/funcdoc-pages.json` (48 KB gzipped, loaded
+     when first shown), and `src/gui/components/FuncdocView.vue` shows them (`docs/gui-spec/funcdoc-view.md`).
+     Left for Phase 10: the completion popup and `DocWindow` that use it, and the column and table pages
+     that `ExpressionLexer` makes on the fly (`htmlForColumn`, `htmlForTable`).
+5. Shared components, each with a `docs/gui-spec/` inventory: LightDialog (with ErrorableLightDialog and
+   DoubleOKLightDialog), ErrorableTextField, FancyList, context menus and tooltips, built from the Reka
+   prototypes, which are then deleted.
+   - Dialogs (done): `src/gui/components/dialogs/` (`LightDialog`, `ErrorableLightDialog`,
+     `DoubleOKLightDialog`, `ErrorLabel`; `docs/gui-spec/light-dialog.md`).
+   - ErrorableTextField (done): the conversion ported to `gui-logic/.../ErrorableTextField.ts`, the field
+     in `src/gui/components/ErrorableTextField.vue`, with `StyledText.vue` for StyledStrings
+     (`docs/gui-spec/errorable-text-field.md`).
+   - FancyList, context menus, tooltips: still to do.
+6. Test helpers in `test/gui/base/` for the generic traits (`FocusOwnerTrait`, `PopupTrait`,
+   `TextFieldTrait`, `ListUtilTrait`, `ComboUtilTrait`, `ClipboardTrait`, `ScrollToTrait`). The traits that
+   drive tables, types and expressions (`CreateDataTableTrait`, `EnterTypeTrait`, `EnterExpressionTrait`, …)
+   come with the phase that builds what they drive (8–10).
+   Also: the grid prototype's tests failed now and then when the test files ran in parallel (they share
+   the browser's keyboard focus), so `vitest.browser.config.ts` runs them one at a time (also much faster:
+   about 10 s, not 3 minutes). `propEnterNumbers` finds cells by their text with `userEvent.click`, which
+   can still be ambiguous while a row is re-shown; the helpers should locate cells by their position.
 
 - **Grid prototype** (`/src/gui/prototype/grid/` on the dev server; `?big=N` adds an N-row data table). Vue,
   one native scroll container, tables absolutely placed by the ported `VirtualGrid` (which also does the
@@ -561,7 +609,7 @@ OFL licence files), the design tokens and font faces (`src/gui/styles/`), and th
     the engine's objects directly, and would need queries sent to the worker.
 - **Reka UI vs Ark UI** (`/src/gui/prototype/components/`): a LightDialog frame (modal, draggable), a column
   context menu with a submenu, a tooltip shown when a label is cut short, and a combo box for picking a table,
-  in each. `scripts/prototype/compare-components.mjs` runs the same 11 keyboard, mouse and ARIA checks on both,
+  in each. A script (removed with the Ark half in Part B) ran the same 11 keyboard, mouse and ARIA checks on both,
   and both pass all of them (focus trap and return, Escape, staying open on an outside click as Java's
   window-modal dialogs did, typeahead, disabled items, submenus, accent-insensitive filtering). Differences:
   Reka adds 45 KB gzipped for the four, Ark 64 KB; Reka's combo box filters by itself, Ark's needs a collection

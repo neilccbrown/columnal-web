@@ -9,7 +9,7 @@ import { javaEquals } from "../../../src/engine/java/JavaObject.js";
 import { Workers } from "../../../src/engine/utility/utility/Workers.js";
 import GridPrototype from "../../../src/gui/prototype/grid/GridPrototype.vue";
 import type { GridPrototypeApp } from "../../../src/gui/prototype/grid/GridPrototypeApp.js";
-import { GRID_FIXTURE } from "./gridFixture.js";
+import { GRID_FIXTURE } from "../fixtures/gridFixture.js";
 
 function load(): GridPrototypeApp
 {

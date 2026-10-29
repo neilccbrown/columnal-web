@@ -392,10 +392,16 @@ install and before `dev`, `build`, `test` and `typecheck`.
 - GUI tests are ported per test method, at the level of behaviour (PLAN.md §3b), as Vitest browser mode tests
   (`npm run test:gui`, `vitest.browser.config.ts`, type-checked by `tsconfig.browser-tests.json`). They run in
   Chromium with the app: a test mounts the component it needs (`render` from `vitest-browser-vue`), acts
-  through `userEvent` and `page` (`vitest/browser`), and checks the engine's objects directly. Tests in one
-  file share the engine's module state (as the Java tests shared a JVM). `userEvent.click(element)` turns the
-  element into a selector, which can become ambiguous if the page changes before it runs; prefer locators
-  (`page.getByRole`, `getByTestId`), or wait for the engine to finish (`Workers.getTaskList()` empty) first.
+  through `userEvent` and `page` (`vitest/browser`), and checks the engine's objects directly: the app gets
+  its engine through an `InPageTransport` (`src/gui/engine/transports.ts`), whose `host.tableManager` is the
+  engine's, rather than the worker. Tests in one file share the engine's module state (as the Java tests
+  shared a JVM). `userEvent.click(element)` turns the element into a selector, which can become ambiguous if
+  the page changes before it runs; prefer locators (`page.getByRole`, `getByTestId`), or wait for the engine
+  to finish (`EngineClient.whenIdle()`) first. `getByText("…")` with a string didn't find an element by
+  part of its text; use a regex for that. Libraries the tests load are pre-bundled (`optimizeDeps` in
+  `vitest.browser.config.ts`): when Vite found one mid-run it reloaded with two copies of Vue. The test
+  files run one at a time (`fileParallelism: false`): files in parallel share the browser's keyboard
+  focus, so one file's typing can land in another's field.
 
 ## GUI (from Phase 7)
 
@@ -403,9 +409,15 @@ install and before `dev`, `build`, `test` and `typecheck`.
   combo boxes).
 - Design tokens (the Java SCSS's colours, fonts and sizes) are CSS custom properties in
   `src/gui/styles/tokens.css`, named after the SCSS variables; the fonts are in `src/gui/styles/fonts.css`.
+- Text comes from the translation files, as in Java: `t(key)` and `label(key)` (`src/gui/i18n.ts`). Shortcuts
+  come from the labels (`label(key).shortcut`, bound with `useShortcut`, shown with `shortcutText`).
 - Keyboard shortcuts are the Java app's, except those a browser keeps for itself (decided in Phase 7): Exit
   (Ctrl/Cmd+Q) is dropped, as closing the tab does it; New project (Ctrl/Cmd+N), Close project (Ctrl/Cmd+W)
   and Task Manager (Shift+Esc) become Alt+Shift+N, Alt+Shift+W and Alt+Shift+Esc; the grid's F11 (copy) is
   dropped, leaving Ctrl/Cmd+C. Open, Save as, Undo and Find keep their Java shortcuts.
+- The engine runs in a Web Worker (`src/gui/engine/`): the GUI asks it things with
+  `EngineClient.request(method, ...)` (the methods are `EngineApi`'s, in `protocol.ts`) and follows its
+  events (e.g. `EngineTablesStore`). Only plain data crosses, never engine objects. Editors that need engine
+  types while the user types work on the main thread from a copy of the type information (PLAN.md §6).
 - Engine objects must never be made reactive. Don't wrap them in `reactive()` or a deep `ref()`; use
   `markRaw`/`shallowRef`. The UI tracks engine changes through version counters (PLAN.md §2b).

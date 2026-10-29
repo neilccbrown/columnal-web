@@ -1,11 +1,7 @@
 <script setup lang="ts">
-// Component comparison prototype (Phase 7, throwaway): the same four components built with Reka UI
-// and with Ark UI, side by side.  Open /src/gui/prototype/components/ on the dev server.
+// Component prototype (Phase 7, throwaway): four components built with Reka UI (Ark UI versions were
+// compared, then removed).  Open /src/gui/prototype/components/ on the dev server.
 import { shallowRef } from "vue";
-import ArkTooltip from "./ark/AbbrevTooltip.vue";
-import ArkMenu from "./ark/ColumnContextMenu.vue";
-import ArkDialog from "./ark/LightDialog.vue";
-import ArkCombobox from "./ark/PickTableCombobox.vue";
 import RekaTooltip from "./reka/AbbrevTooltip.vue";
 import RekaMenu from "./reka/ColumnContextMenu.vue";
 import RekaDialog from "./reka/LightDialog.vue";
@@ -16,11 +12,10 @@ const longName = "A column with a very long name that does not fit";
 
 const sides = [
     { id: "reka", title: "Reka UI", Dialog: RekaDialog, Menu: RekaMenu, Tooltip: RekaTooltip, Combobox: RekaCombobox },
-    { id: "ark", title: "Ark UI", Dialog: ArkDialog, Menu: ArkMenu, Tooltip: ArkTooltip, Combobox: ArkCombobox },
 ] as const;
-const open = shallowRef<Record<string, boolean>>({ reka: false, ark: false });
-const picked = shallowRef<Record<string, string | undefined>>({ reka: undefined, ark: undefined });
-const log = shallowRef<Record<string, string[]>>({ reka: [], ark: [] });
+const open = shallowRef<Record<string, boolean>>({ reka: false });
+const picked = shallowRef<Record<string, string | undefined>>({ reka: undefined });
+const log = shallowRef<Record<string, string[]>>({ reka: [] });
 
 function record(side: string, what: string): void
 {

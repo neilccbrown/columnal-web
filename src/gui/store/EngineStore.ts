@@ -10,6 +10,8 @@ import type { GridComment } from "../../engine/data/data/GridComment.js";
 import type { Table } from "../../engine/data/data/Table.js";
 import type { TableManager } from "../../engine/data/data/TableManager.js";
 import type { Transformation } from "../../engine/data/data/Transformation.js";
+import type { EngineClient } from "../engine/EngineClient.js";
+import type { TableInfo } from "../engine/protocol.js";
 
 /** A counter that the engine increments when something changes, and the GUI reads to follow it. */
 export class VersionCounter
@@ -76,5 +78,25 @@ export class TableManagerStore implements TableManager.TableManagerListener
     public removeComment(gridComment: GridComment): void
     {
         this.comments.value = markRaw(this.comments.value.filter(x => x !== gridComment));
+    }
+}
+
+/**
+ * Follows the list of tables in the engine worker, from its events.  (TableManagerStore is the same
+ * for an engine in the page.)
+ */
+export class EngineTablesStore
+{
+    // The tables, in the engine's order; a new array (never mutated) on each change:
+    public readonly tables: ShallowRef<readonly TableInfo[]> = shallowRef(markRaw([]));
+    public readonly stop: () => void;
+
+    public constructor(client: EngineClient)
+    {
+        this.stop = client.listen(event =>
+        {
+            if (event.kind === "tables")
+                this.tables.value = markRaw(event.tables);
+        });
     }
 }

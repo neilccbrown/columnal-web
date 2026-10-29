@@ -12,6 +12,10 @@ export default defineConfig({
             "@resources": fileURLToPath(new URL("./resources", import.meta.url)),
         },
     },
+    // Pre-bundled up front: if Vite finds them during a run, it reloads, and can end up with two copies of Vue.
+    optimizeDeps: {
+        include: ["vue", "reka-ui", "fast-check"],
+    },
     test: {
         include: ["test/gui/**/*.test.ts"],
         browser: {
@@ -22,5 +26,8 @@ export default defineConfig({
             viewport: { width: 1280, height: 800 },
         },
         testTimeout: 60_000,
+        // One file at a time: files run in parallel share the browser's keyboard focus, so one file's
+        // typing can land in another's field.
+        fileParallelism: false,
     },
 });

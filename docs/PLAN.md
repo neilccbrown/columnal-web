@@ -549,7 +549,7 @@ Part B, in steps (each a checkpoint with the project owner):
      when first shown), and `src/gui/components/FuncdocView.vue` shows them (`docs/gui-spec/funcdoc-view.md`).
      Left for Phase 10: the completion popup and `DocWindow` that use it, and the column and table pages
      that `ExpressionLexer` makes on the fly (`htmlForColumn`, `htmlForTable`).
-5. Shared components, each with a `docs/gui-spec/` inventory: LightDialog (with ErrorableLightDialog and
+5. Shared components (done), each with a `docs/gui-spec/` inventory: LightDialog (with ErrorableLightDialog and
    DoubleOKLightDialog), ErrorableTextField, FancyList, context menus and tooltips, built from the Reka
    prototypes, which are then deleted.
    - Dialogs (done): `src/gui/components/dialogs/` (`LightDialog`, `ErrorableLightDialog`,
@@ -557,7 +557,13 @@ Part B, in steps (each a checkpoint with the project owner):
    - ErrorableTextField (done): the conversion ported to `gui-logic/.../ErrorableTextField.ts`, the field
      in `src/gui/components/ErrorableTextField.vue`, with `StyledText.vue` for StyledStrings
      (`docs/gui-spec/errorable-text-field.md`).
-   - FancyList, context menus, tooltips: still to do.
+   - FancyList (done): `src/gui/components/FancyList.vue` (`docs/gui-spec/fancy-list.md`). A Java bug
+     ported as is (the selection is kept by position across a delete), for a decision.
+   - Context menus and tooltips (done): `src/gui/components/menus/` (menus as data, as `GUI.menuItem`
+     etc. make them, and `ContextMenu.vue`), `HoverTooltip.vue`, `AbbrevLabel.vue`
+     (`docs/gui-spec/menus-and-tooltips.md`). Left for the phases that need them: menus opened from a
+     button (JavaFX `ContextMenu.show(node, …)`) and the menu bar (Phase 9).
+   - The component prototypes are deleted.
 6. Test helpers in `test/gui/base/` for the generic traits (`FocusOwnerTrait`, `PopupTrait`,
    `TextFieldTrait`, `ListUtilTrait`, `ComboUtilTrait`, `ClipboardTrait`, `ScrollToTrait`). The traits that
    drive tables, types and expressions (`CreateDataTableTrait`, `EnterTypeTrait`, `EnterExpressionTrait`, …)
@@ -607,7 +613,8 @@ Part B, in steps (each a checkpoint with the project owner):
     expression lexers and completion, which use the TypeManager) would either run in the worker, behind
     messages, or keep a copy of the type information on the main thread. The GUI tests could no longer read
     the engine's objects directly, and would need queries sent to the worker.
-- **Reka UI vs Ark UI** (`/src/gui/prototype/components/`): a LightDialog frame (modal, draggable), a column
+- **Reka UI vs Ark UI** (`/src/gui/prototype/components/`, removed in Part B step 5 once the shared components
+  were built; the table-picking combo box is in git history for Phase 9's PickTablePane): a LightDialog frame (modal, draggable), a column
   context menu with a submenu, a tooltip shown when a label is cut short, and a combo box for picking a table,
   in each. A script (removed with the Ark half in Part B) ran the same 11 keyboard, mouse and ARIA checks on both,
   and both pass all of them (focus trap and return, Escape, staying open on an outside click as Java's

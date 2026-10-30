@@ -1,12 +1,15 @@
 // Editing cells in the grid (docs/gui-spec/cell-editor.md): how an edit starts and ends, the tables
-// that depend on the edited one being re-run, and errors from storing a value.
+// that depend on the edited one being re-run, errors from storing a value, and deleting.
 import { describe, expect, test, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
+import { DataTypeUtility } from "../../../src/engine/types/data/datatype/DataTypeUtility.js";
 import { isMac } from "../../../src/gui/shortcuts.js";
 import { showAlert } from "../../../src/gui/grid/alerts.js";
 import type { GridTableDisplay } from "../../../src/gui/grid/GridTableDisplay.js";
 import { keyboardMoveToTableCell } from "../base/scrollTo.js";
 import { renderEngineGrid } from "../fixtures/engineGrid.js";
+import { KINDS_FIXTURE } from "../fixtures/kindsFixture.js";
+import { numberColumnFile } from "../fixtures/wideTable.js";
 
 // A data table K with a number column N, and a Calculate D (beside it) that doubles N:
 const DEPENDENT_FIXTURE = `COLUMNAL
@@ -144,6 +147,60 @@ describe("Editing cells", () =>
             await expect.element(page.getByText("Second message")).toBeVisible();
             await userEvent.keyboard("{Escape}");
             await expect.element(page.getByText("Second message")).not.toBeInTheDocument();
+        }
+        finally
+        {
+            unmount();
+        }
+    });
+
+    test("Escape, Enter and Tab end editing a read-only cell", async () =>
+    {
+        const { grid, scroller, unmount } = await renderEngineGrid(KINDS_FIXTURE);
+        try
+        {
+            scroller.focus();
+            const e = grid.displays().find(d => d.info.id === "E")!;
+            // E's Div column (after its copies of K's four) is an error in each row:
+            const pos = await keyboardMoveToTableCell(grid.grid, e, 0, 4);
+            for (const [key, rows] of [["{Escape}", 0], ["{Tab}", 0], ["{Enter}", 1]] as const)
+            {
+                await userEvent.keyboard("{Enter}");
+                await vi.waitUntil(() => grid.editor()?.isFocused() === true);
+                await userEvent.keyboard(key);
+                expect(grid.editor(), key).toBeNull();
+                expect(grid.grid.getSelection()?.isExactly(pos.offsetByRowCols(rows, 0)), key).toBe(true);
+            }
+        }
+        finally
+        {
+            unmount();
+        }
+    });
+
+    test("deleting sets all the selected cells to their default, including those off the page", async () =>
+    {
+        const values = Array.from({ length: 500 }, (_v, i) => String(i + 1));
+        const { grid, scroller, host, unmount } = await renderEngineGrid(numberColumnFile(values));
+        try
+        {
+            scroller.focus();
+            const table = grid.displays()[0]!;
+            // Rows 2 to 449:
+            const top = await keyboardMoveToTableCell(grid.grid, table, 2, 0);
+            grid.grid.select(grid.grid.getSelection()!.extendTo(top.offsetByRowCols(447, 0))!);
+            await userEvent.keyboard("{Delete}");
+            const column = host.tableManager.getAllTables()[0]!.getData().getColumns()[0]!;
+            await vi.waitUntil(() => DataTypeUtility.valueToString(column.getType().getCollapsed(449)) === "0");
+            expect(values.map((_v, i) => DataTypeUtility.valueToString(column.getType().getCollapsed(i))))
+                .toEqual(values.map((v, i) => i >= 2 && i <= 449 ? "0" : v));
+            // What's shown, here and further down:
+            await vi.waitUntil(() => table.getCell(2, 0)?.text === "0");
+            expect(table.getCell(1, 0)?.text).toBe("2");
+            await keyboardMoveToTableCell(grid.grid, table, 440, 0);
+            expect(table.getCell(440, 0)?.text).toBe("0");
+            await keyboardMoveToTableCell(grid.grid, table, 450, 0);
+            expect(table.getCell(450, 0)?.text).toBe("451");
         }
         finally
         {

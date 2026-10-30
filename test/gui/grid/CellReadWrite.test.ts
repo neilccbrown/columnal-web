@@ -108,8 +108,6 @@ test("propCheckDataDelete", () => checkProperty([gen(2, 4), new GenRandom()], as
                 continue;
             const row = r.nextInt(tableLen);
             const pos = await keyboardMoveToTableCell(virtualGrid, displayOf(table), row, column);
-            // (Deleting only changes the cells on the page, as in Java, so wait for the scrolling there)
-            await expect.poll(() => cellElement(displayOf(table), row, column)).not.toBeNull();
             await userEvent.keyboard(r.nextBoolean() ? "{Backspace}" : "{Delete}");
             await sleep(200);
             const copiedFromTable = await copyToClipboard();

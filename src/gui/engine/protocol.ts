@@ -94,10 +94,11 @@ export interface EngineApi
     /**
      * Sets the cells of columns firstColumn to lastColumnIncl, rows firstRow to lastRowIncl, to their
      * columns' default values (Java: DataDisplay.doDelete and TableDisplay.deleteValue), skipping
-     * columns that can't be edited or have no default, then re-runs the dependent tables.  Gives the
-     * cells' new content, or null if the table has been replaced.
+     * columns that can't be edited or have no default, then re-runs the dependent tables.  Gives the new
+     * content of the changed cells in the rows shown (shownFirstRow to shownLastRowExcl, the rows the GUI
+     * has on the page), from shownFirst on; or null if the table has been replaced.
      */
-    deleteCells(id: string, version: number, firstColumn: number, lastColumnIncl: number, firstRow: number, lastRowIncl: number): { readonly cells: readonly (readonly CellContent[])[], readonly alert: EngineAlert | null } | null;
+    deleteCells(id: string, version: number, firstColumn: number, lastColumnIncl: number, firstRow: number, lastRowIncl: number, shownFirstRow: number, shownLastRowExcl: number): { readonly shownFirst: number, readonly cells: readonly (readonly CellContent[])[], readonly alert: EngineAlert | null } | null;
     /** Answers once the engine has no work waiting (after everything requested before it). */
     idle(): Promise<void>;
 }

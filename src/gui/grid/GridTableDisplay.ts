@@ -41,7 +41,7 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
     private readonly requested = new Set<number>();
     // How many times each block has been requested (for tests):
     public readonly _test_fetches = new Map<number, number>();
-    // The data rows on the page (Java: the cells that exist), and how a data cell on the page is shown
+    // The data rows on the page, and how a data cell on the page is shown
     // (by row, column), which GridTable sets:
     private pageRows = { first: 0, lastExcl: 0 };
     private cellDisplays: (row: number, column: number) => CellDisplay | null = () => null;
@@ -274,25 +274,33 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
 
     /**
      * Sets the data cells within the bounds (a region of the grid) to their columns' defaults (Java:
-     * DataDisplay.doDelete).  Java only did so for the cells that existed, those on screen; so this
-     * does it for the rows on the page.
+     * DataDisplay.doDelete).  The cells on the page are updated, and other rows' kept blocks dropped
+     * (to be fetched again when needed).
      */
     private deleteCells(bounds: RectangleBounds): void
     {
+        // (Java only changed the cells on screen, which left the rest of a large selection unchanged)
         const pos = this.getPosition();
         const dataTop = pos.rowIndex + GridTableDisplay.HEADER_ROWS;
         const firstColumn = bounds.topLeftIncl.columnIndex - pos.columnIndex;
         const lastColumnIncl = bounds.bottomRightIncl.columnIndex - pos.columnIndex;
-        const firstRow = Math.max(this.pageRows.first, bounds.topLeftIncl.rowIndex - dataTop);
-        const lastRowIncl = Math.min(this.pageRows.lastExcl - 1, bounds.bottomRightIncl.rowIndex - dataTop);
+        const firstRow = Math.max(0, bounds.topLeftIncl.rowIndex - dataTop);
+        const lastRowIncl = Math.min(this.currentKnownRows - 1, bounds.bottomRightIncl.rowIndex - dataTop);
         if (firstRow > lastRowIncl || firstColumn > lastColumnIncl)
             return;
         const version = this.info.version;
-        void this.client.request("deleteCells", this.info.id, version, firstColumn, lastColumnIncl, firstRow, lastRowIncl).then(result =>
+        const shown = this.pageRows;
+        void this.client.request("deleteCells", this.info.id, version, firstColumn, lastColumnIncl, firstRow, lastRowIncl, shown.first, shown.lastExcl).then(result =>
         {
-            if (result === null)
+            if (result === null || version !== this.info.version)
                 return;
-            this.setCells(version, firstRow, firstColumn, result.cells);
+            const BLOCK = GridTableDisplay.ROW_BLOCK;
+            for (let b = Math.floor(firstRow / BLOCK); b <= Math.floor(lastRowIncl / BLOCK); b++)
+            {
+                if (b * BLOCK + BLOCK <= shown.first || b * BLOCK >= shown.lastExcl)
+                    this.blocks.delete(b);
+            }
+            this.setCells(version, result.shownFirst, firstColumn, result.cells);
             if (result.alert !== null)
                 showAlert(result.alert);
         }).catch(ignoreClosed);

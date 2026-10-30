@@ -14,11 +14,10 @@ import { EntireTableSelection } from "../../gui-logic/table-gui/gui/table/Entire
 import { isMac } from "../shortcuts.js";
 import { VersionCounter } from "../store/EngineStore.js";
 import type { Document } from "../../gui-logic/stf/gui/dtf/Document.js";
-import { ReadOnlyDocument } from "../../gui-logic/stf/gui/dtf/ReadOnlyDocument.js";
 import DocumentTextField from "../components/DocumentTextField.vue";
 import LightDialog from "../components/dialogs/LightDialog.vue";
 import { alerts, closeAlert, showAlert } from "./alerts.js";
-import { CellEditDocument } from "./CellEditDocument.js";
+import { CellEditDocument, ReadOnlyCellDocument } from "./CellEditDocument.js";
 import GridTable from "./GridTable.vue";
 import type { GridTableDisplay } from "./GridTableDisplay.js";
 import { VIEWPORT } from "./viewport.js";
@@ -498,9 +497,9 @@ async function startEditing(point: { x: number, y: number } | null, pos: CellPos
     const relinquishFocus = (keyCode: string): void => props.grid.select(display.selectionForCell(pos.offsetByRowCols(keyCode === "ENTER" ? 1 : 0, 0)));
     let document: Document;
     if (content.kind === "error")
-        document = new ReadOnlyDocument(content.text, true);
+        document = new ReadOnlyCellDocument(content.text, true, relinquishFocus);
     else if (!editable)
-        document = new ReadOnlyDocument(content.text);
+        document = new ReadOnlyCellDocument(content.text, false, relinquishFocus);
     else
         document = new CellEditDocument(content.text, content.kind === "invalid" && content.errorPosition !== null, relinquishFocus, text => display.edit(version, row, column, text));
     // Java: moveTo, the caret where the point is in the text shown (mapped to the cell's text)

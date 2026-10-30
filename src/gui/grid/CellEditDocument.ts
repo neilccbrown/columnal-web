@@ -6,6 +6,7 @@
 // type.  The cell then shows what the engine sends back.
 import { DisplayDocument } from "../../gui-logic/stf/gui/dtf/DisplayDocument.js";
 import type { KeyCode } from "../../gui-logic/stf/gui/dtf/Document.js";
+import { ReadOnlyDocument } from "../../gui-logic/stf/gui/dtf/ReadOnlyDocument.js";
 
 export class CellEditDocument extends DisplayDocument
 {
@@ -54,5 +55,27 @@ export class CellEditDocument extends DisplayDocument
     public override getUndo(): string | null
     {
         return this.valueOnFocusGain;
+    }
+}
+
+/**
+ * The document of a read-only cell (an error, or a column that can't be edited) while it is focused
+ * (Java: ReadOnlyDocument).  Java's didn't end the edit on Escape, Enter or Tab (ReadOnlyDocument kept
+ * Document's defocus, which does nothing), so only clicking elsewhere did; this ends it as for an
+ * editable cell.
+ */
+export class ReadOnlyCellDocument extends ReadOnlyDocument
+{
+    private readonly relinquishFocus: (keyCode: KeyCode) => void;
+
+    public constructor(content: string, error: boolean, relinquishFocus: (keyCode: KeyCode) => void)
+    {
+        super(content, error);
+        this.relinquishFocus = relinquishFocus;
+    }
+
+    public override defocus(defocusCause: KeyCode): void
+    {
+        this.relinquishFocus(defocusCause);
     }
 }

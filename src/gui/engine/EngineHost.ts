@@ -169,7 +169,7 @@ export class EngineHost implements EngineApi
         return { kind: "saved", cell: cellContent(c, column, row), alert };
     }
 
-    public deleteCells(id: string, version: number, firstColumn: number, lastColumnIncl: number, firstRow: number, lastRowIncl: number): { readonly cells: readonly (readonly CellContent[])[], readonly alert: EngineAlert | null } | null
+    public deleteCells(id: string, version: number, firstColumn: number, lastColumnIncl: number, firstRow: number, lastRowIncl: number, shownFirstRow: number, shownLastRowExcl: number): { readonly shownFirst: number, readonly cells: readonly (readonly CellContent[])[], readonly alert: EngineAlert | null } | null
     {
         const table = this.current(id, version);
         if (table === null)
@@ -188,10 +188,11 @@ export class EngineHost implements EngineApi
                 alert ??= this.store(() => c.getType().setCollapsed(row, Either.right(defaultValue)));
         }
         alert ??= this.reRun(table);
+        const shownFirst = Math.max(firstRow, shownFirstRow);
         const cells: CellContent[][] = [];
-        for (let row = firstRow; row <= lastRowIncl; row++)
+        for (let row = shownFirst; row <= Math.min(lastRowIncl, shownLastRowExcl - 1); row++)
             cells.push(columns.map((c, i) => cellContent(c, firstColumn + i, row)));
-        return { cells, alert };
+        return { shownFirst, cells, alert };
     }
 
     // Java: the Saver's FXUtility.alertOnError_ (a SilentCancelEditException just leaves the old value)

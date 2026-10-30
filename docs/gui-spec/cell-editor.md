@@ -56,14 +56,14 @@ Web: `src/gui/components/DocumentTextField.vue`, `src/gui/grid/CellEditDocument.
 - An error storing the value ("Error storing data value"), or re-running the dependent tables ("Error
   updating dependent transformations"), is shown in an alert (title as the header, then the message, an
   OK button). Alerts show one at a time.
-- Escape, Enter and Tab do nothing in a read-only document (`ReadOnlyDocument` doesn't override
-  `defocus`): clicking elsewhere ends the edit.
+- Escape, Enter and Tab end the edit of a read-only document as for an editable one. (Java bug, fixed:
+  `ReadOnlyDocument` kept `Document`'s `defocus`, which does nothing, so only clicking elsewhere did.)
 
 ## Deleting
 
 - Delete or Backspace on selected data cells sets them to their columns' default values, for editable
-  columns with a default, then re-runs the dependent tables. Java only changed the cells that existed
-  (those on screen); here, the rows on the page.
+  columns with a default, then re-runs the dependent tables. (Java bug, fixed: it only changed the cells
+  that existed, those on screen, so the rest of a large selection was left as it was.)
 
 ## Web differences
 

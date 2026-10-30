@@ -717,8 +717,9 @@ Steps (each a checkpoint with the project owner):
      the engine's `canEdit`, `edit` and `deleteCells` requests; errors show in an alert (`alerts.ts`).
      `docs/gui-spec/cell-editor.md`. No type copy after all: Java's `RecogniserDocument` only ran its
      recogniser when the cell lost the focus, so the engine recognises the text when it stores it (the
-     copy of the type information moves to Phase 10, for the expression editor). Deleting cells, as in
-     Java, only changes those on the page. Tests: `DocumentTextField.test.ts`, `CellReadWrite.test.ts` and
+     copy of the type information moves to Phase 10, for the expression editor). Two Java bugs fixed (in their own
+     commit): deleting cells only changed those on screen, and Escape, Enter and Tab didn't end editing a
+     read-only cell. Tests: `DocumentTextField.test.ts`, `CellReadWrite.test.ts` and
      `CellEditing.test.ts`, and the editing half of `NumberColumnDisplay.test.ts`; the typing in
      `EnterStructuredValueTrait` is shared from `test/gui-logic/stf/fixtures/textToType.ts`, and
      `keyboardMoveTo` now waits for scrolling to stop (and, for a table cell, its content). Left for Phase

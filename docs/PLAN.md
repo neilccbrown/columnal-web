@@ -513,9 +513,9 @@ UI and Vitest browser mode, accept the proposed shortcut remappings (CONVENTIONS
 running the engine off the main thread soon (before the production grid in Phase 8). The GUI tests now run in
 Vitest browser mode (`npm run test:gui`, `test/gui/`); Playwright's test runner and the prototype's
 `window.__test` bridge were removed, and at the start of Part B so were Ark UI and the Ark half of the
-component prototype. The prototypes are throwaway
-and live in `src/gui/prototype/` (grid, components), with their scripts in `scripts/prototype/`; delete them
-once Phase 8 has the production grid. Kept from Part A: the fonts, images and SCSS (`resources/gui/`, with
+component prototype. The prototypes were throwaway, in `src/gui/prototype/` (grid, components) with their
+scripts in `scripts/prototype/`; they were deleted in Phase 8 step 5 (they are in git history, at
+`aa26c28`, with the measuring scripts). Kept from Part A: the fonts, images and SCSS (`resources/gui/`, with
 OFL licence files), the design tokens and font faces (`src/gui/styles/`), and the store adapter
 (`src/gui/store/EngineStore.ts`).
 
@@ -648,7 +648,7 @@ Part B, in steps (each a checkpoint with the project owner):
   A page can't capture Ctrl/Cmd+N, W, Q (or T, Tab); F11 is full screen; and Shift+Esc opens Chrome's task
   manager on Windows and Linux.
 
-### Phase 8: Table canvas and cell editing (rebuilds `stf` and `table-gui`)
+### Phase 8: Table canvas and cell editing (rebuilds `stf` and `table-gui`) (done)
 - Build the production table canvas from the prototype:
   - the logical grid (from gui-logic), native scrolling, sticky headers and row labels
   - row windowing per table, and grid lines
@@ -662,6 +662,79 @@ Part B, in steps (each a checkpoint with the project owner):
 **Tests:** `tests-gui-grid`, `tests-gui-dtf`, `tests-gui-numbers` and
 `tests-gui-cell-rw`.
 
+How it fits the engine worker (Phase 7): the grid's logic (the ported `VirtualGrid`, its selection and
+keyboard) and the tables' displays (`DataDisplay`, `HeadedDisplay`, `RowLabelSupplier`, `DataCellSupplier`)
+run on the main thread, from the worker's "tables" event (each table's position, size, columns and
+version) and the rows they ask for. The worker sends each cell as display data: numbers as their digits,
+which the main thread lays out with the ported `NumberColumnFormatter` (it depends on the column's width
+and the font's digit widths), and other values as their display text and styles (`TableDisplayUtility`'s
+`stfStylesFor`). Editing a cell: on commit the editor sends the text, and the worker recognises it (one
+source of truth), stores it, and re-runs the dependent tables. (Planned as option B, with a copy of the
+column's type on the main thread so the recognisers could run as the user types; but Java's only ran when
+the cell lost the focus, so no copy is needed for cells: see step 4.) An edit to a table that has changed
+since (a stale version) is refused, and the editor says so.
+
+Steps (each a checkpoint with the project owner):
+1. The grid canvas (done) (`src/gui/grid/`), from the prototype: the `VirtualGrid.Display`, native scrolling with
+   sticky column headers and row labels, row windowing, grid lines (`VirtualGridLineSupplier`), table
+   borders, headers and the "hat" (`HeadedDisplay`: the table name, column names and types, read-only for
+   now), row labels (`RowLabelSupplier`, the numbers only; their menus come in Phase 9), and column widths
+   (resizing, `calcPrefColumnWidth`). Tests: `TestVirtualGridLayout`.
+   - Done: `EngineGrid.vue` (a `GridTableDisplay` per table in the engine's "tables" event), `TableGrid.vue`
+     (scrolling, grid lines, Java's resizable column bar with double-click fitting), `GridTable.vue`, and
+     `gridWindow.ts` (which rows and columns are on the page); rows are fetched in runs of 16-row blocks and
+     kept. `docs/gui-spec/grid.md`; `test/gui/grid/`. The GUI tests now load the global styles
+     (`test/gui/setup.ts`). Moved: the table's "hat" and renaming to Phase 9 (they are `TableDisplay`'s, in
+     `app`), and moving a table by dragging its header to step 2.
+2. Selection and keyboard (done): the selection overlay (`RectangleOverlayItem`), cell, rectangle, column and
+   entire-table selections, the keyboard actions (already in `VirtualGrid`), smooth scrolling into view,
+   clicking and dragging to select, and actions on empty cells; `keyboardMoveTo` in `test/gui/base/`.
+   Tests: `TestKeyboardMovement`.
+   - Done: in `TableGrid.vue`, Java's keys, clicks (selecting on a click, as Java did, not by dragging),
+     the selection outline, focus loss, and moving tables by dragging their name row (with snapping and
+     nudge scrolling); a `setPosition` request tells the engine where tables are (also when the grid moves
+     them apart). `keyboardMoveTo` and `keyboardMoveToTableCell` in `test/gui/base/scrollTo.ts` (its
+     "Goto row" menu variant is left for Phase 9). Tests: `KeyboardMovement.test.ts` (the port) and
+     `GridSelection.test.ts`. Left for Phase 9: what activating empty cells, column headers and row labels
+     does (the main window's menus), and "Goto row".
+3. Cell display (done): the cell protocol above, the cells (`DataCellSupplier`, the display half of
+   `EditorKitCache` and `DocumentTextField`), "Loading..." and error cells, numbers through
+   `NumberColumnFormatter` with the real font's digit widths (`measureDigitSizes`), and copying (F11,
+   Ctrl/Cmd+C). Tests: `TestNumberColumnDisplay`.
+   - Done: the engine sends each cell's text (or an invalid value's text and error position, or the error),
+     and each column's editability, number-ness and style classes; `src/gui/grid/cellDisplay.ts` makes the
+     cells' documents as `EditorKitCache` did and runs `NumberColumnFormatter` on number columns, with
+     digit widths measured from the fonts (`measureDigitSizes`); a `copy` request gives the clipboard
+     content (`src/gui/clipboard.ts` writes it). Java showed nothing while loading (its "Loading..." was
+     commented out), so neither does this. Tests: `NumberColumnDisplay.test.ts` (the port, less its
+     editing half, which is step 4's) and `CellDisplay.test.ts`.
+4. The cell editor (done): `DocumentTextField` (caret, selection, keyboard, mouse, scrolling within the cell, the
+   error state) on the ported `RecogniserDocument`, the type copy and edit messages above, commit (Enter,
+   Tab, clicking away), cancel (Escape), and the dependent tables updating. Tests: `TestDocumentTextField`,
+   `TestCellReadWrite`.
+   - Done: `src/gui/components/DocumentTextField.vue` (a native textarea with Java's keys on top; expanded to
+     350 × 110 while a cell is edited), `src/gui/grid/CellEditDocument.ts`, editing in `TableGrid.vue`, and
+     the engine's `canEdit`, `edit` and `deleteCells` requests; errors show in an alert (`alerts.ts`).
+     `docs/gui-spec/cell-editor.md`. No type copy after all: Java's `RecogniserDocument` only ran its
+     recogniser when the cell lost the focus, so the engine recognises the text when it stores it (the
+     copy of the type information moves to Phase 10, for the expression editor). Deleting cells, as in
+     Java, only changes those on the page. Tests: `DocumentTextField.test.ts`, `CellReadWrite.test.ts` and
+     `CellEditing.test.ts`, and the editing half of `NumberColumnDisplay.test.ts`; the typing in
+     `EnterStructuredValueTrait` is shared from `test/gui-logic/stf/fixtures/textToType.ts`, and
+     `keyboardMoveTo` now waits for scrolling to stop (and, for a table cell, its content). Left for Phase
+     9: offering a Manual Edit when a transformation's cell is edited (the edit is cancelled meanwhile),
+     the "=" guidance, the cells' menu items and hover text, and marking the file as modified.
+5. Tidy up (done): delete the grid and worker prototypes (their tests become the production grid's), refresh
+   PORT-STATUS, and a `docs/gui-spec/` inventory for each part.
+   - Done: `src/gui/prototype/`, `scripts/prototype/` and `test/gui/prototype/` deleted (the prototype's tests
+     are covered by `CellReadWrite.test.ts` and `KeyboardMovement.test.ts`), with the store adapter's
+     `TableManagerStore` (only the prototype's in-page engine used it). `scripts/port-status.ts` now knows
+     where the GUI tests and test helpers are (`GUI_TEST_PORTS`; Vitest `.test.ts` files, and Java method
+     names given in brackets in a test's name): `tests-gui-grid`, `tests-gui-numbers`, `tests-gui-cell-rw`
+     and `tests-gui-dtf` are all ported, and 8 of `tests-gui-base`'s helpers. The inventories are
+     `docs/gui-spec/grid.md` (layout, scrolling, cells, column widths, selection, keys, moving tables) and
+     `cell-editor.md`.
+
 ### Phase 9: Main window and tables (core of `app`)
 - Main window, menus, initial screen, the project file flow (new/open/save/save-as,
   autosave, recent files), data table creation, and adding and removing rows and
@@ -671,6 +744,13 @@ Part B, in steps (each a checkpoint with the project owner):
 
 **Tests:** `tests-gui-tables`, `tests-gui-side`, `tests-gui-type-editor`, and the parts
 of `tests-gui-central` that do not need expressions.
+
+Carried over from Phase 8 (each is marked `PORT-DEFERRED` or listed in `docs/gui-spec/grid.md` and
+`cell-editor.md`): `TableDisplay`'s parts of the grid (the table's "hat", renaming a table from its name row,
+the table and column header menus, row label menus, deleting a table, "Goto row" and flashing the header);
+what activating empty cells does; offering a Manual Edit when a transformation's cell is edited; the
+guidance when a data cell's text starts with "="; the cells' extra menu items and hover text for cut-off
+values; and marking the file as modified after an edit.
 
 **Milestone:** a usable data-entry app in the browser.
 
@@ -770,7 +850,7 @@ Decided:
   soon, before Phase 8's production grid, rather than in Phase 13.
 - After the worker spike: the engine runs in a Web Worker, which owns the TableManager, and the GUI talks to it
   by messages. Editors that need engine types while the user types (the expression editor's checking and
-  completion, cell editors' recognisers) run on the main thread against a copy of the type information
+  completion; cell editors turned out not to, see Phase 8 step 4) run on the main thread against a copy of the type information
   (tables' columns and types, the TypeManager's types, units), taken when the editor opens: while it is open,
   nothing changes except by the user. The copy is taken once the worker is idle, so it includes any re-run
   still going from an earlier edit. Anything that needs table data rather than types is a request to the worker.

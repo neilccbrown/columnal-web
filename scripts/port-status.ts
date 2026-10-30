@@ -9,7 +9,9 @@
 //                                                       -> test/gui/tests-x/<path>/X.test.ts    (GUI test modules,
 //                                                          except ENGINE_TESTS_IN_GUI_MODULES and GUI_LOGIC_TESTS_IN_GUI_MODULES)
 //   tests-x/src/testFixtures/java/(test|xyz/columnal)/<path>/X.java -> test/(engine|gui)/tests-x/fixtures/<path>/X.ts
-// Test methods (@Test/@Property) count as ported when the TS test file has a test with the same name.
+//   except GUI tests and helpers ported elsewhere (GUI_TEST_PORTS), such as test/gui/grid/ and test/gui/base/.
+// Test methods (@Test/@Property) count as ported when a TS test file has a test with the same name, or
+// one whose name gives it in brackets ("does this (testX, testY)").
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -61,6 +63,24 @@ const GUI_LOGIC_TESTS_IN_GUI_MODULES = new Set([
     "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java",
 ]);
 
+// GUI tests and test helpers whose ports are not where the mapping above puts them (the GUI tests are
+// grouped by what they test), with the TS files they are in:
+const GUI_TEST_PORTS = new Map<string, readonly string[]>([
+    ["tests-gui-grid/src/test/java/test/gui/TestKeyboardMovement.java", ["test/gui/grid/KeyboardMovement.test.ts"]],
+    ["tests-gui-grid/src/test/java/test/gui/TestVirtualGridLayout.java", ["test/gui/grid/GridLayout.test.ts", "test/gui-logic/stf/Grid.test.ts"]],
+    ["tests-gui-numbers/src/test/java/test/gui/TestNumberColumnDisplay.java", ["test/gui/grid/NumberColumnDisplay.test.ts"]],
+    ["tests-gui-cell-rw/src/test/java/test/gui/TestCellReadWrite.java", ["test/gui/grid/CellReadWrite.test.ts"]],
+    ["tests-gui-dtf/src/test/java/test/gui/stf/TestDocumentTextField.java", ["test/gui/components/DocumentTextField.test.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/ClipboardTrait.java", ["test/gui/base/clipboard.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/ComboUtilTrait.java", ["test/gui/base/comboUtil.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterStructuredValueTrait.java", ["test/gui-logic/stf/fixtures/textToType.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/FocusOwnerTrait.java", ["test/gui/base/focusOwner.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/ListUtilTrait.java", ["test/gui/base/listUtil.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/PopupTrait.java", ["test/gui/base/popup.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/ScrollToTrait.java", ["test/gui/base/scrollTo.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/TextFieldTrait.java", ["test/gui/base/textField.ts"]],
+]);
+
 // The kind of TS test (engine, gui-logic or gui) a Java test file in a test module becomes:
 function testKind(javaPath: string, moduleKind: string): string
 {
@@ -85,7 +105,7 @@ function withStatus(f: FileStatus): FileStatus
     const skipped = SKIPPED.get(f.javaPath);
     if (skipped !== undefined)
         return { ...f, skipped, ported: true };
-    if (f.ported && readFileSync(join(root, f.tsPath), "utf8").includes("PORT-DEFERRED"))
+    if (f.ported && f.tsPath.split(", ").some(p => readFileSync(join(root, p), "utf8").includes("PORT-DEFERRED")))
         return { ...f, deferred: true };
     return f;
 }
@@ -146,9 +166,14 @@ function tsTestNames(file: string): Set<string>
     if (!existsSync(file))
         return names;
     const src = readFileSync(file, "utf8");
-    const re = /\b(?:test|it|propertyTest)(?:\.\w+)?\(\s*["'`]([^"'`]+)["'`]/g;
+    const re = /\b(?:test|it|propertyTest)(?:\.\w+)?\(\s*(["'`])((?:(?!\1)[^\\]|\\.)+)\1/g;
     for (let m = re.exec(src); m !== null; m = re.exec(src))
-        names.add(m[1]!);
+    {
+        names.add(m[2]!);
+        // Java's method names given in brackets at the end, "does this (testX, testY)":
+        for (const javaName of m[2]!.match(/\(([\w, ]+)\)$/)?.[1]!.split(/,\s*/) ?? [])
+            names.add(javaName);
+    }
     return names;
 }
 
@@ -162,22 +187,22 @@ function testModuleFiles(module: string): FileStatus[]
         const fileKind = testKind(relative(reference, f), kind);
         const methods = javaTestMethods(f);
         // A helper class with no test methods (such as a generator) is a plain module, not a test file:
-        const rel = stripPackageRoot(relative(testsRoot, f)).replace(/\.java$/, methods.length === 0 ? ".ts" : fileKind === "gui" ? ".spec.ts" : ".test.ts");
-        const tsPath = join(root, "test", fileKind, module, rel);
-        const tsNames = tsTestNames(tsPath);
-        result.push({
-            javaPath: relative(reference, f), tsPath: relative(root, tsPath), lines: lineCount(f),
-            ported: existsSync(tsPath) && methods.every(m => tsNames.has(m)),
+        const rel = stripPackageRoot(relative(testsRoot, f)).replace(/\.java$/, methods.length === 0 ? ".ts" : ".test.ts");
+        const tsPaths = GUI_TEST_PORTS.get(relative(reference, f))?.map(p => join(root, p)) ?? [join(root, "test", fileKind, module, rel)];
+        const tsNames = new Set(tsPaths.flatMap(p => [...tsTestNames(p)]));
+        result.push(withStatus({
+            javaPath: relative(reference, f), tsPath: tsPaths.map(p => relative(root, p)).join(", "), lines: lineCount(f),
+            ported: tsPaths.every(p => existsSync(p)) && methods.every(m => tsNames.has(m)),
             testMethods: { total: methods, ported: methods.filter(m => tsNames.has(m)) },
-        });
+        }));
     }
     const fixturesRoot = join(reference, module, "src", "testFixtures", "java");
     for (const f of walk(fixturesRoot, ".java").filter(f => !isIgnoredJava(f)))
     {
         const rel = stripPackageRoot(relative(fixturesRoot, f)).replace(/\.java$/, ".ts");
         const fixtureKind = testKind(relative(reference, f), kind);
-        const tsPath = join(root, "test", fixtureKind, module, "fixtures", rel);
-        result.push(withStatus({ javaPath: relative(reference, f), tsPath: relative(root, tsPath), lines: lineCount(f), ported: existsSync(tsPath) }));
+        const tsPath = GUI_TEST_PORTS.get(relative(reference, f))?.[0] ?? relative(root, join(root, "test", fixtureKind, module, "fixtures", rel));
+        result.push(withStatus({ javaPath: relative(reference, f), tsPath, lines: lineCount(f), ported: existsSync(join(root, tsPath)) }));
     }
     return result;
 }

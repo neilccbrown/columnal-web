@@ -1,5 +1,5 @@
-// Grid prototype (Phase 7, throwaway): the grid's scroll position and size, which the tables read
-// to work out which of their rows and columns are in view.
+// The grid's scroll position and visible size, which its tables read to work out which of their rows
+// and columns are in view.
 import type { InjectionKey, ShallowRef } from "vue";
 
 export interface Viewport

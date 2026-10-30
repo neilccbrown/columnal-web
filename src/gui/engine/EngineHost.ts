@@ -1,15 +1,28 @@
 // The engine's side of the GUI–engine messages (protocol.ts): owns the TableManager, answers the
 // GUI's requests and sends it events.  Runs in the engine worker (engineWorker.ts), or in the page
 // for GUI tests (InPageTransport), where tests can also read the engine's objects through it.
-import type { CellPosition } from "../../engine/data/data/CellPosition.js";
+import { CellPosition } from "../../engine/data/data/CellPosition.js";
 import type { Column } from "../../engine/data/data/Column.js";
 import { DataSource } from "../../engine/data/data/DataSources.js";
 import { Table } from "../../engine/data/data/Table.js";
 import { TableManager } from "../../engine/data/data/TableManager.js";
 import { TransformationManager } from "../../engine/transformations/transformations/TransformationManager.js";
+import { ClipboardUtils } from "../../engine/importers/importers/ClipboardUtils.js";
+import type { DataType } from "../../engine/types/data/datatype/DataType.js";
 import { DataTypeUtility } from "../../engine/types/data/datatype/DataTypeUtility.js";
+import { Either } from "../../engine/utility-adt/utility/adt/Either.js";
+import { Pair } from "../../engine/utility-adt/utility/adt/Pair.js";
+import { InternalException } from "../../engine/utility-error/error/InternalException.js";
+import { InvalidImmediateValueException } from "../../engine/utility-error/error/InvalidImmediateValueException.js";
+import { UserException } from "../../engine/utility-error/error/UserException.js";
+import { Log } from "../../engine/utility/log/Log.js";
+import { ParseProgress } from "../../engine/utility/utility/ParseProgress.js";
+import { TranslationUtility } from "../../engine/utility/utility/TranslationUtility.js";
+import { TableDisplayUtility } from "../../gui-logic/stf/gui/dtf/TableDisplayUtility.js";
 import { Workers } from "../../engine/utility/utility/Workers.js";
-import { ENGINE_METHODS, type CellContent, type EngineApi, type EngineError, type EngineEvent, type FromEngine, type TableInfo, type ToEngine } from "./protocol.js";
+import type { Value } from "../../engine/utility/utility/Value.js";
+import { Transformation } from "../../engine/data/data/Transformation.js";
+import { ENGINE_METHODS, type CellContent, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type FromEngine, type TableInfo, type ToEngine } from "./protocol.js";
 
 // How many rows requests are done for each table at once (newest first); older ones are skipped:
 const MAX_ROWS_REQUESTS_PER_TABLE = 2;
@@ -90,6 +103,128 @@ export class EngineHost implements EngineApi
         return saver.getCompleteFile();
     }
 
+    public copy(id: string, version: number, firstColumn: number, lastColumnIncl: number, rows: { readonly firstRow: number, readonly lastRowIncl: number } | null): Promise<Readonly<Record<string, string>> | null>
+    {
+        const table = this.current(id, version);
+        if (table === null)
+            return Promise.resolve(null);
+        const columns = table.getData().getColumns().slice(firstColumn, lastColumnIncl + 1).map(c => new Pair(c.getName(), c.getType()));
+        return new Promise(resolve =>
+        {
+            ClipboardUtils.copyValuesToClipboard(this.tableManager.getUnitManager(), this.tableManager.getTypeManager(), columns,
+                () => rows === null ? new ClipboardUtils.RowRange(0, table.getData().getLength() - 1) : new ClipboardUtils.RowRange(rows.firstRow, rows.lastRowIncl),
+                content => resolve(Object.fromEntries(content)),
+                copied => { if (!copied) resolve(null); });
+        });
+    }
+
+    public setPosition(id: string, column: number, row: number): void
+    {
+        const t = this.tables.get(id);
+        if (t === undefined)
+            return;
+        this.positions.set(t.table, new CellPosition(CellPosition.row(row), CellPosition.col(column)));
+        this.tablesChanged();
+    }
+
+    public canEdit(id: string, version: number, column: number, row: number): boolean
+    {
+        const c = this.current(id, version)?.getData().getColumns()[column];
+        if (c === undefined)
+            return false;
+        try
+        {
+            const status = c.getEditableStatus();
+            return status.editable && (status.checkEditable === null || status.checkEditable(row));
+        }
+        catch (e)
+        {
+            // (Java: an InternalException is logged and the edit goes ahead)
+            if (!(e instanceof InternalException))
+                throw e;
+            Log.log(e);
+            return true;
+        }
+    }
+
+    public edit(id: string, version: number, column: number, row: number, text: string): EditResult
+    {
+        const table = this.current(id, version);
+        const c = table?.getData().getColumns()[column];
+        if (table === null || c === undefined)
+            return { kind: "stale" };
+        // Java: RecogniserDocument.recognise(true): the value, or the text if it isn't one
+        let value: Either<string, Value>;
+        try
+        {
+            const recognised = TableDisplayUtility.recogniser(c.getType().getType(), true).recogniser.process(ParseProgress.fromStart(text), false).flatMap(s => s.requireEnd());
+            value = recognised.either<Either<string, Value>>(() => Either.left(text), success => Either.right(success.value));
+        }
+        catch (e)
+        {
+            return { kind: "saved", cell: cellContent(c, column, row), alert: alertFor("error.storing.data", e) };
+        }
+        let alert = this.store(() => c.getType().setCollapsed(row, value));
+        alert ??= this.reRun(table);
+        return { kind: "saved", cell: cellContent(c, column, row), alert };
+    }
+
+    public deleteCells(id: string, version: number, firstColumn: number, lastColumnIncl: number, firstRow: number, lastRowIncl: number): { readonly cells: readonly (readonly CellContent[])[], readonly alert: EngineAlert | null } | null
+    {
+        const table = this.current(id, version);
+        if (table === null)
+            return null;
+        const columns = table.getData().getColumns().slice(firstColumn, lastColumnIncl + 1);
+        let alert: EngineAlert | null = null;
+        for (const c of columns)
+        {
+            // (Java: the cells' documents; a read-only one ignores it)
+            if (!c.getEditableStatus().editable)
+                continue;
+            const defaultValue = c.getDefaultValue();
+            if (defaultValue === null)
+                continue;
+            for (let row = firstRow; row <= lastRowIncl; row++)
+                alert ??= this.store(() => c.getType().setCollapsed(row, Either.right(defaultValue)));
+        }
+        alert ??= this.reRun(table);
+        const cells: CellContent[][] = [];
+        for (let row = firstRow; row <= lastRowIncl; row++)
+            cells.push(columns.map((c, i) => cellContent(c, firstColumn + i, row)));
+        return { cells, alert };
+    }
+
+    // Java: the Saver's FXUtility.alertOnError_ (a SilentCancelEditException just leaves the old value)
+    private store(set: () => void): EngineAlert | null
+    {
+        try
+        {
+            set();
+            return null;
+        }
+        catch (e)
+        {
+            if (e instanceof Transformation.SilentCancelEditException)
+                return null;
+            return alertFor("error.storing.data", e);
+        }
+    }
+
+    // Java: TableDisplay's onModify, which re-runs the tables that depend on the table.
+    // PORT-DEFERRED: it also marked the file as modified, for saving (Phase 9)
+    private reRun(table: Table): EngineAlert | null
+    {
+        try
+        {
+            this.tableManager.reRun(table);
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.updating.dependent.transformations", e);
+        }
+    }
+
     public length(id: string, version: number): number | null
     {
         return this.current(id, version)?.getData().getLength() ?? null;
@@ -132,6 +267,8 @@ export class EngineHost implements EngineApi
             loadPosition: position => { this.positions.set(table, position); },
             getMostRecentPosition: () => this.position(table),
             getBottomRightIncl: () => this.position(table),
+            // PORT-DEFERRED: offering a Manual Edit when a transformation's cell is edited (Phase 9, with
+            // TableDisplay); the edit is cancelled meanwhile, as in Java
             promptForTransformationEdit: () => {},
             getTable: () => table,
         });
@@ -140,10 +277,8 @@ export class EngineHost implements EngineApi
 
     private position(table: Table): CellPosition
     {
-        const position = this.positions.get(table);
-        if (position === undefined)
-            throw new Error("No position for table " + table.getId().getRaw());
-        return position;
+        // (Until the GUI places it; GridArea's position starts at the origin)
+        return this.positions.get(table) ?? CellPosition.ORIGIN;
     }
 
     private current(id: string, version: number): Table | null
@@ -175,12 +310,18 @@ export class EngineHost implements EngineApi
     {
         let columnNames: string[] = [];
         let columnTypes: string[] = [];
+        let columnEditable: boolean[] = [];
+        let columnNumber: boolean[] = [];
+        let columnStyles: (readonly string[])[] = [];
         let error: string | null = null;
         try
         {
             const columns = table.getData().getColumns();
             columnNames = columns.map(c => c.getName().getRaw());
             columnTypes = columns.map(c => typeText(c));
+            columnEditable = columns.map(c => c.getEditableStatus().editable);
+            columnNumber = columns.map(c => isNumberType(c.getType().getType()));
+            columnStyles = columns.map(c => TableDisplayUtility.stfStylesFor(c.getType().getType()));
         }
         catch (e)
         {
@@ -195,6 +336,9 @@ export class EngineHost implements EngineApi
             row: position?.rowIndex ?? 0,
             columnNames,
             columnTypes,
+            columnEditable,
+            columnNumber,
+            columnStyles,
             error,
         };
     }
@@ -220,7 +364,7 @@ export class EngineHost implements EngineApi
             const columns = table.getData().getColumns();
             const cells: CellContent[][] = [];
             for (let row = r.firstRow; row < r.lastRowExcl; row++)
-                cells.push(columns.map(c => cellContent(c, row)));
+                cells.push(columns.map((c, i) => cellContent(c, i, row)));
             r.resolve(cells);
         }
     }
@@ -239,20 +383,66 @@ function typeText(column: Column): string
 }
 
 // A stand-in for showing a cell, until Phase 8 brings Java's display rules (e.g. NumberColumnFormatter).
-function cellContent(column: Column, row: number): CellContent
+// Java: TableDisplayUtility.valueAndComponent gives number columns a NumberColumnFormatter
+function isNumberType(type: DataType): boolean
+{
+    return type.apply<boolean>({
+        number: () => true,
+        text: () => false,
+        date: () => false,
+        bool: () => false,
+        tagged: () => false,
+        record: () => false,
+        array: () => false,
+    });
+}
+
+/** Java: EditorKitCache.ValueLoader.run, and the error position the cell's RecogniserDocument finds. */
+function cellContent(column: Column, _columnIndex: number, row: number): CellContent
 {
     try
     {
-        const value = column.getType().getCollapsed(row);
-        if (typeof value === "string")
-            return { text: value, kind: "text" };
-        const text = DataTypeUtility.valueToString(value);
-        return { text, kind: /^-?[0-9]/.test(text) && !text.includes(" ") && !text.includes("-", 1) ? "number" : "other" };
+        return { kind: "value", text: DataTypeUtility.valueToString(column.getType().getCollapsed(row)) };
     }
     catch (e)
     {
-        return { text: toEngineError(e).message, kind: "error" };
+        if (e instanceof InvalidImmediateValueException)
+            return { kind: "invalid", text: e.getInvalid(), errorPosition: errorPosition(column, e.getInvalid()) };
+        if (e instanceof InternalException)
+            Log.log(e);
+        if (e instanceof UserException || e instanceof InternalException)
+        {
+            const msg = e.getLocalizedMessage();
+            return { kind: "error", text: msg === null ? TranslationUtility.getString("loading.error.nodetail") : TranslationUtility.getString("loading.error.detail", msg) };
+        }
+        throw e;
     }
+}
+
+// Where the column's recogniser finds an error in the text (Java: RecogniserDocument.recognise):
+function errorPosition(column: Column, text: string): number | null
+{
+    try
+    {
+        const result = TableDisplayUtility.recogniser(column.getType().getType(), true).recogniser.process(ParseProgress.fromStart(text), false).flatMap(s => s.requireEnd());
+        return result.either(err => err.errorPosition, () => null);
+    }
+    catch (e)
+    {
+        if (!(e instanceof InternalException || e instanceof UserException))
+            throw e;
+        return null;
+    }
+}
+
+// Java: FXUtility.alertOnError_, which shows UserExceptions and InternalExceptions
+function alertFor(titleKey: "error.storing.data" | "error.updating.dependent.transformations", e: unknown): EngineAlert
+{
+    if (!(e instanceof UserException || e instanceof InternalException))
+        throw e;
+    if (e instanceof InternalException)
+        Log.log(e);
+    return { title: TranslationUtility.getString(titleKey), message: e.getLocalizedMessage() ?? "Unknown error" };
 }
 
 function toEngineError(e: unknown): EngineError

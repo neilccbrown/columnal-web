@@ -9,7 +9,5 @@
     "types": ["node", "vite/client"]
   },
   "exclude": ["test/gui/**"],
-  "include": ["test/**/*.ts", "scripts/**/*.ts", "*.config.ts", "src/engine/**/*.ts", "src/gui-logic/**/*.ts",
-    // (Used by scripts/prototype/profile-load.ts)
-    "src/gui/prototype/grid/bigTable.ts"]
+  "include": ["test/**/*.ts", "scripts/**/*.ts", "*.config.ts", "src/engine/**/*.ts", "src/gui-logic/**/*.ts"]
 }

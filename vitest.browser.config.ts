@@ -18,6 +18,7 @@ export default defineConfig({
     },
     test: {
         include: ["test/gui/**/*.test.ts"],
+        setupFiles: ["test/gui/setup.ts"],
         browser: {
             enabled: true,
             // (The clipboard permissions are for test/gui/base/clipboard.ts)

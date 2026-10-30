@@ -39,14 +39,15 @@ describe("in the page", () =>
         await client.whenIdle();
 
         const t = table(tables(), "T");
-        expect(t).toMatchObject({ kind: "data", column: 1, row: 1, columnNames: ["N", "Name"], error: null });
+        expect(t).toMatchObject({ kind: "data", column: 1, row: 1, columnNames: ["N", "Name"], columnEditable: [true, true], columnNumber: [true, false],
+            columnStyles: [["stf-cell-number"], ["stf-cell-text"]], error: null });
         const c = table(tables(), "C");
         expect(c).toMatchObject({ kind: "transformation", column: 4, row: 1, columnNames: ["N", "Name", "Double"] });
 
         expect(await client.request("length", c.id, c.version)).toBe(3);
         const rows = await client.request("rows", c.id, c.version, 0, 3);
         expect(rows?.map(r => r[2]!.text)).toEqual(["2", "5", "-6"]);
-        expect(rows?.[0]![1]).toEqual({ text: "a", kind: "text" });
+        expect(rows?.[0]![1]).toEqual({ kind: "value", text: "\"a\"" });
 
         // Tests can read the engine's objects directly:
         expect(transport.host.tableManager.getAllTables().map(t => t.getId().getRaw()).sort()).toEqual(["C", "T"]);

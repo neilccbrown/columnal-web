@@ -18,6 +18,18 @@ export class EngineRequestError extends Error
     }
 }
 
+/** A request that was waiting when the client closed (e.g. as its component unmounted). */
+export class EngineClosedError extends Error
+{
+}
+
+/** For promises nobody waits on: ignores the engine closing, and leaves other errors to be reported. */
+export function ignoreClosed(e: unknown): void
+{
+    if (!(e instanceof EngineClosedError))
+        throw e;
+}
+
 export class EngineClient
 {
     private readonly transport: EngineTransport;
@@ -58,7 +70,7 @@ export class EngineClient
     {
         this.transport.close();
         for (const w of this.waiting.values())
-            w.reject(new Error("Engine closed before answering " + w.method));
+            w.reject(new EngineClosedError("Engine closed before answering " + w.method));
         this.waiting.clear();
     }
 

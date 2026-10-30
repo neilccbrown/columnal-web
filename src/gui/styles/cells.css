@@ -1,0 +1,16 @@
+/* The parts of number cells (general.scss), global so that NumberColumnFormatter's digit widths can be
+   measured with them (src/gui/grid/cellDisplay.ts). */
+.stf-cell-number, .stf-number-int {
+    font-family: var(--font-mono);
+}
+.stf-number-frac {
+    font-family: var(--font-mono);
+    font-size: 85%;
+}
+.stf-number-dot {
+    font-family: var(--font-main);
+    font-size: 85%;
+}
+.stf-number-dot-invisible {
+    visibility: hidden;
+}

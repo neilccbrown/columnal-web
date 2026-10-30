@@ -1,9 +1,17 @@
 // Port of the Java GUI tests' ScrollToTrait (tests-gui-base): scrollTo, which scrolls (with the mouse
-// wheel) until an element is entirely in view in its scrolling ancestor.
-// PORT-DEFERRED: keyboardMoveTo, which drives the grid, to Phase 8.
-import { expect } from "vitest";
+// wheel) until an element is entirely in view in its scrolling ancestor, and keyboardMoveTo, which
+// moves the grid's selection to a cell.
+// PORT-DEFERRED: keyboardMoveTo's variants that go to a table's row sometimes through the View menu's
+// "Goto row" (Phase 9, with the menus); keyboardMoveToTableCell here always uses the keyboard way.
+import { expect, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
-import { describeElement } from "./util.js";
+import type { CellPosition } from "../../../src/engine/data/data/CellPosition.js";
+import { JavaRandom } from "../../../src/engine/java/JavaRandom.js";
+import type { VirtualGrid } from "../../../src/gui-logic/stf/gui/grid/VirtualGrid.js";
+import { GridTableDisplay } from "../../../src/gui/grid/GridTableDisplay.js";
+import { isMac } from "../../../src/gui/shortcuts.js";
+import { getFocusOwner } from "./focusOwner.js";
+import { describeElement, sleep } from "./util.js";
 
 function enclosingScroll(target: Element): HTMLElement | null
 {
@@ -41,4 +49,62 @@ export async function scrollTo(target: Element): Promise<void>
     const r = t();
     expect(view.left <= r.left && r.right <= view.right && view.top <= r.top && r.bottom <= view.bottom,
         `View bounds: ${JSON.stringify(view)} target: ${JSON.stringify(r)} target before scroll: ${JSON.stringify(targetBeforeScroll)}`).toBe(true);
+}
+
+/**
+ * Moves the grid's selection to the target cell.  Lots of tests use this, so to speed things up it
+ * usually calls the grid directly (VirtualGrid._test_keyboardMoveTo); one time in ten (decided by the
+ * target) it uses the keyboard: Ctrl/Cmd+Home, then Page Down and Down to the row, then Right to the
+ * column.  The grid must have the focus.
+ */
+export async function keyboardMoveTo(virtualGrid: VirtualGrid, target: CellPosition): Promise<void>
+{
+    const r = new JavaRandom(target.rowIndex * 100 + target.columnIndex);
+    const bypassGUI = r.nextInt(10) !== 1;
+    if (bypassGUI)
+        virtualGrid._test_keyboardMoveTo(target);
+    else
+    {
+        const pageHeight = virtualGrid.calcPageHeight();
+        // Control-Home goes to 1,1 not 0,0 hence the -1 in the subsequent loops:
+        await userEvent.keyboard(isMac() ? "{Meta>}{Home}{/Meta}" : "{Control>}{Home}{/Control}");
+        // First go to correct row:
+        for (let i = 0; i < Math.floor((target.rowIndex - 1) / pageHeight); i++)
+            await userEvent.keyboard("{PageDown}");
+        for (let i = 0; i < (target.rowIndex - 1) % pageHeight; i++)
+            await userEvent.keyboard("{ArrowDown}");
+        const maxAttempts = target.columnIndex + 1;
+        for (let attempts = 0; (virtualGrid.getSelection()?.positionToEnsureInView().columnIndex ?? Number.MAX_SAFE_INTEGER) < target.columnIndex && attempts < maxAttempts; attempts++)
+            await userEvent.keyboard("{ArrowRight}");
+    }
+    // Wait for smooth scroll to finish (a long way takes longer than Java's 300 ms):
+    await sleep(300);
+    await waitForScrollToStop();
+    const selection = virtualGrid.getSelection();
+    expect(selection !== null && (selection.isExactly(target) || selection.getActivateTarget().equals(target)),
+        `Selected is ${String(selection)} aiming for ${target.toString()} focus owner is ${describeElement(getFocusOwner())}${bypassGUI ? " bypassed GUI" : " used GUI"}`).toBe(true);
+}
+
+// Waits until the grid's scroll position stays the same for 100 ms:
+async function waitForScrollToStop(): Promise<void>
+{
+    const scroller = document.querySelector<HTMLElement>("[data-testid=grid]");
+    if (scroller === null)
+        return;
+    let last = "";
+    for (let now = `${scroller.scrollLeft},${scroller.scrollTop}`; now !== last; now = `${scroller.scrollLeft},${scroller.scrollTop}`)
+    {
+        last = now;
+        await sleep(100);
+    }
+}
+
+/** Moves to a data cell of a table (Java: keyboardMoveTo(virtualGrid, tableManager, tableId, row, col)), and returns its position. */
+export async function keyboardMoveToTableCell(virtualGrid: VirtualGrid, display: GridTableDisplay, row: number, column: number): Promise<CellPosition>
+{
+    const target = display.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS + row, column);
+    await keyboardMoveTo(virtualGrid, target);
+    // (Java's cells were there by now; here wait for the cell's content to arrive)
+    await vi.waitUntil(() => display.getCell(row, column) !== null);
+    return target;
 }

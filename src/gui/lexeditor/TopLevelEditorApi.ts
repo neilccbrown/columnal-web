@@ -1,0 +1,22 @@
+// What TopLevelEditor.vue exposes (a generic component's instance type can't be named from outside).
+import type { EditorView } from "@codemirror/view";
+import type { StyledShowable } from "../../engine/utility-error/styled/StyledShowable.js";
+import type { CodeCompletionContext } from "../../gui-logic/lex-editor/gui/lexeditor/CodeCompletionContext.js";
+import type { EditorContent } from "../../gui-logic/lex-editor/gui/lexeditor/EditorContent.js";
+import type { EditorDisplay } from "../../gui-logic/lex-editor/gui/lexeditor/EditorDisplay.js";
+import type { TopLevelEditor } from "../../gui-logic/lex-editor/gui/lexeditor/TopLevelEditor.js";
+
+export interface TopLevelEditorApi<EXPRESSION extends StyledShowable>
+{
+    save(forceSaveAsIfUnfocused: boolean): EXPRESSION;
+    focus(side: TopLevelEditor.Focus): void;
+    isFocused(): boolean;
+    selectAll(): void;
+    setContent(text: string): void;
+    hasErrors(): boolean;
+    showAllErrors(): void;
+    _test_getRawText(): string;
+    _test_getContent(): EditorContent<EXPRESSION, CodeCompletionContext>;
+    _test_getDisplay(): EditorDisplay;
+    _test_getView(): EditorView | null;
+}

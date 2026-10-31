@@ -2,9 +2,9 @@
 // (lex-editor-completion module): the completion list, and which item is selected when the
 // completions change.
 //
-// PORT-DEFERRED: the popup window (Phase 10, with the expression editor), with the list and a web
-// view of the selected completion's further details, whose "insertable-expression" spans insert
-// into the editor when clicked (enableInsertLinks).
+// The popup window, with the list and the selected completion's further details (whose
+// "insertable-expression" spans insert into the editor when clicked: enableInsertLinks), is
+// src/gui/lexeditor/LexAutoCompleteWindow.vue.
 import { LexAutoComplete } from "./LexAutoComplete.js";
 import { LexCompletionList } from "./LexCompletionList.js";
 import type { LexCompletionListener } from "./LexCompletionListener.js";

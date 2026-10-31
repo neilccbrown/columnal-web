@@ -8,6 +8,7 @@ import { PopoverAnchor, PopoverArrow, PopoverContent, PopoverPortal, PopoverRoot
 import { computed, shallowRef, useTemplateRef, watch } from "vue";
 import type { ErrorableTextField } from "../../gui-logic/utility-gui/utility/gui/ErrorableTextField.js";
 import { t } from "../i18n.js";
+import FixList from "./FixList.vue";
 import StyledText from "./StyledText.vue";
 
 // (Attributes such as aria-label go on the input)
@@ -140,25 +141,10 @@ defineExpose({
               :key="i"
             >{{ warning }}</span>
           </div>
-          <div
-            v-if="converted.getFixes().length > 0"
-            class="quick-fix-list"
-          >
-            <div class="fix-list-heading">
-              {{ t("error.fixes") }}
-            </div>
-            <div
-              v-for="(fix, i) in converted.getFixes()"
-              :key="i"
-              class="quick-fix-row"
-              :class="`key-F${i + 1}`"
-              role="button"
-              @mousedown.prevent
-              @click="setText(fix.fixedValue)"
-            >
-              <StyledText :text="fix.fixDescription" />
-            </div>
-          </div>
+          <FixList
+            :fixes="converted.getFixes().map(f => ({ label: f.fixDescription, cssClasses: [] }))"
+            @fix="i => setText(converted.getFixes()[i]!.fixedValue)"
+          />
         </div>
         <PopoverArrow
           class="errorable-text-field-popup-arrow"
@@ -206,16 +192,5 @@ defineExpose({
 .errorable-text-field-popup .errorable-sub-explanation {
     color: rgb(60% 60% 60%);
     font-size: 80%;
-}
-.fix-list-heading {
-    color: rgb(40% 40% 40%);
-}
-.quick-fix-row {
-    padding-left: 2em;
-    cursor: pointer;
-}
-.quick-fix-row .styled-text {
-    text-decoration: underline;
-    color: rgb(40% 40% 40%);
 }
 </style>

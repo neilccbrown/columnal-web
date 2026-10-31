@@ -14,7 +14,7 @@ export default defineConfig({
     },
     // Pre-bundled up front: if Vite finds them during a run, it reloads, and can end up with two copies of Vue.
     optimizeDeps: {
-        include: ["vue", "reka-ui", "fast-check"],
+        include: ["vue", "reka-ui", "fast-check", "@codemirror/state", "@codemirror/view"],
     },
     test: {
         include: ["test/gui/**/*.test.ts"],

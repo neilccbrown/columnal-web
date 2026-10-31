@@ -755,16 +755,79 @@ values; and marking the file as modified after an edit.
 
 **Milestone:** a usable data-entry app in the browser.
 
-### Phase 10: Expression, type and unit editors
-- **Start with a short CodeMirror spike** that checks it can reproduce the Columnal
-  editor's distinctive behaviours:
-  - automatically matched brackets
-  - inline hints and prompts
-  - errors that depend on where the caret is
-  - completions with a documentation side panel
-  - quick fixes
-- Build the editors as CodeMirror extensions over the ported lexers and savers. Include
-  the function documentation popups.
+Decided by the project owner at the start of the phase:
+- Projects live in the browser's storage (IndexedDB), autosaved as Java autosaved its file. Open lists the
+  stored projects; a `.clmnl` file comes in by upload and goes out by download. Java's `UndoManager`
+  (undo restores the previous save) keeps its backups there too. Saving to real files (the File System
+  Access API, Chrome and Edge only) is not planned.
+- Adding a column and the Types and Units dialogs need Java's lex type and unit editors, so the CodeMirror
+  spike (planned for Phase 10) comes first, and the type and unit editors are built in this phase. Phase 10
+  is left with the expression editor.
+
+Steps (each a checkpoint with the project owner):
+1. The CodeMirror spike: a throwaway editor over the ported `EditorContent`/`EditorDisplay` and a lexer,
+   checking it can match the lex editor's behaviours: its own key handling over CodeMirror's (as
+   `EditorDisplay.keyTyped`/`keyPressed`), automatically matched brackets, inline prompts, errors that
+   depend on where the caret is (underlines and the error popup), the completion list with a
+   documentation side panel, and quick fixes. Then a decision with the project owner: CodeMirror,
+   CodeMirror with custom extensions, or a custom editor (risk 7).
+   - Done: the project owner chose CodeMirror, as the spike used it, and to fix the Java bug it found. The
+     spike (throwaway, deleted in step 2) put CodeMirror over the ported `EditorContent` and `EditorDisplay`:
+     the lexer's display text differs from the content (`1+2` shows as `1 + 2`, `@if` gets line breaks and
+     indents, the caret can't go inside a keyword), so, as in Java, the content is the model and CodeMirror
+     shows its display; every edit and caret move goes to the content. Its 11 tests checked the display,
+     matched brackets, caret snapping, Up and Down, word selection, errors and fixes, completions with
+     their documentation, paste, undo and an input method (through Chrome's DevTools protocol). Only
+     `@codemirror/state` and `@codemirror/view` are needed (82 KB gzipped); CodeMirror's language,
+     completion and lint packages aren't, since the ported model does those.
+2. The type and unit editors (`TopLevelEditor` with `TypeLexer` and `UnitLexer`; Java: `TypeEditor`,
+   `UnitEditor`, `TypeEditorDisplay`), with the screen checks of the ported `tests-gui-type-editor`, and
+   `EnterTypeTrait`/`EnterUnitTrait` in `test/gui/base/`.
+   - Done: `src/gui/lexeditor/` (`TopLevelEditor.vue` on CodeMirror, with the information popup;
+     `LexAutoCompleteWindow.vue`, the completions with the selected one's documentation beside them;
+     `TypeEditor.vue`, `UnitEditor.vue`), and `src/gui/components/FixList.vue` (Java's `FixList`, now also
+     used by `ErrorableTextField`). The popups are Reka popovers, so they work over a modal dialog. Every
+     key stays in the editor except Enter without completions, as Java consumed them. `docs/gui-spec/lex-editor.md`.
+     Java bug found: clicks, and Up and Down (a click 8 px below or above the caret), go to the caret
+     position nearest in the text to the point, which can be on another line (a click in a multi-line
+     `@if`'s indent goes to the end of the line above, and Down from after `@if` stays on the first line).
+     Tests: `test/gui/lexeditor/TopLevelEditor.test.ts` (16) and
+     `EnterType.test.ts` (typing generated types with `test/gui/base/enterType.ts`, the port of
+     `EnterTypeTrait`; Java has no `EnterUnitTrait`, `enterUnit` is in it); `write` and `push` are in
+     `test/gui/base/keyboard.ts`. Moved to step 4: the screen checks of `tests-gui-type-editor`, whose
+     Java tests type into the new-column dialog's type editor. Left for Phase 10: the information popup's
+     fade and the middle click hiding the popups, clicks ignored for 400 ms after the completions hide, the
+     completion list's group layout (`minCollapsed`), and fixes that are actions.
+3. Projects and the windows: the initial screen (`InitialWindow`: new, open, recent), the main window with
+   its menu bar (`MainWindow`: Project, Edit, View, Help; remapped shortcuts), the project store
+   (IndexedDB: autosave after each change, as `View.save` after `modified()`; the file's column widths;
+   `TableManager`'s settings; recent projects; upload and download), undo of the last save
+   (`UndoManager`), Close, Save As, Save Copy, About, and marking the project modified after an edit.
+   Tests: `TestInitialWindow`, `TestBlankMainWindow`'s `testStartState`, `testNewClick` and
+   `testCloseMenu`.
+4. Creating data tables and columns: activating empty cells (`View`'s new-table menu: a data table here;
+   the others, import, transformations, check and comment, as Phase 11 and step 6 add them), the column
+   dialog (`EditImmediateColumnDialog`: name, type, default value), `CreateDataTableTrait` and
+   `EnterColumnDetailsTrait`, adding rows (the append row), and undo of these. Tests: the rest of
+   `TestBlankMainWindow` (new entry table, undo, add column, default value, enter column).
+5. `TableDisplay`'s parts of the grid: the table's name row (renaming, its menu: delete, and the
+   transformations' entries greyed until Phase 11), the column header menus (rename, delete, add
+   before/after, change type, sort), row label menus (insert and delete rows), "Goto row" (with
+   `keyboardMoveTo`'s variant), flashing the header, the "hat" of transformations (`TableHat`, its text; its
+   clickable parts open Phase 11's dialogs), offering a Manual Edit when a transformation's cell is edited
+   (if the Manual Edit transformation can be made without Phase 11's dialogs; otherwise deferred to
+   Phase 11), the "=" guidance, and the cells' extra menu items and hover text. Tests: `TestTableEdits`,
+   `TestRowOps`, `TestTableUpdate`, `PropInsertRemoveRows`, `PropStorageSet`,
+   `TestVirtualGridScrollCoordinates`.
+6. The Types and Units dialogs (`TypesDialog`, `UnitsDialog`, and their edit dialogs), comments
+   (`GridCommentDisplay`), table highlights (`TableHighlights`), and the View menu's other items (find,
+   settings). Tests: `TestTypeEdit`, `TestUnitEdit`.
+7. Tidy up: PORT-STATUS, the `docs/gui-spec/` inventories, and carry-overs to Phase 10 and 11 here.
+
+### Phase 10: Expression editor
+- Build the expression editor on the editor from Phase 9 (steps 1 and 2): `ExpressionLexer`'s
+  completions with the function documentation side panel (`DocWindow`, and the column and table pages
+  `ExpressionLexer` makes), quick fixes, and the function documentation popups.
 
 **Tests:** `tests-gui-expression-editor`, `…-delete`, `…-further` and `…-position`.
 
@@ -814,7 +877,7 @@ values; and marking the file as modified after an edit.
    between tables in the same grid column. *Mitigation:* the Phase 7 prototype on real
    data before any production grid code.
 7. **Matching the expression editor in CodeMirror.** Columnal's editor has unusual
-   behaviours. *Mitigation:* the Phase 10 spike. If CodeMirror can't do something,
+   behaviours. *Mitigation:* the CodeMirror spike (Phase 9 step 1). If CodeMirror can't do something,
    write a custom extension. A fully custom editor is the fallback.
 8. **GUI test round trips.** Every check on app state goes through the Playwright
    `window.__test` bridge. *Mitigation:* keep the bridge small and value-based, and

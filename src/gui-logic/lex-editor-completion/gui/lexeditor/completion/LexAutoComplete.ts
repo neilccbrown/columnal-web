@@ -4,8 +4,8 @@
 // PORT-NOTE: Java shows the window after the next layout, positioned below the caret on screen,
 // and only if there are completions (and the caret is on screen), keeping the position updated
 // on a timer; here show() shows it if there are completions.  The positioning, its
-// EditorDisplayInterface, and the immunity of clicks for 400ms after a click hides it, are left
-// to the GUI (Phase 10, with the expression editor).
+// EditorDisplayInterface, are in src/gui/lexeditor/TopLevelEditor.vue.
+// PORT-DEFERRED: the immunity of clicks for 400ms after a click hides it (Phase 10).
 import type { LexCompletion } from "./LexCompletion.js";
 import { LexAutoCompleteWindow } from "./LexAutoCompleteWindow.js";
 import type { LexCompletionGroup } from "./LexCompletionGroup.js";

@@ -717,7 +717,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | ✅ tests-basic | 17 / 17 | 1783 / 1783 (100%) | 9 / 9 (100%) |
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
-| tests-gui-base | 8 / 26 | 891 / 4004 (22%) |  |
+| tests-gui-base | 9 / 26 | 1059 / 4004 (26%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
 | tests-gui-central | 1 / 21 | 361 / 3623 (10%) | 1 / 47 (2%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
@@ -831,7 +831,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterColumnDetailsTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/EnterColumnDetailsTrait.ts` | 87 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterExpressionTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/EnterExpressionTrait.ts` | 549 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterStructuredValueTrait.java` | `test/gui-logic/stf/fixtures/textToType.ts` | 286 | ✅ |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterTypeTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/EnterTypeTrait.ts` | 168 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterTypeTrait.java` | `test/gui/base/enterType.ts` | 168 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/FocusOwnerTrait.java` | `test/gui/base/focusOwner.ts` | 58 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ListUtilTrait.java` | `test/gui/base/listUtil.ts` | 64 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/PopupTrait.java` | `test/gui/base/popup.ts` | 62 | ✅ |

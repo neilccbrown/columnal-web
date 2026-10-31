@@ -1,10 +1,10 @@
 // Port of the logic of xyz.columnal.gui.lexeditor.EditorDisplay (lex-editor module): how its key
 // handlers change the editor's content, caret and completions, and choosing a completion.
 //
-// PORT-DEFERRED: the display itself (Phase 10, with the editor; see TopLevelEditor): rendering
-// (including the error underlines), the mouse, focus, the clipboard, the further details of a
-// completion, and the keys which only act on those (UP and DOWN without completions showing,
-// ENTER without completions, TAB without completions, shortcut-A/X/C/V, shift-F keys for fixes).
+// The display itself is in src/gui/lexeditor/TopLevelEditor.vue: rendering (including the error
+// underlines), the mouse, focus, the clipboard, and the keys which only act on those (UP and DOWN
+// without completions showing, ENTER without completions, TAB without completions,
+// shortcut-A/X/C/V, shift-F keys for fixes).
 import type { CanonicalLocation } from "../../../../engine/anns/Annotations.js";
 import type { StyledShowable } from "../../../../engine/utility-error/styled/StyledShowable.js";
 import { LexAutoComplete } from "../../../lex-editor-completion/gui/lexeditor/completion/LexAutoComplete.js";

@@ -1,8 +1,7 @@
 // Port of xyz.columnal.gui.lexeditor.TopLevelEditor (lex-editor module): only its enums, which the
 // lexers use.
 //
-// PORT-DEFERRED: the editor itself (Phase 10), rebuilt with CodeMirror over the ported lexers:
-// its content and display, error and information popups, completion and undo.
+// The editor itself is src/gui/lexeditor/TopLevelEditor.vue (on CodeMirror).
 export namespace TopLevelEditor
 {
     export enum Focus { LEFT, RIGHT }

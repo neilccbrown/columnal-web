@@ -73,6 +73,7 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-dtf/src/test/java/test/gui/stf/TestDocumentTextField.java", ["test/gui/components/DocumentTextField.test.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ClipboardTrait.java", ["test/gui/base/clipboard.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ComboUtilTrait.java", ["test/gui/base/comboUtil.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterTypeTrait.java", ["test/gui/base/enterType.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterStructuredValueTrait.java", ["test/gui-logic/stf/fixtures/textToType.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/FocusOwnerTrait.java", ["test/gui/base/focusOwner.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ListUtilTrait.java", ["test/gui/base/listUtil.ts"]],

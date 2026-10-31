@@ -1,8 +1,10 @@
 // Port of the logic of xyz.columnal.gui.lexeditor.completion.LexCompletionList
 // (lex-editor-completion module): the list of completion groups shown, and the selected item.
 //
-// PORT-DEFERRED: the list as a view (Phase 10, with the expression editor): its rows, group
-// headers, scrolling and animation, and the mouse (clickOnItem's choosing is here).
+// The list as a view (its rows, group headers, scrolling, and the mouse; clickOnItem's choosing is
+// here) is in src/gui/lexeditor/LexAutoCompleteWindow.vue.
+// PORT-DEFERRED: Java's layout keeping each group's first rows (minCollapsed) on screen as the list
+// scrolls, and its animation (Phase 10, for the expression editor's groups).
 import { SimpleObjectProperty, type ObjectExpression } from "../../../../../engine/java/JavaFXBeans.js";
 import { Pair } from "../../../../../engine/utility-adt/utility/adt/Pair.js";
 import { InternalException } from "../../../../../engine/utility-error/error/InternalException.js";

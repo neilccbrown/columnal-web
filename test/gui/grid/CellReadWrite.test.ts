@@ -20,6 +20,7 @@ import { GenImmediateData } from "../../engine/tests-tables/fixtures/gen/GenImme
 import { textToType } from "../../gui-logic/stf/fixtures/textToType.js";
 import { checkProperty } from "../../support/quickcheck.js";
 import { copyToClipboard } from "../base/clipboard.js";
+import { write } from "../base/keyboard.js";
 import { keyboardMoveToTableCell } from "../base/scrollTo.js";
 import { sleep } from "../base/util.js";
 import { renderEngineGrid } from "../fixtures/engineGrid.js";
@@ -40,19 +41,6 @@ async function openTables(src: GenImmediateData.ImmediateData_Mgr)
     return { ...rendered, virtualGrid: rendered.grid.grid as VirtualGrid, displayOf };
 }
 
-// Types text into the focused field (userEvent's keyboard reads "{" and "[" as the start of a key name).
-// Its keyboard turns characters outside the BMP into U+FFFD, so those are inserted as typing would
-// (an input event) through execCommand:
-async function write(text: string): Promise<void>
-{
-    for (const run of text.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]+/g) ?? [])
-    {
-        if (run.length === 2 && /^[\uD800-\uDBFF]/.test(run))
-            document.execCommand("insertText", false, run);
-        else
-            await userEvent.keyboard(run.replace(/[{[]/g, c => c + c));
-    }
-}
 const shortcut = (key: string): Promise<void> => userEvent.keyboard(isMac() ? `{Meta>}${key}{/Meta}` : `{Control>}${key}{/Control}`);
 
 // The data cell's element, once it has arrived:

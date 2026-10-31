@@ -818,9 +818,10 @@ Steps (each a checkpoint with the project owner):
      open another tab (Java: another window), a project open in another tab opens read-only, and Open
      lists the stored projects, with upload and delete; Save As saves under a new name in the storage,
      Save a Copy downloads. Java's Exit is left out (Phase 7), menus show no mnemonics, and menu shortcuts
-     don't act while a dialog is open. `docs/gui-spec/projects.md`. Java bugs found (kept, reported): Undo
-     with nothing to undo left writing off, so nothing more was saved; and Undo on a project read-only
-     after a loading error made it writable (here Undo does nothing while read-only). Tests:
+     don't act while a dialog is open. `docs/gui-spec/projects.md`. Java bugs: fixed (agreed, in its own
+     commit), Undo with nothing to undo left writing off, so nothing more was saved; changed (agreed),
+     Undo on a project read-only after a loading error made it writable (here Undo does nothing while
+     read-only). Tests:
      `test/gui/windows/` (`InitialWindow.test.ts`, `BlankMainWindow.test.ts`: TestInitialWindow and three of
      TestBlankMainWindow's; `Projects.test.ts`), `test/gui-logic/app/UndoManager.test.ts`. Left for later:
      Edit's Settings with `TableManager`'s settings (global, for R: Phase 12), the View menu (steps 5 and 6,

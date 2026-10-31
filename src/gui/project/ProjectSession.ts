@@ -152,10 +152,9 @@ export class ProjectSession
 
     /**
      * Java: View.undo: goes back to the save before the last (skipping any with the same content).
-     * PORT-NOTE: Java bug, kept (reported): with nothing to undo, Java returned without enabling
-     * writing again, so nothing more was saved.  Here nothing happens while read-only (Java's would
-     * then enable writing, even after a loading error), as a tab with the project open in another
-     * mustn't write it.
+     * (Java bug, fixed: with nothing to undo, Java returned without enabling writing again, so nothing
+     * more was saved.)  Here nothing happens while read-only (Java's would then enable writing, even
+     * after a loading error), as a tab with the project open in another mustn't write it.
      */
     public async undo(): Promise<void>
     {
@@ -169,7 +168,11 @@ export class ProjectSession
             prev = this.undoManager.undo(this.id);
 
         if (prev === null)
-            return; // Nothing to undo
+        {
+            // Nothing to undo
+            this.readOnly = false;
+            return;
+        }
 
         try
         {

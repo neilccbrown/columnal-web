@@ -70,6 +70,13 @@ describe("Projects", () =>
         await clickMenu("id-menu-edit", "id-menu-edit-undo");
         await vi.waitUntil(async () => (await content(a, id)).includes("1 , \"a\""));
         expect(firstN(host)).toBe("1");
+        // Nothing more to undo: nothing happens, and changes are still saved (Java bug, fixed: Java
+        // stopped saving)
+        await clickMenu("id-menu-edit", "id-menu-edit-undo");
+        await new Promise(r => setTimeout(r, 200));
+        expect(firstN(host)).toBe("1");
+        await editFirstN(host, "5");
+        await vi.waitUntil(async () => (await content(a, id)).includes("5 , \"a\""));
     });
 
     test("Save as makes a new project, which is then the one open", async () =>

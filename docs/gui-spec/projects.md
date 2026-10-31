@@ -73,7 +73,9 @@ reloading the tab opens it again.
   same content (Java: `UndoManager`, which copied the file; here the content is kept in memory, so, as in
   Java, it lasts while the project is open).
 - Undo goes back to the save before the last (skipping any the same as the current one), loading it and
-  saving it. With nothing to undo, writing stays off, so nothing more is saved (Java bug, kept: reported).
+  saving it. With nothing to undo, nothing happens. (Java bug, fixed: with nothing to undo, Java left writing
+  off, so nothing more was saved.) Undo does nothing while the project is read-only (Java's would make a
+  project read-only after a loading error writable).
   If the earlier save can't be loaded, it is saved as a new project, "emergency<time>", and an alert says
   so (Java: a file in the home directory, or else the clipboard).
 

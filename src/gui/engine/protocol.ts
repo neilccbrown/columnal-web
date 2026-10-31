@@ -53,13 +53,25 @@ export type EditResult =
     | { readonly kind: "saved", readonly cell: CellContent, readonly alert: EngineAlert | null }
     | { readonly kind: "stale" };
 
+export interface LoadResult
+{
+    readonly errors: readonly string[];
+    readonly columnWidths: readonly (readonly [number, number])[];
+}
+
 /** What the GUI can ask the engine.  Each method is answered by one reply. */
 export interface EngineApi
 {
-    /** Loads a saved file, replacing nothing (as Java's loadAll).  Returns the errors, as plain text. */
-    load(text: string): readonly string[];
-    /** The saved file for everything loaded. */
-    save(): string;
+    /**
+     * Loads a saved file, replacing what was loaded (as Java's loadAll).  Returns the errors, as plain
+     * text, and the column widths the file gives (Java: View.loadColumnWidths), as [column, width].
+     */
+    load(text: string): LoadResult;
+    /**
+     * The saved file for everything loaded, with the given display details (Java: View.doSaveTo's
+     * "COLUMNWIDTH column width" lines).
+     */
+    save(displayDetailLines: readonly string[]): string;
     /** The table's length, or null if the table has been replaced. */
     length(id: string, version: number): number | null;
     /**
@@ -109,7 +121,10 @@ export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load"
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:
-    | { readonly kind: "tables", readonly tables: readonly TableInfo[] };
+    | { readonly kind: "tables", readonly tables: readonly TableInfo[] }
+    // Something saved in the file changed (Java: what called View.modified, or saved), so it should be
+    // saved:
+    | { readonly kind: "modified" };
 
 export type ToEngine =
     { readonly kind: "request", readonly requestId: number, readonly method: EngineMethod, readonly args: readonly unknown[] };

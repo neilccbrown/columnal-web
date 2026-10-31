@@ -807,6 +807,25 @@ Steps (each a checkpoint with the project owner):
    (`UndoManager`), Close, Save As, Save Copy, About, and marking the project modified after an edit.
    Tests: `TestInitialWindow`, `TestBlankMainWindow`'s `testStartState`, `testNewClick` and
    `testCloseMenu`.
+   - Done: `src/gui/App.vue` (a tab shows the initial window, or one project, by `#project=<id>`),
+     `src/gui/windows/` (`InitialWindow`, `MainWindow`, the Open, Save As and About dialogs),
+     `src/gui/project/` (`ProjectStore` on IndexedDB, `ProjectSession`: View's loading, saving after each
+     change, undo, Save As and Save a Copy; `projectLock`: a Web Lock per open project), the port of
+     `UndoManager` (`src/gui-logic/app/gui/`), `MenuBar.vue` (Reka's menubar; `MenuEntries` now serves both
+     kinds of menu), and `AlertHost.vue` (the alerts, moved out of the grid). The engine's `load` gives the
+     file's column widths and `save` takes them, and a `modified` event says when to save. Web-only text is
+     in `resources/i18n/web_en.properties`. Decided with the project owner: New and Open from a project
+     open another tab (Java: another window), a project open in another tab opens read-only, and Open
+     lists the stored projects, with upload and delete; Save As saves under a new name in the storage,
+     Save a Copy downloads. Java's Exit is left out (Phase 7), menus show no mnemonics, and menu shortcuts
+     don't act while a dialog is open. `docs/gui-spec/projects.md`. Java bugs found (kept, reported): Undo
+     with nothing to undo left writing off, so nothing more was saved; and Undo on a project read-only
+     after a loading error made it writable (here Undo does nothing while read-only). Tests:
+     `test/gui/windows/` (`InitialWindow.test.ts`, `BlankMainWindow.test.ts`: TestInitialWindow and three of
+     TestBlankMainWindow's; `Projects.test.ts`), `test/gui-logic/app/UndoManager.test.ts`. Left for later:
+     Edit's Settings with `TableManager`'s settings (global, for R: Phase 12), the View menu (steps 5 and 6,
+     Phase 11), the checks status bar (Phase 11),
+     and Java's file hashes, which ban R in files not saved by Columnal (Phase 12).
 4. Creating data tables and columns: activating empty cells (`View`'s new-table menu: a data table here;
    the others, import, transformations, check and comment, as Phase 11 and step 6 add them), the column
    dialog (`EditImmediateColumnDialog`: name, type, default value), `CreateDataTableTrait` and

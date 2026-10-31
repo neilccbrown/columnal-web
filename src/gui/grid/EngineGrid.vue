@@ -7,9 +7,14 @@ import { useEngine } from "../engine/useEngine.js";
 import { GridTableDisplay } from "./GridTableDisplay.js";
 import TableGrid from "./TableGrid.vue";
 
+const props = defineProps<{
+    // Java: View's VirtualGridManager (creating tables, pasting into empty cells, and column widths
+    // changing); none, for the tests of the grid alone
+    manager?: VirtualGrid.VirtualGridManager | null,
+}>();
 const engine = useEngine();
 // Java: new VirtualGrid(vgManager, 10, 20), 10 columns to the right and 20 rows below the tables
-const grid = markRaw(new VirtualGrid(null, 10, 20));
+const grid = markRaw(new VirtualGrid(props.manager ?? null, 10, 20));
 const displays = shallowRef<readonly GridTableDisplay[]>([]);
 const tableGrid = useTemplateRef<InstanceType<typeof TableGrid>>("tableGrid");
 

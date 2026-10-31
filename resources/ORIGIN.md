@@ -6,7 +6,7 @@ These files are copied unchanged from the Java original,
 
 | Here | Original |
 |---|---|
-| `i18n/*.properties` | `app/src/main/resources/*.properties` |
+| `i18n/*.properties` | `app/src/main/resources/*.properties`, except `i18n/web_en.properties`, the web version's own text |
 | `data/builtin_units.txt` | `data/src/main/resources/builtin_units.txt` |
 | `funcdoc/*` | `xml/src/main/funcdoc/*` |
 | `help/*` | `xml/src/main/help/*` |

@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { fileURLToPath, URL } from "node:url";
 import vue from "@vitejs/plugin-vue";
 import { playwright } from "@vitest/browser-playwright";
@@ -7,6 +8,8 @@ import { defineConfig } from "vitest/config";
 // app and the engine in the same page.  Engine and gui-logic tests run in Node (vitest.config.ts).
 export default defineConfig({
     plugins: [vue()],
+    // The version, for the About dialog:
+    define: { __COLUMNAL_VERSION__: JSON.stringify((JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8")) as { version: string }).version) },
     resolve: {
         alias: {
             "@resources": fileURLToPath(new URL("./resources", import.meta.url)),

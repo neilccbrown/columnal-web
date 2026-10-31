@@ -68,7 +68,7 @@ describe("grid selection", () =>
         await userEvent.dragAndDrop(gridLocator(), gridLocator(), { sourcePosition: from, targetPosition: { x: from.x + 30, y: from.y + 240 + 5 } });
         expect(t.getPosition().toString()).toBe(pos(11, 1).toString());
         await engine.client.whenIdle();
-        expect(await engine.client.request("save")).toContain("POSITION 1 11");
+        expect(await engine.client.request("save", [])).toContain("POSITION 1 11");
         await vi.waitUntil(() => (document.querySelector('[data-table="T"]') as HTMLElement).style.top === `${11 * 24}px`);
     });
 

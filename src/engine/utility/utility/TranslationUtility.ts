@@ -13,6 +13,8 @@ import main from "@resources/i18n/main_en.properties?raw";
 import newcolumn from "@resources/i18n/newcolumn_en.properties?raw";
 import dataentry from "@resources/i18n/dataentry_en.properties?raw";
 import importer from "@resources/i18n/import_en.properties?raw";
+// The web version's own text:
+import web from "@resources/i18n/web_en.properties?raw";
 
 /**
  * Created by neil on 17/04/2017.
@@ -26,7 +28,7 @@ export class TranslationUtility
         if (TranslationUtility.resources === null)
         {
             // Each of these corresponds to a <name>_en.properties file in the resources directory
-            TranslationUtility.resources = [transformations, expression, functions, main, newcolumn, dataentry, importer].map(loadProperties);
+            TranslationUtility.resources = [transformations, expression, functions, main, newcolumn, dataentry, importer, web].map(loadProperties);
         }
         return TranslationUtility.resources;
     }

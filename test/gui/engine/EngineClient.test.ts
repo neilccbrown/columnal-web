@@ -12,7 +12,11 @@ function start(transport: EngineTransport): { client: EngineClient, tables: () =
     const c = new EngineClient(transport);
     client = c;
     let tables: readonly TableInfo[] = [];
-    c.listen((e: EngineEvent) => { tables = e.tables; });
+    c.listen((e: EngineEvent) =>
+    {
+        if (e.kind === "tables")
+            tables = e.tables;
+    });
     return { client: c, tables: () => tables };
 }
 
@@ -35,7 +39,7 @@ describe("in the page", () =>
     {
         const transport = new InPageTransport();
         const { client, tables } = start(transport);
-        expect(await client.request("load", GRID_FIXTURE)).toEqual([]);
+        expect(await client.request("load", GRID_FIXTURE)).toEqual({ errors: [], columnWidths: [] });
         await client.whenIdle();
 
         const t = table(tables(), "T");
@@ -57,9 +61,38 @@ describe("in the page", () =>
     {
         const { client } = start(new InPageTransport());
         await client.request("load", GRID_FIXTURE);
-        const saved = await client.request("save");
+        const saved = await client.request("save", ["COLUMNWIDTH 3 150"]);
         expect(saved).toContain("CALCULATE Double @EXPRESSION");
         expect(saved).toContain("POSITION 4 1");
+        // With the display details, which loading gives back:
+        expect(saved).toContain("COLUMNWIDTH 3 150");
+        expect((await client.request("load", saved)).columnWidths).toEqual([[3, 150]]);
+    });
+
+    it("says when something to save changed", async () =>
+    {
+        const { client, tables } = start(new InPageTransport());
+        let modified = 0;
+        client.listen(e =>
+        {
+            if (e.kind === "modified")
+                modified += 1;
+        });
+        await client.request("load", GRID_FIXTURE);
+        await client.whenIdle();
+        // Loading adds tables, which is one event:
+        expect(modified).toBe(1);
+        const t = table(tables(), "T");
+        await client.request("setPosition", t.id, t.column, t.row);
+        await client.whenIdle();
+        // Not moved: nothing changed
+        expect(modified).toBe(1);
+        await client.request("setPosition", t.id, t.column, t.row + 1);
+        await client.whenIdle();
+        expect(modified).toBe(2);
+        await client.request("edit", t.id, t.version, 0, 0, "7");
+        await client.whenIdle();
+        expect(modified).toBe(3);
     });
 
     it("answers nothing for a replaced table, and skips old rows requests", async () =>
@@ -78,7 +111,7 @@ describe("in the page", () =>
     {
         const { client } = start(new InPageTransport());
         await expect(client.request("load", "not a Columnal file")).rejects.toBeInstanceOf(EngineRequestError);
-        await expect(client.request("receive" as EngineMethod as "save")).rejects.toThrow("Unknown engine request: receive");
+        await expect(client.request("receive" as EngineMethod as "idle")).rejects.toThrow("Unknown engine request: receive");
     });
 });
 
@@ -87,7 +120,7 @@ describe("in the worker", () =>
     it("loads and gives rows", async () =>
     {
         const { client, tables } = start(new WorkerTransport());
-        expect(await client.request("load", GRID_FIXTURE)).toEqual([]);
+        expect(await client.request("load", GRID_FIXTURE)).toEqual({ errors: [], columnWidths: [] });
         await client.whenIdle();
         const c = table(tables(), "C");
         const rows = await client.request("rows", c.id, c.version, 0, 3);

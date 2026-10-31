@@ -4,7 +4,7 @@ import { describe, expect, test, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { DataTypeUtility } from "../../../src/engine/types/data/datatype/DataTypeUtility.js";
 import { isMac } from "../../../src/gui/shortcuts.js";
-import { showAlert } from "../../../src/gui/grid/alerts.js";
+import { showAlert } from "../../../src/gui/alerts.js";
 import type { GridTableDisplay } from "../../../src/gui/grid/GridTableDisplay.js";
 import { keyboardMoveToTableCell } from "../base/scrollTo.js";
 import { renderEngineGrid } from "../fixtures/engineGrid.js";

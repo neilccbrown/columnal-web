@@ -160,7 +160,8 @@ describe("java.lang behaviour matches the JVM", () =>
     test("Properties files", () =>
     {
         const files = new Map<string, Map<string, string>>([["tricky.properties", loadProperties(tricky)]]);
-        for (const [path, text] of Object.entries(resourceFiles))
+        // (Java's files: web_en.properties is the web version's own, which Java never read)
+        for (const [path, text] of Object.entries(resourceFiles).filter(([path]) => !path.endsWith("/web_en.properties")))
             files.set(path.substring(path.lastIndexOf("/") + 1), loadProperties(text));
         const expected = new Map<string, Map<string, string>>();
         for (const c of linesOf("property"))

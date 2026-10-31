@@ -22,7 +22,7 @@ import { TableDisplayUtility } from "../../gui-logic/stf/gui/dtf/TableDisplayUti
 import { Workers } from "../../engine/utility/utility/Workers.js";
 import type { Value } from "../../engine/utility/utility/Value.js";
 import { Transformation } from "../../engine/data/data/Transformation.js";
-import { ENGINE_METHODS, type CellContent, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type FromEngine, type TableInfo, type ToEngine } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type FromEngine, type LoadResult, type TableInfo, type ToEngine } from "./protocol.js";
 
 // How many rows requests are done for each table at once (newest first); older ones are skipped:
 const MAX_ROWS_REQUESTS_PER_TABLE = 2;
@@ -47,6 +47,7 @@ export class EngineHost implements EngineApi
     // saving; a re-run table takes the position of the table it replaces.)
     private readonly positions = new Map<Table, CellPosition>();
     private tablesEventScheduled = false;
+    private modifiedEventScheduled = false;
     private rowsQueue: RowsRequest[] = [];
     private rowsScheduled = false;
 
@@ -55,16 +56,26 @@ export class EngineHost implements EngineApi
         this.post = post;
         this.tableManager = new TableManager(TransformationManager.getInstance(), { getHandledContent: () => new Map() });
         this.tableManager.addListener({
+            // Java: View's TableManagerListener, which saves after each
             removeTable: t =>
             {
                 if (this.tables.get(t.getId().getRaw())?.table === t)
                     this.tables.delete(t.getId().getRaw());
                 this.tablesChanged();
+                this.modified();
             },
-            addSource: t => this.addTable(t),
-            addTransformation: t => this.addTable(t),
-            addComment: () => {},
-            removeComment: () => {},
+            addSource: t =>
+            {
+                this.addTable(t);
+                this.modified();
+            },
+            addTransformation: t =>
+            {
+                this.addTable(t);
+                this.modified();
+            },
+            addComment: () => this.modified(),
+            removeComment: () => this.modified(),
         });
     }
 
@@ -90,15 +101,16 @@ export class EngineHost implements EngineApi
         }
     }
 
-    public load(text: string): readonly string[]
+    public load(text: string): LoadResult
     {
-        const loaded = this.tableManager.loadAll(text, () => {});
-        return loaded.errors.map(e => e.toPlain());
+        let columnWidths: (readonly [number, number])[] = [];
+        const loaded = this.tableManager.loadAll(text, widths => { columnWidths = widths.map(w => [w.getFirst(), w.getSecond()] as const); });
+        return { errors: loaded.errors.map(e => e.toPlain()), columnWidths };
     }
 
-    public save(): string
+    public save(displayDetailLines: readonly string[]): string
     {
-        const saver = new Table.FullSaver(null);
+        const saver = new Table.FullSaver(displayDetailLines);
         this.tableManager.save(null, saver);
         return saver.getCompleteFile();
     }
@@ -123,8 +135,12 @@ export class EngineHost implements EngineApi
         const t = this.tables.get(id);
         if (t === undefined)
             return;
-        this.positions.set(t.table, new CellPosition(CellPosition.row(row), CellPosition.col(column)));
+        const position = new CellPosition(CellPosition.row(row), CellPosition.col(column));
+        if (this.positions.get(t.table)?.equals(position) === true)
+            return;
+        this.positions.set(t.table, position);
         this.tablesChanged();
+        this.modified();
     }
 
     public canEdit(id: string, version: number, column: number, row: number): boolean
@@ -165,6 +181,8 @@ export class EngineHost implements EngineApi
             return { kind: "saved", cell: cellContent(c, column, row), alert: alertFor("error.storing.data", e) };
         }
         let alert = this.store(() => c.getType().setCollapsed(row, value));
+        // Java: TableDisplay's onModify, View.modified
+        this.modified();
         alert ??= this.reRun(table);
         return { kind: "saved", cell: cellContent(c, column, row), alert };
     }
@@ -187,6 +205,7 @@ export class EngineHost implements EngineApi
             for (let row = firstRow; row <= lastRowIncl; row++)
                 alert ??= this.store(() => c.getType().setCollapsed(row, Either.right(defaultValue)));
         }
+        this.modified();
         alert ??= this.reRun(table);
         const shownFirst = Math.max(firstRow, shownFirstRow);
         const cells: CellContent[][] = [];
@@ -211,8 +230,8 @@ export class EngineHost implements EngineApi
         }
     }
 
-    // Java: TableDisplay's onModify, which re-runs the tables that depend on the table.
-    // PORT-DEFERRED: it also marked the file as modified, for saving (Phase 9)
+    // Java: TableDisplay's onModify, which re-runs the tables that depend on the table (and marks the
+    // file as modified, which the callers do)
     private reRun(table: Table): EngineAlert | null
     {
         try
@@ -252,7 +271,7 @@ export class EngineHost implements EngineApi
         {
             const check = (): void =>
             {
-                if (Workers.getTaskList().length === 0 && this.rowsQueue.length === 0 && !this.tablesEventScheduled)
+                if (Workers.getTaskList().length === 0 && this.rowsQueue.length === 0 && !this.tablesEventScheduled && !this.modifiedEventScheduled)
                     resolve();
                 else
                     setTimeout(check, 1);
@@ -299,6 +318,19 @@ export class EngineHost implements EngineApi
             this.tablesEventScheduled = false;
             const tables = [...this.tables.values()].map(t => this.tableInfo(t.table, t.version));
             this.sendEvent({ kind: "tables", tables });
+        }, 0);
+    }
+
+    // Several changes come together (loading, re-running), so the event is sent once they're done:
+    private modified(): void
+    {
+        if (this.modifiedEventScheduled)
+            return;
+        this.modifiedEventScheduled = true;
+        setTimeout(() =>
+        {
+            this.modifiedEventScheduled = false;
+            this.sendEvent({ kind: "modified" });
         }, 0);
     }
 

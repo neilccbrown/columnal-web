@@ -502,7 +502,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | lex-editor | 18 / 21 | 7958 / 8146 (98%) |
 | table-gui | 1 / 7 | 159 / 2794 (6%) |
 | dialogs-non-expression | 0 / 7 | 0 / 1411 (0%) |
-| app | 1 / 42 | 163 / 13439 (1%) |
+| app | 2 / 42 | 378 / 13439 (3%) |
 
 <details><summary>utility-gui</summary>
 
@@ -548,8 +548,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/InsertListener.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/InsertListener.ts` | 36 | ✅ |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoComplete.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoComplete.ts` | 150 | ✅ |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoCompleteWindow.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoCompleteWindow.ts` | 221 | ✅ (parts deferred) |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoComplete.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoComplete.ts` | 150 | ✅ (parts deferred) |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoCompleteWindow.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoCompleteWindow.ts` | 221 | ✅ |
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletion.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletion.ts` | 202 | ✅ |
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionGroup.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionGroup.ts` | 60 | ✅ |
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionList.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionList.ts` | 693 | ✅ (parts deferred) |
@@ -613,7 +613,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/CodeCompletionContext.java` | `src/gui-logic/lex-editor/gui/lexeditor/CodeCompletionContext.ts` | 47 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/DocWindow.java` | `src/gui-logic/lex-editor/gui/lexeditor/DocWindow.ts` | 70 | ✅ (parts deferred) |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorContent.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorContent.ts` | 331 | ✅ |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorDisplay.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorDisplay.ts` | 702 | ✅ (parts deferred) |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorDisplay.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorDisplay.ts` | 702 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorLocationAndErrorRecorder.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorLocationAndErrorRecorder.ts` | 494 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionCompletionContext.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionCompletionContext.ts` | 39 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/ExpressionEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/ExpressionEditor.ts` | 110 | – |
@@ -623,7 +623,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/Lexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/Lexer.ts` | 437 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/SaverBase.java` | `src/gui-logic/lex-editor/gui/lexeditor/SaverBase.ts` | 956 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TextQuickFix.java` | `src/gui-logic/lex-editor/gui/lexeditor/TextQuickFix.ts` | 151 | ✅ |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TopLevelEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/TopLevelEditor.ts` | 586 | ✅ (parts deferred) |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TopLevelEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/TopLevelEditor.ts` | 586 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TypeEditor.java` | `src/gui-logic/lex-editor/gui/lexeditor/TypeEditor.ts` | 40 | – |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TypeLexer.java` | `src/gui-logic/lex-editor/gui/lexeditor/TypeLexer.ts` | 425 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/TypeSaver.java` | `src/gui-logic/lex-editor/gui/lexeditor/TypeSaver.ts` | 413 | ✅ |
@@ -691,7 +691,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `app/src/main/java/xyz/columnal/gui/TableListDialog.java` | `src/gui-logic/app/gui/TableListDialog.ts` | 164 | – |
 | `app/src/main/java/xyz/columnal/gui/TaskManagerWindow.java` | `src/gui-logic/app/gui/TaskManagerWindow.ts` | 79 | – |
 | `app/src/main/java/xyz/columnal/gui/TypesDialog.java` | `src/gui-logic/app/gui/TypesDialog.ts` | 491 | – |
-| `app/src/main/java/xyz/columnal/gui/UndoManager.java` | `src/gui-logic/app/gui/UndoManager.ts` | 215 | – |
+| `app/src/main/java/xyz/columnal/gui/UndoManager.java` | `src/gui-logic/app/gui/UndoManager.ts` | 215 | ✅ |
 | `app/src/main/java/xyz/columnal/gui/UnitsDialog.java` | `src/gui-logic/app/gui/UnitsDialog.ts` | 423 | – |
 | `app/src/main/java/xyz/columnal/gui/View.java` | `src/gui-logic/app/gui/View.ts` | 1513 | – |
 | `app/src/main/java/xyz/columnal/gui/highlights/TableHighlights.java` | `src/gui-logic/app/gui/highlights/TableHighlights.ts` | 317 | – |
@@ -719,7 +719,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
 | tests-gui-base | 9 / 26 | 1059 / 4004 (26%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
-| tests-gui-central | 1 / 21 | 361 / 3623 (10%) | 1 / 47 (2%) |
+| tests-gui-central | 2 / 21 | 427 / 3623 (12%) | 5 / 47 (11%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
 | tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 0 / 68 (0%) |
 | tests-gui-expression-editor-delete | 0 / 1 | 0 / 372 (0%) | 0 / 20 (0%) |
@@ -871,10 +871,10 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-central/src/test/java/test/gen/GenOffsetTime.java` | `test/gui/tests-gui-central/gen/GenOffsetTime.ts` | 46 | – |
 | `tests-gui-central/src/test/java/test/gen/GenTime.java` | `test/gui/tests-gui-central/gen/GenTime.ts` | 45 | – |
 | `tests-gui-central/src/test/java/test/gen/GenYearMonth.java` | `test/gui/tests-gui-central/gen/GenYearMonth.ts` | 46 | – |
-| `tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java` | `test/gui/tests-gui-central/gui/TestBlankMainWindow.test.ts` | 665 | – (0/11 tests) |
+| `tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java` | `test/gui/windows/BlankMainWindow.test.ts` | 665 | – (3/11 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExplanationDisplay.java` | `test/gui/tests-gui-central/gui/TestExplanationDisplay.test.ts` | 221 | – (0/8 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExportToCSV.java` | `test/gui/tests-gui-central/gui/TestExportToCSV.test.ts` | 89 | – (0/1 tests) |
-| `tests-gui-central/src/test/java/test/gui/TestInitialWindow.java` | `test/gui/tests-gui-central/gui/TestInitialWindow.test.ts` | 66 | – (0/1 tests) |
+| `tests-gui-central/src/test/java/test/gui/TestInitialWindow.java` | `test/gui/windows/InitialWindow.test.ts` | 66 | ✅ (1/1 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestVirtualGridScrollCoordinates.java` | `test/gui/tests-gui-central/gui/TestVirtualGridScrollCoordinates.test.ts` | 488 | – (0/3 tests) |
 
 </details>

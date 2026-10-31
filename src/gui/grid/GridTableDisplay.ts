@@ -14,7 +14,7 @@ import { type EngineClient, ignoreClosed } from "../engine/EngineClient.js";
 import type { CellContent, TableInfo } from "../engine/protocol.js";
 import { writeClipboard } from "../clipboard.js";
 import { TranslationUtility } from "../../engine/utility/utility/TranslationUtility.js";
-import { showAlert } from "./alerts.js";
+import { showAlert } from "../alerts.js";
 import type { CellDisplay } from "./cellDisplay.js";
 import { VersionCounter } from "../store/EngineStore.js";
 

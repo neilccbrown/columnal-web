@@ -23,6 +23,8 @@ function licences(): Plugin
 
 export default defineConfig({
     plugins: [vue(), licences()],
+    // The version, for the About dialog:
+    define: { __COLUMNAL_VERSION__: JSON.stringify((JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8")) as { version: string }).version) },
     resolve: {
         alias: {
             "@resources": fileURLToPath(new URL("./resources", import.meta.url)),

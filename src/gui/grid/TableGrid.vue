@@ -15,8 +15,7 @@ import { isMac } from "../shortcuts.js";
 import { VersionCounter } from "../store/EngineStore.js";
 import type { Document } from "../../gui-logic/stf/gui/dtf/Document.js";
 import DocumentTextField from "../components/DocumentTextField.vue";
-import LightDialog from "../components/dialogs/LightDialog.vue";
-import { alerts, closeAlert, showAlert } from "./alerts.js";
+import { showAlert } from "../alerts.js";
 import { CellEditDocument, ReadOnlyCellDocument } from "./CellEditDocument.js";
 import GridTable from "./GridTable.vue";
 import type { GridTableDisplay } from "./GridTableDisplay.js";
@@ -725,19 +724,6 @@ defineExpose({
         </template>
       </div>
     </div>
-    <LightDialog
-      :open="alerts.length > 0"
-      :label="alerts[0]?.title ?? ''"
-      :buttons="['ok']"
-      @update:open="open => { if (!open) closeAlert(); }"
-    >
-      <div class="alert-header">
-        {{ alerts[0]?.title }}
-      </div>
-      <div class="alert-message">
-        {{ alerts[0]?.message }}
-      </div>
-    </LightDialog>
   </div>
 </template>
 
@@ -802,10 +788,6 @@ defineExpose({
 .cell-editor {
     position: absolute;
     z-index: 6;
-}
-.alert-header {
-    font-weight: bold;
-    margin-bottom: 8px;
 }
 .grid-vline {
     position: absolute;

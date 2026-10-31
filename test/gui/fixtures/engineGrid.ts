@@ -1,7 +1,9 @@
-// Renders the grid (EngineGrid) with its own engine (in the page), and loads a saved file into it.
+// Renders the grid (EngineGrid) with its own engine (in the page), and the alerts as the app shows them,
+// and loads a saved file into it.
 import { vi } from "vitest";
 import { cleanup, render } from "vitest-browser-vue";
 import { defineComponent, h, ref } from "vue";
+import AlertHost from "../../../src/gui/components/dialogs/AlertHost.vue";
 import { InPageTransport } from "../../../src/gui/engine/transports.js";
 import { provideEngine, type Engine } from "../../../src/gui/engine/useEngine.js";
 import EngineGrid from "../../../src/gui/grid/EngineGrid.vue";
@@ -14,7 +16,7 @@ export async function renderEngineGrid(file: string, width = 810, height = 600)
     render(defineComponent(() =>
     {
         engine = provideEngine(transport);
-        return () => h(EngineGrid, { ref: gridRef, style: `width: ${width}px; height: ${height}px` });
+        return () => [h(EngineGrid, { ref: gridRef, style: `width: ${width}px; height: ${height}px` }), h(AlertHost)];
     }));
     const loaded = engine!;
     await loaded.client.request("load", file);

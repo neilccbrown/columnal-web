@@ -71,6 +71,8 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-numbers/src/test/java/test/gui/TestNumberColumnDisplay.java", ["test/gui/grid/NumberColumnDisplay.test.ts"]],
     ["tests-gui-cell-rw/src/test/java/test/gui/TestCellReadWrite.java", ["test/gui/grid/CellReadWrite.test.ts"]],
     ["tests-gui-dtf/src/test/java/test/gui/stf/TestDocumentTextField.java", ["test/gui/components/DocumentTextField.test.ts"]],
+    ["tests-gui-central/src/test/java/test/gui/TestInitialWindow.java", ["test/gui/windows/InitialWindow.test.ts"]],
+    ["tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java", ["test/gui/windows/BlankMainWindow.test.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ClipboardTrait.java", ["test/gui/base/clipboard.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ComboUtilTrait.java", ["test/gui/base/comboUtil.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterTypeTrait.java", ["test/gui/base/enterType.ts"]],

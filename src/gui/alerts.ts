@@ -1,6 +1,6 @@
-// Errors shown to the user in an alert (Java: FXUtility.showError's Alert), which the grid shows.
+// Errors shown to the user in an alert (Java: FXUtility.showError's Alert), which AlertHost shows.
 import { shallowRef } from "vue";
-import type { EngineAlert } from "../engine/protocol.js";
+import type { EngineAlert } from "./engine/protocol.js";
 
 export interface Alert extends EngineAlert
 {

@@ -36,6 +36,7 @@ async function mount(lexer: Lexer<StyledShowable, CodeCompletionContext>, origin
     const keysOutside: string[] = [];
     render(defineComponent(() => () => h("div", { style: { padding: "150px 20px 20px" }, onKeydown: (e: KeyboardEvent) => keysOutside.push(e.key) }, [
         h(TopLevelEditor as never, { ref: editor, lexer, originalContent, editorClass: "test-editor", onChange: (e: StyledShowable) => changes.push(e) }),
+        h("input", { class: "next-field" }),
     ])));
     await settle();
     return { editor: editor.value!, root: document.querySelector<HTMLElement>(".test-editor")!, changes, keysOutside };
@@ -139,25 +140,39 @@ describe("TopLevelEditor", () =>
         expect(m.editor._test_getView()!.state.doc.lines).toBe(4);
     });
 
-    test("Up and Down", async () =>
+    test("Up and Down go to the nearest caret position on screen", async () =>
     {
         const m = await expressionEditor("@if true @then 1 @else 2 @endif");
         await focus(m.root);
         const content = m.editor._test_getContent();
-        // As in Java, a click 8 pixels below the caret, at the caret position nearest in the display
-        // text: from after "@then" (content 12), on the next line
-        content.positionCaret(12, true);
+        // From after "@if": Java went to the end of the first line (the nearest position in the text)
+        content.positionCaret(3, true);
         await settle();
         await keys("{Escape}{ArrowDown}");
+        expect(lineOfCaret(m.editor)).toBe(2);
+        await keys("{Escape}{ArrowDown}");
         expect(lineOfCaret(m.editor)).toBe(3);
-        await keys("{Escape}{ArrowUp}");
+        await keys("{Escape}{ArrowDown}");
+        expect(lineOfCaret(m.editor)).toBe(4);
+        // On the last line, Down stays there:
+        await keys("{Escape}{ArrowDown}");
+        expect(lineOfCaret(m.editor)).toBe(4);
+        await keys("{Escape}{ArrowUp}{Escape}{ArrowUp}");
         expect(lineOfCaret(m.editor)).toBe(2);
         expect(content.getValidCaretPositions()).toContain(content.getCaretPosition());
         // With Shift, the selection extends:
-        const anchor = content.getCaretPosition();
-        await keys("{Escape}{Shift>}{ArrowDown}{/Shift}");
-        expect(content.getAnchorPosition()).toBe(anchor);
-        expect(lineOfCaret(m.editor)).toBe(3);
+        await keys("{Escape}{Shift>}{ArrowUp}{/Shift}");
+        expect(lineOfCaret(m.editor)).toBe(1);
+        expect(content.getAnchorPosition()).not.toBe(content.getCaretPosition());
+    });
+
+    test("clicking in a line's indent goes to that line", async () =>
+    {
+        const m = await expressionEditor("@if true @then 1 @else 2 @endif");
+        await focus(m.root);
+        // Display position 10 is in the indent of the second line (Java went to the end of the first)
+        await clickAtDisplay(m, 10);
+        expect(lineOfCaret(m.editor)).toBe(2);
     });
 
     test("clicking inside a keyword snaps the caret", async () =>
@@ -339,20 +354,21 @@ describe("TopLevelEditor", () =>
         expect(cm(m.editor)).toEqual({ doc: "1 + 猫", head: 5, anchor: 5 });
     });
 
-    test("keys stay in the editor, except Enter without completions", async () =>
+    test("keys stay in the editor, except Enter and Tab without completions", async () =>
     {
         const m = await typeEditor();
         await focus(m.root);
         await keys("Text");
-        // Completions showing: Enter chooses one, and stays in the editor
         expect(completionList()).not.toBeNull();
-        await keys("{Escape}{Tab}{ArrowLeft}x");
+        await keys("{Escape}{ArrowLeft}x");
         expect(m.keysOutside).toEqual([]);
-        // Tab didn't move the focus (Java's parentFocusRightOfThis does nothing for these editors):
-        expect(m.root.contains(document.activeElement)).toBe(true);
         await keys("{Escape}{Enter}");
         expect(m.keysOutside).toEqual(["Enter"]);
         // Enter never adds a line:
+        expect(m.editor._test_getRawText()).toBe("Texxt");
+        // Tab moves the focus on (Java's did nothing in these editors):
+        await keys("{Escape}{Tab}");
+        expect(document.activeElement?.classList.contains("next-field")).toBe(true);
         expect(m.editor._test_getRawText()).toBe("Texxt");
     });
 

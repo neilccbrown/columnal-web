@@ -303,9 +303,12 @@ function keyPressed(e: KeyboardEvent): boolean
     if (e.isComposing)
         return false;
     // Java consumes every key pressed, except Enter without completions (for the dialog's default
-    // button); the typed characters still come as input
-    if (!(e.key === "Enter" && !display._test_getAutoComplete().isShowing()))
-        e.stopPropagation();
+    // button); the typed characters still come as input.  Tab without completions moves the focus, as
+    // it does elsewhere (Java's did nothing in these editors: parentFocusRightOfThis did nothing).
+    const completionsShowing = display._test_getAutoComplete().isShowing();
+    if ((e.key === "Enter" || e.key === "Tab") && !completionsShowing)
+        return e.key === "Enter";
+    e.stopPropagation();
     const mac = isMac();
     const shortcut = mac ? e.metaKey : e.ctrlKey;
     const fKey = /^F(\d+)$/.exec(e.key);
@@ -333,8 +336,7 @@ function keyPressed(e: KeyboardEvent): boolean
         return false;
     display.keyPressed(name, { shift: e.shiftKey, shortcut, wordSkip: mac ? e.altKey : e.ctrlKey });
     updateCompletions();
-    // Enter never adds a line; Tab without completions does nothing (Java:
-    // parentFocusRightOfThis, which does nothing for these editors)
+    // Enter never adds a line
     return true;
 }
 
@@ -349,15 +351,33 @@ function moveVertically(down: boolean, shift: boolean): void
         positionCaretAt(caret.left, down ? caret.bottom + 8 : caret.top - 8, !shift);
 }
 
-// Java: EditorDisplay.positionCaret(x, y, moveAnchor): the display position at the point, mapped to
-// the nearest caret position (on a draw, the earlier one if the point was on a character's right)
+/**
+ * Java: EditorDisplay.positionCaret(x, y, moveAnchor), for clicks, drags and Up and Down.  (Java bug,
+ * fixed: Java took the display position at the point and mapped it to the caret position nearest in
+ * the text, which could be on another line: on an @if over several lines, Down from after "@if" stayed
+ * on the first line, and a click in a line's indent went to the end of the line above.)  Here it's the
+ * caret position nearest on screen: on the line nearest the point, the nearest across.
+ */
 function positionCaretAt(x: number, y: number, moveAnchor: boolean): void
 {
     if (view === null)
         return;
-    const hit = view.posAndSideAtCoords({ x, y });
-    if (hit !== null)
-        content.positionCaret(content.mapDisplayToContent(hit.pos, hit.assoc === -1), moveAnchor);
+    let best: CanonicalLocation | null = null;
+    let bestDistance: readonly [number, number] = [Infinity, Infinity];
+    for (const pos of content.getValidCaretPositions())
+    {
+        const r = view.coordsAtPos(content.mapContentToDisplay(pos));
+        if (r === null)
+            continue;
+        const distance = [y < r.top ? r.top - y : y > r.bottom ? y - r.bottom : 0, Math.abs(r.left - x)] as const;
+        if (distance[0] < bestDistance[0] || (distance[0] === bestDistance[0] && distance[1] < bestDistance[1]))
+        {
+            best = pos;
+            bestDistance = distance;
+        }
+    }
+    if (best !== null)
+        content.positionCaret(best, moveAnchor);
 }
 
 // Java: EditorDisplay.selectWordAt

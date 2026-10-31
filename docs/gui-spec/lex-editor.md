@@ -36,18 +36,20 @@ Tests: the screen checks of `tests-gui-type-editor` (with the new-column dialog,
 - Ctrl/Cmd+A selects everything; Ctrl/Cmd+Z undoes, Ctrl/Cmd+Shift+Z and Ctrl/Cmd+Y redo; Ctrl/Cmd+X, C
   and V cut, copy and paste the content's text (not the display's).
 - Escape hides the completions. Enter and Tab choose the selected completion; without completions, Enter
-  goes to the dialog (its default button) and Tab does nothing (Java: `parentFocusRightOfThis`, which
-  does nothing for these editors).
+  goes to the dialog (its default button) and Tab moves the focus to the next field (Shift+Tab, the
+  previous). (Changed from Java, agreed: Java's Tab did nothing in these editors, as
+  `parentFocusRightOfThis` did nothing, which trapped the keyboard's focus.)
 - Shift+F1, F2, … apply the error popup's fixes.
-- Every key stays in the editor (Java consumed them all), except Enter without completions.
+- Every key stays in the editor (Java consumed them all), except Enter and Tab without completions.
 
 ## Mouse
 
-- A press puts the caret (and the anchor) at the caret position nearest the point (in the text; on a
-  draw, the earlier one if the point is on a character's right half); dragging extends the selection; a
-  double click selects the word; a triple click, everything. (Java bug, not yet fixed: the nearest in the
-  text can be on another line: on an `@if` over several lines, a click in a line's indent goes to the end
-  of the line above, and Down from after `@if` stays on the first line.)
+- A press puts the caret (and the anchor) at the caret position nearest the point on screen: on the line
+  nearest the point, the nearest across; dragging extends the selection; a double click selects the word;
+  a triple click, everything. (Java bug, fixed: Java took the display position at the point and the caret
+  position nearest it in the text, which could be on another line: on an `@if` over several lines, a click
+  in a line's indent went to the end of the line above, and Down from after `@if` stayed on the first
+  line.)
 - Text can't be dragged and dropped.
 
 ## Errors

@@ -787,11 +787,13 @@ Steps (each a checkpoint with the project owner):
      `LexAutoCompleteWindow.vue`, the completions with the selected one's documentation beside them;
      `TypeEditor.vue`, `UnitEditor.vue`), and `src/gui/components/FixList.vue` (Java's `FixList`, now also
      used by `ErrorableTextField`). The popups are Reka popovers, so they work over a modal dialog. Every
-     key stays in the editor except Enter without completions, as Java consumed them. `docs/gui-spec/lex-editor.md`.
-     Java bug found: clicks, and Up and Down (a click 8 px below or above the caret), go to the caret
-     position nearest in the text to the point, which can be on another line (a click in a multi-line
-     `@if`'s indent goes to the end of the line above, and Down from after `@if` stays on the first line).
-     Tests: `test/gui/lexeditor/TopLevelEditor.test.ts` (16) and
+     key stays in the editor except Enter and Tab without completions, as Java consumed them. `docs/gui-spec/lex-editor.md`.
+     Java bug fixed (agreed, in its own commit): clicks, and Up and Down (a click 8 px below or above the
+     caret), went to the caret position nearest in the text to the point, which could be on another line
+     (a click in a multi-line `@if`'s indent went to the end of the line above, and Down from after `@if`
+     stayed on the first line); now the nearest on screen. Changed from Java (agreed, in the same commit):
+     Tab without completions moves the focus on (Java's did nothing in these editors). Tests:
+     `test/gui/lexeditor/TopLevelEditor.test.ts` (18) and
      `EnterType.test.ts` (typing generated types with `test/gui/base/enterType.ts`, the port of
      `EnterTypeTrait`; Java has no `EnterUnitTrait`, `enterUnit` is in it); `write` and `push` are in
      `test/gui/base/keyboard.ts`. Moved to step 4: the screen checks of `tests-gui-type-editor`, whose

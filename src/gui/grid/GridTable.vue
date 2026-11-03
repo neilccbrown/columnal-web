@@ -4,13 +4,19 @@
 // Only the rows and columns in its window (gridWindow.ts) are on the page.  The column names stick to
 // the top of the view while the table is in view (Java: DataDisplay.ColumnNameItem), and the row
 // labels to its left edge (Java: RowLabelSupplier), with CSS position: sticky.
-import { computed, inject, shallowRef, watch, watchEffect } from "vue";
+import { computed, inject, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch, watchEffect } from "vue";
+import { TableId } from "../../engine/identifiers/id/TableId.js";
 import { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
+import { EntireTableSelection } from "../../gui-logic/table-gui/gui/table/EntireTableSelection.js";
+import { TableNameTextField } from "../../gui-logic/table-gui/gui/table/TableNameTextField.js";
+import ErrorableTextField from "../components/ErrorableTextField.vue";
+import { useEngine } from "../engine/useEngine.js";
 import type { VersionCounter } from "../store/EngineStore.js";
 import { type CellDisplay, columnDisplays, numberFontsReady, waitForNumberFonts } from "./cellDisplay.js";
 import { EMPTY_WINDOW, tableWindow, type TableWindow } from "./gridWindow.js";
 import { GridTableDisplay } from "./GridTableDisplay.js";
 import { useTableActions } from "./tableActions.js";
+import TableHatView from "./TableHatView.vue";
 import { VIEWPORT } from "./viewport.js";
 
 const props = defineProps<{
@@ -32,12 +38,98 @@ const HEADER = GridTableDisplay.HEADER_ROWS;
 const BLOCK = GridTableDisplay.ROW_BLOCK;
 const viewport = inject(VIEWPORT)!;
 const tableActions = useTableActions();
+const engine = useEngine();
+const collapsed = computed(() => props.display.info.display === "COLLAPSED");
+
+// --- The table name (Java: HeadedDisplay.TableHeaderItem's TableNameTextField) -------------------
+const nameText = shallowRef(props.display.info.id);
+watch(() => props.display.info.id, id => { nameText.value = id; });
+const nameField = useTemplateRef<{ focus(): void, isFocused(): boolean }>("nameField");
+// Java: new TableNameTextField(tableManager, initialTableName, false, ...): not another table's name
+const nameConverter = (text: string): ReturnType<ReturnType<typeof TableNameTextField.converter>> =>
+    TableNameTextField.converter(engine.tables.tables.value.map(t => new TableId(t.id)), new TableId(props.display.info.id), false)(text);
+
+// The name field's width (Java: getTableNameWidth, for the hat), as it sizes to its text:
+const title = useTemplateRef<HTMLElement>("title");
+const nameWidth = shallowRef(0);
+let nameObserver: ResizeObserver | null = null;
+onMounted(() =>
+{
+    const input = title.value?.querySelector("input");
+    if (input === null || input === undefined)
+        return;
+    nameObserver = new ResizeObserver(() => { nameWidth.value = input.offsetWidth; });
+    nameObserver.observe(input);
+});
+onBeforeUnmount(() =>
+{
+    nameObserver?.disconnect();
+    if (flashTimer !== null)
+        clearTimeout(flashTimer);
+});
+
+// Java: TableNameTextField's Enter, which selects the entire table (taking the focus from the field)
+function nameEnter(e: KeyboardEvent): void
+{
+    e.preventDefault();
+    e.stopPropagation();
+    props.grid.select(new EntireTableSelection(props.display, props.display.getPosition().columnIndex));
+}
+
+// Java: renameTableOperation, on the field's focus loss, if the name is valid and has changed
+function nameFocusLost(value: TableId | null): void
+{
+    if (value !== null && value.getRaw() !== props.display.info.id)
+        props.display.renameTable(value.getRaw());
+}
+
+// Java: the header's middle click (on the field only while it isn't focused) cycles the columns shown
+function titleMiddleClick(e: MouseEvent): void
+{
+    if (e.button !== 1 || nameField.value?.isFocused() === true)
+        return;
+    e.preventDefault();
+    props.display.headerMiddleClicked();
+}
+
+// Java: HeadedDisplay.flashHeader, the header brightening and back, twice
+const flashing = shallowRef(false);
+let flashTimer: ReturnType<typeof setTimeout> | null = null;
+watch(() => props.display.flashVersion.track(), () =>
+{
+    flashing.value = false;
+    if (flashTimer !== null)
+        clearTimeout(flashTimer);
+    // (The next frame, so that the animation restarts)
+    requestAnimationFrame(() =>
+    {
+        flashing.value = true;
+        flashTimer = setTimeout(() => { flashing.value = false; }, 1200);
+    });
+});
+
+// Java: a hat's source link's middle click, which selects the source table
+function selectTable(tableId: string): void
+{
+    const target = props.grid.getGridAreas().find(a => a instanceof GridTableDisplay && a.info.id === tableId);
+    if (target instanceof GridTableDisplay)
+        props.grid.select(new EntireTableSelection(target, target.getPosition().columnIndex));
+}
+
+// --- The column headers (Java: DataDisplay's ColumnNameItem and ColumnTypeItem) -------------------
+// Java: ColumnHeaderOps.getPrimaryEditOperation, on a click
+function editColumn(column: number, focus: "name" | "type"): void
+{
+    const name = props.display.info.columnNames[column];
+    if (name !== undefined && props.display.info.columnHeaderEditable[column] === true)
+        tableActions?.editColumn(props.display, name, focus);
+}
 
 // Java: ExpandTableArrowSupplier's arrows (DOWN_ARROW, RIGHT_ARROW)
 const DOWN_ARROW = "\u2193";
 const RIGHT_ARROW = "\u27F6";
-const showAddRowArrows = computed(() => props.display.info.canAppendRows && props.display.info.columnNames.length > 0);
-const showAddColumnArrows = computed(() => props.display.info.canAddColumn && props.display.info.columnNames.length > 0);
+const showAddRowArrows = computed(() => props.display.info.canAppendRows && props.display.info.columnNames.length > 0 && !collapsed.value);
+const showAddColumnArrows = computed(() => props.display.info.canAddColumn && props.display.info.columnNames.length > 0 && !collapsed.value);
 
 const geometry = computed(() =>
 {
@@ -55,7 +147,9 @@ const geometry = computed(() =>
     const width = Math.max(columnLefts.length > 0 ? columnLefts.at(-1)! + columnWidths.at(-1)! : 0, props.grid.getColumnWidth(pos.columnIndex));
     const rows = props.display.currentKnownRows;
     const digits = Math.max(2, String(rows).length);
-    return { left, top: pos.rowIndex * ROW, width, columnLefts, columnWidths, rows, digits };
+    // Java: the table's whole width, to its bottom right (with any column of add-column arrows)
+    const wholeWidth = props.grid.sumColumnWidths(0, props.display.getBottomRightIncl().columnIndex + 1) - left;
+    return { left, top: pos.rowIndex * ROW, width, columnLefts, columnWidths, rows, digits, wholeWidth };
 });
 
 const win = shallowRef<TableWindow>(EMPTY_WINDOW);
@@ -140,42 +234,71 @@ watchEffect(() =>
 <template>
   <div
     class="table"
-    :class="['table-' + display.info.kind, { 'table-selected': tableSelected, 'table-drag-source': dragSource }]"
+    :class="['table-' + display.info.kind, { 'table-selected': tableSelected, 'table-drag-source': dragSource, 'table-collapsed': collapsed }]"
     :data-table="display.info.id"
-    :style="{ left: geometry.left + 'px', top: geometry.top + 'px', width: geometry.width + 'px', height: Math.max(0, geometry.rows + HEADER - 1) * ROW + 'px' }"
+    :style="{ left: geometry.left + 'px', top: geometry.top + 'px', width: geometry.width + 'px', height: (collapsed ? ROW : Math.max(0, geometry.rows + HEADER - 1) * ROW) + 'px' }"
   >
-    <div class="table-title">
-      {{ display.info.id }}
+    <div
+      ref="title"
+      class="table-title table-display-table-title"
+      :class="[display.info.kind === 'data' ? 'immediate-table-title' : 'transformation-table-title', { flashing }]"
+      @mousedown="e => { if (e.button === 1) e.preventDefault(); }"
+      @auxclick="titleMiddleClick"
+    >
+      <ErrorableTextField
+        ref="nameField"
+        v-model:text="nameText"
+        class="table-name-text-field text-field"
+        :converter="nameConverter"
+        :editable="display.info.canRename"
+        tabindex="-1"
+        :style="{ width: `min(calc(100% - 16px), max(30px, calc(${nameText.length}ch + 6px)))` }"
+        @keydown.enter="nameEnter"
+        @focus-lost="nameFocusLost"
+      />
     </div>
-    <div class="column-names">
-      <div
-        v-for="c in visibleColumns"
-        :key="c"
-        class="column-name"
-        :data-abs-col="display.getPosition().columnIndex + c"
-        :style="{ left: geometry.columnLefts[c] + 'px', width: geometry.columnWidths[c] + 'px' }"
-      >
-        {{ display.info.columnNames[c] }}
+    <template v-if="!collapsed">
+      <div class="column-names">
+        <div
+          v-for="c in visibleColumns"
+          :key="c"
+          class="column-name column-title table-display-column-title"
+          :class="[...(display.info.columnHeaderClasses[c] ?? []), { 'column-title-edit': display.info.columnHeaderEditable[c] }]"
+          :data-abs-col="display.getPosition().columnIndex + c"
+          :data-col="c"
+          :title="display.info.columnNames[c]"
+          :style="{ left: geometry.columnLefts[c] + 'px', width: geometry.columnWidths[c] + 'px' }"
+          @click="editColumn(c, 'name')"
+        >
+          {{ display.info.columnNames[c] }}
+        </div>
       </div>
-    </div>
-    <div class="column-types">
-      <div
-        v-for="c in visibleColumns"
-        :key="c"
-        class="column-type"
-        :data-abs-col="display.getPosition().columnIndex + c"
-        :style="{ left: geometry.columnLefts[c] + 'px', width: geometry.columnWidths[c] + 'px' }"
-      >
-        {{ display.info.columnTypes[c] }}
+      <div class="column-types">
+        <div
+          v-for="c in visibleColumns"
+          :key="c"
+          class="column-type table-display-column-type"
+          :class="{ 'column-title-edit': display.info.columnHeaderEditable[c] }"
+          :data-abs-col="display.getPosition().columnIndex + c"
+          :data-col="c"
+          :title="display.info.columnTypes[c]"
+          :style="{ left: geometry.columnLefts[c] + 'px', width: geometry.columnWidths[c] + 'px' }"
+          @click="editColumn(c, 'type')"
+        >
+          {{ display.info.columnTypes[c] }}
+        </div>
       </div>
-    </div>
+    </template>
     <div
       v-if="display.info.error !== null"
       class="table-error"
     >
       {{ display.info.error }}
     </div>
-    <div class="data">
+    <div
+      v-if="!collapsed"
+      class="data"
+    >
       <div
         v-for="r in visibleRows"
         :key="r"
@@ -200,6 +323,16 @@ watchEffect(() =>
       </div>
     </div>
   </div>
+  <TableHatView
+    v-if="display.info.hat !== null"
+    :hat="display.info.hat"
+    :table-id="display.info.id"
+    :table-left="geometry.left"
+    :table-top="geometry.top"
+    :whole-table-width="geometry.wholeWidth"
+    :table-name-width="nameWidth"
+    @select-table="selectTable"
+  />
   <template v-if="showAddRowArrows">
     <button
       v-for="c in visibleColumns"
@@ -232,8 +365,9 @@ watchEffect(() =>
     </button>
   </template>
   <div
-    v-if="geometry.rows > 0"
+    v-if="geometry.rows > 0 && !collapsed"
     class="row-labels-area"
+    :data-table="display.info.id"
     :style="{
       left: `calc(${geometry.left}px - ${geometry.digits}ch - 8px)`,
       top: geometry.top + HEADER * ROW + 'px',
@@ -248,7 +382,8 @@ watchEffect(() =>
       <div
         v-for="r in visibleRows"
         :key="r"
-        class="row-label"
+        class="row-label virt-grid-row-label"
+        :data-row="r"
         :style="{ top: r * ROW + 'px' }"
       >
         {{ r + 1 }}
@@ -272,6 +407,8 @@ watchEffect(() =>
     height: var(--grid-row-height);
 }
 .table-title {
+    display: flex;
+    align-items: center;
     background: var(--table-header-background-color);
     color: var(--table-header-text-color);
     padding: 0 8px;
@@ -282,6 +419,32 @@ watchEffect(() =>
 .table-selected .table-title {
     background: var(--table-header-background-color-selected);
     cursor: move;
+}
+/* virtual-grid.scss: the table name's .text-field, the header's colour with a border when hovered or
+   focused */
+.table-title :deep(.table-name-text-field) {
+    box-sizing: border-box;
+    height: calc(var(--grid-row-height) - 2px);
+    margin: 0;
+    padding: 0 1px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    outline: none;
+}
+.table-title :deep(.table-name-text-field:hover), .table-title :deep(.table-name-text-field:focus) {
+    border-color: var(--table-header-name-border-color);
+}
+/* Java: ColorAdjust's brightness to 1 (white) and back over 300 ms, four times */
+.table-title.flashing {
+    animation: header-flash 300ms 4 alternate;
+}
+@keyframes header-flash {
+    to { filter: brightness(0) invert(1); }
+}
+.table-collapsed {
+    padding-bottom: 0;
 }
 .table-drag-source {
     filter: blur(2px);
@@ -309,6 +472,16 @@ watchEffect(() =>
 }
 .column-type {
     font-size: 85%;
+}
+/* virtual-grid.scss: .column-title-overwritten and .column-title-edit */
+.column-name.column-title-overwritten {
+    font-weight: bold;
+}
+.column-title-edit {
+    cursor: pointer;
+}
+.column-title-edit:hover {
+    text-decoration: underline;
 }
 .data {
     position: relative;

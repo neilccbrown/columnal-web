@@ -10,13 +10,16 @@ import { menu, menuItem, type MenuItem } from "../components/menus/menus.js";
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import NewTableDialog, { type DataOrTransform } from "../components/dialogs/NewTableDialog.vue";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
-import type { EngineAlert } from "../engine/protocol.js";
+import type { EngineAlert, ExporterInfo } from "../engine/protocol.js";
+import { download } from "../download.js";
 import { ignoreClosed } from "../engine/EngineClient.js";
 import { provideEngine } from "../engine/useEngine.js";
 import type { GridTableDisplay } from "../grid/GridTableDisplay.js";
 import { provideTableActions } from "../grid/tableActions.js";
 import { copyTypeManager } from "../project/typeCopy.js";
 import EditImmediateColumnDialog, { type ColumnDetails } from "./EditImmediateColumnDialog.vue";
+import ExportDialog from "./ExportDialog.vue";
+import GotoRowDialog from "./GotoRowDialog.vue";
 import EngineGrid from "../grid/EngineGrid.vue";
 import { label, t } from "../i18n.js";
 import { useAppContext } from "../project/appContext.js";
@@ -77,8 +80,12 @@ function createTable(position: CellPosition, point: { x: number, y: number }): v
     newTableOpen.value = true;
 }
 
-// The column dialog: for a new table at a position, or a new column in a table (before a column)
-type ColumnFor = { kind: "table", position: CellPosition, point: { x: number, y: number } } | { kind: "column", display: GridTableDisplay, beforeColumn: string | null };
+// The column dialog: for a new table at a position, a new column in a table (before a column), or
+// editing a column (focusing its name or type)
+type ColumnFor =
+    | { kind: "table", position: CellPosition, point: { x: number, y: number } }
+    | { kind: "column", display: GridTableDisplay, beforeColumn: string | null }
+    | { kind: "edit", display: GridTableDisplay, column: string, type: string, focus: "name" | "type" };
 const columnFor = shallowRef<ColumnFor | null>(null);
 const columnTypeManager = shallowRef<TypeManager | null>(null);
 const columnOpen = shallowRef(false);
@@ -92,7 +99,7 @@ async function openColumnDialog(target: ColumnFor): Promise<void>
     {
         ignoreClosed(e);
         // (The project's types couldn't be read: as Java's alertOnError)
-        showAlert({ title: t(target.kind === "table" ? "error.creating.first.column" : "error.adding.column"), message: e instanceof Error ? e.message : String(e) });
+        showAlert({ title: t(target.kind === "table" ? "error.creating.first.column" : target.kind === "column" ? "error.adding.column" : "error.saving.column"), message: e instanceof Error ? e.message : String(e) });
         return;
     }
     columnFor.value = target;
@@ -119,12 +126,57 @@ function columnChosen(details: ColumnDetails): void
     };
     if (target.kind === "table")
         void engine.client.request("createDataTable", details.tableName ?? "", column, target.position.columnIndex, target.position.rowIndex).then(done).catch(ignoreClosed);
-    else
+    else if (target.kind === "column")
         void engine.client.request("addColumn", target.display.info.id, target.display.info.version, target.beforeColumn, column).then(done).catch(ignoreClosed);
+    else
+        void engine.client.request("editColumn", target.display.info.id, target.display.info.version, target.column, column).then(done).catch(ignoreClosed);
+}
+
+// Java: TransformationEdits.editColumn_IDS: the column dialog for the column
+async function editColumn(display: GridTableDisplay, column: string, focus: "name" | "type"): Promise<void>
+{
+    const type = await engine.client.request("columnType", display.info.id, display.info.version, column);
+    if (type !== null)
+        await openColumnDialog({ kind: "edit", display, column, type, focus });
+}
+
+// Java: DataDisplay.gotoRow's GotoRowDialog
+const gotoRowFor = shallowRef<{ display: GridTableDisplay, column: number } | null>(null);
+const gotoRowOpen = shallowRef(false);
+
+// Java: ExporterManager.chooseAndExportFile: the exporter, then the file (here, downloaded)
+const exportFor = shallowRef<GridTableDisplay | null>(null);
+const exporters = shallowRef<readonly ExporterInfo[]>([]);
+const exportOpen = shallowRef(false);
+async function exportTable(display: GridTableDisplay): Promise<void>
+{
+    exporters.value = await engine.client.request("exporters");
+    exportFor.value = display;
+    exportOpen.value = true;
+}
+
+async function exporterChosen(exporter: number): Promise<void>
+{
+    const display = exportFor.value;
+    const info = exporters.value[exporter];
+    if (display === null || info === undefined)
+        return;
+    const result = await engine.client.request("exportTable", display.info.id, exporter);
+    if ("alert" in result)
+        showAlert(result.alert);
+    else
+        download(display.info.id + "." + (info.fileTypes[0] ?? "*.dat").replace(/^\*\./, ""), result.data as Uint8Array<ArrayBuffer>, "application/octet-stream");
 }
 
 provideTableActions({
     addColumn: (display, beforeColumn) => void openColumnDialog({ kind: "column", display, beforeColumn }),
+    editColumn: (display, column, focus) => void editColumn(display, column, focus).catch(ignoreClosed),
+    gotoRow: (display, column) =>
+    {
+        gotoRowFor.value = { display, column };
+        gotoRowOpen.value = true;
+    },
+    exportTable: display => void exportTable(display).catch(ignoreClosed),
 });
 
 onMounted(async () =>
@@ -198,8 +250,8 @@ function saveItem(): MenuItem
 }
 
 // (Java's Exit is left out: closing the tab does it.)
-// PORT-DEFERRED: Edit's Settings (Phase 12, with R), and the View menu: Goto row (Phase 9 step 5),
-// Types and Units (step 6), the Task Manager and the checks pane (Phase 11)
+// PORT-DEFERRED: Edit's Settings (Phase 12, with R), and the View menu's Types and Units (step 6), and
+// the Task Manager and the checks pane (Phase 11)
 const menus = computed(() => [
     menu("menu.project",
         menuItem("menu.project.new", () => void newProject()),
@@ -211,6 +263,9 @@ const menus = computed(() => [
         menuItem("menu.project.close", () => void close())),
     menu("menu.edit",
         menuItem("menu.edit.undo", () => void session.value?.undo())),
+    menu("menu.view",
+        // Java: View.gotoRowDialog, the selection's gotoRow
+        menuItem("menu.view.goto.row", () => engineGrid.value?.grid.gotoRow(null))),
     menu("menu.help",
         menuItem("menu.help.about", () => { about.value = true; })),
 ]);
@@ -275,7 +330,19 @@ defineExpose({
       :type-manager="columnTypeManager"
       :table-ids="columnFor?.kind === 'table' ? engine.tables.tables.value.map(t => t.id) : null"
       :centre-on="columnFor?.kind === 'table' ? columnFor.point : null"
+      :initial-column="columnFor?.kind === 'edit' ? { name: columnFor.column, type: columnFor.type } : null"
+      :initial-focus="columnFor?.kind === 'edit' ? columnFor.focus : 'name'"
       @ok="columnChosen"
+    />
+    <GotoRowDialog
+      v-model:open="gotoRowOpen"
+      :rows="gotoRowFor?.display.currentKnownRows ?? 0"
+      @chosen="row => gotoRowFor?.display.selectRow(row, gotoRowFor.column)"
+    />
+    <ExportDialog
+      v-model:open="exportOpen"
+      :exporters="exporters"
+      @chosen="e => void exporterChosen(e).catch(ignoreClosed)"
     />
   </div>
 </template>

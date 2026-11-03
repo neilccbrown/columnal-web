@@ -502,7 +502,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | lex-editor | 18 / 21 | 7958 / 8146 (98%) |
 | table-gui | 2 / 7 | 248 / 2794 (9%) |
 | dialogs-non-expression | 1 / 7 | 64 / 1411 (5%) |
-| app | 2 / 42 | 378 / 13439 (3%) |
+| app | 3 / 42 | 1317 / 13439 (10%) |
 
 <details><summary>utility-gui</summary>
 
@@ -703,7 +703,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `app/src/main/java/xyz/columnal/gui/table/app/ExplanationDisplay.java` | `src/gui-logic/app/gui/table/app/ExplanationDisplay.ts` | 337 | – |
 | `app/src/main/java/xyz/columnal/gui/table/app/PickTypeTransformDialog.java` | `src/gui-logic/app/gui/table/app/PickTypeTransformDialog.ts` | 104 | – |
 | `app/src/main/java/xyz/columnal/gui/table/app/TableDisplay.java` | `src/gui-logic/app/gui/table/app/TableDisplay.ts` | 1963 | – |
-| `app/src/main/java/xyz/columnal/gui/table/app/TableHat.java` | `src/gui-logic/app/gui/table/app/TableHat.ts` | 939 | – |
+| `app/src/main/java/xyz/columnal/gui/table/app/TableHat.java` | `src/gui-logic/app/gui/table/app/TableHat.ts` | 939 | ✅ (parts deferred) |
 | `app/src/main/java/xyz/columnal/gui/table/app/TransformationEdits.java` | `src/gui-logic/app/gui/table/app/TransformationEdits.ts` | 264 | – |
 | `app/src/main/java/xyz/columnal/plugins/LoadablePlugin.java` | `src/gui-logic/app/plugins/LoadablePlugin.ts` | 32 | – |
 | `app/src/main/java/xyz/columnal/plugins/Plugin.java` | `src/gui-logic/app/plugins/Plugin.ts` | 44 | – |
@@ -717,9 +717,9 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | ✅ tests-basic | 17 / 17 | 1783 / 1783 (100%) | 9 / 9 (100%) |
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
-| tests-gui-base | 9 / 26 | 1059 / 4004 (26%) |  |
+| tests-gui-base | 12 / 26 | 1358 / 4004 (34%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
-| tests-gui-central | 3 / 21 | 1092 / 3623 (30%) | 13 / 47 (28%) |
+| tests-gui-central | 7 / 21 | 2016 / 3623 (56%) | 19 / 47 (40%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
 | tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 0 / 68 (0%) |
 | tests-gui-expression-editor-delete | 0 / 1 | 0 / 372 (0%) | 0 / 20 (0%) |
@@ -730,7 +730,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-gui-numbers | 1 / 1 | 380 / 380 (100%) | 14 / 14 (100%) |
 | tests-gui-r | 2 / 4 | 770 / 1147 (67%) | 10 / 27 (37%) |
 | tests-gui-side | 0 / 2 | 0 / 645 (0%) | 0 / 8 (0%) |
-| tests-gui-tables | 0 / 3 | 0 / 1635 (0%) | 0 / 12 (0%) |
+| ✅ tests-gui-tables | 3 / 3 | 1635 / 1635 (100%) | 12 / 12 (100%) |
 | tests-gui-transformations | 0 / 8 | 0 / 2251 (0%) | 0 / 22 (0%) |
 | tests-gui-transformations-create-edit | 0 / 1 | 0 / 651 (0%) | 0 / 2 (0%) |
 | ✅ tests-gui-type-editor | 4 / 4 | 954 / 954 (100%) | 57 / 57 (100%) |
@@ -821,10 +821,10 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorError.java` | `test/gui/tests-gui-base/fixtures/gui/expressionEditor/BaseTestExpressionEditorError.ts` | 305 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestQuickFix.java` | `test/gui/tests-gui-base/fixtures/gui/expressionEditor/BaseTestQuickFix.ts` | 251 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/AutoCompleteTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/AutoCompleteTrait.ts` | 103 | – |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/CheckCSVTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/CheckCSVTrait.ts` | 146 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/CheckCSVTrait.java` | `test/gui/base/checkCSV.ts` | 146 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/CheckWindowBoundsTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/CheckWindowBoundsTrait.ts` | 59 | – |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/ClickOnTableHeaderTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/ClickOnTableHeaderTrait.ts` | 65 | – |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/ClickTableLocationTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/ClickTableLocationTrait.ts` | 88 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/ClickOnTableHeaderTrait.java` | `test/gui/base/clickOnTableHeader.ts` | 65 | ✅ |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/ClickTableLocationTrait.java` | `test/gui/base/clickTableLocation.ts` | 88 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ClipboardTrait.java` | `test/gui/base/clipboard.ts` | 50 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ComboUtilTrait.java` | `test/gui/base/comboUtil.ts` | 61 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/CreateDataTableTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/CreateDataTableTrait.ts` | 149 | – |
@@ -856,8 +856,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `tests-gui-central/src/test/java/test/MatcherUtil.java` | `test/gui/tests-gui-central/MatcherUtil.ts` | 70 | – |
-| `tests-gui-central/src/test/java/test/PropInsertRemoveRows.java` | `test/gui/tests-gui-central/PropInsertRemoveRows.test.ts` | 162 | – (0/2 tests) |
-| `tests-gui-central/src/test/java/test/PropStorageSet.java` | `test/gui/tests-gui-central/PropStorageSet.test.ts` | 192 | – (0/1 tests) |
+| `tests-gui-central/src/test/java/test/PropInsertRemoveRows.java` | `test/engine/tests-gui-central/PropInsertRemoveRows.test.ts` | 162 | ✅ (2/2 tests) |
+| `tests-gui-central/src/test/java/test/PropStorageSet.java` | `test/engine/tests-gui-central/PropStorageSet.test.ts` | 192 | ✅ (1/1 tests) |
 | `tests-gui-central/src/test/java/test/TestInfrastructure.java` | `test/gui/tests-gui-central/TestInfrastructure.test.ts` | 44 | – (0/1 tests) |
 | `tests-gui-central/src/test/java/test/expressions/PropLoadSaveExpression.java` | `test/gui/tests-gui-central/expressions/PropLoadSaveExpression.test.ts` | 196 | – (0/5 tests) |
 | `tests-gui-central/src/test/java/test/expressions/PropReplaceExpression.java` | `test/gui/tests-gui-central/expressions/PropReplaceExpression.test.ts` | 75 | – (0/4 tests) |
@@ -867,7 +867,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-central/src/test/java/test/expressions/TestLoadSaveExpression.java` | `test/gui/tests-gui-central/expressions/TestLoadSaveExpression.test.ts` | 144 | – (0/3 tests) |
 | `tests-gui-central/src/test/java/test/gen/GenDateTime.java` | `test/gui/tests-gui-central/gen/GenDateTime.ts` | 46 | – |
 | `tests-gui-central/src/test/java/test/gen/GenDateTimeZoned.java` | `test/gui/tests-gui-central/gen/GenDateTimeZoned.ts` | 46 | – |
-| `tests-gui-central/src/test/java/test/gen/GenEditableColumn.java` | `test/gui/tests-gui-central/gen/GenEditableColumn.ts` | 82 | – |
+| `tests-gui-central/src/test/java/test/gen/GenEditableColumn.java` | `test/engine/tests-gui-central/gen/GenEditableColumn.ts` | 82 | ✅ |
 | `tests-gui-central/src/test/java/test/gen/GenOffsetTime.java` | `test/gui/tests-gui-central/gen/GenOffsetTime.ts` | 46 | – |
 | `tests-gui-central/src/test/java/test/gen/GenTime.java` | `test/gui/tests-gui-central/gen/GenTime.ts` | 45 | – |
 | `tests-gui-central/src/test/java/test/gen/GenYearMonth.java` | `test/gui/tests-gui-central/gen/GenYearMonth.ts` | 46 | – |
@@ -875,7 +875,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-central/src/test/java/test/gui/TestExplanationDisplay.java` | `test/gui/tests-gui-central/gui/TestExplanationDisplay.test.ts` | 221 | – (0/8 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExportToCSV.java` | `test/gui/tests-gui-central/gui/TestExportToCSV.test.ts` | 89 | – (0/1 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestInitialWindow.java` | `test/gui/windows/InitialWindow.test.ts` | 66 | ✅ (1/1 tests) |
-| `tests-gui-central/src/test/java/test/gui/TestVirtualGridScrollCoordinates.java` | `test/gui/tests-gui-central/gui/TestVirtualGridScrollCoordinates.test.ts` | 488 | – (0/3 tests) |
+| `tests-gui-central/src/test/java/test/gui/TestVirtualGridScrollCoordinates.java` | `test/gui/grid/ScrollCoordinates.test.ts` | 488 | ✅ (3/3 tests) |
 
 </details>
 
@@ -980,9 +980,9 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-tables/src/test/java/test/gui/table/TestRowOps.java` | `test/gui/tests-gui-tables/gui/table/TestRowOps.test.ts` | 451 | – (0/2 tests) |
-| `tests-gui-tables/src/test/java/test/gui/table/TestTableEdits.java` | `test/gui/tests-gui-tables/gui/table/TestTableEdits.test.ts` | 872 | – (0/8 tests) |
-| `tests-gui-tables/src/test/java/test/gui/table/TestTableUpdate.java` | `test/gui/tests-gui-tables/gui/table/TestTableUpdate.test.ts` | 312 | – (0/2 tests) |
+| `tests-gui-tables/src/test/java/test/gui/table/TestRowOps.java` | `test/gui/tables/RowOps.test.ts` | 451 | ✅ (2/2 tests) |
+| `tests-gui-tables/src/test/java/test/gui/table/TestTableEdits.java` | `test/gui/tables/TableEdits.test.ts` | 872 | ✅ (8/8 tests) |
+| `tests-gui-tables/src/test/java/test/gui/table/TestTableUpdate.java` | `test/gui/tables/TableUpdate.test.ts` | 312 | ✅ (2/2 tests) |
 
 </details>
 

@@ -85,8 +85,8 @@ export async function keyboardMoveTo(virtualGrid: VirtualGrid, target: CellPosit
         `Selected is ${String(selection)} aiming for ${target.toString()} focus owner is ${describeElement(getFocusOwner())}${bypassGUI ? " bypassed GUI" : " used GUI"}`).toBe(true);
 }
 
-// Waits until the grid's scroll position stays the same for 100 ms:
-async function waitForScrollToStop(): Promise<void>
+/** Waits until the grid's scroll position stays the same for 100 ms. */
+export async function waitForScrollToStop(): Promise<void>
 {
     const scroller = document.querySelector<HTMLElement>("[data-testid=grid]");
     if (scroller === null)

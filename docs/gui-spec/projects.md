@@ -48,9 +48,10 @@ reloading the tab opens it again.
     ago) or "Saving" while a change is being saved (it saves now), Save as... (Ctrl/Cmd+Alt+S), Save a
     copy..., Close project (Alt+Shift+W).
   - Edit: Undo (Ctrl/Cmd+Z).
+  - View: Goto row... (`tables.md`).
   - Help: About.
-  - Not yet: Edit's Settings (Phase 12, with R), and the View menu (Goto row in step 5, Types and Units in
-    step 6, the Task Manager and the checks pane in Phase 11).
+  - Not yet: Edit's Settings (Phase 12, with R), and the View menu's Types and Units (step 6), and the Task
+    Manager and the checks pane (Phase 11).
   - The menus have the class `id-menu-…` (Java: their id); their items too (Java: `GUI.makeId`). Menus show
     no mnemonics (the browser keeps Alt and a letter); they can be used by keyboard once one is open.
     Items' shortcuts work anywhere in the page, unless the focused control takes the key (the cell and
@@ -60,6 +61,8 @@ reloading the tab opens it again.
   loading <name>": `Error loading file "<name>": <error>`) and a red banner: "This file is open for reading
   only, due to a loading error. Changes will not be saved."
 - A project that no longer exists (deleted, in another tab): an alert, and the initial window.
+- Closing a project (or the tab) while a change is being saved shows no error for the save the engine
+  didn't finish.
 
 ## Saving
 

@@ -82,5 +82,7 @@ Web: `src/gui/components/DocumentTextField.vue`, `src/gui/grid/CellEditDocument.
 - An edit of a table that was replaced while it was being edited is not stored, and an alert says so (in
   Java, tables changed on one thread, so this couldn't happen).
 - Not yet: the guidance shown when a data cell's text starts with "=" (Java: `DataCellSupplier`'s
-  `GuidanceWindow`, Phase 9), the cell's context menu items (`getAdditionalMenuItems`, Phase 9), hover
-  text for cut-off values, and marking the file as modified (Phase 9).
+  `GuidanceWindow`, which walks through making a Calculate: Phase 11, with the transformation dialogs), and
+  the cell's context menu items (`getAdditionalMenuItems`: a transformation's "Why?", Phases 10 and 11,
+  with explanations). Hover text for cut-off values is in `tables.md`; the file is saved after an edit
+  (`projects.md`).

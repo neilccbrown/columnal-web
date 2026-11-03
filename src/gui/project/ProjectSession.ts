@@ -5,10 +5,11 @@ import { shallowRef, type ShallowRef } from "vue";
 import { CellPosition } from "../../engine/data/data/CellPosition.js";
 import { UndoManager } from "../../gui-logic/app/gui/UndoManager.js";
 import type { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
-import type { EngineClient } from "../engine/EngineClient.js";
+import { EngineClosedError, type EngineClient } from "../engine/EngineClient.js";
 import { t } from "../i18n.js";
 import { acquireProjectLock, type ProjectLock } from "./projectLock.js";
 import type { ProjectStore } from "./ProjectStore.js";
+import { download } from "../download.js";
 
 export type Banner = "loading" | "readOnly" | "openElsewhere" | null;
 
@@ -118,6 +119,9 @@ export class ProjectSession
         this.saveCount += 1;
         this.saving = this.saving.then(() => this.doSave(keepPrevForUndo)).catch((e: unknown) =>
         {
+            // (The window closed while a change was being saved: there's no project to save now)
+            if (e instanceof EngineClosedError)
+                return;
             this.showError(t("save.error"), e instanceof Error ? e.message : String(e));
         });
         return this.saving;
@@ -213,13 +217,7 @@ export class ProjectSession
     /** Java: View.doSaveTo(false, dest), from Save a Copy: here the copy is downloaded. */
     public async saveCopy(): Promise<void>
     {
-        const content = await this.saveContent();
-        const url = URL.createObjectURL(new Blob([content], { type: "text/plain" }));
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = this.name.value + ".clmnl";
-        link.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        download(this.name.value + ".clmnl", await this.saveContent(), "text/plain");
     }
 
     /** Closing the project: the last save finishes, and the project is free for other tabs. */

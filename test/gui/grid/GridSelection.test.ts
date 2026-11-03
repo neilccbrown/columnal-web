@@ -36,9 +36,11 @@ describe("grid selection", () =>
     {
         const { grid } = await renderEngineGrid(GRID_FIXTURE);
         const vg = grid.grid;
-        await userEvent.click(gridLocator(), { position: cellPoint(vg, 1, 1) });
+        // (Right of the name field, which a click focuses)
+        await userEvent.click(gridLocator(), { position: { ...cellPoint(vg, 1, 1), x: vg.sumColumnWidths(0, 1) + 80 } });
         expect(vg.getSelection()).toBeInstanceOf(EntireTableSelection);
-        await expect.element(page.getByText("T", { exact: true })).toBeVisible();
+        // (The name is in a field, as Java's TableNameTextField)
+        expect(document.querySelector<HTMLInputElement>('[data-table="T"] .table-name-text-field')?.value).toBe("T");
         expect(document.querySelector('[data-table="T"]')?.classList.contains("table-selected")).toBe(true);
         const before = vg.getSelection();
         await userEvent.click(page.getByText("Name", { exact: true }).first());
@@ -63,9 +65,10 @@ describe("grid selection", () =>
         const vg = grid.grid;
         const t = grid.displays().find(d => d.info.id === "T")!;
         expect(t.getPosition().toString()).toBe(pos(1, 1).toString());
-        // From 10 px into T's name row, to 10 rows lower and a little right (still nearest column 1):
-        const from = { x: vg.sumColumnWidths(0, 1) + 10, y: 24 + 10 };
-        await userEvent.dragAndDrop(gridLocator(), gridLocator(), { sourcePosition: from, targetPosition: { x: from.x + 30, y: from.y + 240 + 5 } });
+        // From 60 px into T's name row (right of the name field, which takes its own drags), to 10 rows
+        // lower and a little right (still nearest column 1):
+        const from = { x: vg.sumColumnWidths(0, 1) + 60, y: 24 + 10 };
+        await userEvent.dragAndDrop(gridLocator(), gridLocator(), { sourcePosition: from, targetPosition: { x: from.x - 20, y: from.y + 240 + 5 } });
         expect(t.getPosition().toString()).toBe(pos(11, 1).toString());
         await engine.client.whenIdle();
         expect(await engine.client.request("save", [])).toContain("POSITION 1 11");
@@ -79,7 +82,7 @@ describe("grid selection", () =>
         const view = scroller.getBoundingClientRect();
         const title = document.querySelector('[data-table="T"] .table-title')!;
         const init = { bubbles: true, pointerId: 1, button: 0, buttons: 1 };
-        const start = { clientX: view.left + vg.sumColumnWidths(0, 1) + 10, clientY: view.top + 34 };
+        const start = { clientX: view.left + vg.sumColumnWidths(0, 1) + 60, clientY: view.top + 34 };
         title.dispatchEvent(new PointerEvent("pointerdown", { ...init, ...start }));
         // Within 5 px of the bottom edge: 500 px/s
         scroller.dispatchEvent(new PointerEvent("pointermove", { ...init, clientX: start.clientX, clientY: view.top + scroller.clientHeight - 2 }));

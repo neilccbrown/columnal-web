@@ -65,8 +65,8 @@ Web: `src/gui/grid/` (`EngineGrid.vue`, `TableGrid.vue`, `GridTable.vue`, `GridT
 - A click (still since the press): on a cell selects it (with Shift, extends the selection to it); on
   an empty cell (not in row or column 0) selects it; on the cell that is selected by itself, or a double
   click, starts editing (`cell-editor.md`). A click on a table's name row selects the entire table (focused on the column
-  whose left edge is nearest). Column names and types, and row labels, handle their own clicks (their
-  actions come in Phase 9).
+  whose left edge is nearest). The table name's field, column names and types, row labels and hats handle
+  their own clicks (`tables.md`).
 - When the grid loses the focus, the selection goes.
 
 ## Moving tables
@@ -91,5 +91,5 @@ Web: `src/gui/grid/` (`EngineGrid.vue`, `TableGrid.vue`, `GridTable.vue`, `GridT
 - Copying writes text, and Columnal's format as a "web application/records" custom format where the
   browser supports it. Pasting into selected cells does nothing (Java's was a TODO); pasting text into a
   cell being edited works.
-- Left for later: the table name's editing and the table's "hat", the table and column menus, row label
-  menus, "Goto row" and actions on empty cells (Phase 9, with `TableDisplay` and the main window).
+- The table name's editing, the table's "hat", the table, column and row label menus, "Goto row", hover
+  text and the "New…" button on empty cells are in `tables.md`.

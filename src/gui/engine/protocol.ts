@@ -28,6 +28,65 @@ export interface TableInfo
     readonly columnStyles: readonly (readonly string[])[];
     // The error if the table's columns can't be found (e.g. a transformation that failed):
     readonly error: string | null;
+    // Which columns are shown (Java: Table.getShowColumns; the column lists above are of those shown):
+    readonly display: TableDisplayMode;
+    // Whether some, but not all, of the columns are altered (Java: headerMiddleClicked only cycles to
+    // ALTERED then):
+    readonly someAltered: boolean;
+    // Whether the table can be renamed (Java: TableOperations.renameTable), and rows inserted and
+    // deleted (insertRows, deleteRows):
+    readonly canRename: boolean;
+    readonly canInsertRows: boolean;
+    readonly canDeleteRows: boolean;
+    // Whether each column can be deleted (Java: TableOperations.deleteColumn):
+    readonly columnDeletable: readonly boolean[];
+    // Whether clicking each column's name or type edits it (Java: ColumnHeaderOps.getPrimaryEditOperation;
+    // for now only data tables' columns):
+    readonly columnHeaderEditable: readonly boolean[];
+    // Each column header's extra style classes (Java: column-title-overwritten):
+    readonly columnHeaderClasses: readonly (readonly string[])[];
+    // The column after each, among all the table's columns (Java: the "Add column after" item), or null:
+    readonly columnAfter: readonly (string | null)[];
+    // A transformation's "hat", which describes it (Java: TableHat), or null for a data table:
+    readonly hat: TableHatInfo | null;
+}
+
+/** Which of a table's columns are shown (Java: Table.Display). */
+export type TableDisplayMode = "COLLAPSED" | "ALL" | "ALTERED" | "CUSTOM";
+
+/**
+ * The text of a transformation's hat (Java: TableHat's StyledString): its parts, with their style
+ * classes, and what a clickable part does.  Collapsed, it shows just the transformation's kind.
+ */
+export interface TableHatInfo
+{
+    readonly content: readonly HatSegment[];
+    readonly collapsed: string;
+}
+
+export interface HatSegment
+{
+    readonly text: string;
+    readonly classes: readonly string[];
+    readonly link: HatLink | null;
+}
+
+/**
+ * A clickable part of a hat: the source table (its id, and whether it no longer exists), or another part
+ * that edits the transformation.  (Clicking either opens a Phase 11 dialog.)
+ */
+export type HatLink =
+    | { readonly kind: "source", readonly tableId: string, readonly broken: boolean }
+    | { readonly kind: "edit", readonly tooltipKey: string | null };
+
+/** A way to make a transformation from a column (Java: TableDisplay's column recipes). */
+export type ColumnRecipe = "sum" | "average" | "frequency" | "sort";
+
+/** An exporter, as the export dialog lists it (Java: Exporter.getName and getSupportedFileTypes). */
+export interface ExporterInfo
+{
+    readonly name: string;
+    readonly fileTypes: readonly string[];
 }
 
 /**
@@ -105,6 +164,36 @@ export interface EngineApi
     addColumn(id: string, version: number, beforeColumn: string | null, column: NewColumnDetails): EngineAlert | null;
     /** Adds rows at the end of the table (Java: ExpandTableArrowSupplier's add-row button). */
     appendRows(id: string, version: number, count: number): EngineAlert | null;
+    /** Inserts rows of default values before the given row (Java: the row label menu's insert items). */
+    insertRows(id: string, version: number, row: number, count: number): EngineAlert | null;
+    /** Deletes rows (Java: the row label menu's delete item). */
+    deleteRows(id: string, version: number, row: number, count: number): EngineAlert | null;
+    /** Renames a table (Java: TableOperations.renameTable, from the table name field), any version. */
+    renameTable(id: string, newName: string): EngineAlert | null;
+    /** Deletes a table, any version (Java: the table menu's Delete, and deleting an entire table selection). */
+    deleteTable(id: string): void;
+    /** Deletes a column (Java: TableOperations.deleteColumn, from the column menu or Delete). */
+    deleteColumn(id: string, version: number, column: string): EngineAlert | null;
+    /** A data table's column's type, saved as in a file (for the column dialog), or null. */
+    columnType(id: string, version: number, column: string): string | null;
+    /**
+     * Changes a data table's column: its name, type and default value (Java:
+     * TransformationEdits.editColumn_IDS); the tables that use it are updated to its new name.
+     */
+    editColumn(id: string, version: number, column: string, details: NewColumnDetails): EngineAlert | null;
+    /** Sets which columns are shown (Java: TableDisplay.setDisplay), any version. */
+    setDisplay(id: string, display: TableDisplayMode): void;
+    /** Makes a transformation from a column (Java: the column menu's recipes). */
+    recipe(id: string, version: number, column: string, recipe: ColumnRecipe): EngineAlert | null;
+    /**
+     * The clipboard content for all the table's values, all its columns (Java: the table menu's
+     * "Copy values"); an alert if they couldn't be got; null if the table has been replaced.
+     */
+    copyAllValues(id: string, version: number): Promise<{ readonly content: Readonly<Record<string, string>> } | { readonly alert: EngineAlert } | null>;
+    /** The exporters (Java: ExporterManager's registered exporters). */
+    exporters(): readonly ExporterInfo[];
+    /** Exports a table with an exporter (by its index): the file's content, or an alert (any version). */
+    exportTable(id: string, exporter: number): { readonly data: Uint8Array } | { readonly alert: EngineAlert };
     /** The table's length, or null if the table has been replaced. */
     length(id: string, version: number): number | null;
     /**
@@ -150,7 +239,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "createDataTable", "addColumn", "appendRows", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnType", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

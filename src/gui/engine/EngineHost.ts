@@ -2,7 +2,7 @@
 // GUI's requests and sends it events.  Runs in the engine worker (engineWorker.ts), or in the page
 // for GUI tests (InPageTransport), where tests can also read the engine's objects through it.
 import { CellPosition } from "../../engine/data/data/CellPosition.js";
-import type { Column } from "../../engine/data/data/Column.js";
+import { Column } from "../../engine/data/data/Column.js";
 import { DataSource, ImmediateDataSource } from "../../engine/data/data/DataSources.js";
 import { ColumnUtility } from "../../engine/data/data/ColumnUtility.js";
 import { EditableRecordSet } from "../../engine/data/data/EditableRecordSet.js";
@@ -27,7 +27,27 @@ import { TableDisplayUtility } from "../../gui-logic/stf/gui/dtf/TableDisplayUti
 import { Workers } from "../../engine/utility/utility/Workers.js";
 import type { Value } from "../../engine/utility/utility/Value.js";
 import { Transformation } from "../../engine/data/data/Transformation.js";
-import { ENGINE_METHODS, type CellContent, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type FromEngine, type LoadResult, type NewColumnDetails, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { EditableColumn } from "../../engine/data/data/EditableColumn.js";
+import { CSVExporter } from "../../engine/exporters/exporters/CSVExporter.js";
+import { ExcelExporter } from "../../engine/exporters/exporters/ExcelExporter.js";
+import { HTMLExporter } from "../../engine/exporters/exporters/HTMLExporter.js";
+import { ExporterManager } from "../../engine/exporters/exporters/manager/ExporterManager.js";
+import { RExporter } from "../../engine/exporters/exporters/RExporter.js";
+import { CallExpression, Expression, IdentExpression } from "../../engine/expressions/transformations/expression/Expressions.js";
+import { TypeState } from "../../engine/expressions/transformations/expression/TypeState.js";
+import { FunctionList } from "../../engine/functions/transformations/function/FunctionList.js";
+import { Mean } from "../../engine/functions/transformations/function/Mean.js";
+import { Sum } from "../../engine/functions/transformations/function/Sum.js";
+import { TableAndColumnRenames } from "../../engine/identifiers/id/TableAndColumnRenames.js";
+import { Aggregate } from "../../engine/transformations/transformations/Aggregate.js";
+import { ManualEdit } from "../../engine/transformations/transformations/ManualEdit.js";
+import { Sort } from "../../engine/transformations/transformations/Sort.js";
+import { VisitableTransformation } from "../../engine/transformations/transformations/VisitableTransformation.js";
+import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
+import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
+import { Utility } from "../../engine/utility/utility/Utility.js";
+import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
+import { ENGINE_METHODS, type CellContent, type ColumnRecipe, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 
 // How many rows requests are done for each table at once (newest first); older ones are skipped:
 const MAX_ROWS_REQUESTS_PER_TABLE = 2;
@@ -51,6 +71,9 @@ export class EngineHost implements EngineApi
     // Each table's position.  (Java: its TableDisplay, which the table asks for its position when
     // saving; a re-run table takes the position of the table it replaces.)
     private readonly positions = new Map<Table, CellPosition>();
+    // Each table's columns shown (Java: TableDisplay.columnDisplay, which the table gives its display
+    // when it is set, and which the display changes):
+    private readonly displays = new Map<Table, Pair<Table.Display, readonly ColumnId[]>>();
     private tablesEventScheduled = false;
     private modifiedEventScheduled = false;
     private rowsQueue: RowsRequest[] = [];
@@ -82,6 +105,18 @@ export class EngineHost implements EngineApi
             addComment: () => this.modified(),
             removeComment: () => this.modified(),
         });
+        // Java: the app's ErrorHandler shows errors in an alert (FXUtility.showError)
+        const sendAlert = (alert: EngineAlert): void => this.sendEvent({ kind: "alert", alert });
+        ErrorHandler.setErrorHandler(new class extends ErrorHandler
+        {
+            protected override doShowError(title: string, errWrap: (s: string) => string, e: Error): void
+            {
+                if (e instanceof InternalException)
+                    Log.log(e);
+                sendAlert({ title, message: errWrap(e instanceof UserException || e instanceof InternalException ? e.getLocalizedMessage() ?? "" : e.message) });
+            }
+        }());
+        registerExporters();
     }
 
     /** A message from the GUI. */
@@ -177,6 +212,256 @@ export class EngineHost implements EngineApi
         }
     }
 
+    public insertRows(id: string, version: number, row: number, count: number): EngineAlert | null
+    {
+        const insertRows = this.current(id, version)?.getOperations().insertRows ?? null;
+        if (insertRows === null)
+            return null;
+        try
+        {
+            insertRows(row, count);
+            return null;
+        }
+        catch (e)
+        {
+            // (Java logged it, on its worker thread)
+            return alertFor("error.inserting.rows", e);
+        }
+    }
+
+    public deleteRows(id: string, version: number, row: number, count: number): EngineAlert | null
+    {
+        const deleteRows = this.current(id, version)?.getOperations().deleteRows ?? null;
+        if (deleteRows === null)
+            return null;
+        try
+        {
+            deleteRows(row, count);
+            return null;
+        }
+        catch (e)
+        {
+            // (Java logged it, on its worker thread)
+            return alertFor("error.removing.rows", e);
+        }
+    }
+
+    public renameTable(id: string, newName: string): EngineAlert | null
+    {
+        const renameTable = this.tables.get(id)?.table.getOperations().renameTable ?? null;
+        // (Its errors are shown through the ErrorHandler)
+        renameTable?.(new TableId(newName));
+        return null;
+    }
+
+    public deleteTable(id: string): void
+    {
+        const table = this.tables.get(id)?.table;
+        if (table !== undefined)
+            this.tableManager.remove(table.getId());
+    }
+
+    public deleteColumn(id: string, version: number, column: string): EngineAlert | null
+    {
+        const columnId = new ColumnId(column);
+        const deleteColumn = this.current(id, version)?.getOperations().deleteColumn(columnId) ?? null;
+        if (deleteColumn === null)
+            return null;
+        try
+        {
+            deleteColumn(columnId);
+            return null;
+        }
+        catch (e)
+        {
+            // (Java logged it, on its worker thread)
+            return alertFor("error.deleting.column", e);
+        }
+    }
+
+    public columnType(id: string, version: number, column: string): string | null
+    {
+        const c = this.current(id, version)?.getData().getColumnOrNull(new ColumnId(column)) ?? null;
+        if (c === null)
+            return null;
+        // (Java: EditImmediateColumnDialog's TypeExpression.fromDataType)
+        return TypeExpression.fromDataType(c.getType().getType()).save(Expression.SaveDestination.TO_FILE, TableAndColumnRenames.EMPTY);
+    }
+
+    // Java: TransformationEdits.editColumn_IDS
+    public editColumn(id: string, version: number, column: string, details: NewColumnDetails): EngineAlert | null
+    {
+        const data = this.current(id, version);
+        if (!(data instanceof ImmediateDataSource))
+            return null;
+        const columnId = new ColumnId(column);
+        try
+        {
+            const columnDetails = this.newColumn(details);
+            let makeReplacement: (() => ImmediateDataSource) | null = null;
+            // If column type and default value are unaltered, don't need to re-do table:
+            const oldColumn = data.getData().getColumn(columnId);
+            if (!(oldColumn instanceof EditableColumn))
+                throw new InternalException("Non-editable column in original data set");
+            // Important to check type first, because if type has changed,
+            // default values cannot be compared:
+            if (!columnDetails.dataType.equals(oldColumn.getType().getType()) || Utility.compareValues(oldColumn.getDefaultValue(), columnDetails.defaultValue) !== 0)
+            {
+                // Need to redo whole table to edit the column type/default:
+                const length = data.getData().getLength();
+                const columns = data.getData().getColumns().map(c =>
+                {
+                    if (c.getName().equals(columnId))
+                    {
+                        const newValues: Either<string, Value>[] = [];
+                        for (let i = 0; i < length; i++)
+                        {
+                            let stringVersion: string;
+                            try
+                            {
+                                stringVersion = DataTypeUtility.valueToString(c.getType().getCollapsed(i));
+                            }
+                            catch (e)
+                            {
+                                if (!(e instanceof InvalidImmediateValueException))
+                                    throw e;
+                                stringVersion = e.getInvalid();
+                            }
+                            // Now turn String back into the new type:
+                            newValues.push(columnDetails.dataType.loadSingleItem(stringVersion.trim()));
+                        }
+                        return ColumnUtility.makeImmediateColumn(columnDetails.dataType, c.getName(), newValues, columnDetails.defaultValue);
+                    }
+                    else
+                        return EditableRecordSet.copyColumn(c);
+                });
+                const newRecordSet = new EditableRecordSet(columns, () => length);
+                makeReplacement = () => new ImmediateDataSource(this.tableManager, data.getDetailsForCopy(data.getId()), newRecordSet);
+            }
+            const renames = new TableAndColumnRenames([[data.getId(), new Pair<TableId | null, Iterable<readonly [ColumnId, ColumnId]>>(data.getId(), [[columnId, columnDetails.columnId]])]]);
+            if (makeReplacement === null)
+                this.tableManager.editData(data.getId(), null, renames);
+            else
+                this.tableManager.editData(data.getId(), makeReplacement, renames);
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.saving.column", e);
+        }
+    }
+
+    public setDisplay(id: string, display: TableDisplayMode): void
+    {
+        const table = this.tables.get(id)?.table;
+        if (table === undefined)
+            return;
+        // Java: TableDisplay.setDisplay; the menu's items clear the custom list of hidden columns, and
+        // middle-clicking the header keeps it (as here)
+        const blackList = this.displays.get(table)?.getSecond() ?? [];
+        const newState = Table.Display[display];
+        this.displays.set(table, new Pair<Table.Display, readonly ColumnId[]>(newState, blackList));
+        table.setShowColumns(newState, blackList);
+        this.resized(table);
+        this.modified();
+    }
+
+    // Java: TableDisplay's column recipes (columnQuickTransform), each a SimpleColumnOperation, which
+    // puts the new table to the right of the others
+    public recipe(id: string, version: number, column: string, recipe: ColumnRecipe): EngineAlert | null
+    {
+        const table = this.current(id, version);
+        if (table === null)
+            return null;
+        const tableManager = this.tableManager;
+        const c = new ColumnId(column);
+        const insertPos = tableManager.getNextInsertPosition(table.getId());
+        const details = new Table.InitialLoadDetails(null, null, insertPos, null);
+        try
+        {
+            // Java: columnQuickTransform's new column's name, the first of "Prefix column", "Prefix column 1", ...
+            const newId = (suggestedPrefix: string): ColumnId =>
+            {
+                const stem = IdentifierUtility.fixExpressionIdentifier(suggestedPrefix + " " + c.getRaw(), c.getRaw());
+                let nextId = stem;
+                for (let i = 1; i <= 1000; i++)
+                {
+                    if (!table.getData().getColumnIds().some(x => x.equals(new ColumnId(nextId))))
+                        break;
+                    nextId = IdentifierUtility.identNum(stem, i);
+                }
+                // If we reach 999, just go with that and let user fix it
+                return new ColumnId(nextId);
+            };
+            const functionLookup = FunctionList.getFunctionLookup(tableManager.getUnitManager());
+            let t: Table;
+            switch (recipe)
+            {
+                case "sum":
+                    t = new Aggregate(tableManager, details, table.getId(), [new Pair<ColumnId, Expression>(newId("Sum"), new CallExpression(functionLookup, Sum.NAME, IdentExpression.column(c)))], []);
+                    break;
+                case "average":
+                    t = new Aggregate(tableManager, details, table.getId(), [new Pair<ColumnId, Expression>(newId("Average"), new CallExpression(functionLookup, Mean.NAME, IdentExpression.column(c)))], []);
+                    break;
+                case "frequency":
+                    t = new Aggregate(tableManager, details, table.getId(), [new Pair<ColumnId, Expression>(newId("Freq"), IdentExpression.load(TypeState.GROUP_COUNT))], [c]);
+                    break;
+                case "sort":
+                    t = new Sort(tableManager, details, table.getId(), [new Pair(c, Sort.Direction.ASCENDING)]);
+                    break;
+            }
+            tableManager.record(t);
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.adding.column", e);
+        }
+    }
+
+    public copyAllValues(id: string, version: number): Promise<{ readonly content: Readonly<Record<string, string>> } | { readonly alert: EngineAlert } | null>
+    {
+        const table = this.current(id, version);
+        if (table === null)
+            return Promise.resolve(null);
+        return new Promise(resolve =>
+        {
+            try
+            {
+                const columns = table.getData().getColumns().map(c => new Pair(c.getName(), c.getType()));
+                ClipboardUtils.copyValuesToClipboard(this.tableManager.getUnitManager(), this.tableManager.getTypeManager(), columns,
+                    () => new ClipboardUtils.RowRange(0, table.getData().getLength() - 1),
+                    content => resolve({ content: Object.fromEntries(content) }),
+                    copied => { if (!copied) resolve(null); });
+            }
+            catch (e)
+            {
+                resolve({ alert: alertFor("error.copying.values", e) });
+            }
+        });
+    }
+
+    public exporters(): readonly ExporterInfo[]
+    {
+        return ExporterManager.getInstance().getRegisteredExporters().map(e => ({ name: e.getName(), fileTypes: e.getSupportedFileTypes() }));
+    }
+
+    public exportTable(id: string, exporter: number): { readonly data: Uint8Array } | { readonly alert: EngineAlert }
+    {
+        const table = this.tables.get(id)?.table;
+        const e = ExporterManager.getInstance().getRegisteredExporters()[exporter];
+        try
+        {
+            if (table === undefined || e === undefined)
+                throw new UserException("No such table or exporter");
+            return { data: e.exportData(table) };
+        }
+        catch (err)
+        {
+            return { alert: alertFor("error.exporting", err) };
+        }
+    }
+
     // A new column's name, type and default value, from the GUI's column dialog
     private newColumn(details: NewColumnDetails): { readonly columnId: ColumnId, readonly dataType: DataType, readonly defaultValue: Value }
     {
@@ -193,7 +478,7 @@ export class EngineHost implements EngineApi
         const table = this.current(id, version);
         if (table === null)
             return Promise.resolve(null);
-        const columns = table.getData().getColumns().slice(firstColumn, lastColumnIncl + 1).map(c => new Pair(c.getName(), c.getType()));
+        const columns = this.shownColumns(table).slice(firstColumn, lastColumnIncl + 1).map(c => new Pair(c.getName(), c.getType()));
         return new Promise(resolve =>
         {
             ClipboardUtils.copyValuesToClipboard(this.tableManager.getUnitManager(), this.tableManager.getTypeManager(), columns,
@@ -218,7 +503,8 @@ export class EngineHost implements EngineApi
 
     public canEdit(id: string, version: number, column: number, row: number): boolean
     {
-        const c = this.current(id, version)?.getData().getColumns()[column];
+        const table = this.current(id, version);
+        const c = table === null ? undefined : this.shownColumns(table)[column];
         if (c === undefined)
             return false;
         try
@@ -239,7 +525,7 @@ export class EngineHost implements EngineApi
     public edit(id: string, version: number, column: number, row: number, text: string): EditResult
     {
         const table = this.current(id, version);
-        const c = table?.getData().getColumns()[column];
+        const c = table === null ? undefined : this.shownColumns(table)[column];
         if (table === null || c === undefined)
             return { kind: "stale" };
         // Java: RecogniserDocument.recognise(true): the value, or the text if it isn't one
@@ -265,7 +551,7 @@ export class EngineHost implements EngineApi
         const table = this.current(id, version);
         if (table === null)
             return null;
-        const columns = table.getData().getColumns().slice(firstColumn, lastColumnIncl + 1);
+        const columns = this.shownColumns(table).slice(firstColumn, lastColumnIncl + 1);
         let alert: EngineAlert | null = null;
         for (const c of columns)
         {
@@ -378,12 +664,19 @@ export class EngineHost implements EngineApi
                 removedColumn: () => this.resized(table),
             });
         }
+        // Java: TableHat's listener, which remade a manual edit's hat when it was modified
+        if (table instanceof ManualEdit)
+            table.addModificationListener(() => this.tablesChanged());
         table.setDisplay({
-            loadPosition: position => { this.positions.set(table, position); },
+            loadPosition: (position, display) =>
+            {
+                this.positions.set(table, position);
+                this.displays.set(table, display);
+            },
             getMostRecentPosition: () => this.position(table),
             getBottomRightIncl: () => this.position(table),
-            // PORT-DEFERRED: offering a Manual Edit when a transformation's cell is edited (Phase 9, with
-            // TableDisplay); the edit is cancelled meanwhile, as in Java
+            // PORT-DEFERRED: offering a Manual Edit when a transformation's cell is edited (Phase 11, with
+            // its PickManualEditIdentifierDialog); the edit is cancelled meanwhile, as in Java
             promptForTransformationEdit: () => {},
             getTable: () => table,
         });
@@ -445,6 +738,14 @@ export class EngineHost implements EngineApi
         this.post({ kind: "event", event });
     }
 
+    // Java: TableDisplay's displayColumns (TableDisplayUtility.makeStableViewColumns), the columns shown
+    private shownColumns(table: Table): readonly Column[]
+    {
+        const display = this.displays.get(table) ?? new Pair<Table.Display, readonly ColumnId[]>(Table.Display.ALL, []);
+        const selection = display.mapSecond(blackList => (c: ColumnId) => !blackList.some(b => b.equals(c)));
+        return table.getData().getColumns().filter(c => c.shouldShow(selection));
+    }
+
     private tableInfo(table: Table, version: number): TableInfo
     {
         let columnNames: string[] = [];
@@ -452,15 +753,31 @@ export class EngineHost implements EngineApi
         let columnEditable: boolean[] = [];
         let columnNumber: boolean[] = [];
         let columnStyles: (readonly string[])[] = [];
+        let columnDeletable: boolean[] = [];
+        let columnHeaderClasses: (readonly string[])[] = [];
+        let columnAfter: (string | null)[] = [];
+        let someAltered = false;
         let error: string | null = null;
+        const operations = table.getOperations();
         try
         {
-            const columns = table.getData().getColumns();
+            const columns = this.shownColumns(table);
             columnNames = columns.map(c => c.getName().getRaw());
             columnTypes = columns.map(c => typeText(c));
             columnEditable = columns.map(c => c.getEditableStatus().editable);
             columnNumber = columns.map(c => isNumberType(c.getType().getType()));
             columnStyles = columns.map(c => TableDisplayUtility.stfStylesFor(c.getType().getType()));
+            columnDeletable = columns.map(c => operations.deleteColumn(c.getName()) !== null);
+            columnHeaderClasses = columns.map(c => c.getAlteredState() === Column.AlteredState.OVERWRITTEN ? ["column-title-overwritten"] : []);
+            const all = table.getData().getColumns();
+            columnAfter = columns.map(c =>
+            {
+                const index = all.indexOf(c);
+                return index + 1 < all.length ? all[index + 1]!.getName().getRaw() : null;
+            });
+            // Java: headerMiddleClicked's count of altered columns
+            const altered = all.filter(c => c.getAlteredState() !== Column.AlteredState.UNALTERED).length;
+            someAltered = altered !== 0 && altered !== all.length;
         }
         catch (e)
         {
@@ -478,9 +795,21 @@ export class EngineHost implements EngineApi
             columnEditable,
             columnNumber,
             columnStyles,
-            canAppendRows: error === null && table.getOperations().appendRows !== null,
+            canAppendRows: error === null && operations.appendRows !== null,
             canAddColumn: error === null && table instanceof ImmediateDataSource,
             error,
+            display: Table.Display[this.displays.get(table)?.getFirst() ?? Table.Display.ALL] as TableDisplayMode,
+            someAltered,
+            canRename: operations.renameTable !== null,
+            canInsertRows: error === null && operations.insertRows !== null,
+            canDeleteRows: error === null && operations.deleteRows !== null,
+            columnDeletable,
+            // PORT-DEFERRED: editing Calculate's and Aggregate's columns by clicking their headers
+            // (Java: TransformationEdits.editColumn_Calc and editColumn_Agg, Phases 10 and 11)
+            columnHeaderEditable: columnNames.map(() => table instanceof ImmediateDataSource),
+            columnHeaderClasses,
+            columnAfter,
+            hat: table instanceof VisitableTransformation ? TableHat.content(this.tableManager, table) : null,
         };
     }
 
@@ -502,7 +831,7 @@ export class EngineHost implements EngineApi
                 r.resolve(null);
                 continue;
             }
-            const columns = table.getData().getColumns();
+            const columns = this.shownColumns(table);
             const cells: CellContent[][] = [];
             for (let row = r.firstRow; row < r.lastRowExcl; row++)
                 cells.push(columns.map((c, i) => cellContent(c, i, row)));
@@ -591,4 +920,18 @@ function toEngineError(e: unknown): EngineError
     if (e instanceof Error)
         return { name: e.name, message: e.message, stack: e.stack ?? null };
     return { name: "Error", message: String(e), stack: null };
+}
+
+let exportersRegistered = false;
+
+// Java: Main's registering of the exporters (once, as the manager is shared)
+function registerExporters(): void
+{
+    if (exportersRegistered)
+        return;
+    exportersRegistered = true;
+    ExporterManager.getInstance().registerExporter(new CSVExporter());
+    ExporterManager.getInstance().registerExporter(new HTMLExporter());
+    ExporterManager.getInstance().registerExporter(new ExcelExporter());
+    ExporterManager.getInstance().registerExporter(new RExporter());
 }

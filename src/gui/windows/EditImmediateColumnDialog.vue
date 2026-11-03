@@ -1,12 +1,12 @@
 <script setup lang="ts">
-// Java: EditImmediateColumnDialog (app): a new data column's name, type and default value, and, for a
-// new table, the table's name (blank for an automatic one).  OK gives an error (shown in the dialog)
+// Java: EditImmediateColumnDialog (app): a data column's name, type and default value (a new column's,
+// or an existing one's), and, for a new table, the table's name (blank for an automatic one).  OK gives an error (shown in the dialog)
 // until they are all valid.  Escape doesn't close it (Java: preventCloseOnEscape), as the type editor
 // uses it to hide its completions.  (docs/gui-spec/tables.md)
 import { nextTick, shallowRef, useTemplateRef, watch } from "vue";
 import type { Localized } from "../../engine/anns/Annotations.js";
 import { Expression } from "../../engine/expressions/transformations/expression/Expressions.js";
-import type { TypeExpression } from "../../engine/expressions/transformations/expression/type/TypeExpressions.js";
+import { TypeExpression } from "../../engine/expressions/transformations/expression/type/TypeExpressions.js";
 import type { ColumnId } from "../../engine/identifiers/id/ColumnId.js";
 import { TableAndColumnRenames } from "../../engine/identifiers/id/TableAndColumnRenames.js";
 import { TableId } from "../../engine/identifiers/id/TableId.js";
@@ -21,6 +21,7 @@ import type { Document } from "../../gui-logic/stf/gui/dtf/Document.js";
 import { RecogniserDocument } from "../../gui-logic/stf/gui/dtf/RecogniserDocument.js";
 import { TableDisplayUtility } from "../../gui-logic/stf/gui/dtf/TableDisplayUtility.js";
 import { TableNameTextField } from "../../gui-logic/table-gui/gui/table/TableNameTextField.js";
+import { TopLevelEditor } from "../../gui-logic/lex-editor/gui/lexeditor/TopLevelEditor.js";
 import ErrorableLightDialog from "../components/dialogs/ErrorableLightDialog.vue";
 import ErrorLabel from "../components/dialogs/ErrorLabel.vue";
 import DocumentTextField from "../components/DocumentTextField.vue";
@@ -42,8 +43,12 @@ const props = defineProps<{
     typeManager: TypeManager,
     // The tables' ids, when creating a table (its name mustn't be one of them), else null
     tableIds: readonly string[] | null,
-    // Java: InitialFocus: the table's name if creating a table, else the column's name
     centreOn?: { readonly x: number, readonly y: number } | null,
+    // An existing column (Java: the dialog's initial column name and type, its type saved as in a
+    // file), or null for a new one:
+    initialColumn?: { readonly name: string, readonly type: string } | null,
+    // Java: InitialFocus (the table's name is focused if creating a table, else the column's name)
+    initialFocus?: "name" | "type",
 }>();
 const emit = defineEmits<{ ok: [details: ColumnDetails] }>();
 
@@ -64,7 +69,9 @@ const generation = shallowRef(0);
 
 const dialog = useTemplateRef<{ clearError(): void }>("dialog");
 const content = useTemplateRef<HTMLElement>("content");
-const typeEditor = useTemplateRef<{ editor(): { showAllErrors(): void } | null }>("typeEditor");
+const typeEditor = useTemplateRef<{ editor(): { showAllErrors(): void, focus(side: TopLevelEditor.Focus): void } | null }>("typeEditor");
+// Java: TypeExpression.fromDataType(dataType), the column's type
+const originalType = shallowRef<TypeExpression | null>(null);
 
 watch(open, isOpen =>
 {
@@ -72,7 +79,8 @@ watch(open, isOpen =>
         return;
     generation.value += 1;
     tableNameText.value = "";
-    columnNameText.value = "";
+    columnNameText.value = props.initialColumn?.name ?? "";
+    originalType.value = props.initialColumn === null || props.initialColumn === undefined ? null : TypeExpression.parseTypeExpression(props.initialColumn.type);
     typeExpression = null;
     customDataType = null;
     latestType = null;
@@ -80,8 +88,14 @@ watch(open, isOpen =>
     defaultValueDocument = null;
     defaultDocument.value = new ReadOnlyDocument("");
     defaultDisabled.value = true;
-    // Java: setOnShown, focusing the table name if there is one, else the column name
-    void nextTick(() => setTimeout(() => content.value?.querySelector<HTMLInputElement>(props.tableIds !== null ? "input.table-name-text-field" : "input.column-name-text-field")?.focus()));
+    // Java: setOnShown, focusing the table name if there is one, else the column name, or the type
+    void nextTick(() => setTimeout(() =>
+    {
+        if (props.tableIds === null && props.initialFocus === "type")
+            typeEditor.value?.editor()?.focus(TopLevelEditor.Focus.RIGHT);
+        else
+            content.value?.querySelector<HTMLInputElement>(props.tableIds !== null ? "input.table-name-text-field" : "input.column-name-text-field")?.focus();
+    }));
 }, { immediate: true });
 
 // Java: the type editor's onChange
@@ -212,7 +226,7 @@ function tableNameKeydown(e: KeyboardEvent): void
           <TypeEditor
             ref="typeEditor"
             :type-manager="typeManager"
-            :original-content="null"
+            :original-content="originalType"
             :require-concrete-type="true"
             :empty-allowed="false"
             @change="typeChanged"

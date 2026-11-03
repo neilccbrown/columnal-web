@@ -24,6 +24,7 @@ export interface CheckMenuItem
     readonly label: Label;
     readonly checked: boolean;
     readonly onChange: (checked: boolean) => void;
+    readonly disabled: boolean;
 }
 
 export interface SubMenu
@@ -55,15 +56,21 @@ export function menuItemPos(key: LocalizableKey, onAction: (menuCentre: { x: num
     return { kind: "item", id: makeId(key), label: label(key), onAction, styleClasses, disabled: false };
 }
 
+/** A disabled item with the given (untranslated) text and no id (Java: new MenuItem(text), disabled). */
+export function textItem(text: string, ...styleClasses: string[]): MenuItem
+{
+    return { kind: "item", id: "", label: { text, mnemonicIndex: null, shortcut: null }, onAction: () => {}, styleClasses, disabled: true };
+}
+
 /** The item, disabled (JavaFX: setDisable(true)) */
 export function disabled(item: MenuItem): MenuItem
 {
     return { ...item, disabled: true };
 }
 
-export function checkMenuItem(key: LocalizableKey, checked: boolean, onChange: (checked: boolean) => void): CheckMenuItem
+export function checkMenuItem(key: LocalizableKey, checked: boolean, onChange: (checked: boolean) => void, isDisabled = false): CheckMenuItem
 {
-    return { kind: "check", id: makeId(key), label: label(key), checked, onChange };
+    return { kind: "check", id: makeId(key), label: label(key), checked, onChange, disabled: isDisabled };
 }
 
 export function menu(key: LocalizableKey, ...items: MenuEntry[]): SubMenu

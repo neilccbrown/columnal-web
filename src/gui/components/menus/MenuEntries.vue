@@ -54,6 +54,7 @@ function selected(item: MenuItem, e: Event): void
       class="menu-item"
       :class="entry.id"
       :model-value="entry.checked"
+      :disabled="entry.disabled"
       @update:model-value="v => entry.onChange(v === true)"
     >
       <span class="menu-check"><component :is="parts.ItemIndicator">✓</component></span>
@@ -125,6 +126,28 @@ function selected(item: MenuItem, e: Event): void
 }
 .context-menu .menu-shortcut, .context-menu .menu-arrow {
     margin-left: auto;
+}
+/* mainview.scss: the recipes in a column's menu */
+.context-menu .menu-item.recipe-menu-item, .context-menu .menu-item.recipe-header-menu-item {
+    font-family: "Kalam", var(--font-main);
+    color: var(--recipe-text);
+}
+.context-menu .menu-item.recipe-header-menu-item {
+    padding: 2px 5px 1px 5px;
+    background: linear-gradient(to bottom, var(--control-background) 0px, var(--recipe-background) 7px);
+    text-decoration: underline;
+}
+.context-menu .menu-item.recipe-menu-item {
+    padding-left: 15px;
+    background: var(--recipe-background);
+}
+/* (Java's recipes are never disabled; one not yet ported is) */
+.context-menu .menu-item.recipe-menu-item[data-disabled] {
+    color: var(--text-color-faint);
+}
+.context-menu .menu-item.recipe-menu-item[data-highlighted] {
+    background: var(--focus-color);
+    color: var(--focus-color-text);
 }
 .context-menu .menu-separator {
     height: 1px;

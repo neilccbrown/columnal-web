@@ -11,12 +11,13 @@ import { RectangleBounds } from "../../gui-logic/stf/gui/grid/RectangleBounds.js
 import { RectangularTableCellSelection } from "../../gui-logic/stf/gui/grid/RectangularTableCellSelection.js";
 import { EntireTableSelection } from "../../gui-logic/table-gui/gui/table/EntireTableSelection.js";
 import { type EngineClient, ignoreClosed } from "../engine/EngineClient.js";
-import type { CellContent, TableInfo } from "../engine/protocol.js";
+import type { CellContent, ColumnRecipe, EngineAlert, TableDisplayMode, TableInfo } from "../engine/protocol.js";
 import { writeClipboard } from "../clipboard.js";
 import { TranslationUtility } from "../../engine/utility/utility/TranslationUtility.js";
 import { showAlert } from "../alerts.js";
 import type { CellDisplay } from "./cellDisplay.js";
 import { VersionCounter } from "../store/EngineStore.js";
+import type { TableActions } from "./tableActions.js";
 
 export class GridTableDisplay extends GridArea implements EntireTableSelection.Selected
 {
@@ -29,6 +30,10 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
 
     private infoValue: TableInfo;
     private readonly client: EngineClient;
+    // The window's dialogs (none for a grid on its own):
+    private readonly actions: TableActions | null;
+    // Bumped to flash the table's header (Java: HeadedDisplay.flashHeader):
+    public readonly flashVersion = new VersionCounter();
     public currentKnownRows = 0;
     private lengthRequested = false;
     // Bumped when the table's cells arrive or change:
@@ -51,14 +56,15 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
         getBottomRightIncl: () => this.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS + Math.max(0, this.currentKnownRows - 1), Math.max(0, this.info.columnNames.length - 1)),
         doCopy: (topLeftIncl, bottomRightIncl) => this.doCopy(new RectangleBounds(topLeftIncl, bottomRightIncl)),
         doDelete: (topLeftIncl, bottomRightIncl) => this.deleteCells(new RectangleBounds(topLeftIncl, bottomRightIncl)),
-        gotoRow: () => {},
+        gotoRow: (_parent, column) => this.gotoRow(null, column),
     };
 
-    public constructor(info: TableInfo, client: EngineClient)
+    public constructor(info: TableInfo, client: EngineClient, actions: TableActions | null = null)
     {
         super();
         this.infoValue = info;
         this.client = client;
+        this.actions = actions;
         this.setPosition(new CellPosition(CellPosition.row(info.row), CellPosition.col(info.column)));
     }
 
@@ -116,6 +122,8 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
     // column of add-column arrows to its right, if the table can have them (ExpandTableArrowSupplier)
     protected override recalculateBottomRightIncl(): CellPosition
     {
+        if (this.info.display === "COLLAPSED")
+            return this.getPosition();
         const columns = this.info.columnNames.length;
         const rows = this.currentKnownRows + (columns === 0 ? 0 : GridTableDisplay.HEADER_ROWS) + (this.info.canAppendRows ? 1 : 0);
         return this.getPosition().offsetByRowCols(Math.max(0, rows - 1), Math.max(0, columns + (this.hasAddColumnArrows() ? 1 : 0) - 1));
@@ -240,7 +248,7 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
         {
             return new RectangularTableCellSelection(cellPosition.rowIndex, cellPosition.columnIndex, this.dataSelectionLimits);
         }
-        return new SingleCellSelection(cellPosition);
+        return new SingleCellSelection(this, cellPosition);
     }
 
     /**
@@ -367,19 +375,118 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
         this.dataVersion.bump();
     }
 
-    // Java: HeadedDisplay's other operations on the entire table.  PORT-DEFERRED: deleting the table,
-    // going to a row and flashing the header (Phase 9, with TableDisplay).
+    // Java: HeadedDisplay's other operations on the entire table
 
+    /** Java: TableDisplay.doDelete, deleting the table. */
     public doDelete(): void
     {
+        void this.client.request("deleteTable", this.info.id).catch(ignoreClosed);
     }
 
-    public gotoRow(_parent: unknown, _column: number): void
+    /** Java: DataDisplay.gotoRow: asks for a row (GotoRowDialog), then selects it in the column. */
+    public gotoRow(_parent: unknown, column: number): void
     {
+        this.actions?.gotoRow(this, column);
+    }
+
+    /** The GotoRowDialog's row (zero-based), selected in the column (on the grid). */
+    public selectRow(row: number, column: number): void
+    {
+        const selection = this.getSelectionForSingleCell(new CellPosition(CellPosition.row(this.getPosition().rowIndex + GridTableDisplay.HEADER_ROWS + row), CellPosition.col(column)));
+        if (selection !== null)
+            this.withParent_(g => g.select(selection));
     }
 
     public flashHeader(): void
     {
+        this.flashVersion.bump();
+    }
+
+    // --- Operations from the table's menus and fields (Java: TableDisplay), each shows any error ---
+
+    private alertIfAny(request: Promise<EngineAlert | null>): void
+    {
+        void request.then(alert =>
+        {
+            if (alert !== null)
+                showAlert(alert);
+        }).catch(ignoreClosed);
+    }
+
+    /** Java: renameTableOperation, from the table name field. */
+    public renameTable(newName: string): void
+    {
+        this.alertIfAny(this.client.request("renameTable", this.info.id, newName));
+    }
+
+    /** Java: TableDisplay.setDisplay. */
+    public setDisplay(display: TableDisplayMode): void
+    {
+        void this.client.request("setDisplay", this.info.id, display).catch(ignoreClosed);
+    }
+
+    /**
+     * Java: TableDisplay.headerMiddleClicked: cycles through all (or custom), altered (if some but not
+     * all columns are altered), and collapsed.
+     */
+    public headerMiddleClicked(): void
+    {
+        switch (this.info.display)
+        {
+            case "COLLAPSED":
+                this.setDisplay("ALL");
+                break;
+            case "ALTERED":
+                this.setDisplay("COLLAPSED");
+                break;
+            default:
+                this.setDisplay(this.info.someAltered ? "ALTERED" : "COLLAPSED");
+                break;
+        }
+    }
+
+    /** Java: the column menu's delete, and Delete on a column header (ColumnHeaderOps.getDeleteOperation). */
+    public deleteColumn(column: string): void
+    {
+        this.alertIfAny(this.client.request("deleteColumn", this.info.id, this.info.version, column));
+    }
+
+    /** Java: the row label menu's insert items (rows from 0). */
+    public insertRows(row: number, count: number): void
+    {
+        this.alertIfAny(this.client.request("insertRows", this.info.id, this.info.version, row, count));
+    }
+
+    /** Java: the row label menu's delete item (rows from 0). */
+    public deleteRows(row: number, count: number): void
+    {
+        this.alertIfAny(this.client.request("deleteRows", this.info.id, this.info.version, row, count));
+    }
+
+    /** Java: the column menu's recipes. */
+    public recipe(column: string, recipe: ColumnRecipe): void
+    {
+        this.alertIfAny(this.client.request("recipe", this.info.id, this.info.version, column, recipe));
+    }
+
+    /** Java: the table menu's "Copy values", all the table's columns. */
+    public copyAllValues(): void
+    {
+        void this.client.request("copyAllValues", this.info.id, this.info.version).then(result =>
+        {
+            if (result === null)
+                return;
+            if ("alert" in result)
+                showAlert(result.alert);
+            else
+                void writeClipboard(result.content);
+        }).catch(ignoreClosed);
+    }
+
+    /** The window's dialogs, for the table's menus. */
+    public getActions(): TableActions | null
+    {
+        return this.actions;
     }
 
     /** The data row shown at the given row of the grid, or null if it is not a data row. */
@@ -390,13 +497,15 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
     }
 }
 
-// Java: DataDisplay.SingleCellSelection, for a column name or type
+// Java: DataDisplay.SingleCellSelection, for a column name or type, or an add-row or add-column arrow
 class SingleCellSelection implements CellSelection
 {
+    private readonly display: GridTableDisplay;
     private readonly pos: CellPosition;
 
-    public constructor(pos: CellPosition)
+    public constructor(display: GridTableDisplay, pos: CellPosition)
     {
+        this.display = display;
         this.pos = pos;
     }
 
@@ -413,10 +522,24 @@ class SingleCellSelection implements CellSelection
     public getSelectionDisplayRectangle(): RectangleBounds { return new RectangleBounds(this.pos, this.pos); }
     public isExactly(cellPosition: CellPosition): boolean { return this.pos.equals(cellPosition); }
     public includes(): boolean { return false; }
-    public gotoRow(): void {}
+    public gotoRow(): void
+    {
+        this.display.gotoRow(null, this.pos.columnIndex);
+    }
     public doCopy(): void {}
     public doPaste(): void {}
-    public doDelete(): void {}
+    // Java: deletes the column, on its name (or, as Java has it, the row above, the table name)
+    public doDelete(): void
+    {
+        const tablePos = this.display.getPosition();
+        const relCol = this.pos.columnIndex - tablePos.columnIndex;
+        if (this.pos.rowIndex === tablePos.rowIndex || this.pos.rowIndex === tablePos.rowIndex + 1)
+        {
+            const info = this.display.info;
+            if (relCol >= 0 && relCol < info.columnNames.length && info.columnDeletable[relCol] === true)
+                this.display.deleteColumn(info.columnNames[relCol]!);
+        }
+    }
     public getActivateTarget(): CellPosition { return this.pos; }
     public notifySelected(): void {}
     public toString(): string { return "SingleCellSelection[" + this.pos.toString() + "]"; }

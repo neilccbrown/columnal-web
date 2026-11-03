@@ -46,8 +46,8 @@ describe("cell display", () =>
         await userEvent.click(page.getByTestId("grid"), { position: at(5, 2), modifiers: ["Shift"] });
         expect(await copyToClipboard(() => userEvent.keyboard(isMac() ? "{Meta>}c{/Meta}" : "{Control>}c{/Control}")))
             .toBe("1.5, \"a b\"\n@INVALID\"12x\", \"c\"");
-        // The table name row selects the entire table:
-        await userEvent.click(page.getByTestId("grid"), { position: at(1, 1) });
+        // The table name row (right of the name field) selects the entire table:
+        await userEvent.click(page.getByTestId("grid"), { position: { ...at(1, 1), x: vg.sumColumnWidths(0, 1) + 80 } });
         expect(await copyToClipboard()).toBe("1.5, \"a b\", true, 2021-03-04\n@INVALID\"12x\", \"c\", false, 1999-12-31");
     });
 });

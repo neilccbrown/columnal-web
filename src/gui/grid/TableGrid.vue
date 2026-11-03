@@ -19,8 +19,11 @@ import { showAlert } from "../alerts.js";
 import { t } from "../i18n.js";
 import { useTableActions } from "./tableActions.js";
 import { CellEditDocument, ReadOnlyCellDocument } from "./CellEditDocument.js";
+import ContextMenu from "../components/menus/ContextMenu.vue";
+import type { MenuEntry } from "../components/menus/menus.js";
 import GridTable from "./GridTable.vue";
-import type { GridTableDisplay } from "./GridTableDisplay.js";
+import { GridTableDisplay } from "./GridTableDisplay.js";
+import { columnHeaderMenu, rowLabelMenu, tableHeaderMenu } from "./tableMenus.js";
 import { VIEWPORT } from "./viewport.js";
 
 const props = defineProps<{
@@ -158,6 +161,27 @@ function keyboardActivate(position: CellPosition): void
     }
     for (const d of props.displays)
     {
+        if (!d.contains(position))
+            continue;
+        const tablePos = d.getPosition();
+        const column = position.columnIndex - tablePos.columnIndex;
+        // Java: TableHeaderItem.keyboardActivate, the table's menu, below the header
+        if (position.rowIndex === tablePos.rowIndex)
+        {
+            const r = tableBox(d);
+            openMenuAt(tableHeaderMenu(d), { x: r.left, y: r.top + ROW });
+            return;
+        }
+        // Java: ColumnNameItem's and ColumnTypeItem's keyboardActivate: edit the column's name or type
+        if ((position.rowIndex === tablePos.rowIndex + 1 || position.rowIndex === tablePos.rowIndex + 2) && column < d.info.columnNames.length)
+        {
+            if (d.info.columnHeaderEditable[column] === true)
+                tableActions?.editColumn(d, d.info.columnNames[column]!, position.rowIndex === tablePos.rowIndex + 1 ? "name" : "type");
+            return;
+        }
+    }
+    for (const d of props.displays)
+    {
         const arrow = d.arrowAt(position);
         if (arrow === "down")
         {
@@ -171,6 +195,59 @@ function keyboardActivate(position: CellPosition): void
         }
     }
     void startEditing(null, position, null);
+}
+
+// --- Context menus (Java: each item's own ContextMenu) ------------------------------------------
+// One context menu for the grid: its items are worked out when it is asked for, from what was clicked.
+
+let menuItems: readonly MenuEntry[] = [];
+let forcedMenu: readonly MenuEntry[] | null = null;
+
+// The client rectangle of the table's top left cell:
+function tableBox(d: GridTableDisplay): { left: number, top: number }
+{
+    const box = scroller.value!.getBoundingClientRect();
+    const pos = d.getPosition();
+    return { left: box.left - scroller.value!.scrollLeft + colLeft(pos.columnIndex), top: box.top - scroller.value!.scrollTop + pos.rowIndex * ROW };
+}
+
+// What the context menu shows for a click on the target (none: the browser's own menu)
+function menuFor(target: Element, e: MouseEvent): readonly MenuEntry[]
+{
+    if (target.closest("input, textarea, .cell-editor") !== null)
+        return [];
+    const display = displayOf(target);
+    if (display === null)
+        return [];
+    // Java: HeadedDisplay's table header, which selects the entire table
+    if (target.closest(".table-title") !== null)
+    {
+        props.grid.select(new EntireTableSelection(display, nearestTopLeft(canvasPoint(e)).columnIndex));
+        return tableHeaderMenu(display);
+    }
+    const header = target.closest<HTMLElement>(".column-name, .column-type");
+    if (header !== null)
+        return columnHeaderMenu(display, Number(header.dataset.col));
+    const rowLabel = target.closest<HTMLElement>(".row-label");
+    if (rowLabel !== null)
+        return rowLabelMenu(display, Number(rowLabel.dataset.row));
+    return [];
+}
+
+function onContextMenu(e: MouseEvent): void
+{
+    menuItems = forcedMenu ?? (e.target instanceof Element ? menuFor(e.target, e) : []);
+    forcedMenu = null;
+    // (Then the context menu doesn't see it)
+    if (menuItems.length === 0)
+        e.stopPropagation();
+}
+
+// Opens the context menu at a client point (Java: ContextMenu.show)
+function openMenuAt(items: readonly MenuEntry[], point: { x: number, y: number }): void
+{
+    forcedMenu = items;
+    scroller.value?.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true, clientX: point.x, clientY: point.y }));
 }
 
 // Java: HeadedDisplay.selectionChanged, the table header's table-selected style
@@ -253,7 +330,7 @@ let downAt: { x: number, y: number } | null = null;
 function onPointerDown(e: PointerEvent): void
 {
     downAt = { x: e.clientX, y: e.clientY };
-    if (e.button === 0 && e.target instanceof Element && e.target.closest(".table-title") !== null)
+    if (e.button === 0 && e.target instanceof Element && e.target.closest(".table-title") !== null && e.target.closest("input") === null)
         startTableDrag(e);
 }
 
@@ -269,6 +346,9 @@ function onClick(e: MouseEvent): void
     if (e.button !== 0 || !still || !(e.target instanceof Element) || e.target.closest(".cell-editor") !== null)
         return;
     const p = canvasPoint(e);
+    // (The table name field, and a hat, handle their own clicks)
+    if (e.target.closest(".table-name-text-field, .table-hat") !== null)
+        return;
     // Java: HeadedDisplay's table header selects the entire table:
     if (e.target.closest(".table-title") !== null)
     {
@@ -304,11 +384,57 @@ function onClick(e: MouseEvent): void
     }
 }
 
-// Java: the container losing the focus clears the selection
+// Java: the container losing the focus clears the selection (but not to its context menu, which in
+// Java was a popup that left the window focused)
 function onFocusOut(e: FocusEvent): void
 {
-    if (!scroller.value?.contains(e.relatedTarget as Node | null))
+    const to = e.relatedTarget as Node | null;
+    if (!scroller.value?.contains(to) && !(to instanceof Element && to.closest(".context-menu") !== null))
         props.grid.focusLost();
+}
+
+// --- Hover text (Java: VirtualGrid's HoverTip, with DocumentTextField.getHoverText) ---------------
+// After the pointer has been over a data cell whose text is cut off for a second, its whole text shows
+// below the cell's bottom right.
+
+const hoverTip = shallowRef<{ readonly text: string, readonly left: number, readonly top: number } | null>(null);
+let hoverKey: string | null = null;
+let hoverTimer: ReturnType<typeof setTimeout> | null = null;
+
+function clearHover(): void
+{
+    if (hoverTimer !== null)
+        clearTimeout(hoverTimer);
+    hoverTimer = null;
+    hoverKey = null;
+    hoverTip.value = null;
+}
+
+function onPointerMove(e: PointerEvent): void
+{
+    const cell = e.target instanceof Element ? e.target.closest<HTMLElement>(".table .cell.table-data-cell") : null;
+    const display = cell === null ? null : displayOf(cell);
+    const row = cell?.closest<HTMLElement>(".row")?.dataset.row;
+    const content = display === null || row === undefined ? null : display.getCell(Number(row), Number(cell!.dataset.col));
+    // Java: the text's width (for a number, the whole number's) is more than 3 px wider than the cell
+    const shown = cell?.textContent ?? "";
+    if (cell === null || display === null || content === null || !(cell.scrollWidth > cell.clientWidth + 3 || (shown.includes("…") && !content.text.includes("…"))))
+    {
+        clearHover();
+        return;
+    }
+    const key = display.info.id + " " + row + " " + cell.dataset.col;
+    if (key === hoverKey)
+        return;
+    clearHover();
+    hoverKey = key;
+    const canvas = scroller.value!.querySelector(".grid-canvas")!.getBoundingClientRect();
+    const box = cell.getBoundingClientRect();
+    hoverTimer = setTimeout(() =>
+    {
+        hoverTimer = null;
+        hoverTip.value = { text: content.text, left: box.right - canvas.left - 10, top: box.bottom - canvas.top + 5 };
+    }, 1000);
 }
 
 // --- Moving a table by dragging its name row ---------------------------------------------------
@@ -652,7 +778,10 @@ const display: VirtualGrid.Display = {
 
 function onScroll(): void
 {
-    const s = scroller.value!;
+    const s = scroller.value;
+    // (A scroll can arrive after the grid has gone)
+    if (s === null)
+        return;
     scrollTop.value = s.scrollTop;
     scrollLeft.value = s.scrollLeft;
     props.grid.setLogicalScrollRow(Math.floor(s.scrollTop / ROW));
@@ -674,6 +803,7 @@ onMounted(() =>
 });
 onBeforeUnmount(() =>
 {
+    clearHover();
     resizeObserver?.disconnect();
     stopNudge();
     props.grid.setDisplay(null);
@@ -722,81 +852,93 @@ defineExpose({
         </g>
       </svg>
     </div>
-    <div
-      ref="scroller"
-      class="grid-scroller"
-      tabindex="0"
-      data-testid="grid"
-      @scroll.passive="onScroll"
-      @keydown="onKeyDown"
-      @pointerdown="onPointerDown"
-      @click="onClick"
-      @focusout="onFocusOut"
-    >
+    <ContextMenu :items="() => menuItems">
       <div
-        class="grid-canvas"
-        :style="{ width: canvasSize.width + 'px', height: canvasSize.height + 'px' }"
+        ref="scroller"
+        class="grid-scroller"
+        tabindex="0"
+        data-testid="grid"
+        @scroll.passive="onScroll"
+        @keydown="onKeyDown"
+        @pointerdown="onPointerDown"
+        @click="onClick"
+        @focusout="onFocusOut"
+        @contextmenu.capture="onContextMenu"
+        @pointermove="onPointerMove"
+        @pointerleave="clearHover"
       >
         <div
-          class="grid-vlines"
-          :style="{ width: canvasSize.width + 'px', height: viewHeight + 'px' }"
+          class="grid-canvas"
+          :style="{ width: canvasSize.width + 'px', height: canvasSize.height + 'px' }"
         >
           <div
-            v-for="x in verticalLines"
-            :key="x"
-            class="grid-vline"
-            :style="{ left: x + 'px' }"
+            class="grid-vlines"
+            :style="{ width: canvasSize.width + 'px', height: viewHeight + 'px' }"
+          >
+            <div
+              v-for="x in verticalLines"
+              :key="x"
+              class="grid-vline"
+              :style="{ left: x + 'px' }"
+            />
+          </div>
+          <GridTable
+            v-for="d in displays"
+            :key="d.getSortKey()"
+            :display="d"
+            :grid="grid"
+            :layout="layout"
+            :table-selected="tableSelected(d)"
+            :drag-source="tableDrag?.display === d && tableDrag.pointer !== null"
+            @window-changed="windowChanges++"
           />
+          <DocumentTextField
+            v-if="editing !== null"
+            :key="editing.id"
+            ref="editor"
+            class="cell-editor table-data-cell"
+            :document="editing.document"
+            expanded
+            :style="editorStyle"
+            @focus-lost="editorFocusLost"
+          />
+          <button
+            v-if="createTableButton !== null"
+            type="button"
+            tabindex="-1"
+            class="create-table-grid-button"
+            :style="createTableButton.style"
+            @mousedown.stop
+            @click.stop="e => createTable(createTableButton!.position, { x: e.clientX, y: e.clientY })"
+          >
+            {{ t("create.table") }}
+          </button>
+          <div
+            v-if="hoverTip !== null"
+            class="virtual-grid-tooltip-flow"
+            :style="{ left: hoverTip.left + 'px', top: hoverTip.top + 'px' }"
+          >
+            {{ hoverTip.text }}
+          </div>
+          <div
+            v-if="selectionRect !== null"
+            class="virt-grid-selection-overlay"
+            data-testid="selection"
+            :style="selectionRect"
+          />
+          <template v-if="dragOverlays !== null">
+            <div
+              class="move-table-dest-overlay-snapped"
+              :style="dragOverlays.snapped"
+            />
+            <div
+              class="move-table-dest-overlay-free"
+              :style="dragOverlays.free"
+            />
+          </template>
         </div>
-        <GridTable
-          v-for="d in displays"
-          :key="d.getSortKey()"
-          :display="d"
-          :grid="grid"
-          :layout="layout"
-          :table-selected="tableSelected(d)"
-          :drag-source="tableDrag?.display === d && tableDrag.pointer !== null"
-          @window-changed="windowChanges++"
-        />
-        <DocumentTextField
-          v-if="editing !== null"
-          :key="editing.id"
-          ref="editor"
-          class="cell-editor table-data-cell"
-          :document="editing.document"
-          expanded
-          :style="editorStyle"
-          @focus-lost="editorFocusLost"
-        />
-        <button
-          v-if="createTableButton !== null"
-          type="button"
-          tabindex="-1"
-          class="create-table-grid-button"
-          :style="createTableButton.style"
-          @mousedown.stop
-          @click.stop="e => createTable(createTableButton!.position, { x: e.clientX, y: e.clientY })"
-        >
-          {{ t("create.table") }}
-        </button>
-        <div
-          v-if="selectionRect !== null"
-          class="virt-grid-selection-overlay"
-          data-testid="selection"
-          :style="selectionRect"
-        />
-        <template v-if="dragOverlays !== null">
-          <div
-            class="move-table-dest-overlay-snapped"
-            :style="dragOverlays.snapped"
-          />
-          <div
-            class="move-table-dest-overlay-free"
-            :style="dragOverlays.free"
-          />
-        </template>
       </div>
-    </div>
+    </ContextMenu>
   </div>
 </template>
 
@@ -827,6 +969,8 @@ defineExpose({
     flex: 1;
     min-height: 0;
     position: relative;
+    /* (The grid's layers stay within it, under the dialogs and menus) */
+    isolation: isolate;
     overflow: auto;
     outline: none;
     background: var(--table-empty-background);
@@ -871,6 +1015,21 @@ defineExpose({
 .cell-editor {
     position: absolute;
     z-index: 6;
+}
+/* virtual-grid.scss: .virtual-grid-tooltip-flow (at most 200 px wide, Java: HoverTip) */
+.virtual-grid-tooltip-flow {
+    position: absolute;
+    z-index: 7;
+    max-width: 200px;
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background: rgb(255 255 235);
+    box-shadow: 1px 1px 6px rgb(179 179 179 / 0.6);
+    font-size: 80%;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    pointer-events: none;
 }
 .grid-vline {
     position: absolute;

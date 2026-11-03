@@ -4,7 +4,9 @@ import { vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { cleanup, render } from "vitest-browser-vue";
 import { defineComponent, h, ref } from "vue";
+import type { TableManager } from "../../../src/engine/data/data/TableManager.js";
 import App from "../../../src/gui/App.vue";
+import { EngineHost } from "../../../src/gui/engine/EngineHost.js";
 import { InPageTransport } from "../../../src/gui/engine/transports.js";
 import { projectHash } from "../../../src/gui/project/appContext.js";
 import { ProjectStore } from "../../../src/gui/project/ProjectStore.js";
@@ -97,4 +99,21 @@ export async function closeApp(app: RenderedApp): Promise<void>
         const request = indexedDB.deleteDatabase(app.storeName);
         request.onsuccess = request.onerror = request.onblocked = () => resolve();
     });
+}
+
+/**
+ * Java: TAppUtil.openDataAsTable's tables, as a saved file: the tables that build records in a new
+ * TableManager (with positions from their InitialLoadDetails), saved.  (The app then opens the file.)
+ */
+export function savedFile(build: (manager: TableManager) => void): string
+{
+    const host = new EngineHost(() => {});
+    build(host.tableManager);
+    return host.save([]);
+}
+
+/** The project window's engine (in the page), for the test to look at its tables. */
+export function engineHost(a: RenderedApp): EngineHost
+{
+    return a.transports.at(-1)!.host;
 }

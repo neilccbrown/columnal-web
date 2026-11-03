@@ -858,6 +858,32 @@ Steps (each a checkpoint with the project owner):
    Phase 11), the "=" guidance, and the cells' extra menu items and hover text. Tests: `TestTableEdits`,
    `TestRowOps`, `TestTableUpdate`, `PropInsertRemoveRows`, `PropStorageSet`,
    `TestVirtualGridScrollCoordinates`.
+   - Done: the table name field (renaming), the table menu (columns shown: collapsed, all, altered, with
+     the header's middle click; copy values; export, with Java's exporter list, downloading the file;
+     delete), column headers (clicking a data table's column name or type edits it: `editColumn_IDS`, with
+     the column dialog's edit mode) and their menu (add before/after, delete, and the recipes: sum,
+     average, frequency, sort), row label menus (insert above/below, delete), deleting by key (entire
+     table, or a column's name), Goto row (View menu, `GotoRowDialog.vue`), flashing the header,
+     reselecting where a deleted selected table was, the hat (`TableHatView.vue`, with Java's placement and
+     collapsing; its text ported as `src/gui-logic/app/gui/table/app/TableHat.ts`, made in the engine), Enter
+     on the header rows, and hover text for cut-off cells. The engine has the requests for these (`protocol.ts`),
+     sends the shown columns only (column indexes are of those shown), and shows the engine's
+     `ErrorHandler` errors as alerts. One context menu serves the grid (`tableMenus.ts`); the grid is its
+     own stacking context (the hats and row labels were drawn over dialogs). `docs/gui-spec/tables.md`.
+     Tests: `test/gui/tables/` (`TableEdits`, `RowOps`, `TableUpdate`: the ports; `TableMenus`: the rest),
+     `test/gui/grid/ScrollCoordinates.test.ts` (TestVirtualGridScrollCoordinates, as checks of the native
+     scrolling), `test/engine/tests-gui-central/` (PropInsertRemoveRows, PropStorageSet),
+     `test/gui-logic/app/TableHat.test.ts`; test helpers `clickTableLocation.ts`, `clickOnTableHeader.ts`,
+     `checkCSV.ts`, and the app fixture's `savedFile`. Probable Java bug, kept: editing a column shows the
+     type's default value, not the column's, so OK resets a changed default (remaking the table). Java test
+     quirks, ported as they are: `scrollXYBy`'s second loop scrolls sideways with the vertical amounts;
+     `TestRowOps`'s `checkVisibleRowData` found no cells (a lookup of `.tableDisplay`), so it only checks the
+     row label. Left for later: offering a Manual Edit when a transformation's cell is edited
+     (`PickManualEditIdentifierDialog`) and the "=" guidance (it walks through making a Calculate): Phase 11;
+     the table menu's Transform and Custom columns, the "Transform type" recipe, and what clicking a hat's
+     parts does: Phase 11 (their dialogs); editing Calculate's and Aggregate's columns from their headers:
+     Phases 10 and 11; a cell's "Why?" item: Phases 10 and 11 (explanations); highlighting a hat's source
+     table while hovered: step 6 (table highlights); R's "Re-evaluate": Phase 12.
 6. The Types and Units dialogs (`TypesDialog`, `UnitsDialog`, and their edit dialogs), comments
    (`GridCommentDisplay`), table highlights (`TableHighlights`), and the View menu's other items (find,
    settings). Tests: `TestTypeEdit`, `TestUnitEdit`.

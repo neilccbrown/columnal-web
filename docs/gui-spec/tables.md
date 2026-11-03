@@ -1,4 +1,4 @@
-# Making data tables, columns and rows
+# Tables: making them, and their parts of the grid
 
 Java: `stf/.../VirtualGrid.java` (`CreateTableButtonSupplier`, `EmptyCellSelection`), `app/.../View.java`
 (`createTable`, the `VirtualGridManager`), `dialogs-non-expression/.../NewTableDialog.java` and
@@ -12,6 +12,18 @@ Styles: `virtual-grid.scss` (`.create-table-grid-button`, `.expand-arrow`), `dia
 and `MainWindow.vue`, the engine's `typeInfo`, `createDataTable`, `addColumn` and `appendRows`, and
 `src/gui/project/typeCopy.ts`. Tests: `test/gui/windows/BlankMainWindow.test.ts`,
 `TypeEditorErrorScreen.test.ts`, `TypeQuickFixScreen.test.ts`.
+
+The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `TableHat.java`,
+`TransformationEdits.java` (`editColumn_IDS`), `table-gui/.../DataDisplay.java` (column headers, `GotoRowDialog`),
+`HeadedDisplay.java` (`TableHeaderItem`), `RowLabelSupplier.java` (the row label's menu),
+`exporters/.../ExporterManager.java` (`PickExporterDialog`), `View.java` (`removeTable`, `gotoRowDialog`),
+`VirtualGrid.java` (`HoverTip`). Tests: `TestTableEdits`, `TestRowOps`, `TestTableUpdate`,
+`PropInsertRemoveRows`, `PropStorageSet`, `TestVirtualGridScrollCoordinates`. Web: `GridTable.vue`,
+`TableHatView.vue`, `tableMenus.ts`, `TableGrid.vue` (the context menu, Enter on headers, hover text),
+`src/gui/windows/GotoRowDialog.vue`, `ExportDialog.vue`, the engine's table operations, and
+`src/gui-logic/app/gui/table/app/TableHat.ts` (the hat's text). Tests: `test/gui/tables/`,
+`test/gui/grid/ScrollCoordinates.test.ts`, `test/gui-logic/app/TableHat.test.ts`,
+`test/engine/tests-gui-central/`.
 
 ## Making a table
 
@@ -56,10 +68,105 @@ and `MainWindow.vue`, the engine's `typeInfo`, `createDataTable`, `addColumn` an
   to before it). Not yet: the arrows of Calculate and Aggregate tables (whose columns need the expression
   editor, Phases 10 and 11).
 
+## The table name
+
+- The name row holds the table's name in a text field (Java: `TableNameTextField`), sized to its text (at
+  least 30 px, at most the row), on the header's colour, with a border while hovered or focused. A click on
+  it edits the name (it isn't reached by Tab); elsewhere on the row, a click selects the entire table, and a
+  drag moves it.
+- The name must be a table name not used by another table ("Table "X" already exists"; a warning if one
+  differs only in case), and not blank ("Table name cannot be blank"). Enter selects the entire table
+  (taking the focus from the field). When the field loses the focus, a valid new name renames the table
+  (the tables using it are updated).
+- A middle click on the row (not while the field is focused) cycles the columns shown: all (or custom) to
+  altered (if some but not all columns are altered), to collapsed, to all.
+- Selecting the entire table can flash its header (brightening and back twice, 300 ms each way).
+
+## The table's menu
+
+- Right-clicking the name row (not the field) selects the entire table and shows its menu; Enter on the
+  name row shows it below the row. Items (`id-tableDisplay-menu-…`):
+  - "Show columns..." ▸ Collapse table, All columns, Altered columns, Custom (checked for the current one).
+    Collapsed, the table is just its name row; altered shows the columns a transformation changed or made.
+    Which is shown is saved (`SHOWCOLUMNS`). Not yet: Custom (its dialog has Phase 11's hide-columns
+    panel).
+  - "Copy Values": all the table's columns' values (not just those shown) to the clipboard ("Error copying
+    values" if they can't all be worked out).
+  - "Export Data...": a dialog lists the exporters as "name (*.ext, …)", the first selected ("Pick
+    Exporter"); double-click or OK picks one ("Pick an exporter" if none). The table is exported, and
+    downloaded as `<table>.<ext>` (Java: a save dialog). Errors: "Error exporting".
+  - "Delete table": deletes it (as Delete or Backspace on the entire table selected). If it was selected,
+    the cell where it was is then selected (so the "New…" button shows there).
+  - (separator) "Transform...": not yet (Phase 11).
+
+## Column headers
+
+- Column names (bold if the column is a transformation's own, Java's `column-title-overwritten`) and types
+  show their whole text as a tooltip. A data table's column name or type can be clicked (underlined when
+  hovered, a pointer cursor), as can Enter on it selected: the column dialog for the column (its name, its
+  type, and the type's default value, as Java has it), focused on the name or the type. OK changes the
+  column: a new type or default value remakes the table, converting each value from its text (those that
+  don't convert become invalid values); a new name updates the tables that use the column. Errors: "Error
+  saving column". Not yet: Calculate's and Aggregate's columns (Phases 10 and 11).
+- Right-clicking a column name or type shows the column's menu (`id-virtGrid-column-…`, `id-recipe-…`):
+  - For a data table: "New column to left", "New column to right" (the column dialog, then the column is
+    added there).
+  - "Delete column", if the table can delete it (a data table's columns, a Calculate's own columns). Delete
+    or Backspace on the column's name (or the name row above it, as Java has it) deletes it too.
+  - "Recipes" (a heading), then, in the recipe style (Kalam font, a pale yellow background): "Calculate
+    sum" and "Calculate average" (number columns), "Make frequency table", "Sort by": each makes a
+    transformation (an Aggregate of `sum` or `average` of the column into "Sum <column>" or "Average
+    <column>", a count by the column into "Freq <column>", or a Sort ascending), placed to the right of the
+    other tables. "Transform type": not yet (its dialog is Phase 11's).
+  - With nothing to show: "No operations" (disabled).
+
+## Row labels
+
+- Right-clicking a row label shows (for a data table) "New row above", "New row below" and "Delete row"
+  (`id-virtGrid-row-…`); the tables that use it are re-run, and the change saved. Errors: "Error inserting
+  rows", "Error removing rows" (Java logged them).
+
+## Goto row
+
+- View ▸ "Goto row..." asks, for the table selected, for a row number (from 1), then selects that row in the
+  selected column. Its field's errors: "Number outside range of table rows (1-N)", "Not a number: For input
+  string: "x"" (Java's message); OK does nothing until it's valid. With no table selected, nothing happens.
+
+## A transformation's hat
+
+- Above a transformation's table (if there's room: indented 20 px, as wide as the table less the indent but
+  at least 200 px, and no wider than its text), else over the header right of the name, else over the
+  name, a box describing it, in grey on light grey with a rounded border: e.g. "From T calculate Double",
+  "Sort T by A↑, B↓", "Filter T, keeping rows where: <expression>" (at most 60 characters), "Aggregate T
+  splitting by A", "Edit T to change N entries identified by row number". The source table's name and the
+  editable parts are underlined (with tooltips: "Click to change source table", "Click to change"); a source
+  that no longer exists has `broken-link`.
+- "◄" at the end collapses it to the transformation's kind ("Calculate ►"), and back; a middle click on it
+  does the same. A middle click on the source table's name selects that table.
+- Not yet: what clicking the parts does (Phase 11's dialogs), and highlighting the source table while its
+  name is hovered (step 6, with table highlights).
+
+## Hover text
+
+- After the pointer has been over a data cell whose text is cut off (wider than the cell by more than 3 px,
+  or a number shortened with "…") for a second, the whole text shows in a small box (at most 200 px wide)
+  just below the cell's bottom right, until the pointer moves to another cell.
+
 ## Web differences
 
+- One context menu serves the grid: what it shows depends on what was right-clicked, and it doesn't take
+  the selection away (Java's menus were popups which left the window focused). A text field's right click
+  shows the browser's own menu.
+- The grid's layers (the hats, row labels, column names) stay under dialogs and menus (they're in their own
+  stacking context).
+- A table renamed or remade (a new version) is a new table on the grid, as in Java; if the old one was
+  selected, the cell at its position is selected once the tables have all changed (Java did it before the
+  new one was added, so the "New…" button could show over it).
 - The dialogs and the type editor need the project's types and units as the user types, so they use a copy
   made on the main thread from the engine's (`typeInfo`) each time the column dialog opens. The column's
   type goes to the engine as its saved text, and the default value as its display text, which the engine
   recognises again.
 - Not done: the blur over the grid while the new-table dialog shows, and Java's tooltip arrow hovering.
+- Not yet: offering a Manual Edit when a transformation's cell is edited, and the guidance when a data
+  cell's text starts with "=" (both need Phase 11's dialogs); a transformation's "Why?" cell menu item
+  (Phases 10 and 11, with explanations); R's "Re-evaluate" in the name row (Phase 12).

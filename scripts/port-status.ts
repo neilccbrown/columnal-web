@@ -41,6 +41,9 @@ interface FileStatus
 // (test/engine/tests-gui-x/<path>/X.test.ts) rather than Playwright specs:
 const ENGINE_TESTS_IN_GUI_MODULES = new Set([
     "tests-gui-central/src/test/java/test/expressions/TestFromDoc.java",
+    "tests-gui-central/src/test/java/test/PropInsertRemoveRows.java",
+    "tests-gui-central/src/test/java/test/PropStorageSet.java",
+    "tests-gui-central/src/test/java/test/gen/GenEditableColumn.java",
     "tests-gui-r/src/test/java/test/importExport/TestRLoadSave.java",
     "tests-gui-r/src/test/java/test/importExport/GenRCompatibleRecordSet.java",
     "tests-gui-format/src/test/java/test/TestFormat.java",
@@ -73,6 +76,13 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-dtf/src/test/java/test/gui/stf/TestDocumentTextField.java", ["test/gui/components/DocumentTextField.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestInitialWindow.java", ["test/gui/windows/InitialWindow.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java", ["test/gui/windows/BlankMainWindow.test.ts"]],
+    ["tests-gui-central/src/test/java/test/gui/TestVirtualGridScrollCoordinates.java", ["test/gui/grid/ScrollCoordinates.test.ts"]],
+    ["tests-gui-tables/src/test/java/test/gui/table/TestTableEdits.java", ["test/gui/tables/TableEdits.test.ts"]],
+    ["tests-gui-tables/src/test/java/test/gui/table/TestRowOps.java", ["test/gui/tables/RowOps.test.ts"]],
+    ["tests-gui-tables/src/test/java/test/gui/table/TestTableUpdate.java", ["test/gui/tables/TableUpdate.test.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/ClickTableLocationTrait.java", ["test/gui/base/clickTableLocation.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/ClickOnTableHeaderTrait.java", ["test/gui/base/clickOnTableHeader.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/CheckCSVTrait.java", ["test/gui/base/checkCSV.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ClipboardTrait.java", ["test/gui/base/clipboard.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ComboUtilTrait.java", ["test/gui/base/comboUtil.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterTypeTrait.java", ["test/gui/base/enterType.ts"]],

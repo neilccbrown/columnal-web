@@ -500,8 +500,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ lex-editor-completion | 7 / 7 | 1392 / 1392 (100%) |
 | stf | 24 / 42 | 6124 / 9337 (66%) |
 | lex-editor | 18 / 21 | 7958 / 8146 (98%) |
-| table-gui | 1 / 7 | 159 / 2794 (6%) |
-| dialogs-non-expression | 0 / 7 | 0 / 1411 (0%) |
+| table-gui | 2 / 7 | 248 / 2794 (9%) |
+| dialogs-non-expression | 1 / 7 | 64 / 1411 (5%) |
 | app | 2 / 42 | 378 / 13439 (3%) |
 
 <details><summary>utility-gui</summary>
@@ -643,7 +643,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `table-gui/src/main/java/xyz/columnal/gui/table/EntireTableSelection.java` | `src/gui-logic/table-gui/gui/table/EntireTableSelection.ts` | 159 | ✅ |
 | `table-gui/src/main/java/xyz/columnal/gui/table/HeadedDisplay.java` | `src/gui-logic/table-gui/gui/table/HeadedDisplay.ts` | 656 | – |
 | `table-gui/src/main/java/xyz/columnal/gui/table/RowLabelSupplier.java` | `src/gui-logic/table-gui/gui/table/RowLabelSupplier.ts` | 533 | – |
-| `table-gui/src/main/java/xyz/columnal/gui/table/TableNameTextField.java` | `src/gui-logic/table-gui/gui/table/TableNameTextField.ts` | 89 | – |
+| `table-gui/src/main/java/xyz/columnal/gui/table/TableNameTextField.java` | `src/gui-logic/table-gui/gui/table/TableNameTextField.ts` | 89 | ✅ |
 | `table-gui/src/main/java/xyz/columnal/gui/table/TypeLabel.java` | `src/gui-logic/table-gui/gui/table/TypeLabel.ts` | 66 | – |
 
 </details>
@@ -654,7 +654,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/AboutDialog.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/AboutDialog.ts` | 63 | – |
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/AutoComplete.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/AutoComplete.ts` | 734 | – |
-| `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/ColumnNameTextField.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/ColumnNameTextField.ts` | 64 | – |
+| `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/ColumnNameTextField.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/ColumnNameTextField.ts` | 64 | ✅ |
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/HideColumnsDialog.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/HideColumnsDialog.ts` | 58 | – |
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/HideColumnsPanel.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/HideColumnsPanel.ts` | 270 | – |
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/NewTableDialog.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/NewTableDialog.ts` | 116 | – |
@@ -719,7 +719,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
 | tests-gui-base | 9 / 26 | 1059 / 4004 (26%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
-| tests-gui-central | 2 / 21 | 427 / 3623 (12%) | 5 / 47 (11%) |
+| tests-gui-central | 3 / 21 | 1092 / 3623 (30%) | 13 / 47 (28%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
 | tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 0 / 68 (0%) |
 | tests-gui-expression-editor-delete | 0 / 1 | 0 / 372 (0%) | 0 / 20 (0%) |
@@ -871,7 +871,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-central/src/test/java/test/gen/GenOffsetTime.java` | `test/gui/tests-gui-central/gen/GenOffsetTime.ts` | 46 | – |
 | `tests-gui-central/src/test/java/test/gen/GenTime.java` | `test/gui/tests-gui-central/gen/GenTime.ts` | 45 | – |
 | `tests-gui-central/src/test/java/test/gen/GenYearMonth.java` | `test/gui/tests-gui-central/gen/GenYearMonth.ts` | 46 | – |
-| `tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java` | `test/gui/windows/BlankMainWindow.test.ts` | 665 | – (3/11 tests) |
+| `tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java` | `test/gui/windows/BlankMainWindow.test.ts` | 665 | ✅ (11/11 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExplanationDisplay.java` | `test/gui/tests-gui-central/gui/TestExplanationDisplay.test.ts` | 221 | – (0/8 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExportToCSV.java` | `test/gui/tests-gui-central/gui/TestExportToCSV.test.ts` | 89 | – (0/1 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestInitialWindow.java` | `test/gui/windows/InitialWindow.test.ts` | 66 | ✅ (1/1 tests) |

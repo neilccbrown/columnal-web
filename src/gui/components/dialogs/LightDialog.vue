@@ -20,12 +20,15 @@ const props = withDefaults(defineProps<{
     // Called when OK is pressed; false stops it closing the dialog (Java: an event filter on OK
     // which consumes the action).
     okFilter?: () => boolean,
+    // Java: FXUtility.preventCloseOnEscape (for dialogs whose fields use Escape themselves)
+    closeOnEscape?: boolean,
 }>(), {
     buttons: () => ["cancel", "ok"],
     buttonsToSide: false,
     resizable: false,
     centreOn: null,
     okFilter: () => true,
+    closeOnEscape: true,
 });
 const emit = defineEmits<{
     ok: [],
@@ -150,6 +153,7 @@ let downAt: { x: number, y: number } | null = null;
 function pointerDown(e: PointerEvent): void
 {
     downAt = { x: e.clientX, y: e.clientY };
+    downInControl = inControl(e.target);
     const edges = edgesAt(e);
     if (e.button !== 0 || content.value === null || (edges === null && inControl(e.target)))
         return;
@@ -192,12 +196,16 @@ function pointerDown(e: PointerEvent): void
     target.addEventListener("pointerup", up);
 }
 
+let downInControl = false;
+
 // A click on the background (still since the press) focuses the OK button, else Cancel, else Close
 // (which takes the focus out of a field):
 function click(e: MouseEvent): void
 {
     const still = downAt !== null && Math.abs(downAt.x - e.clientX) < 3 && Math.abs(downAt.y - e.clientY) < 3;
-    if (still && !inControl(e.target))
+    // (Whether it was in a control is decided at the press: a control can re-render what was clicked
+    // in the meantime, as the lex editors do when they gain the focus)
+    if (still && !downInControl && !inControl(e.target))
         (button("ok") ?? button("cancel") ?? button("close"))?.focus();
 }
 
@@ -220,6 +228,7 @@ defineExpose({ button });
         data-testid="light-dialog"
         @pointer-down-outside.prevent
         @interact-outside.prevent
+        @escape-key-down="e => { if (!closeOnEscape) e.preventDefault(); }"
         @pointerdown="pointerDown"
         @pointermove="pointerMove"
         @click="click"

@@ -7,7 +7,16 @@ import { showAlert } from "../alerts.js";
 import AboutDialog from "../components/dialogs/AboutDialog.vue";
 import MenuBar from "../components/menus/MenuBar.vue";
 import { menu, menuItem, type MenuItem } from "../components/menus/menus.js";
+import type { CellPosition } from "../../engine/data/data/CellPosition.js";
+import NewTableDialog, { type DataOrTransform } from "../components/dialogs/NewTableDialog.vue";
+import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
+import type { EngineAlert } from "../engine/protocol.js";
+import { ignoreClosed } from "../engine/EngineClient.js";
 import { provideEngine } from "../engine/useEngine.js";
+import type { GridTableDisplay } from "../grid/GridTableDisplay.js";
+import { provideTableActions } from "../grid/tableActions.js";
+import { copyTypeManager } from "../project/typeCopy.js";
+import EditImmediateColumnDialog, { type ColumnDetails } from "./EditImmediateColumnDialog.vue";
 import EngineGrid from "../grid/EngineGrid.vue";
 import { label, t } from "../i18n.js";
 import { useAppContext } from "../project/appContext.js";
@@ -34,8 +43,9 @@ const menuShownAt = shallowRef(Date.now());
 // Java: View's VirtualGridManager
 let cancelSave: ReturnType<typeof setTimeout> | null = null;
 const manager: VirtualGrid.VirtualGridManager = markRaw({
-    // PORT-DEFERRED: making a table in an empty cell, and pasting into one (Phase 9 step 4)
-    createTable: () => {},
+    createTable: (position, point) => createTable(position, point as { x: number, y: number }),
+    // PORT-DEFERRED: pasting into an empty cell, which makes a table of the clipboard's values (Phase 11,
+    // with importing)
     pasteIntoEmpty: () => {},
     notifyColumnSizeChanged: () =>
     {
@@ -54,6 +64,67 @@ const stopListening = engine.client.listen(event =>
 {
     if (event.kind === "modified")
         session.value?.modified();
+    else if (event.kind === "alert")
+        showAlert(event.alert);
+});
+
+// Java: View.createTable: what to make, at the empty cell
+const newTable = shallowRef<{ position: CellPosition, point: { x: number, y: number } } | null>(null);
+const newTableOpen = shallowRef(false);
+function createTable(position: CellPosition, point: { x: number, y: number }): void
+{
+    newTable.value = { position, point };
+    newTableOpen.value = true;
+}
+
+// The column dialog: for a new table at a position, or a new column in a table (before a column)
+type ColumnFor = { kind: "table", position: CellPosition, point: { x: number, y: number } } | { kind: "column", display: GridTableDisplay, beforeColumn: string | null };
+const columnFor = shallowRef<ColumnFor | null>(null);
+const columnTypeManager = shallowRef<TypeManager | null>(null);
+const columnOpen = shallowRef(false);
+async function openColumnDialog(target: ColumnFor): Promise<void>
+{
+    try
+    {
+        columnTypeManager.value = markRaw(await copyTypeManager(engine.client));
+    }
+    catch (e)
+    {
+        ignoreClosed(e);
+        // (The project's types couldn't be read: as Java's alertOnError)
+        showAlert({ title: t(target.kind === "table" ? "error.creating.first.column" : "error.adding.column"), message: e instanceof Error ? e.message : String(e) });
+        return;
+    }
+    columnFor.value = target;
+    columnOpen.value = true;
+}
+
+function newTableChosen(choice: DataOrTransform, point: { x: number, y: number }): void
+{
+    const target = newTable.value;
+    if (target !== null && choice === "DATA")
+        void openColumnDialog({ kind: "table", position: target.position, point });
+}
+
+function columnChosen(details: ColumnDetails): void
+{
+    const target = columnFor.value;
+    if (target === null)
+        return;
+    const column = { columnName: details.columnName, type: details.type, defaultValue: details.defaultValue };
+    const done = (alert: EngineAlert | null): void =>
+    {
+        if (alert !== null)
+            showAlert(alert);
+    };
+    if (target.kind === "table")
+        void engine.client.request("createDataTable", details.tableName ?? "", column, target.position.columnIndex, target.position.rowIndex).then(done).catch(ignoreClosed);
+    else
+        void engine.client.request("addColumn", target.display.info.id, target.display.info.version, target.beforeColumn, column).then(done).catch(ignoreClosed);
+}
+
+provideTableActions({
+    addColumn: (display, beforeColumn) => void openColumnDialog({ kind: "column", display, beforeColumn }),
 });
 
 onMounted(async () =>
@@ -192,6 +263,20 @@ defineExpose({
       @chosen="saveAs"
     />
     <AboutDialog v-model:open="about" />
+    <NewTableDialog
+      v-model:open="newTableOpen"
+      :centre-on="newTable?.point ?? null"
+      :transform-is-valid="engine.tables.tables.value.length > 0"
+      @chosen="newTableChosen"
+    />
+    <EditImmediateColumnDialog
+      v-if="columnTypeManager !== null"
+      v-model:open="columnOpen"
+      :type-manager="columnTypeManager"
+      :table-ids="columnFor?.kind === 'table' ? engine.tables.tables.value.map(t => t.id) : null"
+      :centre-on="columnFor?.kind === 'table' ? columnFor.point : null"
+      @ok="columnChosen"
+    />
   </div>
 </template>
 

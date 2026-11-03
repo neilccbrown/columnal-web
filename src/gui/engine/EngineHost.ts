@@ -3,7 +3,12 @@
 // for GUI tests (InPageTransport), where tests can also read the engine's objects through it.
 import { CellPosition } from "../../engine/data/data/CellPosition.js";
 import type { Column } from "../../engine/data/data/Column.js";
-import { DataSource } from "../../engine/data/data/DataSources.js";
+import { DataSource, ImmediateDataSource } from "../../engine/data/data/DataSources.js";
+import { ColumnUtility } from "../../engine/data/data/ColumnUtility.js";
+import { EditableRecordSet } from "../../engine/data/data/EditableRecordSet.js";
+import { TypeExpression } from "../../engine/expressions/transformations/expression/type/TypeExpressions.js";
+import { ColumnId } from "../../engine/identifiers/id/ColumnId.js";
+import { TableId } from "../../engine/identifiers/id/TableId.js";
 import { Table } from "../../engine/data/data/Table.js";
 import { TableManager } from "../../engine/data/data/TableManager.js";
 import { TransformationManager } from "../../engine/transformations/transformations/TransformationManager.js";
@@ -22,7 +27,7 @@ import { TableDisplayUtility } from "../../gui-logic/stf/gui/dtf/TableDisplayUti
 import { Workers } from "../../engine/utility/utility/Workers.js";
 import type { Value } from "../../engine/utility/utility/Value.js";
 import { Transformation } from "../../engine/data/data/Transformation.js";
-import { ENGINE_METHODS, type CellContent, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type FromEngine, type LoadResult, type TableInfo, type ToEngine } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type FromEngine, type LoadResult, type NewColumnDetails, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 
 // How many rows requests are done for each table at once (newest first); older ones are skipped:
 const MAX_ROWS_REQUESTS_PER_TABLE = 2;
@@ -113,6 +118,74 @@ export class EngineHost implements EngineApi
         const saver = new Table.FullSaver(displayDetailLines);
         this.tableManager.save(null, saver);
         return saver.getCompleteFile();
+    }
+
+    public typeInfo(): TypeInfo
+    {
+        // (Each on its own line, as Table.FullSaver writes them)
+        const lines = (items: readonly string[]): string => items.map(s => s.endsWith("\n") ? s : s + "\n").join("");
+        return { units: lines(this.tableManager.getUnitManager().save()), types: lines(this.tableManager.getTypeManager().save()) };
+    }
+
+    public createDataTable(tableName: string, column: NewColumnDetails, columnIndex: number, rowIndex: number): EngineAlert | null
+    {
+        try
+        {
+            const { columnId, dataType, defaultValue } = this.newColumn(column);
+            // (A blank name is made up, as Table does for an empty TableId)
+            const initialLoadDetails = new Table.InitialLoadDetails(new TableId(tableName), null, new CellPosition(CellPosition.row(rowIndex), CellPosition.col(columnIndex)), null);
+            this.tableManager.record(new ImmediateDataSource(this.tableManager, initialLoadDetails, EditableRecordSet.newRecordSetSingleColumn(columnId, dataType, defaultValue)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.creating.first.column", e);
+        }
+    }
+
+    public addColumn(id: string, version: number, beforeColumn: string | null, column: NewColumnDetails): EngineAlert | null
+    {
+        const table = this.current(id, version);
+        if (!(table instanceof ImmediateDataSource))
+            return null;
+        try
+        {
+            const { columnId, dataType, defaultValue } = this.newColumn(column);
+            const maker = ColumnUtility.makeImmediateColumn(dataType, columnId, defaultValue);
+            table.getData().addColumn(beforeColumn === null ? null : new ColumnId(beforeColumn), rs => maker.apply(rs));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.adding.column", e);
+        }
+    }
+
+    public appendRows(id: string, version: number, count: number): EngineAlert | null
+    {
+        const appendRows = this.current(id, version)?.getOperations().appendRows ?? null;
+        if (appendRows === null)
+            return null;
+        try
+        {
+            appendRows(count);
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.finding.length", e, id);
+        }
+    }
+
+    // A new column's name, type and default value, from the GUI's column dialog
+    private newColumn(details: NewColumnDetails): { readonly columnId: ColumnId, readonly dataType: DataType, readonly defaultValue: Value }
+    {
+        const dataType = TypeExpression.parseTypeExpression(details.type).toDataType(this.tableManager.getTypeManager());
+        if (dataType === null)
+            throw new UserException("Invalid type: " + details.type);
+        const recognised = TableDisplayUtility.recogniser(dataType, true).recogniser.process(ParseProgress.fromStart(details.defaultValue), false).flatMap(s => s.requireEnd());
+        const defaultValue = recognised.either<Value>(err => { throw new UserException(err.error.toPlain()); }, success => success.value);
+        return { columnId: new ColumnId(details.columnName), dataType, defaultValue };
     }
 
     public copy(id: string, version: number, firstColumn: number, lastColumnIncl: number, rows: { readonly firstRow: number, readonly lastRowIncl: number } | null): Promise<Readonly<Record<string, string>> | null>
@@ -283,6 +356,28 @@ export class EngineHost implements EngineApi
     private addTable(table: Table): void
     {
         this.tables.set(table.getId().getRaw(), { table, version: this.nextVersion++ });
+        if (table instanceof ImmediateDataSource)
+        {
+            // Java: TableDisplay, the record set's listener: a change re-runs the tables that depend on
+            // it (onModify), and rows or columns added or removed change the table's size
+            const onModify = (): void =>
+            {
+                const alert = this.reRun(table);
+                if (alert !== null)
+                    this.sendEvent({ kind: "alert", alert });
+                this.modified();
+            };
+            table.getData().setListener({
+                modifiedDataItems: onModify,
+                removedAddedRows: () =>
+                {
+                    this.resized(table);
+                    onModify();
+                },
+                addedColumn: () => this.resized(table),
+                removedColumn: () => this.resized(table),
+            });
+        }
         table.setDisplay({
             loadPosition: position => { this.positions.set(table, position); },
             getMostRecentPosition: () => this.position(table),
@@ -293,6 +388,17 @@ export class EngineHost implements EngineApi
             getTable: () => table,
         });
         this.tablesChanged();
+    }
+
+    // The table's size or columns changed: it has a new version, for the GUI to fetch it again
+    private resized(table: Table): void
+    {
+        const id = table.getId().getRaw();
+        if (this.tables.get(id)?.table === table)
+        {
+            this.tables.set(id, { table, version: this.nextVersion++ });
+            this.tablesChanged();
+        }
     }
 
     private position(table: Table): CellPosition
@@ -372,6 +478,8 @@ export class EngineHost implements EngineApi
             columnEditable,
             columnNumber,
             columnStyles,
+            canAppendRows: error === null && table.getOperations().appendRows !== null,
+            canAddColumn: error === null && table instanceof ImmediateDataSource,
             error,
         };
     }
@@ -469,13 +577,13 @@ function errorPosition(column: Column, text: string): number | null
 }
 
 // Java: FXUtility.alertOnError_, which shows UserExceptions and InternalExceptions
-function alertFor(titleKey: "error.storing.data" | "error.updating.dependent.transformations", e: unknown): EngineAlert
+function alertFor(titleKey: string, e: unknown, ...titleValues: string[]): EngineAlert
 {
     if (!(e instanceof UserException || e instanceof InternalException))
         throw e;
     if (e instanceof InternalException)
         Log.log(e);
-    return { title: TranslationUtility.getString(titleKey), message: e.getLocalizedMessage() ?? "Unknown error" };
+    return { title: TranslationUtility.getString(titleKey, ...titleValues), message: e.getLocalizedMessage() ?? "Unknown error" };
 }
 
 function toEngineError(e: unknown): EngineError

@@ -31,7 +31,7 @@ import FixList from "../components/FixList.vue";
 import StyledText from "../components/StyledText.vue";
 import { isMac } from "../shortcuts.js";
 import LexAutoCompleteWindow from "./LexAutoCompleteWindow.vue";
-import type { TopLevelEditorApi } from "./TopLevelEditorApi.js";
+import { _test_editors, type TopLevelEditorApi } from "./TopLevelEditorApi.js";
 
 type AnyContent = EditorContent<StyledShowable, CodeCompletionContext>;
 
@@ -306,8 +306,9 @@ function keyPressed(e: KeyboardEvent): boolean
     // button); the typed characters still come as input.  Tab without completions moves the focus, as
     // it does elsewhere (Java's did nothing in these editors: parentFocusRightOfThis did nothing).
     const completionsShowing = display._test_getAutoComplete().isShowing();
+    // (Enter's new line is prevented in beforeinput, so that the dialog sees an Enter not handled)
     if ((e.key === "Enter" || e.key === "Tab") && !completionsShowing)
-        return e.key === "Enter";
+        return false;
     e.stopPropagation();
     const mac = isMac();
     const shortcut = mac ? e.metaKey : e.ctrlKey;
@@ -523,6 +524,16 @@ onMounted(() =>
                         return handled;
                     },
                     mousedown: (e) => mousePressed(e),
+                    // Enter never adds a line:
+                    beforeinput: (e) =>
+                    {
+                        if (e.inputType === "insertParagraph" || e.inputType === "insertLineBreak")
+                        {
+                            e.preventDefault();
+                            return true;
+                        }
+                        return false;
+                    },
                     focus: () => focusChanged(true),
                     blur: () => focusChanged(false),
                     copy: (e) =>
@@ -593,7 +604,7 @@ onBeforeUnmount(() =>
     view = null;
 });
 
-defineExpose<TopLevelEditorApi<EXPRESSION>>({
+const api: TopLevelEditorApi<EXPRESSION> = {
     save,
     // Java: TopLevelEditor.focus(Focus)
     focus: (side: TopLevelEditor.Focus): void =>
@@ -610,7 +621,9 @@ defineExpose<TopLevelEditorApi<EXPRESSION>>({
     _test_getContent: (): EditorContent<EXPRESSION, CodeCompletionContext> => content,
     _test_getDisplay: (): EditorDisplay => display,
     _test_getView: (): EditorView | null => view,
-});
+};
+defineExpose(api);
+onMounted(() => _test_editors.set(host.value!, api as unknown as TopLevelEditorApi<StyledShowable>));
 </script>
 
 <template>
@@ -651,8 +664,10 @@ defineExpose<TopLevelEditorApi<EXPRESSION>>({
     </PopoverPortal>
   </PopoverRoot>
   <PopoverRoot :open="completions !== null">
+    <!-- (A virtual element at the caret: nothing on the page) -->
     <PopoverAnchor
       v-if="completions !== null"
+      as="template"
       :reference="completions.anchor"
     />
     <PopoverPortal>

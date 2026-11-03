@@ -20,3 +20,6 @@ export interface TopLevelEditorApi<EXPRESSION extends StyledShowable>
     _test_getDisplay(): EditorDisplay;
     _test_getView(): EditorView | null;
 }
+
+/** For tests: the editor shown by each editor element (Java's tests found the EditorDisplay node). */
+export const _test_editors = new WeakMap<Element, TopLevelEditorApi<StyledShowable>>();

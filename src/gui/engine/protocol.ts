@@ -18,6 +18,10 @@ export interface TableInfo
     readonly columnTypes: readonly string[];
     // Whether each column's cells can be edited (Java: Column.getEditableStatus().editable):
     readonly columnEditable: readonly boolean[];
+    // Whether rows can be added at the end (Java: TableOperations.appendRows), and columns at the right
+    // (Java: TableDisplay.addColumnOperation, for now only for data tables):
+    readonly canAppendRows: boolean;
+    readonly canAddColumn: boolean;
     // Whether each column holds numbers (which the GUI lays out with NumberColumnFormatter):
     readonly columnNumber: readonly boolean[];
     // Each column's cell style classes (Java: TableDisplayUtility.stfStylesFor):
@@ -53,6 +57,24 @@ export type EditResult =
     | { readonly kind: "saved", readonly cell: CellContent, readonly alert: EngineAlert | null }
     | { readonly kind: "stale" };
 
+/**
+ * A new column (Java: EditImmediateColumnDialog.ColumnDetails): its name, its type (a TypeExpression,
+ * saved as in a file), and its default value (as the value's display text, as a cell shows it).
+ */
+export interface NewColumnDetails
+{
+    readonly columnName: string;
+    readonly type: string;
+    readonly defaultValue: string;
+}
+
+/** The types and units the user declared, as saved in a file (each item's lines, in order). */
+export interface TypeInfo
+{
+    readonly units: string;
+    readonly types: string;
+}
+
 export interface LoadResult
 {
     readonly errors: readonly string[];
@@ -72,6 +94,17 @@ export interface EngineApi
      * "COLUMNWIDTH column width" lines).
      */
     save(displayDetailLines: readonly string[]): string;
+    /** The declared types and units, for the GUI's editors (which need a TypeManager of their own). */
+    typeInfo(): TypeInfo;
+    /**
+     * Makes a data table with one column (Java: View.createTable, for a data table); its name, if
+     * blank, is made up.  Gives an alert if it failed.
+     */
+    createDataTable(tableName: string, column: NewColumnDetails, columnIndex: number, rowIndex: number): EngineAlert | null;
+    /** Adds a column to a data table, before the given column, or at the end (Java: TableDisplay.addColumnBefore_IDS). */
+    addColumn(id: string, version: number, beforeColumn: string | null, column: NewColumnDetails): EngineAlert | null;
+    /** Adds rows at the end of the table (Java: ExpandTableArrowSupplier's add-row button). */
+    appendRows(id: string, version: number, count: number): EngineAlert | null;
     /** The table's length, or null if the table has been replaced. */
     length(id: string, version: number): number | null;
     /**
@@ -117,11 +150,13 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "createDataTable", "addColumn", "appendRows", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:
     | { readonly kind: "tables", readonly tables: readonly TableInfo[] }
+    // An error after a change, from re-running the tables that depend on a table (Java: an alert):
+    | { readonly kind: "alert", readonly alert: EngineAlert }
     // Something saved in the file changed (Java: what called View.modified, or saved), so it should be
     // saved:
     | { readonly kind: "modified" };

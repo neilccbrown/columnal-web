@@ -10,6 +10,7 @@ import type { VersionCounter } from "../store/EngineStore.js";
 import { type CellDisplay, columnDisplays, numberFontsReady, waitForNumberFonts } from "./cellDisplay.js";
 import { EMPTY_WINDOW, tableWindow, type TableWindow } from "./gridWindow.js";
 import { GridTableDisplay } from "./GridTableDisplay.js";
+import { useTableActions } from "./tableActions.js";
 import { VIEWPORT } from "./viewport.js";
 
 const props = defineProps<{
@@ -30,6 +31,13 @@ const ROW = VirtualGrid.rowHeight;
 const HEADER = GridTableDisplay.HEADER_ROWS;
 const BLOCK = GridTableDisplay.ROW_BLOCK;
 const viewport = inject(VIEWPORT)!;
+const tableActions = useTableActions();
+
+// Java: ExpandTableArrowSupplier's arrows (DOWN_ARROW, RIGHT_ARROW)
+const DOWN_ARROW = "\u2193";
+const RIGHT_ARROW = "\u27F6";
+const showAddRowArrows = computed(() => props.display.info.canAppendRows && props.display.info.columnNames.length > 0);
+const showAddColumnArrows = computed(() => props.display.info.canAddColumn && props.display.info.columnNames.length > 0);
 
 const geometry = computed(() =>
 {
@@ -192,6 +200,37 @@ watchEffect(() =>
       </div>
     </div>
   </div>
+  <template v-if="showAddRowArrows">
+    <button
+      v-for="c in visibleColumns"
+      :key="'down' + c"
+      type="button"
+      tabindex="-1"
+      class="expand-arrow expand-down"
+      title="Click to add row"
+      :style="{ left: geometry.left + geometry.columnLefts[c]! + 'px', top: geometry.top + (HEADER + geometry.rows) * ROW + 'px', width: geometry.columnWidths[c] + 'px', height: ROW + 'px' }"
+      @mousedown.stop
+      @click.stop="display.appendRow()"
+    >
+      {{ DOWN_ARROW }}
+    </button>
+  </template>
+  <template v-if="showAddColumnArrows">
+    <button
+      v-for="r in [-2, -1, ...visibleRows]"
+      :key="'right' + r"
+      type="button"
+      tabindex="-1"
+      class="expand-arrow expand-right"
+      :class="{ 'expand-right-header': r < 0 }"
+      title="Click to add column"
+      :style="{ left: geometry.left + geometry.width + 'px', top: geometry.top + (HEADER + r) * ROW + 'px', width: grid.getColumnWidth(display.getPosition().columnIndex + display.info.columnNames.length) + 'px', height: ROW + 'px' }"
+      @mousedown.stop
+      @click.stop="tableActions?.addColumn(display, null)"
+    >
+      {{ RIGHT_ARROW }}
+    </button>
+  </template>
   <div
     v-if="geometry.rows > 0"
     class="row-labels-area"
@@ -339,5 +378,21 @@ watchEffect(() =>
     background: var(--table-row-label-background-color);
     border-right: 1px solid var(--table-divider);
     border-bottom: 1px solid var(--table-divider);
+}
+/* virtual-grid.scss: .expand-arrow */
+.expand-arrow {
+    position: absolute;
+    box-sizing: border-box;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: var(--table-cell);
+    color: var(--expand-arrow-color);
+    font: inherit;
+    cursor: pointer;
+}
+/* (Java whitened all of a table's add-row, or add-column, arrows while one was hovered) */
+.expand-arrow:hover {
+    background: var(--expand-arrow-color-hover);
 }
 </style>

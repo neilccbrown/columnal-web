@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // The app's root: the tab shows the initial window, or a project (whose id is in the URL's fragment,
 // so reloading the tab opens it again), with the alerts.  (docs/gui-spec/projects.md)
-import { onBeforeUnmount, shallowRef } from "vue";
+import { onBeforeUnmount, shallowRef, useTemplateRef } from "vue";
 import AlertHost from "./components/dialogs/AlertHost.vue";
 import { WorkerTransport, type EngineTransport } from "./engine/transports.js";
 import { projectHash, projectInHash, provideAppContext } from "./project/appContext.js";
@@ -52,6 +52,10 @@ provideAppContext({
     },
     setProjectInUrl: id => history.replaceState(null, "", projectHash(id)),
 });
+
+const mainWindow = useTemplateRef<InstanceType<typeof MainWindow>>("mainWindow");
+// For tests:
+defineExpose({ mainWindow: () => mainWindow.value });
 </script>
 
 <template>
@@ -59,6 +63,7 @@ provideAppContext({
     <InitialWindow v-if="project === null" />
     <MainWindow
       v-else
+      ref="mainWindow"
       :key="project"
       :project-id="project"
     />

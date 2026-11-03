@@ -15,12 +15,14 @@ const props = withDefaults(defineProps<{
     buttonsToSide?: boolean,
     centreOn?: { readonly x: number, readonly y: number } | null,
     resizable?: boolean,
+    closeOnEscape?: boolean,
     // Either an error or the result.  If there is an error, it may be called again.
     calculateResult: () => Either<Localized, R>,
 }>(), {
     buttonsToSide: false,
     centreOn: null,
     resizable: false,
+    closeOnEscape: true,
 });
 const emit = defineEmits<{
     ok: [result: R],
@@ -64,6 +66,7 @@ defineExpose({ clearError });
     :buttons-to-side="buttonsToSide"
     :centre-on="centreOn"
     :resizable="resizable"
+    :close-on-escape="closeOnEscape"
     :ok-filter="okFilter"
     @ok="emit('ok', result!.value)"
     @cancel="emit('cancel')"

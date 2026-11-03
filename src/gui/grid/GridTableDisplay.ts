@@ -112,10 +112,51 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
         }).catch(ignoreClosed);
     }
 
+    // Java: TableDisplay.recalculateBottomRightIncl: with a row of add-row arrows below the data, and a
+    // column of add-column arrows to its right, if the table can have them (ExpandTableArrowSupplier)
     protected override recalculateBottomRightIncl(): CellPosition
     {
         const columns = this.info.columnNames.length;
-        return this.getPosition().offsetByRowCols(Math.max(0, this.currentKnownRows + (columns === 0 ? 0 : GridTableDisplay.HEADER_ROWS) - 1), Math.max(0, columns - 1));
+        const rows = this.currentKnownRows + (columns === 0 ? 0 : GridTableDisplay.HEADER_ROWS) + (this.info.canAppendRows ? 1 : 0);
+        return this.getPosition().offsetByRowCols(Math.max(0, rows - 1), Math.max(0, columns + (this.hasAddColumnArrows() ? 1 : 0) - 1));
+    }
+
+    // Java: TableDisplay.showAddColumnArrow (and ExpandTableArrowSupplier's, which needs a column)
+    private hasAddColumnArrows(): boolean
+    {
+        return this.info.canAddColumn && this.info.columnNames.length > 0;
+    }
+
+    /**
+     * The arrow at the cell, if any (Java: ExpandTableArrowSupplier's hasAddColumnArrow and
+     * hasAddRowArrow): "right" to add a column, to the right of the column names, types and data;
+     * "down" to add a row, below the data.
+     */
+    public arrowAt(cellPosition: CellPosition): "right" | "down" | null
+    {
+        const columns = this.info.columnNames.length;
+        if (columns === 0)
+            return null;
+        const row = cellPosition.rowIndex - this.getPosition().rowIndex;
+        const column = cellPosition.columnIndex - this.getPosition().columnIndex;
+        // Java: TableDisplay.getDataDisplayBottomRightIncl (the types row, with no data rows)
+        const lastDataRow = GridTableDisplay.HEADER_ROWS + this.currentKnownRows - 1;
+        if (this.hasAddColumnArrows() && column === columns && row >= 1 && row <= lastDataRow)
+            return "right";
+        if (this.info.canAppendRows && row === lastDataRow + 1 && column >= 0 && column < columns)
+            return "down";
+        return null;
+    }
+
+    /** Java: the add-row arrow's action, appendRows(1). */
+    public appendRow(): void
+    {
+        const info = this.info;
+        void this.client.request("appendRows", info.id, info.version, 1).then(alert =>
+        {
+            if (alert !== null)
+                showAlert(alert);
+        }).catch(ignoreClosed);
     }
 
     public override getSortKey(): string

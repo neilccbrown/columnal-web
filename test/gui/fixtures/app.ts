@@ -3,10 +3,13 @@
 import { vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { cleanup, render } from "vitest-browser-vue";
+import { defineComponent, h, ref } from "vue";
 import App from "../../../src/gui/App.vue";
 import { InPageTransport } from "../../../src/gui/engine/transports.js";
 import { projectHash } from "../../../src/gui/project/appContext.js";
 import { ProjectStore } from "../../../src/gui/project/ProjectStore.js";
+
+type AppInstance = InstanceType<typeof App>;
 
 export interface RenderedApp
 {
@@ -19,6 +22,8 @@ export interface RenderedApp
     readonly openedInNewTab: string[];
     // Renders the app again (as reloading the tab does), showing the given project, if any:
     rerender(projectId: string | null): void;
+    // The project window, if showing:
+    mainWindow(): AppInstance["mainWindow"] extends () => infer W ? W : never;
 }
 
 /** Shows the app, with a new storage (and the projects given, made first), and the project given. */
@@ -29,7 +34,9 @@ export async function renderApp(projects: readonly { name: string, content: stri
     const ids: string[] = [];
     for (const p of projects)
         ids.push(await store.create(p.name, p.content));
+    const appRef = ref<AppInstance | null>(null);
     const app: RenderedApp = {
+        mainWindow: () => appRef.value!.mainWindow() as never,
         store,
         storeName,
         transports: [],
@@ -38,18 +45,17 @@ export async function renderApp(projects: readonly { name: string, content: stri
         {
             cleanup();
             history.replaceState(null, "", location.pathname + location.search + (projectId === null ? "" : projectHash(projectId)));
-            render(App, {
-                props: {
-                    storeName,
-                    makeTransport: () =>
-                    {
-                        const t = new InPageTransport();
-                        app.transports.push(t);
-                        return t;
-                    },
-                    openInNewTab: (id: string) => app.openedInNewTab.push(id),
+            render(defineComponent(() => () => h(App, {
+                ref: appRef,
+                storeName,
+                makeTransport: () =>
+                {
+                    const t = new InPageTransport();
+                    app.transports.push(t);
+                    return t;
                 },
-            });
+                openInNewTab: (id: string) => app.openedInNewTab.push(id),
+            })));
         },
     };
     app.rerender(show === null ? null : ids[show]!);

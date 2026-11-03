@@ -832,6 +832,22 @@ Steps (each a checkpoint with the project owner):
    dialog (`EditImmediateColumnDialog`: name, type, default value), `CreateDataTableTrait` and
    `EnterColumnDetailsTrait`, adding rows (the append row), and undo of these. Tests: the rest of
    `TestBlankMainWindow` (new entry table, undo, add column, default value, enter column).
+   - Done: the "New…" button in a selected empty cell (`TableGrid.vue`), `NewTableDialog.vue` (only Data
+     Entry enabled until the others are built), `EditImmediateColumnDialog.vue` (with the name fields'
+     conversions ported to gui-logic), the add-row and add-column arrows of data tables (`GridTable.vue`;
+     the table's area includes them, as Java's), and the engine's `typeInfo`, `createDataTable`,
+     `addColumn` and `appendRows`, with Java's record-set listener (a structural change re-runs the
+     dependent tables, gives the table a new version, and saves; re-run errors come as an `alert` event).
+     The dialogs use a copy of the project's types and units on the main thread
+     (`src/gui/project/typeCopy.ts`, from `typeInfo`), as planned in §6; the column's type goes to the
+     engine as its saved text, and its default value as display text. LightDialog gained
+     `closeOnEscape` (Java: `preventCloseOnEscape`), and now decides whether a click was in a control when
+     it is pressed (a lex editor re-renders as it gains the focus, so a click on it stole the focus for
+     OK). `docs/gui-spec/tables.md`. Tests: all of `TestBlankMainWindow` (its test ignored in Java,
+     skipped), and the screen checks of `TestTypeEditorError` and `TestTypeQuickFix`
+     (`test/gui/windows/TypeEditorErrorScreen.test.ts`, `TypeQuickFixScreen.test.ts`). Left for later:
+     the add-column arrows of Calculate and Aggregate (Phases 10 and 11), pasting into an empty cell to make
+     a table (Phase 11, with importing), and the blur over the grid behind the new-table dialog.
 5. `TableDisplay`'s parts of the grid: the table's name row (renaming, its menu: delete, and the
    transformations' entries greyed until Phase 11), the column header menus (rename, delete, add
    before/after, change type, sort), row label menus (insert and delete rows), "Goto row" (with

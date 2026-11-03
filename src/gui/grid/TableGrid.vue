@@ -16,6 +16,8 @@ import { VersionCounter } from "../store/EngineStore.js";
 import type { Document } from "../../gui-logic/stf/gui/dtf/Document.js";
 import DocumentTextField from "../components/DocumentTextField.vue";
 import { showAlert } from "../alerts.js";
+import { t } from "../i18n.js";
+import { useTableActions } from "./tableActions.js";
 import { CellEditDocument, ReadOnlyCellDocument } from "./CellEditDocument.js";
 import GridTable from "./GridTable.vue";
 import type { GridTableDisplay } from "./GridTableDisplay.js";
@@ -110,6 +112,66 @@ const selectionRect = computed(() =>
         height: (r.bottomRightIncl.rowIndex - r.topLeftIncl.rowIndex + 1) * ROW + "px",
     };
 });
+
+// Java: VirtualGrid.CreateTableButtonSupplier: a "New…" button in the selected empty cell, which offers to
+// make a table there (if the grid has a manager)
+const createTableButton = computed(() =>
+{
+    layout.track();
+    const sel = selection.value;
+    if (!(sel instanceof VirtualGrid.EmptyCellSelection) || props.grid._getManager() === null)
+        return null;
+    const pos = sel.getActivateTarget();
+    const left = colLeft(pos.columnIndex);
+    return {
+        position: pos,
+        style: { left: left + "px", top: pos.rowIndex * ROW + "px", minWidth: colLeft(pos.columnIndex + 1) - left + "px", height: ROW + "px" },
+    };
+});
+
+const tableActions = useTableActions();
+
+// Java: VirtualGridManager.createTable, given a point (the mouse's, or the cell's centre), in client
+// coordinates, for the dialogs to centre on
+function createTable(position: CellPosition, point: { x: number, y: number }): void
+{
+    props.grid._getManager()?.createTable(position, point, props.grid);
+}
+
+function cellCentre(position: CellPosition): { x: number, y: number }
+{
+    const box = scroller.value!.getBoundingClientRect();
+    const left = colLeft(position.columnIndex);
+    return {
+        x: box.left - scroller.value!.scrollLeft + (left + colLeft(position.columnIndex + 1)) / 2,
+        y: box.top - scroller.value!.scrollTop + (position.rowIndex + 0.5) * ROW,
+    };
+}
+
+// Java: each node supplier's keyboardActivate: the create-table button, a table's arrows, or a cell
+function keyboardActivate(position: CellPosition): void
+{
+    if (createTableButton.value?.position.equals(position) === true)
+    {
+        createTable(position, cellCentre(position));
+        return;
+    }
+    for (const d of props.displays)
+    {
+        const arrow = d.arrowAt(position);
+        if (arrow === "down")
+        {
+            d.appendRow();
+            return;
+        }
+        if (arrow === "right")
+        {
+            tableActions?.addColumn(d, null);
+            return;
+        }
+    }
+    void startEditing(null, position, null);
+}
 
 // Java: HeadedDisplay.selectionChanged, the table header's table-selected style
 function tableSelected(display: GridTableDisplay): boolean
@@ -584,7 +646,7 @@ const display: VirtualGrid.Display = {
     redoLayout: () => { layout.bump(); return null; },
     sizesOrPositionsChanged: () => layout.bump(),
     requestFocus: () => scroller.value?.focus({ preventScroll: true }),
-    keyboardActivate: pos => void startEditing(null, pos, null),
+    keyboardActivate,
     startEditing: (pos, character) => void startEditing(null, pos, character),
 };
 
@@ -706,6 +768,17 @@ defineExpose({
           :style="editorStyle"
           @focus-lost="editorFocusLost"
         />
+        <button
+          v-if="createTableButton !== null"
+          type="button"
+          tabindex="-1"
+          class="create-table-grid-button"
+          :style="createTableButton.style"
+          @mousedown.stop
+          @click.stop="e => createTable(createTableButton!.position, { x: e.clientX, y: e.clientY })"
+        >
+          {{ t("create.table") }}
+        </button>
         <div
           v-if="selectionRect !== null"
           class="virt-grid-selection-overlay"
@@ -775,6 +848,16 @@ defineExpose({
     position: absolute;
     z-index: 5;
     pointer-events: none;
+}
+/* virtual-grid.scss: .create-table-grid-button */
+.create-table-grid-button {
+    position: absolute;
+    z-index: 5;
+    box-sizing: border-box;
+    padding: 0 4px;
+    margin: 0;
+    font-family: var(--font-main);
+    font-size: 14px;
 }
 .virt-grid-selection-overlay {
     outline: 3px solid var(--focus-color);

@@ -843,7 +843,8 @@ Steps (each a checkpoint with the project owner):
      engine as its saved text, and its default value as display text. LightDialog gained
      `closeOnEscape` (Java: `preventCloseOnEscape`), and now decides whether a click was in a control when
      it is pressed (a lex editor re-renders as it gains the focus, so a click on it stole the focus for
-     OK). `docs/gui-spec/tables.md`. Tests: all of `TestBlankMainWindow` (its test ignored in Java,
+     OK). `docs/gui-spec/tables.md`. Java bug fixed (agreed, in its own commit): the warning for a table
+     name differing only in case quoted the name twice (`""Foo""`). Tests: all of `TestBlankMainWindow` (its test ignored in Java,
      skipped), and the screen checks of `TestTypeEditorError` and `TestTypeQuickFix`
      (`test/gui/windows/TypeEditorErrorScreen.test.ts`, `TypeQuickFixScreen.test.ts`). Left for later:
      the add-column arrows of Calculate and Aggregate (Phases 10 and 11), pasting into an empty cell to make

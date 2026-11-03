@@ -35,7 +35,9 @@ export namespace TableNameTextField
                 if (similar.length === 0)
                     return ErrorableTextField.ConversionResult.success(tableId);
                 else
-                    return ErrorableTextField.ConversionResult.success(tableId, TranslationUtility.getString("table.name.similar", similar.map(t => "\"" + t.getOutput() + "\"").join(", ")));
+                    // Java bug, fixed: Java quoted each name, inside the message's own quotes, so one showed
+                    // as ""Foo"".  The message's quotes go round the first and last; these go between.
+                    return ErrorableTextField.ConversionResult.success(tableId, TranslationUtility.getString("table.name.similar", similar.map(t => t.getOutput()).join("\", \"")));
             }
             else
             {

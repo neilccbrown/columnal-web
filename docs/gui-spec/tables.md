@@ -31,7 +31,8 @@ and `MainWindow.vue`, the engine's `typeInfo`, `createDataTable`, `addColumn` an
 - Buttons down the side (OK, Cancel); resizable; Escape doesn't close it (the type editor uses Escape).
 - For a new table, first "Table name" (blank for an automatic name: the placeholder says "Automatic"); its
   error if another table has the name ("Table "X" already exists"), and a warning if one differs only in
-  case. Enter in it goes to the column name.
+  case ("Similar name to existing table: "Foo""; Java bug, fixed: Java quoted the name twice). Enter in it
+  goes to the column name.
 - "All tables must have at least one column.  All columns must have a name and a type." (the first
   sentence only for a new table), then "Column name" (spaces collapsed; "Column name cannot be blank", or
   the invalid character), "Column type" (the type editor: a concrete type, not empty), and "Default value"

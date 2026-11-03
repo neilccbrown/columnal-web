@@ -874,8 +874,8 @@ Steps (each a checkpoint with the project owner):
      `test/gui/grid/ScrollCoordinates.test.ts` (TestVirtualGridScrollCoordinates, as checks of the native
      scrolling), `test/engine/tests-gui-central/` (PropInsertRemoveRows, PropStorageSet),
      `test/gui-logic/app/TableHat.test.ts`; test helpers `clickTableLocation.ts`, `clickOnTableHeader.ts`,
-     `checkCSV.ts`, and the app fixture's `savedFile`. Probable Java bug, kept: editing a column shows the
-     type's default value, not the column's, so OK resets a changed default (remaking the table). Java test
+     `checkCSV.ts`, and the app fixture's `savedFile`. Java bug fixed (agreed, in its own commit): editing a
+     column showed the type's default value, not the column's, so OK reset a changed default. Java test
      quirks, ported as they are: `scrollXYBy`'s second loop scrolls sideways with the vertical amounts;
      `TestRowOps`'s `checkVisibleRowData` found no cells (a lookup of `.tableDisplay`), so it only checks the
      row label. Left for later: offering a Manual Edit when a transformation's cell is edited

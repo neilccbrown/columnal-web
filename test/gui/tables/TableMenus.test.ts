@@ -260,3 +260,21 @@ test("a cut-off cell's whole text shows after hovering over it for a second", as
     await new Promise(resolve => setTimeout(resolve, 1200));
     expect(document.querySelector(".virtual-grid-tooltip-flow")).toBeNull();
 });
+
+// Java bug, fixed: the column dialog showed the type's default value, not the column's, so OK reset it
+test("editing a column starts from its own default value, which OK keeps", async () =>
+{
+    const a = app = await renderApp([{ name: "P", content: GRID_FIXTURE.replace("@COLUMN N @TYPE Number @DEFAULT 0", "@COLUMN N @TYPE Number @DEFAULT 7") }], 0);
+    await waitForLoaded();
+    await vi.waitUntil(() => document.querySelectorAll('[data-table="T"] .column-name').length === 2);
+    const n = (): ReturnType<typeof engineHost>["tableManager"] => engineHost(a).tableManager;
+    await userEvent.click(document.querySelector<HTMLElement>('[data-table="T"] .column-name')!);
+    const field = await vi.waitUntil(() => document.querySelector<HTMLElement>(".default-value"));
+    // (The field is a textarea)
+    await vi.waitUntil(() => (field as HTMLTextAreaElement).value.trim() === "7");
+    await userEvent.click(document.querySelector(".ok-button")!);
+    await vi.waitUntil(() => document.querySelector(".edit-column-content") === null);
+    await engineHost(a).idle();
+    const after = n().getAllTables().find(t => t.getId().getRaw() === "T")!;
+    expect(after.getData().getColumns()[0]!.getDefaultValue()!.toString()).toBe("7");
+});

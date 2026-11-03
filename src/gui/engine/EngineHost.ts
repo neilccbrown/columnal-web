@@ -279,13 +279,17 @@ export class EngineHost implements EngineApi
         }
     }
 
-    public columnType(id: string, version: number, column: string): string | null
+    public columnDetails(id: string, version: number, column: string): { readonly type: string, readonly defaultValue: string | null } | null
     {
         const c = this.current(id, version)?.getData().getColumnOrNull(new ColumnId(column)) ?? null;
         if (c === null)
             return null;
-        // (Java: EditImmediateColumnDialog's TypeExpression.fromDataType)
-        return TypeExpression.fromDataType(c.getType().getType()).save(Expression.SaveDestination.TO_FILE, TableAndColumnRenames.EMPTY);
+        const defaultValue = c.getDefaultValue();
+        return {
+            // (Java: EditImmediateColumnDialog's TypeExpression.fromDataType)
+            type: TypeExpression.fromDataType(c.getType().getType()).save(Expression.SaveDestination.TO_FILE, TableAndColumnRenames.EMPTY),
+            defaultValue: defaultValue === null ? null : DataTypeUtility.valueToString(defaultValue),
+        };
     }
 
     // Java: TransformationEdits.editColumn_IDS

@@ -174,8 +174,11 @@ export interface EngineApi
     deleteTable(id: string): void;
     /** Deletes a column (Java: TableOperations.deleteColumn, from the column menu or Delete). */
     deleteColumn(id: string, version: number, column: string): EngineAlert | null;
-    /** A data table's column's type, saved as in a file (for the column dialog), or null. */
-    columnType(id: string, version: number, column: string): string | null;
+    /**
+     * A data table's column's type, saved as in a file, and its default value as display text (for the
+     * column dialog), or null.
+     */
+    columnDetails(id: string, version: number, column: string): { readonly type: string, readonly defaultValue: string | null } | null;
     /**
      * Changes a data table's column: its name, type and default value (Java:
      * TransformationEdits.editColumn_IDS); the tables that use it are updated to its new name.
@@ -239,7 +242,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnType", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

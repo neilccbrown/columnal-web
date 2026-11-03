@@ -85,7 +85,7 @@ function createTable(position: CellPosition, point: { x: number, y: number }): v
 type ColumnFor =
     | { kind: "table", position: CellPosition, point: { x: number, y: number } }
     | { kind: "column", display: GridTableDisplay, beforeColumn: string | null }
-    | { kind: "edit", display: GridTableDisplay, column: string, type: string, focus: "name" | "type" };
+    | { kind: "edit", display: GridTableDisplay, column: string, type: string, defaultValue: string | null, focus: "name" | "type" };
 const columnFor = shallowRef<ColumnFor | null>(null);
 const columnTypeManager = shallowRef<TypeManager | null>(null);
 const columnOpen = shallowRef(false);
@@ -135,9 +135,9 @@ function columnChosen(details: ColumnDetails): void
 // Java: TransformationEdits.editColumn_IDS: the column dialog for the column
 async function editColumn(display: GridTableDisplay, column: string, focus: "name" | "type"): Promise<void>
 {
-    const type = await engine.client.request("columnType", display.info.id, display.info.version, column);
-    if (type !== null)
-        await openColumnDialog({ kind: "edit", display, column, type, focus });
+    const details = await engine.client.request("columnDetails", display.info.id, display.info.version, column);
+    if (details !== null)
+        await openColumnDialog({ kind: "edit", display, column, type: details.type, defaultValue: details.defaultValue, focus });
 }
 
 // Java: DataDisplay.gotoRow's GotoRowDialog
@@ -330,7 +330,7 @@ defineExpose({
       :type-manager="columnTypeManager"
       :table-ids="columnFor?.kind === 'table' ? engine.tables.tables.value.map(t => t.id) : null"
       :centre-on="columnFor?.kind === 'table' ? columnFor.point : null"
-      :initial-column="columnFor?.kind === 'edit' ? { name: columnFor.column, type: columnFor.type } : null"
+      :initial-column="columnFor?.kind === 'edit' ? { name: columnFor.column, type: columnFor.type, defaultValue: columnFor.defaultValue } : null"
       :initial-focus="columnFor?.kind === 'edit' ? columnFor.focus : 'name'"
       @ok="columnChosen"
     />

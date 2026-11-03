@@ -45,8 +45,8 @@ const props = defineProps<{
     tableIds: readonly string[] | null,
     centreOn?: { readonly x: number, readonly y: number } | null,
     // An existing column (Java: the dialog's initial column name and type, its type saved as in a
-    // file), or null for a new one:
-    initialColumn?: { readonly name: string, readonly type: string } | null,
+    // file), with its default value (as display text), or null for a new one:
+    initialColumn?: { readonly name: string, readonly type: string, readonly defaultValue: string | null } | null,
     // Java: InitialFocus (the table's name is focused if creating a table, else the column's name)
     initialFocus?: "name" | "type",
 }>();
@@ -124,12 +124,16 @@ function updateType(type: DataType | null): void
     defaultDisabled.value = false;
 }
 
-// Java: makeEditorKit: the type's default value, in a document which recognises what is typed
+// Java: makeEditorKit: the type's default value, in a document which recognises what is typed.
+// Java bug, fixed: for an existing column, Java showed the type's default rather than the column's own,
+// so OK changed a column's default back (and remade its table); now the column's type has its default.
 function makeEditorKit(type: DataType): RecogniserDocument<Value>
 {
     defaultValue = DataTypeUtility.makeDefaultValue(type);
+    const columnDefault = props.initialColumn?.defaultValue ?? null;
+    const initialText = columnDefault !== null && originalType.value?.toDataType(props.typeManager)?.equals(type) === true ? columnDefault : DataTypeUtility.valueToString(defaultValue);
     const recogniser = TableDisplayUtility.recogniser(type, true);
-    const editorKit = new RecogniserDocument<Value>(DataTypeUtility.valueToString(defaultValue), recogniser.itemClass, recogniser.recogniser, null, (_s, v) =>
+    const editorKit = new RecogniserDocument<Value>(initialText, recogniser.itemClass, recogniser.recogniser, null, (_s, v) =>
     {
         defaultValue = v;
     }, () => content.value?.closest(".light-dialog")?.querySelector<HTMLElement>(".ok-button")?.focus(), null);

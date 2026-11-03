@@ -104,7 +104,9 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
 - Column names (bold if the column is a transformation's own, Java's `column-title-overwritten`) and types
   show their whole text as a tooltip. A data table's column name or type can be clicked (underlined when
   hovered, a pointer cursor), as can Enter on it selected: the column dialog for the column (its name, its
-  type, and the type's default value, as Java has it), focused on the name or the type. OK changes the
+  type, and its default value), focused on the name or the type. (Java bug, fixed: Java showed the type's
+  default value, so OK reset a column's own default.) While the type is the column's, the default value
+  field starts with the column's default; for another type, with that type's. OK changes the
   column: a new type or default value remakes the table, converting each value from its text (those that
   don't convert become invalid values); a new name updates the tables that use the column. Errors: "Error
   saving column". Not yet: Calculate's and Aggregate's columns (Phases 10 and 11).

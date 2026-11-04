@@ -20,7 +20,17 @@ const props = defineProps<{
 
 const store = shallowRef<ProjectStore | null>(null);
 void ProjectStore.open(props.storeName).then(s => { store.value = s; });
-onBeforeUnmount(() => store.value?.close());
+// (After the project's last save, which may still be going)
+onBeforeUnmount(() =>
+{
+    const s = store.value;
+    const session = mainWindow.value?.session() ?? null;
+    void (async () =>
+    {
+        await session?.close();
+        s?.close();
+    })();
+});
 
 // The project this tab shows, if any:
 const project = shallowRef<string | null>(projectInHash(location.hash));

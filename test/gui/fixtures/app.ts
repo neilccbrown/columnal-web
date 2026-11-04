@@ -1,5 +1,6 @@
 // Renders the whole app (App.vue), with its own project storage, each project's engine in the page,
 // and opening in another tab recorded rather than done.
+import type { ProjectSession } from "../../../src/gui/project/ProjectSession.js";
 import { vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { cleanup, render } from "vitest-browser-vue";
@@ -90,7 +91,19 @@ export async function clickMenu(menuClass: string, itemClass: string): Promise<v
 
 export async function closeApp(app: RenderedApp): Promise<void>
 {
+    // The project's last save finishes first (closing the store under it would show an error, which the
+    // next test's window would show)
+    let session: ProjectSession | null = null;
+    try
+    {
+        session = app.mainWindow()?.session() ?? null;
+    }
+    catch
+    {
+        // (No window)
+    }
     cleanup();
+    await session?.close();
     app.store.close();
     history.replaceState(null, "", location.pathname + location.search);
     // (The app's own connection closes as it unmounts)

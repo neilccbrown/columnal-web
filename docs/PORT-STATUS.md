@@ -721,8 +721,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
 | tests-gui-central | 7 / 21 | 2016 / 3623 (56%) | 19 / 47 (40%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
-| tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 3 / 68 (4%) |
-| tests-gui-expression-editor-delete | 0 / 1 | 0 / 372 (0%) | 0 / 20 (0%) |
+| ✅ tests-gui-expression-editor | 1 / 1 | 593 / 593 (100%) | 68 / 68 (100%) |
+| ✅ tests-gui-expression-editor-delete | 1 / 1 | 372 / 372 (100%) | 20 / 20 (100%) |
 | tests-gui-expression-editor-further | 7 / 8 | 1532 / 1600 (96%) | 130 / 130 (100%) |
 | tests-gui-expression-editor-position | 0 / 1 | 0 / 618 (0%) | 0 / 34 (0%) |
 | tests-gui-format | 3 / 4 | 574 / 920 (62%) | 2 / 6 (33%) |
@@ -891,7 +891,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-expression-editor/src/test/java/test/gui/expressionEditor/TestExpressionEditor.java` | `test/gui/expressions/ExpressionEditor.test.ts` | 593 | – (3/68 tests) |
+| `tests-gui-expression-editor/src/test/java/test/gui/expressionEditor/TestExpressionEditor.java` | `test/gui/expressions/ExpressionEditor.test.ts` | 593 | ✅ (68/68 tests) |
 
 </details>
 
@@ -899,7 +899,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-expression-editor-delete/src/test/java/test/gui/expressionEditor/TestExpressionEditorDelete.java` | `test/gui/tests-gui-expression-editor-delete/gui/expressionEditor/TestExpressionEditorDelete.test.ts` | 372 | – (0/20 tests) |
+| `tests-gui-expression-editor-delete/src/test/java/test/gui/expressionEditor/TestExpressionEditorDelete.java` | `test/gui/expressions/ExpressionEditorDelete.test.ts` | 372 | ✅ (20/20 tests) |
 
 </details>
 

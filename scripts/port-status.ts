@@ -84,6 +84,7 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorResolution.java", ["test/gui/expressions/ExpressionEditorResolution.test.ts"]],
     ["tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/PropExpressionEditor.java", ["test/gui/expressions/PropExpressionEditor.test.ts"]],
     ["tests-gui-expression-editor/src/test/java/test/gui/expressionEditor/TestExpressionEditor.java", ["test/gui/expressions/ExpressionEditor.test.ts"]],
+    ["tests-gui-expression-editor-delete/src/test/java/test/gui/expressionEditor/TestExpressionEditorDelete.java", ["test/gui/expressions/ExpressionEditorDelete.test.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterExpressionTrait.java", ["test/gui/base/enterExpression.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorEntry.java", ["test/gui/base/expressionEditorEntry.ts"]],
     ["tests-gui-tables/src/test/java/test/gui/table/TestRowOps.java", ["test/gui/tables/RowOps.test.ts"]],

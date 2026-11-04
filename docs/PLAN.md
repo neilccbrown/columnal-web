@@ -989,6 +989,12 @@ Steps (each a checkpoint with the project owner):
      helpers `enterExpression.ts` (`EnterExpressionTrait`), `expressionEditorEntry.ts`
      (`BaseTestExpressionEditorEntry`) and `doubleOk.ts` (`TFXUtil.doubleOk`).
 3. `TestExpressionEditor` (68 tests) and `TestExpressionEditorDelete` (20).
+   - Done: `test/gui/expressions/ExpressionEditor.test.ts` (all of TestExpressionEditor; its ignored test
+     skipped) and `ExpressionEditorDelete.test.ts` (TestExpressionEditorDelete, each trial in a fresh
+     window, as Java's `@Before` ran for each trial). Nothing in the editor needed changing. Fixed on the
+     way: the app closed its project storage as it unmounted, under a save still going, which reported a
+     save error (only in the tests, which unmount the app; the next test's window showed it); it now closes
+     the storage after the project's last save, and the tests' `closeApp` waits for it too.
 4. `TestExpressionEditorPosition` (34: caret positions, clicks and double clicks over the display).
 5. The GUI parts of the tests ported headless: `BaseTestEditorCompletion` and `AutoCompleteTrait` (the
    completion window), `BaseTestExpressionEditorError` (underlines, the error popup, and `has-error` cells),

@@ -920,21 +920,59 @@ Steps (each a checkpoint with the project owner):
 
 **Tests:** `tests-gui-expression-editor`, `…-delete`, `…-further` and `…-position`.
 
+Already ported headless (in `test/gui-logic/tests-gui-expression-editor-further/`): the logic of
+`TestExpressionEditorCompletion`, `…SyntaxError`, `…TypeError` and `TestExpressionQuickFixSyntax`, against
+`ExpressionLexer`. Their GUI parts (the underlines and popups showing, clicking fixes and completions) are
+left, with the other test classes, which need the GUI throughout.
+
+Decided by the project owner at the start of the phase:
+- Java's expression editor tests all reach the editor through the app: New → Transform → Calculate, pick
+  the source table, then the column dialog (`EditColumnExpressionDialog`), or by clicking a Calculate's
+  column header. So the Calculate path (with picking tables by highlighting, `TableHighlights`' SELECT)
+  moves here from Phase 11, and the tests are ported as written, rather than built over a test-only host.
+- The editor runs on the main thread, but the tables are in the engine's worker, and `ExpressionLexer`
+  checks each edit synchronously against a `ColumnLookup` (the columns and tables it can refer to, their
+  types, and suggestions for unknown names). As with the types and units (Phase 9 step 4), the engine
+  sends what the editor needs for one column (`MultipleTableLookup`'s answers for it: available columns
+  and tables with their types, and its fixes) and the main thread serves the lookup from that.
+  Step 1 checks this is enough before the rest is built on it.
+
+Steps (each a checkpoint with the project owner):
+1. The expression editor: `ExpressionEditor` (port, and `ExpressionEditor.vue` on `TopLevelEditor`), the
+   main-thread `ColumnLookup` from the engine's snapshot, `DocWindow` (the function documentation window
+   opened from the completions), and what Phase 9 left in the lex editor (above). Tests:
+   `TestExpressionEditorInvalid` (it makes the editor directly), and component tests of the editor over the
+   snapshot lookup. Then a checkpoint on the lookup approach.
+2. The Calculate path: the new-table dialog's Transform (`PickTransformationDialog`: Calculate enabled, the
+   others greyed until Phase 11), picking the source table (`PickTableDialog`/`PickTablePane`: typing a
+   name, or clicking a table in the grid, with `TableHighlights`' SELECT), the column dialog
+   (`EditColumnExpressionDialog`: `DoubleOKLightDialog`, the column name, picking a column by clicking it
+   in the grid), the engine's requests to create a Calculate and add, edit or remove its columns
+   (`TransformationEdits`), `editAfterCreation`, Calculate's add-column arrow, and editing a Calculate's
+   column from its header. Tests: `EnterExpressionTrait`, `BaseTestExpressionEditorEntry`,
+   `PropExpressionEditor`, `TestExpressionEditorResolution`.
+3. `TestExpressionEditor` (68 tests) and `TestExpressionEditorDelete` (20).
+4. `TestExpressionEditorPosition` (34: caret positions, clicks and double clicks over the display).
+5. The GUI parts of the tests ported headless: `BaseTestEditorCompletion` and `AutoCompleteTrait` (the
+   completion window), `BaseTestExpressionEditorError` (underlines, the error popup, and `has-error` cells),
+   `BaseTestQuickFix` (clicking a fix). The GUI and headless ports both stay; PORT-STATUS counts the GUI one.
+6. Tidy up: PORT-STATUS, `docs/gui-spec/expression-editor.md` (and the other pages), and carry-overs to
+   Phase 11 here (Phase 11 then has the other transformations' dialogs, Aggregate's columns, and "Why?").
+
 ### Phase 11: Transformation dialogs and the rest of the app
-- Rebuild the dialogs for creating and editing every transformation (calculate, sort,
+- Rebuild the dialogs for creating and editing every transformation (sort,
   filter, aggregate/split-by, join, concatenate, hide columns, check, R), plus
   CheckDisplay, ExplanationDisplay, and the import dialogs with their live preview.
 - Wire up clipboard import/export.
 - From Phase 9 (`docs/gui-spec/tables.md`, `cell-editor.md`, `projects.md`):
-  - the new-table dialog's Import File, Import URL, Transform and Check, and pasting into an empty cell
+  - the new-table dialog's Import File, Import URL, the other transformations and Check, and pasting into an empty cell
     to make a table;
   - offering a Manual Edit when a transformation's cell is edited (`PickManualEditIdentifierDialog`; the
     edit is cancelled meanwhile), and the "=" guidance (`GuidanceWindow`, making a Calculate);
   - the table menu's Transform and Custom columns, the "Transform type" recipe, and clicking a hat's
     parts (their dialogs);
-  - with Phase 10's editor: the add-column arrows of Calculate and Aggregate, editing their columns from
-    the headers, and a cell's "Why?" (explanations);
-  - picking tables by highlighting (`TableHighlights`' SELECT; SOURCE is done);
+  - Aggregate's add-column arrows and editing its columns from the headers (Calculate's are Phase 10's),
+    and a cell's "Why?" (explanations);
   - the View menu's Task Manager and the checks pane, and the checks status bar;
   - the test helpers `CreateDataTableTrait` and `EnterColumnDetailsTrait`.
 

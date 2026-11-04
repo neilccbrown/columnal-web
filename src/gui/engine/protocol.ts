@@ -148,6 +148,42 @@ export interface TypeInfo
     readonly types: string;
 }
 
+/**
+ * What an expression editor can refer to (Java: the editor's MultipleTableLookup, over the
+ * TableManager), from which the GUI makes a ColumnLookup of its own (`columnLookupCopy.ts`): each table
+ * with its columns, and the tables available to the table being edited.
+ */
+export interface ColumnLookupInfo
+{
+    // The table being edited, and its source table (as given)
+    readonly us: string | null;
+    readonly src: string | null;
+    // Every table, in TableManager.getAllTables's order
+    readonly tables: readonly LookupTableInfo[];
+    // TableManager.getAllTablesAvailableTo(us, false), in its order
+    readonly available: readonly string[];
+}
+
+export interface LookupTableInfo
+{
+    readonly id: string;
+    // Whether TableManager.getSingleTableOrNull finds it (it doesn't when its name is shared)
+    readonly single: boolean;
+    // Null when the table's data can't be had (and why)
+    readonly columns: readonly LookupColumnInfo[] | null;
+    readonly error: string | null;
+}
+
+export interface LookupColumnInfo
+{
+    readonly name: string;
+    // The type, saved as in a file, or null when it can't be had (and why)
+    readonly type: string | null;
+    readonly typeError: string | null;
+    // Column.AlteredState
+    readonly altered: number;
+}
+
 export interface LoadResult
 {
     readonly errors: readonly string[];
@@ -206,6 +242,8 @@ export interface EngineApi
      * column dialog), or null.
      */
     columnDetails(id: string, version: number, column: string): { readonly type: string, readonly defaultValue: string | null } | null;
+    /** What an expression editor for a table (us), from the given source table, can refer to. */
+    columnLookup(us: string | null, src: string | null): ColumnLookupInfo;
     /**
      * Changes a data table's column: its name, type and default value (Java:
      * TransformationEdits.editColumn_IDS); the tables that use it are updated to its new name.
@@ -269,7 +307,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

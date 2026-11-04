@@ -1,4 +1,4 @@
-# Lex editor (type and unit editors)
+# Lex editor (type, unit and expression editors)
 
 Java: `lex-editor/.../TopLevelEditor.java` (with its `InformationPopup`), `EditorDisplay.java` (on
 `TextEditorBase`), `TypeEditor.java`, `UnitEditor.java`, `lex-editor-completion/.../LexAutoComplete.java`,
@@ -6,7 +6,8 @@ Java: `lex-editor/.../TopLevelEditor.java` (with its `InformationPopup`), `Edito
 Styles: `expression-editor.scss`, `autocomplete.scss`, `general.scss` (`.text-editor`, `.quick-fix-row`).
 Tests: the screen checks of `tests-gui-type-editor` (with the new-column dialog, Phase 9 step 4), and
 `EnterTypeTrait`. Web: `src/gui/lexeditor/` (`TopLevelEditor.vue`, `LexAutoCompleteWindow.vue`,
-`TypeEditor.vue`, `UnitEditor.vue`), `src/gui/components/FixList.vue`; the model is the ported
+`TypeEditor.vue`, `UnitEditor.vue`, `ExpressionEditor.vue`: see `expression-editor.md`),
+`src/gui/components/FixList.vue`; the model is the ported
 `EditorContent`, `EditorDisplay` and `LexAutoComplete` (`src/gui-logic/lex-editor*/`). Tests:
 `test/gui/lexeditor/`, and `test/gui/base/enterType.ts`.
 
@@ -50,6 +51,8 @@ Tests: the screen checks of `tests-gui-type-editor` (with the new-column dialog,
   position nearest it in the text, which could be on another line: on an `@if` over several lines, a click
   in a line's indent went to the end of the line above, and Down from after `@if` stayed on the first
   line.)
+- Clicks (and drags) within 400 ms of choosing a completion only focus the editor, so that a click too
+  many on the completion doesn't move the caret (Java's click immunity).
 - Text can't be dragged and dropped.
 
 ## Errors
@@ -62,17 +65,30 @@ Tests: the screen checks of `tests-gui-type-editor` (with the new-column dialog,
   errors' messages, then "Fixes:" and a row per fix (underlined; classes `key-F1`, `key-F2`, … and the
   fix's own), which applies it when clicked. Otherwise it shows the information or prompt for the caret's
   position, if any (errors first, then warnings, information and prompts), each with its colours. Only
-  while the editor is focused.
+  while the editor is focused. Applying a fix hides the popup until the caret next moves; so does a middle
+  click on the popup.
+- A fix which is an action (not a replacement of text) runs: declaring a unit (`Create unit "x"`) adds it
+  to the editor's type manager and rechecks the content, and the editor says the declared types changed
+  (`typesChanged`: the dialogs edit a copy of the project's types, which the main window then sends to the
+  engine; Java's changed the project's own); showing a guide opens it in a documentation window
+  (`expression-editor.md`); moving a Calculate's expression closes the editor's dialog
+  (`forceCloseDialog`) and gives the expression to the fix.
 
 ## Completions
 
 - The lexer's completions for the caret position show below it, while the editor is focused and there
   are some: in groups, each with its header (grey) if it has one, a row per completion (24 px; its text,
-  and its side text on the right), 300 px wide and at most 400 px high (scrolling to keep the selected row
-  in view). They line up with the start of the earliest completion's text.
+  and its side text on the right), 300 px wide and as high as its rows (and 2 px of border), at most
+  400 px. They line up with the start of the earliest completion's text.
+- When they don't all fit, each group's first rows (its `minCollapsed`: 2 for the matches and Related, 1
+  for Operators and Help, with the header) stay on screen: the later groups are pinned from the bottom
+  over the end of the earlier ones, which fade (grey) where they are cut off. The list scrolls (scroll bar
+  or wheel) through all the rows, the pinned groups moving up into place as the rows above them pass; the
+  selected row is kept in view (above the pinned groups below it). New completions scroll back to the top.
 - The first is selected if the lexer says so (only completion, or the top one). Clicking a row selects
   it; clicking the selected row, or double-clicking, chooses it. Choosing replaces the text from the
-  completion's start to the caret.
+  completion's start to the caret, or for a guide (the Help group) opens it, and hides the completions
+  until the caret moves or the text changes.
 - The selected completion's further details show beside the list (500 px wide, 350 px on a screen less
   than 1200 px wide; at most 400 px high): a function documentation page (`FuncdocView`), or HTML.
   Clicking an example there inserts it at the completion's start.
@@ -90,8 +106,7 @@ Tests: the screen checks of `tests-gui-type-editor` (with the new-column dialog,
 - Input methods work: while composing, CodeMirror's text differs from the display; when the composition
   ends, the text is given to the content (Java's `KEY_TYPED` got the committed text).
 - The popups are Reka popovers, so they show over a modal dialog and can be clicked.
-- Not done: the information popup's fade over 2 s when the mouse leaves it with nothing to show, and the
-  middle click that hides the popups (Java's scene filters); clicks being ignored for 400 ms after the
-  completions hide; Java's completion list layout keeping each group's first rows (its `minCollapsed`) on
-  screen as the list scrolls (Phase 10, for the expression editor's groups); the error popup's fixes that
-  are actions (Phase 10).
+- Java animated the completion groups into their new places as the wheel scrolled the list; the browser's
+  scrolling is smooth itself.
+- Java faded the information popup out over 2 s when the mouse left it with nothing to show, but every
+  change that leaves it nothing to show hides it at once, so the fade never happened; it isn't ported.

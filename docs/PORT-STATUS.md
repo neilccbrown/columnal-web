@@ -548,11 +548,11 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/InsertListener.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/InsertListener.ts` | 36 | ✅ |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoComplete.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoComplete.ts` | 150 | ✅ (parts deferred) |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoComplete.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoComplete.ts` | 150 | ✅ |
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexAutoCompleteWindow.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexAutoCompleteWindow.ts` | 221 | ✅ |
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletion.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletion.ts` | 202 | ✅ |
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionGroup.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionGroup.ts` | 60 | ✅ |
-| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionList.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionList.ts` | 693 | ✅ (parts deferred) |
+| `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionList.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionList.ts` | 693 | ✅ |
 | `lex-editor-completion/src/main/java/xyz/columnal/gui/lexeditor/completion/LexCompletionListener.java` | `src/gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletionListener.ts` | 30 | ✅ |
 
 </details>
@@ -611,7 +611,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/CodeCompletionContext.java` | `src/gui-logic/lex-editor/gui/lexeditor/CodeCompletionContext.ts` | 47 | ✅ |
-| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/DocWindow.java` | `src/gui-logic/lex-editor/gui/lexeditor/DocWindow.ts` | 70 | ✅ (parts deferred) |
+| `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/DocWindow.java` | `src/gui-logic/lex-editor/gui/lexeditor/DocWindow.ts` | 70 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorContent.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorContent.ts` | 331 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorDisplay.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorDisplay.ts` | 702 | ✅ |
 | `lex-editor/src/main/java/xyz/columnal/gui/lexeditor/EditorLocationAndErrorRecorder.java` | `src/gui-logic/lex-editor/gui/lexeditor/EditorLocationAndErrorRecorder.ts` | 494 | ✅ |
@@ -723,7 +723,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
 | tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 0 / 68 (0%) |
 | tests-gui-expression-editor-delete | 0 / 1 | 0 / 372 (0%) | 0 / 20 (0%) |
-| tests-gui-expression-editor-further | 4 / 8 | 1250 / 1600 (78%) | 120 / 130 (92%) |
+| tests-gui-expression-editor-further | 5 / 8 | 1329 / 1600 (83%) | 121 / 130 (93%) |
 | tests-gui-expression-editor-position | 0 / 1 | 0 / 618 (0%) | 0 / 34 (0%) |
 | tests-gui-format | 3 / 4 | 574 / 920 (62%) | 2 / 6 (33%) |
 | ✅ tests-gui-grid | 4 / 4 | 1049 / 1049 (100%) | 14 / 14 (100%) |
@@ -910,7 +910,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-expression-editor-further/src/test/java/test/gen/GenInvalidExpressionSource.java` | `test/gui/tests-gui-expression-editor-further/gen/GenInvalidExpressionSource.ts` | 68 | – |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/PropExpressionEditor.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/PropExpressionEditor.test.ts` | 49 | – (0/1 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorCompletion.test.ts` | 542 | ✅ (30/30 tests) |
-| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorInvalid.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorInvalid.test.ts` | 79 | – (0/1 tests) |
+| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorInvalid.java` | `test/gui/expressions/ExpressionEditorInvalid.test.ts` | 79 | ✅ (1/1 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorResolution.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorResolution.test.ts` | 154 | – (0/8 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorSyntaxError.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorSyntaxError.test.ts` | 260 | ✅ (32/32 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorTypeError.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorTypeError.test.ts` | 161 | ✅ (21/21 tests) |

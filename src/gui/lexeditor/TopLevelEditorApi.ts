@@ -15,6 +15,8 @@ export interface TopLevelEditorApi<EXPRESSION extends StyledShowable>
     setContent(text: string): void;
     hasErrors(): boolean;
     showAllErrors(): void;
+    // Java: isMouseClickImmune, just after a click chose a completion
+    isMouseClickImmune(): boolean;
     _test_getRawText(): string;
     _test_getContent(): EditorContent<EXPRESSION, CodeCompletionContext>;
     _test_getDisplay(): EditorDisplay;

@@ -5,6 +5,7 @@
 // underlines), the mouse, focus, the clipboard, and the keys which only act on those (UP and DOWN
 // without completions showing, ENTER without completions, TAB without completions,
 // shortcut-A/X/C/V, shift-F keys for fixes).
+import type { InsertListener } from "../../../lex-editor-completion/gui/lexeditor/completion/InsertListener.js";
 import type { CanonicalLocation } from "../../../../engine/anns/Annotations.js";
 import type { StyledShowable } from "../../../../engine/utility-error/styled/StyledShowable.js";
 import { LexAutoComplete } from "../../../lex-editor-completion/gui/lexeditor/completion/LexAutoComplete.js";
@@ -213,8 +214,16 @@ export class EditorDisplay
         }
         else if (p.furtherDetails !== null)
         {
-            p.furtherDetails.ifRight(furtherDetailsURL => EditorDisplay.openFurtherDetails(furtherDetailsURL.getFirst()));
+            p.furtherDetails.ifRight(furtherDetailsURL => EditorDisplay.openFurtherDetails(furtherDetailsURL.getFirst(), this.content));
         }
+        // Hide for now, will redisplay if user moves caret or types:
+        this.autoComplete.hide(true);
+    }
+
+    // Java: package-visible
+    public isMouseClickImmune(): boolean
+    {
+        return this.autoComplete.isMouseClickImmune();
     }
 
     // Java: package-visible
@@ -245,11 +254,22 @@ export namespace EditorDisplay
         readonly wordSkip: boolean;
     }
 
-    /** Opens a help page (a resource's name); the GUI sets this, until then it does nothing. */
-    export let openFurtherDetails: (resourceName: string) => void = _resourceName => {};
+    type OpenFurtherDetails = (resourceName: string, insertListener: InsertListener) => void;
+    // (A function calling this, as a namespace's exported variable isn't updated by an assignment
+    // within it once transpiled)
+    let openFurtherDetailsImpl: OpenFurtherDetails = () => {};
 
-    export function setOpenFurtherDetails(open: (resourceName: string) => void): void
+    /**
+     * Opens a help page (a resource's name), whose examples insert into the editor; the GUI sets this
+     * (Java opened it in the system's browser).
+     */
+    export function openFurtherDetails(resourceName: string, insertListener: InsertListener): void
     {
-        openFurtherDetails = open;
+        openFurtherDetailsImpl(resourceName, insertListener);
+    }
+
+    export function setOpenFurtherDetails(open: OpenFurtherDetails): void
+    {
+        openFurtherDetailsImpl = open;
     }
 }

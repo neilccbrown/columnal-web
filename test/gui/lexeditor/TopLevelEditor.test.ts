@@ -35,7 +35,7 @@ async function mount(lexer: Lexer<StyledShowable, CodeCompletionContext>, origin
     const changes: StyledShowable[] = [];
     const keysOutside: string[] = [];
     render(defineComponent(() => () => h("div", { style: { padding: "150px 20px 20px" }, onKeydown: (e: KeyboardEvent) => keysOutside.push(e.key) }, [
-        h(TopLevelEditor as never, { ref: editor, lexer, originalContent, editorClass: "test-editor", onChange: (e: StyledShowable) => changes.push(e) }),
+        h(TopLevelEditor as never, { ref: editor, lexer, typeManager: testTypeManager(), originalContent, editorClass: "test-editor", onChange: (e: StyledShowable) => changes.push(e) }),
         h("input", { class: "next-field" }),
     ])));
     await settle();

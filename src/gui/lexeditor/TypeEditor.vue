@@ -16,7 +16,7 @@ const props = defineProps<{
     emptyAllowed: boolean,
     disabled?: boolean,
 }>();
-const emit = defineEmits<{ change: [type: TypeExpression] }>();
+const emit = defineEmits<{ change: [type: TypeExpression], typesChanged: [] }>();
 
 const lexer = new TypeLexer(props.typeManager, props.requireConcreteType, props.emptyAllowed);
 const original = props.originalContent === null ? null : props.originalContent.save(Expression.SaveDestination.toTypeEditor(props.typeManager), TableAndColumnRenames.EMPTY);
@@ -29,9 +29,11 @@ defineExpose({ editor: () => editor.value });
   <TopLevelEditor
     ref="editor"
     :lexer="lexer"
+    :type-manager="typeManager"
     :original-content="original"
     editor-class="type-editor"
     :disabled="disabled"
     @change="t => emit('change', t)"
+    @types-changed="emit('typesChanged')"
   />
 </template>

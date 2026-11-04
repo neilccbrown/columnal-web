@@ -5,7 +5,6 @@
 // and only if there are completions (and the caret is on screen), keeping the position updated
 // on a timer; here show() shows it if there are completions.  The positioning, its
 // EditorDisplayInterface, are in src/gui/lexeditor/TopLevelEditor.vue.
-// PORT-DEFERRED: the immunity of clicks for 400ms after a click hides it (Phase 10).
 import type { LexCompletion } from "./LexCompletion.js";
 import { LexAutoCompleteWindow } from "./LexAutoCompleteWindow.js";
 import type { LexCompletionGroup } from "./LexCompletionGroup.js";
@@ -14,6 +13,12 @@ import type { LexCompletionListener } from "./LexCompletionListener.js";
 export class LexAutoComplete
 {
     private readonly window: LexAutoCompleteWindow;
+    // When the user clicks on the code completion, they can sometimes click more than is needed, especially using
+    // double-click to select an item, when actually single-click on an already-selected item is enough.  This can cause
+    // issues with the click falling through to the item beneath, which they didn't intend.  So we add "click immunity";
+    // for a short period of time after the click that dismisses code completion, further clicks won't register on the
+    // item beneath.  This value is for comparing to Date.now()
+    private clickImmuneUntil = -1;
 
     public constructor(triggerCompletion: LexCompletionListener)
     {
@@ -30,11 +35,19 @@ export class LexAutoComplete
             this.hide(false);
     }
 
-    /** PORT-NOTE: becauseOfMouseClick makes clicks immune for a while, which is left to the GUI. */
-    public hide(_becauseOfMouseClick: boolean): void
+    public hide(becauseOfMouseClick: boolean): void
     {
         this.window.hide();
         this.window.setCompletions([]);
+        if (becauseOfMouseClick)
+        {
+            this.clickImmuneUntil = Date.now() + 400;
+        }
+    }
+
+    public isMouseClickImmune(): boolean
+    {
+        return Date.now() < this.clickImmuneUntil;
     }
 
     public isShowing(): boolean

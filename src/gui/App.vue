@@ -3,6 +3,7 @@
 // so reloading the tab opens it again), with the alerts.  (docs/gui-spec/projects.md)
 import { onBeforeUnmount, shallowRef, useTemplateRef } from "vue";
 import AlertHost from "./components/dialogs/AlertHost.vue";
+import DocWindowHost from "./lexeditor/DocWindowHost.vue";
 import { WorkerTransport, type EngineTransport } from "./engine/transports.js";
 import { projectHash, projectInHash, provideAppContext } from "./project/appContext.js";
 import { ProjectStore } from "./project/ProjectStore.js";
@@ -69,4 +70,5 @@ defineExpose({ mainWindow: () => mainWindow.value });
     />
   </template>
   <AlertHost />
+  <DocWindowHost />
 </template>

@@ -187,8 +187,14 @@ function typesDialogClosed(): void
 {
     const tm = typesManager.value;
     typesOpen.value = null;
-    if (tm === null)
-        return;
+    if (tm !== null)
+        sendTypeInfo(tm);
+}
+
+// Gives the engine a copy's declared types and units (after the Types and Units dialogs, or a fix
+// in an editor which declared one)
+function sendTypeInfo(tm: TypeManager): void
+{
     void engine.client.request("setTypeInfo", typeInfoOf(tm)).then(alert =>
     {
         if (alert !== null)
@@ -364,6 +370,7 @@ defineExpose({
       :initial-column="columnFor?.kind === 'edit' ? { name: columnFor.column, type: columnFor.type, defaultValue: columnFor.defaultValue } : null"
       :initial-focus="columnFor?.kind === 'edit' ? columnFor.focus : 'name'"
       @ok="columnChosen"
+      @types-changed="sendTypeInfo(columnTypeManager)"
     />
     <TypesDialog
       v-if="typesManager !== null"

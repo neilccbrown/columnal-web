@@ -136,7 +136,7 @@ export class ExpressionSaver extends SaverBase<Expression, ExpressionSaver, Op, 
                                 {
                                     try
                                     {
-                                        DocWindow.show(functionName + " function", docURL, toRightOf, locationRecorder.getInsertListener(), null);
+                                        DocWindow.show(functionName + " function", docURL, toRightOf, locationRecorder.getInsertListener(), toRightOf);
                                     }
                                     catch (e)
                                     {

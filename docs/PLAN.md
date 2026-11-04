@@ -943,6 +943,25 @@ Steps (each a checkpoint with the project owner):
    opened from the completions), and what Phase 9 left in the lex editor (above). Tests:
    `TestExpressionEditorInvalid` (it makes the editor directly), and component tests of the editor over the
    snapshot lookup. Then a checkpoint on the lookup approach.
+   - Done: `ExpressionEditor.vue`, over `ColumnLookupCopy` (`src/gui/project/columnLookupCopy.ts`, from the
+     engine's `columnLookup` request, `src/gui/engine/columnLookupInfo.ts`): it answers as
+     `MultipleTableLookup` does, checked by comparing every answer for each table, source and column
+     being edited over tables which recalculate and add columns, depend on each other, or have errors
+     (`test/gui/engine/ColumnLookupCopy.test.ts`); the headless editor tests also all pass over it. The
+     documentation windows (`docWindows.ts`, `DocWindowHost.vue`), opened by the guide fixes and by guide
+     completions (Java opened those in the browser). From Phase 9: fixes which are actions (declaring a
+     unit, which the new-column dialog now sends to the engine; showing a guide; moving a Calculate's
+     expression, through the dialog's `forceCloseDialog`), the popup's middle click, clicks ignored for
+     400 ms after choosing a completion, and the completion list's pinned groups (`LexCompletionList`'s
+     scrolling, ported). Port bugs fixed: choosing a completion didn't hide the completions (Java's
+     `hide(true)` was left out), and `DocWindow.show` and `EditorDisplay.openFurtherDetails` were never set
+     (a namespace's exported variable isn't updated by an assignment inside it, once transpiled). Not
+     ported: Java's popup fade (it couldn't happen) and the completion groups' scrolling animation (the
+     browser's scrolling is smooth). `docs/gui-spec/expression-editor.md`. Tests:
+     `test/gui/lexeditor/ExpressionEditor.test.ts`, `test/gui/expressions/ExpressionEditorInvalid.test.ts`
+     (TestExpressionEditorInvalid, ignored in Java, skipped), and a Create unit case in
+     `TypeQuickFixScreen.test.ts`. Java bug found, kept for now: a function's parameter prompt (with "show
+     doc") never shows, as it needs the function resolved, which happens after the call is built.
 2. The Calculate path: the new-table dialog's Transform (`PickTransformationDialog`: Calculate enabled, the
    others greyed until Phase 11), picking the source table (`PickTableDialog`/`PickTablePane`: typing a
    name, or clicking a table in the grid, with `TableHighlights`' SELECT), the column dialog

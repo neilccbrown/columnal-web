@@ -50,7 +50,11 @@ const props = defineProps<{
     // Java: InitialFocus (the table's name is focused if creating a table, else the column's name)
     initialFocus?: "name" | "type",
 }>();
-const emit = defineEmits<{ ok: [details: ColumnDetails] }>();
+const emit = defineEmits<{
+    ok: [details: ColumnDetails],
+    // A fix in the type editor declared a unit in the type manager (see TopLevelEditor's)
+    typesChanged: [],
+}>();
 
 const tableNameText = shallowRef("");
 const tableId = shallowRef<TableId | null>(null);
@@ -234,6 +238,7 @@ function tableNameKeydown(e: KeyboardEvent): void
             :require-concrete-type="true"
             :empty-allowed="false"
             @change="typeChanged"
+            @types-changed="emit('typesChanged')"
           />
           <label class="edit-column-label">{{ t("edit.column.defaultValue") }}</label>
           <HelpBox help-id="edit-column/column-defaultValue" />

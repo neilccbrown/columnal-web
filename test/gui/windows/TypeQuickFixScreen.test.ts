@@ -12,6 +12,7 @@ import { DataType } from "../../../src/engine/types/data/datatype/DataType.js";
 import { DateTimeInfo } from "../../../src/engine/types/data/datatype/DateTimeInfo.js";
 import { NumberInfo } from "../../../src/engine/types/data/datatype/NumberInfo.js";
 import { TypeId } from "../../../src/engine/types/data/datatype/TypeId.js";
+import type { UnitManager } from "../../../src/engine/types/data/unit/UnitManager.js";
 import { Either } from "../../../src/engine/utility-adt/utility/adt/Either.js";
 import { _test_editors } from "../../../src/gui/lexeditor/TopLevelEditorApi.js";
 import { TFunctionUtil } from "../../engine/tests-functions/fixtures/functions/TFunctionUtil.js";
@@ -47,7 +48,7 @@ async function clickOk(): Promise<void>
     await userEvent.click(document.querySelector(".ok-button")!);
 }
 
-async function testFix(original: string, fixFieldContent: string, fixCssClass: string, expectedResult: DataType): Promise<void>
+async function testFix(original: string, fixFieldContent: string, fixCssClass: string, expected: DataType | ((unitManager: UnitManager) => DataType)): Promise<void>
 {
     const a = app = await renderApp([{ name: "P", content: "" }], 0);
     await waitForLoaded();
@@ -99,6 +100,7 @@ async function testFix(original: string, fixFieldContent: string, fixCssClass: s
     const dataSource = tableManager.getAllTables().find(t => t instanceof ImmediateDataSource)!;
     expect(dataSource.getData().getColumns().length).toBe(1);
     const actual = dataSource.getData().getColumns()[0]!.getType().getType();
+    const expectedResult = expected instanceof DataType ? expected : expected(tableManager.getUnitManager());
     expect(actual.equals(expectedResult), actual.toString() + " vs " + expectedResult.toString()).toBe(true);
 }
 
@@ -134,3 +136,8 @@ describe("TestTypeQuickFix (screen)", () =>
     });
     test("testMissingTupleBrackets", () => testSimpleFix("a:Number,b:Text", ",", DataType.record([["a", DataType.NUMBER], ["b", DataType.TEXT]])));
 });
+
+// Not in Java's test: a fix which is an action, declaring the unit (Java's declared it in the project's
+// own UnitManager; the dialog's is a copy, so the window sends it to the engine)
+test("the Create unit fix declares the unit in the project", () =>
+    testFix("Number{zzz}", "zzz", "key-F1", um => DataType.number(new NumberInfo(um.loadUse("zzz")))));

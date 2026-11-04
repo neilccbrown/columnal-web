@@ -15,6 +15,12 @@ import { Decoration, EditorView, type DecorationSet } from "@codemirror/view";
 import { PopoverAnchor, PopoverContent, PopoverPortal, PopoverRoot } from "reka-ui";
 import { onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from "vue";
 import type { CanonicalLocation } from "../../engine/anns/Annotations.js";
+import type { Expression } from "../../engine/expressions/transformations/expression/Expressions.js";
+import type { ColumnId } from "../../engine/identifiers/id/ColumnId.js";
+import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
+import type { Pair } from "../../engine/utility-adt/utility/adt/Pair.js";
+import { InternalException } from "../../engine/utility-error/error/InternalException.js";
+import { UserException } from "../../engine/utility-error/error/UserException.js";
 import type { StyledShowable } from "../../engine/utility-error/styled/StyledShowable.js";
 import { StyledString } from "../../engine/utility-error/styled/StyledString.js";
 import type { LexCompletion } from "../../gui-logic/lex-editor-completion/gui/lexeditor/completion/LexCompletion.js";
@@ -27,25 +33,36 @@ import { EditorLocationAndErrorRecorder } from "../../gui-logic/lex-editor/gui/l
 import type { Lexer } from "../../gui-logic/lex-editor/gui/lexeditor/Lexer.js";
 import type { TextQuickFix } from "../../gui-logic/lex-editor/gui/lexeditor/TextQuickFix.js";
 import { TopLevelEditor } from "../../gui-logic/lex-editor/gui/lexeditor/TopLevelEditor.js";
+import { showAlert } from "../alerts.js";
 import FixList from "../components/FixList.vue";
 import StyledText from "../components/StyledText.vue";
+import { t } from "../i18n.js";
 import { isMac } from "../shortcuts.js";
 import LexAutoCompleteWindow from "./LexAutoCompleteWindow.vue";
+import { EditorLifetime, type DocWindowAnchor } from "./docWindows.js";
 import { _test_editors, type TopLevelEditorApi } from "./TopLevelEditorApi.js";
 
 type AnyContent = EditorContent<StyledShowable, CodeCompletionContext>;
 
 const props = defineProps<{
     lexer: Lexer<EXPRESSION, CodeCompletionContext>,
+    // (For the fixes which are actions)
+    typeManager: TypeManager,
     // Java: null for a new item, whose errors show once the editor has been focused
     originalContent: string | null,
     // The style class: "type-editor", "unit-editor" or "expression-editor"
     editorClass: string,
     disabled?: boolean,
+    // Java: forceCloseDialog, which only EditColumnExpressionDialog implements: closes the dialog the
+    // editor is in, giving its column name and expression (for a fix which moves them elsewhere)
+    forceCloseDialog?: () => Pair<ColumnId | null, Expression> | null,
 }>();
 const emit = defineEmits<{
     // Java: onChange, with the content saved (forced when the editor is made)
     change: [expression: EXPRESSION],
+    // A fix declared a type or unit in the type manager (Java's changed the project's own; the GUI's
+    // is a copy, which the editor's dialog then sends to the engine)
+    typesChanged: [],
 }>();
 
 const content = new EditorContent<EXPRESSION, CodeCompletionContext>(props.originalContent ?? "", props.lexer);
@@ -75,6 +92,12 @@ const completions = shallowRef<CompletionsShown | null>(null);
 let shownGroups: readonly LexCompletionGroup[] = [];
 
 const host = useTemplateRef<HTMLElement>("host");
+// What the documentation windows the editor opens show beside, and last as long as (Java: its scene)
+const lifetime = new EditorLifetime();
+function docWindowAnchor(): DocWindowAnchor
+{
+    return { element: host.value?.closest(".light-dialog") ?? host.value ?? null, lifetime };
+}
 let view: EditorView | null = null;
 // The display text and selection last given to CodeMirror
 let syncedText = "";
@@ -229,7 +252,7 @@ function caretMoved(caretPos: CanonicalLocation): void
     infoDisplays.clear();
     if (errors.length > 0)
         infoDisplays.set(TopLevelEditor.DisplayType.ERROR, { type: TopLevelEditor.DisplayType.ERROR, text: StyledString.intercalate(StyledString.s("\n"), errors), fixes });
-    for (const [type, value] of content.getDisplayFor(caretPos, null))
+    for (const [type, value] of content.getDisplayFor(caretPos, docWindowAnchor()))
         infoDisplays.set(type, { type, text: value.getFirst(), fixes: value.getSecond() });
     updateShowHide();
 }
@@ -241,20 +264,66 @@ function updateShowHide(): void
     info.value = focused.value ? first : null;
 }
 
-// Java: InformationPopup.triggerFix and TopLevelEditor.makeFixInfo.
-// PORT-DEFERRED: a fix which is an action (Java: QuickFixAction.doAction, such as moving a
-// Calculate column, which closes the dialog) is the expression editor's (Phase 10).
+// Java: InformationPopup.triggerFix and TopLevelEditor.makeFixInfo
 function triggerFix(fixIndex: number): void
 {
     const fix = info.value?.fixes[fixIndex];
     if (fix === undefined)
         return;
-    fix.getReplacement().either_(_action => {}, replacement =>
+    fix.getReplacement().either_(action =>
+    {
+        const declared = declaredTypes();
+        const toRun = action.doAction(props.typeManager, docWindowAnchor());
+        if (toRun !== null)
+        {
+            const latest = props.forceCloseDialog?.() ?? null;
+            if (latest !== null)
+            {
+                // Java: FXUtility.alertOnError_, on the simulation thread
+                try
+                {
+                    toRun(latest);
+                }
+                catch (e)
+                {
+                    if (!(e instanceof UserException || e instanceof InternalException))
+                        throw e;
+                    showAlert({ title: t("error.moving.calculate"), message: e.getLocalizedMessage() ?? "" });
+                }
+            }
+        }
+        else
+        {
+            // Reprocess:
+            content.replaceWholeText(content.getText());
+            if (declaredTypes() !== declared)
+                emit("typesChanged");
+        }
+    }, replacement =>
     {
         content.replaceText(replacement.getFirst().start, replacement.getFirst().end, replacement.getSecond());
     });
-    infoDisplays.clear();
-    updateShowHide();
+    // Java: hidePopup(true), until the caret moves
+    info.value = null;
+}
+
+// The declared types and units, as saved (to see whether a fix changed them)
+function declaredTypes(): string
+{
+    return props.typeManager.getUnitManager().save().join("\n") + "\n" + props.typeManager.save().join("\n");
+}
+
+// Java: the information popup's middle click, which hides it until the caret moves.  (Java also faded
+// the popup out over 2 seconds when the mouse left it with nothing to show, but every change that
+// leaves nothing to show hides it at once, so the fade never happened.)
+function popupMouseUp(e: MouseEvent): void
+{
+    if (e.button === 1)
+    {
+        infoDisplays.clear();
+        updateShowHide();
+        e.preventDefault();
+    }
 }
 
 function updateCompletions(): void
@@ -403,6 +472,9 @@ function mousePressed(e: MouseEvent): boolean
         return false;
     e.preventDefault();
     view.focus();
+    // Clicks just after one which chose a completion are ignored (Java: isMouseClickImmune)
+    if (display.isMouseClickImmune())
+        return true;
     if (e.detail === 2)
         selectWordAt(e.clientX, e.clientY);
     else if (e.detail >= 3)
@@ -410,7 +482,11 @@ function mousePressed(e: MouseEvent): boolean
     else
     {
         positionCaretAt(e.clientX, e.clientY, true);
-        const drag = (m: MouseEvent): void => positionCaretAt(m.clientX, m.clientY, false);
+        const drag = (m: MouseEvent): void =>
+        {
+            if (!display.isMouseClickImmune())
+                positionCaretAt(m.clientX, m.clientY, false);
+        };
         const release = (): void =>
         {
             window.removeEventListener("mousemove", drag);
@@ -600,6 +676,7 @@ watch(() => props.disabled, disabled =>
 
 onBeforeUnmount(() =>
 {
+    lifetime.end();
     view?.destroy();
     view = null;
 });
@@ -617,6 +694,7 @@ const api: TopLevelEditorApi<EXPRESSION> = {
     setContent: (text: string): void => content.replaceWholeText(text),
     hasErrors: (): boolean => content.getErrors().length > 0,
     showAllErrors,
+    isMouseClickImmune: (): boolean => display.isMouseClickImmune(),
     _test_getRawText: (): string => content.getText(),
     _test_getContent: (): EditorContent<EXPRESSION, CodeCompletionContext> => content,
     _test_getDisplay: (): EditorDisplay => display,
@@ -648,6 +726,7 @@ onMounted(() => _test_editors.set(host.value!, api as unknown as TopLevelEditorA
         @interact-outside.prevent
         @escape-key-down.prevent
         @mousedown.prevent
+        @mouseup="popupMouseUp"
       >
         <div class="expression-info-content">
           <StyledText
@@ -706,6 +785,11 @@ onMounted(() => _test_editors.set(host.value!, api as unknown as TopLevelEditorA
     background: white;
     border: 1px solid rgb(128 128 128);
     cursor: text;
+}
+/* Java: ExpressionEditor.getEditorDimension (the others are TopLevelEditor's) */
+.top-level-editor.expression-editor {
+    width: 450px;
+    min-height: 130px;
 }
 .top-level-editor.focused {
     outline: 1px solid var(--focus-color);

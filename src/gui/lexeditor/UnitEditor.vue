@@ -13,7 +13,7 @@ const props = defineProps<{
     originalContent: UnitExpression | null,
     disabled?: boolean,
 }>();
-const emit = defineEmits<{ change: [unit: UnitExpression] }>();
+const emit = defineEmits<{ change: [unit: UnitExpression], typesChanged: [] }>();
 
 const lexer = new UnitLexer(props.typeManager, false);
 const original = props.originalContent === null ? null : props.originalContent.save(Expression.SaveDestination.toUnitEditor(props.typeManager.getUnitManager()), true);
@@ -26,9 +26,11 @@ defineExpose({ editor: () => editor.value });
   <TopLevelEditor
     ref="editor"
     :lexer="lexer"
+    :type-manager="typeManager"
     :original-content="original"
     editor-class="unit-editor"
     :disabled="disabled"
     @change="u => emit('change', u)"
+    @types-changed="emit('typesChanged')"
   />
 </template>

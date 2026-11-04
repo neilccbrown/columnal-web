@@ -49,7 +49,8 @@ import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
 import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
-import { ENGINE_METHODS, type CellContent, type ColumnRecipe, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type ColumnRecipe, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { columnLookupInfo } from "./columnLookupInfo.js";
 
 // How many rows requests are done for each table at once (newest first); older ones are skipped:
 const MAX_ROWS_REQUESTS_PER_TABLE = 2;
@@ -365,6 +366,11 @@ export class EngineHost implements EngineApi
             type: TypeExpression.fromDataType(c.getType().getType()).save(Expression.SaveDestination.TO_FILE, TableAndColumnRenames.EMPTY),
             defaultValue: defaultValue === null ? null : DataTypeUtility.valueToString(defaultValue),
         };
+    }
+
+    public columnLookup(us: string | null, src: string | null): ColumnLookupInfo
+    {
+        return columnLookupInfo(this.tableManager, us, src);
     }
 
     // Java: TransformationEdits.editColumn_IDS

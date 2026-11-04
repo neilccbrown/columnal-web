@@ -215,6 +215,23 @@ describe("ExpressionEditor", () =>
         await vi.waitUntil(() => document.querySelector(".doc-window") === null);
     });
 
+    test("a function's parameter prompt: show doc opens its documentation beside the editor, until the editor goes", async () =>
+    {
+        const { root, hide } = await mount();
+        await focus(root);
+        await keys("abs(");
+        await vi.waitUntil(() => popupText().startsWith("abs(original)"));
+        const showDoc = [...popup()!.querySelectorAll("span")].find(s => s.textContent === "show doc")!;
+        await userEvent.click(showDoc);
+        const docWindow = await vi.waitUntil(() => document.querySelector<HTMLElement>(".doc-window"));
+        expect(docWindow.getAttribute("aria-label")).toBe("abs function");
+        // (Beside the editor, as there's no dialog; kept on screen)
+        const r = root.getBoundingClientRect();
+        expect(docWindow.getBoundingClientRect().top).toBe(r.top);
+        await hide();
+        await vi.waitUntil(() => document.querySelector(".doc-window") === null);
+    });
+
     test("choosing a guide completion opens the guide in a documentation window", async () =>
     {
         const { root } = await mount();

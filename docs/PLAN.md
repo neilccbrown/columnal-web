@@ -960,8 +960,9 @@ Steps (each a checkpoint with the project owner):
      browser's scrolling is smooth). `docs/gui-spec/expression-editor.md`. Tests:
      `test/gui/lexeditor/ExpressionEditor.test.ts`, `test/gui/expressions/ExpressionEditorInvalid.test.ts`
      (TestExpressionEditorInvalid, ignored in Java, skipped), and a Create unit case in
-     `TypeQuickFixScreen.test.ts`. Java bug found, kept for now: a function's parameter prompt (with "show
-     doc") never shows, as it needs the function resolved, which happens after the call is built.
+     `TypeQuickFixScreen.test.ts`. Java bug fixed (agreed, in its own commit): a function's parameter prompt
+     (with "show doc") never showed, as it needed the function resolved, which happens after the call is
+     built; now each prompt looks the function up when it is shown.
 2. The Calculate path: the new-table dialog's Transform (`PickTransformationDialog`: Calculate enabled, the
    others greyed until Phase 11), picking the source table (`PickTableDialog`/`PickTablePane`: typing a
    name, or clicking a table in the grid, with `TableHighlights`' SELECT), the column dialog

@@ -43,15 +43,11 @@ being edited, and the action that moves the expression to a new Calculate, come 
   editor goes), and by choosing a guide completion (Help: Expressions, Conversion, Units, Optional Type;
   centred, titled with the page's title; Java opened these in the system's browser, and so does not close
   them with the editor).
-- A function's parameter prompt has "show doc", which would open the function's page 10 px right of the
-  editor's dialog, level with its top, but see below.
-
-## Java bugs
-
-- A function call's parameter prompt (`abs(number)  show doc`, with the parameter being typed in bold)
-  never shows: it is recorded as the call is built, only if the function is known, but function names are
-  only resolved later, when the expression is checked. So "show doc" can't be reached either. Kept as Java
-  has it, for now.
+- A function call's parameter prompt (`abs(original)  show doc`, with the parameter being typed in bold;
+  between the brackets, or in each argument) has "show doc", which opens the function's page 10 px right
+  of the editor's dialog, level with its top. (Java bug, fixed: the prompt never showed, as it was only
+  recorded if the call's function was known as the call was built, but function names are only resolved
+  later, when the expression is checked.)
 
 ## Web differences
 

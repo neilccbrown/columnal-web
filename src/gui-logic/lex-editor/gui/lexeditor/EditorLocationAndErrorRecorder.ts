@@ -47,7 +47,8 @@ export class EditorLocationAndErrorRecorder
     private readonly positions = new Map<unknown, CanonicalSpan>();
     private readonly types = new Map<Expression, Either<TypeConcretisationError, TypeExp>>();
     // Function takes node that documentation should appear to the right of
-    private readonly entryPrompts: Pair<CanonicalSpan, (toRightOf: unknown) => StyledString>[] = [];
+    // (A prompt can be null: see ExpressionSaver's function call prompts)
+    private readonly entryPrompts: Pair<CanonicalSpan, (toRightOf: unknown) => StyledString | null>[] = [];
     private readonly information = new Map<Expression, Pair<StyledString, readonly TextQuickFix[]>>();
     // Used by DocWindow
     private readonly insertListener: InsertListener;
@@ -263,8 +264,9 @@ export class EditorLocationAndErrorRecorder
         }
         for (const entryPrompt of this.entryPrompts)
         {
-            if (entryPrompt.getFirst().touches(canonIndex))
-                relevantPrompts.push(new Pair(entryPrompt.getSecond()(toRightOf), entryPrompt.getFirst()));
+            const prompt = entryPrompt.getFirst().touches(canonIndex) ? entryPrompt.getSecond()(toRightOf) : null;
+            if (prompt !== null)
+                relevantPrompts.push(new Pair(prompt, entryPrompt.getFirst()));
         }
 
         // (Java's sort is stable, as is this)
@@ -297,7 +299,7 @@ export class EditorLocationAndErrorRecorder
     }
 
     // Java: recordEntryPrompt(Expression, prompt) and recordEntryPrompt(CanonicalSpan, prompt)
-    public recordEntryPrompt(expressionOrSpan: Expression | CanonicalSpan, prompt: (toRightOf: unknown) => StyledString): void
+    public recordEntryPrompt(expressionOrSpan: Expression | CanonicalSpan, prompt: (toRightOf: unknown) => StyledString | null): void
     {
         if (expressionOrSpan instanceof Expression)
         {

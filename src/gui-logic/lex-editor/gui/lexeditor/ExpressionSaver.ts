@@ -153,22 +153,27 @@ export class ExpressionSaver extends SaverBase<Expression, ExpressionSaver, Op, 
 
                             if (callTarget instanceof IdentExpression)
                             {
-                                const func = callTarget.getFunctionDefinition();
-                                if (func !== null)
+                                // PORT-NOTE: bug fix.  Java looked up the function here, but the call target isn't
+                                // resolved until the expression is checked, after it is built, so the prompts were
+                                // never recorded.  Here each prompt looks the function up when it is shown (after
+                                // the check), and there is none if the target isn't a function.
+                                const prompt = (paramIndex: number): (toRightOf: unknown) => StyledString | null => toRightOf =>
                                 {
-                                    const paramNames = func.getParamNames();
-                                    const funcDocURL = ExpressionLexer.makeFuncDocURL(func);
-                                    if (args.expressions.length === 0)
+                                    const func = callTarget.getFunctionDefinition();
+                                    if (func === null || paramIndex >= func.getParamNames().length)
+                                        return null;
+                                    return makeParamPrompt(func.getName(), func.getParamNames(), paramIndex, ExpressionLexer.makeFuncDocURL(func), span)(toRightOf);
+                                };
+                                if (args.expressions.length === 0)
+                                {
+                                    // No params yet, need to add in the empty bit between brackets
+                                    locationRecorder.recordEntryPrompt(c, prompt(0));
+                                }
+                                else
+                                {
+                                    for (let i = 0; i < args.expressions.length; i++)
                                     {
-                                        // No params yet, need to add in the empty bit between brackets
-                                        locationRecorder.recordEntryPrompt(c, makeParamPrompt(func.getName(), paramNames, 0, funcDocURL, span));
-                                    }
-                                    else
-                                    {
-                                        for (let i = 0; i < args.expressions.length && i < paramNames.length; i++)
-                                        {
-                                            locationRecorder.recordEntryPrompt(args.expressions[i]!, makeParamPrompt(func.getName(), paramNames, i, funcDocURL, span));
-                                        }
+                                        locationRecorder.recordEntryPrompt(args.expressions[i]!, prompt(i));
                                     }
                                 }
                             }

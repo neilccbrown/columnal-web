@@ -9,6 +9,7 @@ import { TypeManager } from "../../../src/engine/types/data/datatype/TypeManager
 import type { JellyType } from "../../../src/engine/types/jellytype/JellyTypes.js";
 import { UnitManager } from "../../../src/engine/types/data/unit/UnitManager.js";
 import { ExpressionLexer } from "../../../src/gui-logic/lex-editor/gui/lexeditor/ExpressionLexer.js";
+import { TopLevelEditor } from "../../../src/gui-logic/lex-editor/gui/lexeditor/TopLevelEditor.js";
 import { TypeLexer } from "../../../src/gui-logic/lex-editor/gui/lexeditor/TypeLexer.js";
 import { DummyManager } from "../../engine/tests-functions/fixtures/DummyManager.js";
 import { TFunctionUtil } from "../../engine/tests-functions/fixtures/functions/TFunctionUtil.js";
@@ -56,5 +57,27 @@ describe("Java bug fixes", () =>
             for (let i = 0; i < typeCount; i++)
                 expect(completions, typeCount + " types").toContain("T" + i + "\\Shared");
         }
+    });
+
+    // Java recorded a function call's parameter prompt only if the call's function was known as the
+    // call was built, but it is only resolved later, when the expression is checked: so there were none.
+    test("a function call's parameter prompt", () =>
+    {
+        const mgr = DummyManager.make();
+        const typeManager = mgr.getTypeManager();
+        const lexer = new ExpressionLexer(new SimpleObjectProperty<Expression.ColumnLookup>(TFunctionUtil.dummyColumnLookup()), typeManager, FunctionList.getFunctionLookup(mgr.getUnitManager()), () => TFunctionUtil.createTypeState(typeManager), null);
+        const prompt = (text: string, caret: number): string | undefined =>
+        {
+            const ed = makeEditor(text, lexer);
+            ed.content.positionCaret(caret, true);
+            return ed.content.getDisplayFor(caret, null).get(TopLevelEditor.DisplayType.PROMPT)?.getFirst().toPlain();
+        };
+        // Between the brackets, and in each argument:
+        expect(prompt("abs()", 4)).toBe("abs(original)  show doc");
+        expect(prompt("abs(1)", 4)).toBe("abs(original)  show doc");
+        expect(prompt("replace(\"a\",\"b\",\"c\")", 13)).toBe("replace(to replace, replacement, source)  show doc");
+        // None where the target isn't a function, or past the parameters:
+        expect(prompt("x()", 2)).toBeUndefined();
+        expect(prompt("abs(1,2)", 6)).toBeUndefined();
     });
 });

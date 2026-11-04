@@ -69,7 +69,8 @@ reloading the tab opens it again.
 - After loading, writing is enabled: an empty project is saved at once; otherwise the content loaded is
   kept for undo (Java: `enableWriting`).
 - Each change is saved straight away (Java: `View.modified`, and its table listener): editing or deleting
-  cells, moving a table, adding or removing a table or comment. Changing a column's width is saved after 5
+  cells, moving a table, adding or removing a table or comment, changing a comment's text or size (Java
+  didn't save those: see `comments.md`). Changing a column's width is saved after 5
   seconds without another change of width. The file includes the customised column widths
   (`COLUMNWIDTH <column> <width>` in its display section), which loading sets again.
 - Before each save after a change, the previous save is kept for undo: up to 20, one of any run of the

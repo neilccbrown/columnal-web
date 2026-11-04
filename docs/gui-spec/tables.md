@@ -33,8 +33,8 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   "Tables are either plain data (left) or transformations of other tables (right)", then two columns of
   buttons, each with its title and a small grey explanation: Data Entry ("Type in data directly."), Import
   File..., Import URL..., Comment on the left; Transform and Check on the right, which need a table to
-  exist. Data Entry has the focus. Not yet: everything but Data Entry is disabled (importing and
-  transformations in Phase 11, comments in step 6).
+  exist. Data Entry has the focus. Comment makes a comment (`comments.md`). Not yet: importing and the
+  transformations are disabled (Phase 11).
 - Data Entry opens the column dialog for a new table; OK makes the table at the cell, with that one column
   and no rows. An error doing so shows in an alert ("Error creating first column").
 

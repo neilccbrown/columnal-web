@@ -736,7 +736,7 @@ Steps (each a checkpoint with the project owner):
      `docs/gui-spec/grid.md` (layout, scrolling, cells, column widths, selection, keys, moving tables) and
      `cell-editor.md`.
 
-### Phase 9: Main window and tables (core of `app`)
+### Phase 9: Main window and tables (core of `app`) (done)
 - Main window, menus, initial screen, the project file flow (new/open/save/save-as,
   autosave, recent files), data table creation, and adding and removing rows and
   columns.
@@ -903,11 +903,20 @@ Steps (each a checkpoint with the project owner):
      mark the project modified. The View menu's Find is commented out in Java; Edit's Settings waits for Phase 12.
      Left for later: picking tables by highlighting (SELECT), Phase 11.
 7. Tidy up: PORT-STATUS, the `docs/gui-spec/` inventories, and carry-overs to Phase 10 and 11 here.
+   - Done: PORT-STATUS regenerated (`tests-gui-tables`, `tests-gui-side` and `tests-gui-type-editor` are
+     all ported, as are the Phase 9 tests of `tests-gui-central`); the `docs/gui-spec/` pages brought up to
+     date (`projects.md`, `tables.md`, `types-and-units.md`, `comments.md` are this phase's); what was left
+     for later is under Phases 10 to 13 below. `CreateDataTableTrait` and `EnterColumnDetailsTrait`, named
+     in step 4, weren't needed: Java uses them only in `TestCreateEditTransformation` and tests of
+     `TestTableEdits` that are ignored, so they move to Phase 11.
 
 ### Phase 10: Expression editor
 - Build the expression editor on the editor from Phase 9 (steps 1 and 2): `ExpressionLexer`'s
   completions with the function documentation side panel (`DocWindow`, and the column and table pages
   `ExpressionLexer` makes), quick fixes, and the function documentation popups.
+- From Phase 9 (step 2, `docs/gui-spec/lex-editor.md`): the information popup's fade and the middle click
+  hiding the popups, clicks ignored for 400 ms after the completions hide, the completion list's group
+  layout (`minCollapsed`), and the error popup's fixes that are actions.
 
 **Tests:** `tests-gui-expression-editor`, `…-delete`, `…-further` and `…-position`.
 
@@ -916,6 +925,18 @@ Steps (each a checkpoint with the project owner):
   filter, aggregate/split-by, join, concatenate, hide columns, check, R), plus
   CheckDisplay, ExplanationDisplay, and the import dialogs with their live preview.
 - Wire up clipboard import/export.
+- From Phase 9 (`docs/gui-spec/tables.md`, `cell-editor.md`, `projects.md`):
+  - the new-table dialog's Import File, Import URL, Transform and Check, and pasting into an empty cell
+    to make a table;
+  - offering a Manual Edit when a transformation's cell is edited (`PickManualEditIdentifierDialog`; the
+    edit is cancelled meanwhile), and the "=" guidance (`GuidanceWindow`, making a Calculate);
+  - the table menu's Transform and Custom columns, the "Transform type" recipe, and clicking a hat's
+    parts (their dialogs);
+  - with Phase 10's editor: the add-column arrows of Calculate and Aggregate, editing their columns from
+    the headers, and a cell's "Why?" (explanations);
+  - picking tables by highlighting (`TableHighlights`' SELECT; SOURCE is done);
+  - the View menu's Task Manager and the checks pane, and the checks status bar;
+  - the test helpers `CreateDataTableTrait` and `EnterColumnDetailsTrait`.
 
 **Tests:** `tests-gui-transformations`, `tests-gui-transformations-create-edit`,
 `tests-gui-format`, and the rest of `tests-gui-central`.
@@ -923,6 +944,9 @@ Steps (each a checkpoint with the project owner):
 ### Phase 12: R support via webR
 - Lazy-load webR. Replace `RExecution` with a webR backend that uses the ported
   ConvertToR/ConvertFromR code.
+- From Phase 9 (`docs/gui-spec/projects.md`, `tables.md`): Edit's Settings (`TableManager`'s settings,
+  global, for R), Java's file hashes (which ban R in files not saved by Columnal), and R's "Re-evaluate"
+  in the table menu.
 
 **Tests:** `tests-gui-r`.
 
@@ -932,6 +956,7 @@ Steps (each a checkpoint with the project owner):
   Safari).
 - Deploy as a static site (for example GitHub Pages).
 - Optionally port the book and tutorials.
+- From Phase 9: the blur over the grid behind the new-table dialog.
 
 ## 5. Main risks and how to handle them
 

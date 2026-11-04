@@ -10,7 +10,7 @@ import { menu, menuItem, separator, type MenuItem } from "../components/menus/me
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import NewTableDialog, { type DataOrTransform } from "../components/dialogs/NewTableDialog.vue";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
-import type { EngineAlert, ExporterInfo } from "../engine/protocol.js";
+import type { ColumnLookupInfo, EngineAlert, ExporterInfo, RenameOnEditKind } from "../engine/protocol.js";
 import { download } from "../download.js";
 import { ignoreClosed } from "../engine/EngineClient.js";
 import { provideEngine } from "../engine/useEngine.js";
@@ -20,6 +20,10 @@ import { copyTypeManager, typeInfoOf } from "../project/typeCopy.js";
 import TypesDialog from "./types/TypesDialog.vue";
 import UnitsDialog from "./types/UnitsDialog.vue";
 import EditImmediateColumnDialog, { type ColumnDetails } from "./EditImmediateColumnDialog.vue";
+import EditColumnExpressionDialog from "./EditColumnExpressionDialog.vue";
+import PickTableDialog from "./PickTableDialog.vue";
+import PickTransformationDialog from "./PickTransformationDialog.vue";
+import type { PickingMode } from "../grid/picking.js";
 import ExportDialog from "./ExportDialog.vue";
 import GotoRowDialog from "./GotoRowDialog.vue";
 import EngineGrid from "../grid/EngineGrid.vue";
@@ -111,7 +115,13 @@ async function openColumnDialog(target: ColumnFor): Promise<void>
 function newTableChosen(choice: DataOrTransform, point: { x: number, y: number }): void
 {
     const target = newTable.value;
-    if (target !== null && choice === "DATA")
+    // Java: View.createTable's TRANSFORM: which transformation, then its source table
+    if (target !== null && choice === "TRANSFORM")
+    {
+        pickTransformationAt.value = point;
+        pickTransformationOpen.value = true;
+    }
+    else if (target !== null && choice === "DATA")
         void openColumnDialog({ kind: "table", position: target.position, point });
     // Java: View.createTable's COMMENT, a new comment there
     else if (target !== null && choice === "COMMENT")
@@ -137,9 +147,144 @@ function columnChosen(details: ColumnDetails): void
         void engine.client.request("editColumn", target.display.info.id, target.display.info.version, target.column, column).then(done).catch(ignoreClosed);
 }
 
+// The grid's picking mode, while a dialog picks a table or column from it
+const picking = shallowRef<PickingMode | null>(null);
+
+// Java: PickTransformationDialog, then PickTableDialog (for the transformation's source table)
+const pickTransformationAt = shallowRef<{ x: number, y: number } | null>(null);
+const pickTransformationOpen = shallowRef(false);
+const pickTableAt = shallowRef<{ x: number, y: number } | null>(null);
+const pickTableOpen = shallowRef(false);
+function transformationChosen(name: string, point: { x: number, y: number }): void
+{
+    if (name !== "calculate")
+        return;
+    pickTableAt.value = point;
+    pickTableOpen.value = true;
+    // Java: View.enableTablePickingMode, while the dialog shows (from where the transformation was chosen)
+    picking.value = markRaw<PickingMode>({
+        kind: "table",
+        include: () => true,
+        onPick: picked => void tablePicked(picked.table).catch(ignoreClosed),
+        target: () => document.querySelector(".pick-table-dialog")?.closest(".light-dialog")?.getBoundingClientRect() ?? null,
+        startPoint: point,
+    });
+}
+
+watch(pickTableOpen, isOpen =>
+{
+    if (!isOpen && picking.value?.kind === "table")
+        picking.value = null;
+});
+
+// Java: TransformationInfo.make with the picked table, then TableDisplay.editAfterCreation
+async function tablePicked(src: string): Promise<void>
+{
+    const target = newTable.value;
+    pickTableOpen.value = false;
+    if (target === null)
+        return;
+    const result = await engine.client.request("createTransformation", "calculate", src, target.position.columnIndex, target.position.rowIndex);
+    if ("title" in result)
+    {
+        showAlert(result);
+        return;
+    }
+    // (Once the grid has it)
+    const created = await waitForTable(result.id);
+    if (created !== null)
+        await openCalculateColumnDialog(created, null, "TO_SUGGESTED", "transform.calculate.addInitial");
+}
+
+function waitForTable(id: string): Promise<GridTableDisplay | null>
+{
+    return new Promise(resolve =>
+    {
+        // (The grid's displays, which it makes once the engine's tables have changed)
+        const find = (): GridTableDisplay | null => engineGrid.value?.displays().find(d => d.info.id === id) ?? null;
+        const found = find();
+        if (found !== null)
+        {
+            resolve(found);
+            return;
+        }
+        const stop = watch(find, d =>
+        {
+            if (d !== null)
+            {
+                stop();
+                resolve(d);
+            }
+        });
+    });
+}
+
+// Java: EditColumnExpressionDialog for a Calculate's column: adding one (TableDisplay.addColumnBefore_Calc)
+// or editing one (TransformationEdits.editColumn_Calc)
+interface CalculateColumnFor
+{
+    readonly table: string;
+    readonly column: string | null;
+    readonly expression: string | null;
+    readonly lookupInfo: ColumnLookupInfo;
+    readonly typeManager: TypeManager;
+    readonly rename: RenameOnEditKind;
+    readonly topMessageKey: string | null;
+}
+const calculateColumnFor = shallowRef<CalculateColumnFor | null>(null);
+const calculateColumnOpen = shallowRef(false);
+async function openCalculateColumnDialog(display: GridTableDisplay, column: string | null, rename: RenameOnEditKind, topMessageKey: string | null = null): Promise<void>
+{
+    const src = display.info.calculate?.src;
+    if (src === undefined)
+        return;
+    const typeManager = markRaw(await copyTypeManager(engine.client));
+    const lookupInfo = markRaw(await engine.client.request("columnLookup", display.info.id, src));
+    const expression = column === null ? null : (await engine.client.request("calculateColumn", display.info.id, column))?.expression ?? null;
+    calculateColumnFor.value = { table: display.info.id, column, expression, lookupInfo, typeManager, rename, topMessageKey };
+    calculateColumnOpen.value = true;
+}
+
+watch(calculateColumnOpen, isOpen =>
+{
+    if (!isOpen && picking.value?.kind === "column")
+        picking.value = null;
+});
+
+function calculateColumnChosen(column: string, expression: string): void
+{
+    const target = calculateColumnFor.value;
+    if (target === null)
+        return;
+    void engine.client.request("setCalculateColumn", target.table, target.column, column, expression, target.rename).then(alert =>
+    {
+        if (alert !== null)
+            showAlert(alert);
+    }).catch(ignoreClosed);
+}
+
+// Java: the expression editor's fix, Calculate.makeEditor's moveExpressionToNewCalculation
+function calculateColumnMoved(editingColumn: string, newColumn: string | null, expression: string): void
+{
+    const target = calculateColumnFor.value;
+    if (target === null)
+        return;
+    void engine.client.request("moveCalculateColumn", target.table, editingColumn, newColumn, expression).then(alert =>
+    {
+        if (alert !== null)
+            showAlert(alert);
+    }).catch(ignoreClosed);
+}
+
 // Java: TransformationEdits.editColumn_IDS: the column dialog for the column
 async function editColumn(display: GridTableDisplay, column: string, focus: "name" | "type"): Promise<void>
 {
+    // Java: a Calculate's columns' primary edit operation, editColumn_Calc
+    if (display.info.calculate !== null)
+    {
+        await openCalculateColumnDialog(display, column, "UNNEEDED");
+        return;
+    }
     const details = await engine.client.request("columnDetails", display.info.id, display.info.version, column);
     if (details !== null)
         await openColumnDialog({ kind: "edit", display, column, type: details.type, defaultValue: details.defaultValue, focus });
@@ -203,7 +348,8 @@ function sendTypeInfo(tm: TypeManager): void
 }
 
 provideTableActions({
-    addColumn: (display, beforeColumn) => void openColumnDialog({ kind: "column", display, beforeColumn }),
+    // (Java: TableDisplay.addColumnOperation: a Calculate's is addColumnBefore_Calc)
+    addColumn: (display, beforeColumn) => void (display.info.calculate !== null ? openCalculateColumnDialog(display, null, "IF_OLD_AUTO").catch(ignoreClosed) : openColumnDialog({ kind: "column", display, beforeColumn })),
     editColumn: (display, column, focus) => void editColumn(display, column, focus).catch(ignoreClosed),
     gotoRow: (display, column) =>
     {
@@ -336,6 +482,7 @@ defineExpose({
         ref="engineGrid"
         class="main-grid"
         :manager="manager"
+        :picking="picking"
       />
       <div
         v-if="bannerText !== null"
@@ -360,6 +507,32 @@ defineExpose({
       :centre-on="newTable?.point ?? null"
       :transform-is-valid="engine.tables.tables.value.length > 0"
       @chosen="newTableChosen"
+    />
+    <PickTransformationDialog
+      v-model:open="pickTransformationOpen"
+      :centre-on="pickTransformationAt"
+      @chosen="transformationChosen"
+    />
+    <PickTableDialog
+      v-model:open="pickTableOpen"
+      :tables="engine.tables.tables.value.map(t => t.id)"
+      :exclude="[]"
+      :centre-on="pickTableAt"
+      @picked="table => void tablePicked(table).catch(ignoreClosed)"
+    />
+    <EditColumnExpressionDialog
+      v-if="calculateColumnFor !== null"
+      :key="calculateColumnFor.table + '/' + calculateColumnFor.column + '/' + String(calculateColumnOpen)"
+      v-model:open="calculateColumnOpen"
+      :type-manager="calculateColumnFor.typeManager"
+      :lookup-info="calculateColumnFor.lookupInfo"
+      :initial-name="calculateColumnFor.column"
+      :initial-expression="calculateColumnFor.expression"
+      :top-message-key="calculateColumnFor.topMessageKey"
+      @ok="calculateColumnChosen"
+      @move="calculateColumnMoved"
+      @picking="mode => picking = mode"
+      @types-changed="sendTypeInfo(calculateColumnFor.typeManager)"
     />
     <EditImmediateColumnDialog
       v-if="columnTypeManager !== null"

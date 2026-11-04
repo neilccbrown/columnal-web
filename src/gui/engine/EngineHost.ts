@@ -49,8 +49,14 @@ import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
 import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
-import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type ColumnRecipe, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type ColumnRecipe, type RenameOnEditKind, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 import { columnLookupInfo } from "./columnLookupInfo.js";
+import { RenameOnEdit } from "../../engine/data/data/RenameOnEdit.js";
+import { BracketedStatus } from "../../engine/expressions/transformations/expression/BracketedStatus.js";
+import { ExpressionUtil } from "../../engine/expressions/transformations/expression/ExpressionUtil.js";
+import { HashMap } from "../../engine/java/HashMap.js";
+import { ExpressionVersion } from "../../engine/parsers/grammar/Versions.js";
+import { Calculate } from "../../engine/transformations/transformations/Calculate.js";
 
 // How many rows requests are done for each table at once (newest first); older ones are skipped:
 const MAX_ROWS_REQUESTS_PER_TABLE = 2;
@@ -371,6 +377,90 @@ export class EngineHost implements EngineApi
     public columnLookup(us: string | null, src: string | null): ColumnLookupInfo
     {
         return columnLookupInfo(this.tableManager, us, src);
+    }
+
+    // Java: View's new-table dialog's TRANSFORM: TransformationInfo.make, with the source table picked
+    public createTransformation(_kind: "calculate", src: string, column: number, row: number): { readonly id: string } | EngineAlert
+    {
+        try
+        {
+            const srcTable = this.tableManager.getSingleTableOrThrow(new TableId(src));
+            const make = new Calculate.Info().make(this.tableManager, new CellPosition(CellPosition.row(row), CellPosition.col(column)), () => srcTable);
+            if (make === null)
+                throw new InternalException("No source table");
+            const transformation = this.tableManager.record(make());
+            return { id: transformation.getId().getRaw() };
+        }
+        catch (e)
+        {
+            return alertFor("error.creating.transformation", e);
+        }
+    }
+
+    public calculateColumn(id: string, column: string): { readonly expression: string | null } | null
+    {
+        const calc = this.tables.get(id)?.table;
+        if (!(calc instanceof Calculate))
+            return null;
+        const columnId = new ColumnId(column);
+        // Start with the existing value.
+        let expression: Expression | null = calc.getCalculatedColumns().get(columnId) ?? null;
+        // If that doesn't exist, copy the name of the column if appropriate:
+        try
+        {
+            if (expression === null && calc.getData().getColumns().some(c => c.getName().equals(columnId)))
+                expression = IdentExpression.column(columnId);
+        }
+        catch (e)
+        {
+            if (!(e instanceof UserException || e instanceof InternalException))
+                throw e;
+        }
+        return { expression: expression === null ? null : saveExpression(expression) };
+    }
+
+    // Java: TableDisplay.addColumnBefore_Calc and TransformationEdits.editColumn_Calc
+    public setCalculateColumn(id: string, oldColumn: string | null, newColumn: string, expression: string, rename: RenameOnEditKind): EngineAlert | null
+    {
+        const calc = this.tables.get(id)?.table;
+        if (!(calc instanceof Calculate))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const newCols = Utility.appendToMap(calc.getCalculatedColumns(), new ColumnId(newColumn), this.loadExpression(expression), oldColumn === null ? null : new ColumnId(oldColumn));
+            const toCalculate = new HashMap<ColumnId, Expression>();
+            newCols.forEach((v, k) => toCalculate.set(k, v));
+            const renameOnEdit = rename === "UNNEEDED" ? RenameOnEdit.UNNEEDED : rename === "IF_OLD_AUTO" ? RenameOnEdit.ifOldAuto(Calculate.suggestedName(toCalculate)) : RenameOnEdit.renameToSuggested(Calculate.suggestedName(toCalculate));
+            mgr.edit(calc, newId => new Calculate(mgr, calc.getDetailsForCopy(newId), calc.getSrcTableId(), toCalculate), renameOnEdit);
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor(oldColumn === null ? "error.adding.column" : "error.saving.column", e);
+        }
+    }
+
+    public moveCalculateColumn(id: string, editingColumn: string, newColumn: string | null, expression: string): EngineAlert | null
+    {
+        const calc = this.tables.get(id)?.table;
+        if (!(calc instanceof Calculate))
+            return null;
+        try
+        {
+            calc.makeEditor(new ColumnId(editingColumn)).moveExpressionToNewCalculation()(new Pair(newColumn === null ? null : new ColumnId(newColumn), this.loadExpression(expression)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.moving.calculate", e);
+        }
+    }
+
+    // An expression from the GUI, saved as in a file
+    private loadExpression(expression: string): Expression
+    {
+        return ExpressionUtil.parse(null, expression, ExpressionVersion.latest(), this.tableManager.getTypeManager(), FunctionList.getFunctionLookup(this.tableManager.getUnitManager()));
     }
 
     // Java: TransformationEdits.editColumn_IDS
@@ -889,7 +979,7 @@ export class EngineHost implements EngineApi
             columnNumber,
             columnStyles,
             canAppendRows: error === null && operations.appendRows !== null,
-            canAddColumn: error === null && table instanceof ImmediateDataSource,
+            canAddColumn: error === null && (table instanceof ImmediateDataSource || table instanceof Calculate),
             error,
             display: Table.Display[this.displays.get(table)?.getFirst() ?? Table.Display.ALL] as TableDisplayMode,
             someAltered,
@@ -897,12 +987,14 @@ export class EngineHost implements EngineApi
             canInsertRows: error === null && operations.insertRows !== null,
             canDeleteRows: error === null && operations.deleteRows !== null,
             columnDeletable,
-            // PORT-DEFERRED: editing Calculate's and Aggregate's columns by clicking their headers
-            // (Java: TransformationEdits.editColumn_Calc and editColumn_Agg, Phases 10 and 11)
-            columnHeaderEditable: columnNames.map(() => table instanceof ImmediateDataSource),
+            // (Java: any of a Calculate's columns, TransformationEdits.editColumn_Calc)
+            // PORT-DEFERRED: editing Aggregate's columns by clicking their headers (Java:
+            // TransformationEdits.editColumn_Agg, Phase 11)
+            columnHeaderEditable: columnNames.map(() => table instanceof ImmediateDataSource || table instanceof Calculate),
             columnHeaderClasses,
             columnAfter,
             hat: table instanceof VisitableTransformation ? TableHat.content(this.tableManager, table) : null,
+            calculate: table instanceof Calculate ? { src: table.getSrcTableId().getRaw() } : null,
         };
     }
 
@@ -931,6 +1023,12 @@ export class EngineHost implements EngineApi
             r.resolve(cells);
         }
     }
+}
+
+// An expression for the GUI, saved as in a file (which the GUI loads, and saves for its editor)
+function saveExpression(expression: Expression): string
+{
+    return expression.save(Expression.SaveDestination.TO_FILE, BracketedStatus.DONT_NEED_BRACKETS, TableAndColumnRenames.EMPTY);
 }
 
 function typeText(column: Column): string

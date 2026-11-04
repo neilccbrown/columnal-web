@@ -16,6 +16,10 @@ const props = withDefaults(defineProps<{
     buttonsToSide?: boolean,
     centreOn?: { readonly x: number, readonly y: number } | null,
     resizable?: boolean,
+    // (See LightDialog's)
+    modal?: boolean,
+    defaultButton?: boolean,
+    closeOnEscape?: boolean,
     checkValidity: () => Validity,
     showAllErrors: () => void,
     calculateResult: () => R | null,
@@ -24,6 +28,9 @@ const props = withDefaults(defineProps<{
     buttonsToSide: false,
     centreOn: null,
     resizable: false,
+    modal: true,
+    defaultButton: true,
+    closeOnEscape: true,
 });
 const emit = defineEmits<{
     ok: [result: R | null],
@@ -96,6 +103,9 @@ defineExpose({ notifyModified });
     :buttons-to-side="buttonsToSide"
     :centre-on="centreOn"
     :resizable="resizable"
+    :modal="modal"
+    :default-button="defaultButton"
+    :close-on-escape="closeOnEscape"
     :ok-filter="okFilter"
     @ok="ok"
     @cancel="emit('cancel')"

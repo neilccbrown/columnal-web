@@ -13,6 +13,8 @@ export interface TopLevelEditorApi<EXPRESSION extends StyledShowable>
     isFocused(): boolean;
     selectAll(): void;
     setContent(text: string): void;
+    // Replaces the selection with the text (Java: the column picker's insertion of a column reference)
+    replaceSelection(text: string): void;
     hasErrors(): boolean;
     showAllErrors(): void;
     // Java: isMouseClickImmune, just after a click chose a completion

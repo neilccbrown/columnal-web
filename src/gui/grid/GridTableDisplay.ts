@@ -129,6 +129,25 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
         return this.getPosition().offsetByRowCols(Math.max(0, rows - 1), Math.max(0, columns + (this.hasAddColumnArrows() ? 1 : 0) - 1));
     }
 
+    /**
+     * Java: DataDisplay.getColumnAt: the column at the cell (from the column names to the last data row),
+     * and its bounds, or null.
+     */
+    public getColumnAt(cell: CellPosition): { readonly column: string, readonly bounds: RectangleBounds } | null
+    {
+        const position = this.getPosition();
+        // (Below the table's name)
+        const topDataRow = position.rowIndex + 1;
+        const bottomDataRow = position.rowIndex + Math.max(GridTableDisplay.HEADER_ROWS - 1, GridTableDisplay.HEADER_ROWS + this.currentKnownRows - 1);
+        if (this.info.display === "COLLAPSED" || cell.rowIndex < topDataRow || cell.rowIndex > bottomDataRow)
+            return null;
+        const colIndex = cell.columnIndex - position.columnIndex;
+        const column = this.info.columnNames[colIndex];
+        if (colIndex < 0 || column === undefined)
+            return null;
+        return { column, bounds: new RectangleBounds(new CellPosition(CellPosition.row(topDataRow), cell.columnIndex), new CellPosition(CellPosition.row(bottomDataRow), cell.columnIndex)) };
+    }
+
     // Java: TableDisplay.showAddColumnArrow (and ExpandTableArrowSupplier's, which needs a column)
     private hasAddColumnArrows(): boolean
     {

@@ -12,6 +12,7 @@ import { isMac } from "../../../src/gui/shortcuts.js";
 import { checkProperty, Generator, type GenerationStatus, type SourceOfRandomness } from "../../support/quickcheck.js";
 import { GenUnitDefinition } from "../../engine/tests-functions/fixtures/gen/GenUnitDefinition.js";
 import { getFocusOwner } from "../base/focusOwner.js";
+import { doubleOk } from "../base/doubleOk.js";
 import { push, write } from "../base/keyboard.js";
 import { moveAndDismissPopupsAtPos } from "../base/popup.js";
 import { selectAllCurrentTextField } from "../base/textField.js";
@@ -123,15 +124,6 @@ async function clickOk(): Promise<void>
     const ok = document.querySelector(".ok-button")!.getBoundingClientRect();
     await moveAndDismissPopupsAtPos({ x: ok.left + ok.width / 2, y: ok.top + ok.height / 2 });
     await userEvent.click(document.querySelector(".ok-button")!);
-}
-
-// Java: TFXUtil.doubleOk: OK, and again if the dialog is still there (a popup took the first click)
-async function doubleOk(): Promise<void>
-{
-    await clickOk();
-    await new Promise(resolve => setTimeout(resolve, 300));
-    if (document.querySelector(".ok-button") !== null)
-        await userEvent.click(document.querySelector(".ok-button")!);
 }
 
 // (JavaFX's TableView: Home selects the first row; the rows are each unit's)

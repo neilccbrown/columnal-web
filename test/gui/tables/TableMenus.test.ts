@@ -128,10 +128,11 @@ test("recipes make a transformation of the column, to the right of the others", 
     await vi.waitUntil(() => engineHost(a).tableManager.getAllTables().length === 4);
 
     // A Calculate's own column can be deleted (Java: its TableOperations), one passed through from
-    // its source can't; columns can't be added to it here yet:
+    // its source can't; columns can be added to it (at its end: Java's addColumnBefore_Calc ignored
+    // the column to add before):
     await menuOn("C", "Double");
     expect(document.querySelector(".id-virtGrid-column-delete")).not.toBeNull();
-    expect(document.querySelector(".id-virtGrid-column-addBefore")).toBeNull();
+    expect(document.querySelector(".id-virtGrid-column-addBefore")).not.toBeNull();
     expect(document.querySelector(".id-recipe-average")).not.toBeNull();
     await push("Escape");
     await menuOn("C", "N");

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // The grid of the engine's tables (Java: View's VirtualGrid, with a TableDisplay per table): a
 // GridTableDisplay for each table in the engine's "tables" event, kept up to date.
+import type { PickingMode } from "./picking.js";
 import { markRaw, shallowRef, useTemplateRef, watch } from "vue";
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import { Either } from "../../engine/utility-adt/utility/adt/Either.js";
@@ -15,6 +16,8 @@ const props = defineProps<{
     // Java: View's VirtualGridManager (creating tables, pasting into empty cells, and column widths
     // changing); none, for the tests of the grid alone
     manager?: VirtualGrid.VirtualGridManager | null,
+    // While a dialog picks a table or column from the grid:
+    picking?: PickingMode | null,
 }>();
 const engine = useEngine();
 const tableActions = useTableActions();
@@ -108,5 +111,6 @@ defineExpose({
     :grid="grid"
     :displays="displays"
     :comments="comments"
+    :picking="picking"
   />
 </template>

@@ -692,6 +692,7 @@ const api: TopLevelEditorApi<EXPRESSION> = {
     isFocused: (): boolean => focused.value,
     selectAll: (): void => display.selectAll(),
     setContent: (text: string): void => content.replaceWholeText(text),
+    replaceSelection: (text: string): void => content.replaceSelection(text),
     hasErrors: (): boolean => content.getErrors().length > 0,
     showAllErrors,
     isMouseClickImmune: (): boolean => display.isMouseClickImmune(),

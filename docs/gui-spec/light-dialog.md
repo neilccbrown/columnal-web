@@ -17,6 +17,9 @@ Web: `src/gui/components/dialogs/` (`LightDialog.vue`, `ErrorableLightDialog.vue
   popups don't cover them.
 - Enter presses OK (the default button) unless the focused control uses Enter; Escape presses Cancel.
   Clicking outside does nothing (modal).
+- Not modal (`modal: false`, Java's `Modality.NONE`, for the dialogs which pick a table or column from the
+  grid): nothing is dimmed, and the window can be used meanwhile. Without a default button
+  (`defaultButton: false`), Enter doesn't press OK.
 - Dragging the background moves it. If resizable, the pointer within 5 px of an edge or corner shows a
   resize cursor, and dragging there resizes it (not below its minimum size).
 - A click on the background that doesn't move (still since the press) focuses OK, else Cancel, else

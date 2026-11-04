@@ -501,7 +501,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | stf | 24 / 42 | 6124 / 9337 (66%) |
 | lex-editor | 18 / 21 | 7958 / 8146 (98%) |
 | table-gui | 2 / 7 | 248 / 2794 (9%) |
-| dialogs-non-expression | 1 / 7 | 64 / 1411 (5%) |
+| dialogs-non-expression | 2 / 7 | 798 / 1411 (57%) |
 | app | 5 / 42 | 2231 / 13439 (17%) |
 
 <details><summary>utility-gui</summary>
@@ -653,7 +653,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/AboutDialog.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/AboutDialog.ts` | 63 | – |
-| `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/AutoComplete.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/AutoComplete.ts` | 734 | – |
+| `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/AutoComplete.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/AutoComplete.ts` | 734 | ✅ (parts deferred) |
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/ColumnNameTextField.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/ColumnNameTextField.ts` | 64 | ✅ |
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/HideColumnsDialog.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/HideColumnsDialog.ts` | 58 | – |
 | `dialogs-non-expression/src/main/java/xyz/columnal/gui/dialog/HideColumnsPanel.java` | `src/gui-logic/dialogs-non-expression/gui/dialog/HideColumnsPanel.ts` | 270 | – |
@@ -717,13 +717,13 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | ✅ tests-basic | 17 / 17 | 1783 / 1783 (100%) | 9 / 9 (100%) |
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
-| tests-gui-base | 12 / 26 | 1358 / 4004 (34%) |  |
+| tests-gui-base | 14 / 26 | 2049 / 4004 (51%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
 | tests-gui-central | 7 / 21 | 2016 / 3623 (56%) | 19 / 47 (40%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
-| tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 0 / 68 (0%) |
+| tests-gui-expression-editor | 0 / 1 | 0 / 593 (0%) | 3 / 68 (4%) |
 | tests-gui-expression-editor-delete | 0 / 1 | 0 / 372 (0%) | 0 / 20 (0%) |
-| tests-gui-expression-editor-further | 5 / 8 | 1329 / 1600 (83%) | 121 / 130 (93%) |
+| tests-gui-expression-editor-further | 7 / 8 | 1532 / 1600 (96%) | 130 / 130 (100%) |
 | tests-gui-expression-editor-position | 0 / 1 | 0 / 618 (0%) | 0 / 34 (0%) |
 | tests-gui-format | 3 / 4 | 574 / 920 (62%) | 2 / 6 (33%) |
 | ✅ tests-gui-grid | 4 / 4 | 1049 / 1049 (100%) | 14 / 14 (100%) |
@@ -817,7 +817,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-base/src/testFixtures/java/test/gui/TAppUtil.java` | `test/gui/tests-gui-base/fixtures/gui/TAppUtil.ts` | 110 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/TFXUtil.java` | `test/gui/tests-gui-base/fixtures/gui/TFXUtil.ts` | 345 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestEditorCompletion.java` | `test/gui/tests-gui-base/fixtures/gui/expressionEditor/BaseTestEditorCompletion.ts` | 115 | – |
-| `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorEntry.java` | `test/gui/tests-gui-base/fixtures/gui/expressionEditor/BaseTestExpressionEditorEntry.ts` | 142 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorEntry.java` | `test/gui/base/expressionEditorEntry.ts` | 142 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorError.java` | `test/gui/tests-gui-base/fixtures/gui/expressionEditor/BaseTestExpressionEditorError.ts` | 305 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestQuickFix.java` | `test/gui/tests-gui-base/fixtures/gui/expressionEditor/BaseTestQuickFix.ts` | 251 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/AutoCompleteTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/AutoCompleteTrait.ts` | 103 | – |
@@ -829,7 +829,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ComboUtilTrait.java` | `test/gui/base/comboUtil.ts` | 61 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/CreateDataTableTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/CreateDataTableTrait.ts` | 149 | – |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterColumnDetailsTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/EnterColumnDetailsTrait.ts` | 87 | – |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterExpressionTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/EnterExpressionTrait.ts` | 549 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterExpressionTrait.java` | `test/gui/base/enterExpression.ts` | 549 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterStructuredValueTrait.java` | `test/gui-logic/stf/fixtures/textToType.ts` | 286 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterTypeTrait.java` | `test/gui/base/enterType.ts` | 168 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/FocusOwnerTrait.java` | `test/gui/base/focusOwner.ts` | 58 | ✅ |
@@ -891,7 +891,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-expression-editor/src/test/java/test/gui/expressionEditor/TestExpressionEditor.java` | `test/gui/tests-gui-expression-editor/gui/expressionEditor/TestExpressionEditor.test.ts` | 593 | – (0/68 tests) |
+| `tests-gui-expression-editor/src/test/java/test/gui/expressionEditor/TestExpressionEditor.java` | `test/gui/expressions/ExpressionEditor.test.ts` | 593 | – (3/68 tests) |
 
 </details>
 
@@ -908,10 +908,10 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `tests-gui-expression-editor-further/src/test/java/test/gen/GenInvalidExpressionSource.java` | `test/gui/tests-gui-expression-editor-further/gen/GenInvalidExpressionSource.ts` | 68 | – |
-| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/PropExpressionEditor.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/PropExpressionEditor.test.ts` | 49 | – (0/1 tests) |
+| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/PropExpressionEditor.java` | `test/gui/expressions/PropExpressionEditor.test.ts` | 49 | ✅ (1/1 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorCompletion.test.ts` | 542 | ✅ (30/30 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorInvalid.java` | `test/gui/expressions/ExpressionEditorInvalid.test.ts` | 79 | ✅ (1/1 tests) |
-| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorResolution.java` | `test/gui/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorResolution.test.ts` | 154 | – (0/8 tests) |
+| `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorResolution.java` | `test/gui/expressions/ExpressionEditorResolution.test.ts` | 154 | ✅ (8/8 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorSyntaxError.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorSyntaxError.test.ts` | 260 | ✅ (32/32 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorTypeError.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionEditorTypeError.test.ts` | 161 | ✅ (21/21 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixSyntax.java` | `test/gui-logic/tests-gui-expression-editor-further/gui/expressionEditor/TestExpressionQuickFixSyntax.test.ts` | 287 | ✅ (37/37 tests) |

@@ -5,11 +5,12 @@
 // its tables, handles the keyboard and mouse, and is its Display.  Tables are moved by dragging their
 // name row (Java: HeadedDisplay's MoveDestination overlays, with VirtualGrid's nudge scrolling).  A
 // cell is edited in a DocumentTextField over it (Java: DataCellSupplier's cell, expanded while focused).
-import { computed, nextTick, onBeforeUnmount, onMounted, provide, shallowRef, useTemplateRef } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, provide, shallowRef, useTemplateRef, watch } from "vue";
 import { CellPosition } from "../../engine/data/data/CellPosition.js";
 import { Pair } from "../../engine/utility-adt/utility/adt/Pair.js";
 import type { CellSelection } from "../../gui-logic/stf/gui/grid/CellSelection.js";
 import { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
+import { RectangleBounds } from "../../gui-logic/stf/gui/grid/RectangleBounds.js";
 import { EntireTableSelection } from "../../gui-logic/table-gui/gui/table/EntireTableSelection.js";
 import { isMac } from "../shortcuts.js";
 import { VersionCounter } from "../store/EngineStore.js";
@@ -27,12 +28,15 @@ import GridTable from "./GridTable.vue";
 import { GridTableDisplay } from "./GridTableDisplay.js";
 import { columnHeaderMenu, rowLabelMenu, tableHeaderMenu } from "./tableMenus.js";
 import { arrowPath, HIGHLIGHT, type GridHighlight } from "./highlights.js";
+import type { Picked, PickingMode } from "./picking.js";
 import { VIEWPORT } from "./viewport.js";
 
 const props = defineProps<{
     grid: VirtualGrid,
     displays: readonly GridTableDisplay[],
     comments?: readonly GridCommentDisplay[],
+    // While a dialog picks a table or column from the grid (Java: the window's picking mode):
+    picking?: PickingMode | null,
 }>();
 
 const ROW = VirtualGrid.rowHeight;
@@ -842,6 +846,85 @@ onBeforeUnmount(() =>
     props.grid.setDisplay(null);
 });
 
+// Java: View's picking modes (and TableHighlights.highlightAtScreenPos): a pane over the grid, which
+// highlights what can be picked under the pointer, and picks it on a click
+let picked: Picked | null = null;
+const pickCursor = shallowRef<string | undefined>(undefined);
+
+function pickAt(client: { x: number, y: number }): void
+{
+    const mode = props.picking ?? null;
+    if (mode === null || scroller.value === null)
+        return;
+    const canvas = scroller.value.firstElementChild!.getBoundingClientRect();
+    const p = { x: client.x - canvas.left, y: client.y - canvas.top };
+    const inView = scroller.value.getBoundingClientRect();
+    const pos = client.x >= inView.left && client.x < inView.right && client.y >= inView.top && client.y < inView.bottom ? cellAt(p) : null;
+    let result: { picked: Picked, bounds: RectangleBounds } | null = null;
+    for (const d of pos === null ? [] : props.displays)
+    {
+        if (!d.contains(pos!))
+            continue;
+        if (mode.kind === "table")
+        {
+            if (mode.include(d.info.id, null))
+                result = { picked: { table: d.info.id, column: null }, bounds: new RectangleBounds(d.getPosition(), d.getBottomRightIncl()) };
+        }
+        else
+        {
+            const c = d.getColumnAt(pos!);
+            if (c !== null && mode.include(d.info.id, c.column))
+                result = { picked: { table: d.info.id, column: c.column }, bounds: c.bounds };
+        }
+        if (result !== null)
+            break;
+    }
+    picked = result?.picked ?? null;
+    pickCursor.value = picked !== null ? "pointer" : undefined;
+    if (result === null)
+    {
+        if (highlight.value?.type === "SELECT")
+            highlight.value = null;
+        return;
+    }
+    // The arrow goes from the area's centre to the nearest point of the dialog (Java: getWindowTargetPoint)
+    const b = result.bounds;
+    const left = colLeft(b.topLeftIncl.columnIndex);
+    const top = b.topLeftIncl.rowIndex * ROW;
+    const centre = { x: canvas.left + (left + colLeft(b.bottomRightIncl.columnIndex + 1)) / 2, y: canvas.top + (top + (b.bottomRightIncl.rowIndex + 1) * ROW) / 2 };
+    const target = mode.target();
+    const clamp = (low: number, v: number, high: number): number => Math.max(low, Math.min(v, high));
+    const arrowTo = target === null ? null : { x: clamp(target.left, centre.x, target.right) - canvas.left, y: clamp(target.top, centre.y, target.bottom) - canvas.top };
+    highlight.value = { type: "SELECT", bounds: [b], arrowTo: [arrowTo] };
+}
+
+function pickMove(e: PointerEvent): void
+{
+    pickAt({ x: e.clientX, y: e.clientY });
+}
+
+function pickClick(e: MouseEvent): void
+{
+    if (e.button === 0 && picked !== null)
+        props.picking?.onPick(picked);
+}
+
+function pickWheel(e: WheelEvent): void
+{
+    scroller.value?.scrollBy(e.deltaX, e.deltaY);
+}
+
+watch(() => props.picking ?? null, mode =>
+{
+    picked = null;
+    pickCursor.value = undefined;
+    if (highlight.value?.type === "SELECT")
+        highlight.value = null;
+    // Highlight immediately:
+    if (mode?.startPoint !== null && mode?.startPoint !== undefined)
+        pickAt(mode.startPoint);
+});
+
 defineExpose({
     scroller: () => scroller.value,
     editor: () => editing.value === null ? null : editor.value,
@@ -851,6 +934,16 @@ defineExpose({
 
 <template>
   <div class="table-grid">
+    <div
+      v-if="picking"
+      class="pick-pane"
+      data-testid="pick-pane"
+      :style="{ cursor: pickCursor }"
+      @mousedown.prevent
+      @pointermove="pickMove"
+      @click="pickClick"
+      @wheel.prevent="pickWheel"
+    />
     <div
       class="resizable-column-header"
       data-testid="column-resize-bar"
@@ -1005,6 +1098,9 @@ defineExpose({
 
 <style scoped>
 .table-grid {
+    position: relative;
+    /* (The grid's layers, and the pick pane, stay within it, under the dialogs and menus) */
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     font-family: var(--font-main);
@@ -1076,6 +1172,12 @@ defineExpose({
 .cell-editor {
     position: absolute;
     z-index: 6;
+}
+/* Java: View's pickPaneMouse, over the whole grid */
+.pick-pane {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
 }
 /* virtual-grid.scss: .pick-table-overlay (3 px outside), .table-highlight-arrow */
 .pick-table-overlay {

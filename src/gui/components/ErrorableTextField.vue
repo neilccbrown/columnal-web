@@ -6,8 +6,11 @@
 // text changes, and when anything reactive it reads changes (Java: conversionDependencies).
 import { PopoverAnchor, PopoverArrow, PopoverContent, PopoverPortal, PopoverRoot } from "reka-ui";
 import { computed, shallowRef, useTemplateRef, watch } from "vue";
+import type { AutoComplete } from "../../gui-logic/dialogs-non-expression/gui/dialog/AutoComplete.js";
 import type { ErrorableTextField } from "../../gui-logic/utility-gui/utility/gui/ErrorableTextField.js";
 import { t } from "../i18n.js";
+import { useAutoComplete } from "./autoComplete.js";
+import AutoCompleteList from "./AutoCompleteList.vue";
 import FixList from "./FixList.vue";
 import StyledText from "./StyledText.vue";
 
@@ -22,11 +25,14 @@ const props = withDefaults(defineProps<{
     // Which side of the field the popup is on (Java: withArrowLocation; its default, BOTTOM_CENTER,
     // puts the arrow at the bottom of the popup, so the popup above the field):
     popupSide?: "top" | "bottom" | "left" | "right",
+    // Completions below the field (Java: an AutoComplete on the field), if any; not changed afterwards
+    autoComplete?: AutoComplete.Model<AutoComplete.Completion> | null,
 }>(), {
     placeholder: undefined,
     disabled: false,
     editable: true,
     popupSide: "top",
+    autoComplete: null,
 });
 const emit = defineEmits<{
     // Java: valueProperty(); also emitted at the start:
@@ -36,6 +42,7 @@ const emit = defineEmits<{
 }>();
 
 const field = useTemplateRef<HTMLInputElement>("field");
+const completions = props.autoComplete === null ? null : useAutoComplete(props.autoComplete, text, () => field.value);
 const converted = computed(() => props.converter(text.value));
 const value = computed(() => converted.value.getValue());
 const focused = shallowRef(false);
@@ -56,6 +63,10 @@ const popupOpen = computed(() => (hasError.value || hasWarnings.value) && focuse
 function focusChanged(isFocused: boolean): void
 {
     focused.value = isFocused;
+    if (isFocused)
+        completions?.onFocus();
+    else
+        completions?.onBlur();
     if (!isFocused)
     {
         suppressingErrors.value = false;
@@ -85,7 +96,10 @@ function interactOutside(event: Event): void
 
 function setText(newText: string): void
 {
-    text.value = newText;
+    if (completions !== null)
+        completions.setContentDirect(newText);
+    else
+        text.value = newText;
 }
 
 defineExpose({
@@ -117,6 +131,8 @@ defineExpose({
         :readonly="!editable"
         @focus="focusChanged(true)"
         @blur="focusChanged(false)"
+        @input="completions?.onInput($event)"
+        @keydown="completions?.onKeyDown($event)"
       >
     </PopoverAnchor>
     <PopoverPortal>
@@ -154,6 +170,11 @@ defineExpose({
       </PopoverContent>
     </PopoverPortal>
   </PopoverRoot>
+  <AutoCompleteList
+    v-if="completions !== null"
+    :state="completions"
+    :anchor="field"
+  />
 </template>
 
 <style>

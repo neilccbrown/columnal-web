@@ -22,6 +22,11 @@ const props = withDefaults(defineProps<{
     okFilter?: () => boolean,
     // Java: FXUtility.preventCloseOnEscape (for dialogs whose fields use Escape themselves)
     closeOnEscape?: boolean,
+    // Java: initModality(Modality.NONE): the window behind isn't dimmed, and can be used (for the
+    // dialogs which pick a table or column by clicking it in the grid)
+    modal?: boolean,
+    // Java: OK is the default button, pressed by Enter (EditColumnExpressionDialog turns this off)
+    defaultButton?: boolean,
 }>(), {
     buttons: () => ["cancel", "ok"],
     buttonsToSide: false,
@@ -29,6 +34,8 @@ const props = withDefaults(defineProps<{
     centreOn: null,
     okFilter: () => true,
     closeOnEscape: true,
+    modal: true,
+    defaultButton: true,
 });
 const emit = defineEmits<{
     ok: [],
@@ -39,8 +46,9 @@ const emit = defineEmits<{
 const BUTTON_TEXT: Record<DialogButton, string> = { ok: "OK", cancel: "Cancel", close: "Close" };
 const sortedButtons = computed(() => sortButtons(props.buttons, isWindows()));
 
-const contentComponent = useTemplateRef<{ $el: HTMLElement }>("content");
-const content = computed(() => contentComponent.value?.$el ?? null);
+// The dialog's element (found from its content: when not modal, Reka's DialogContent's root isn't it)
+const inner = useTemplateRef<HTMLElement>("inner");
+const content = computed(() => inner.value?.closest<HTMLElement>(".light-dialog") ?? null);
 const buttonElements = useTemplateRef<HTMLButtonElement[]>("buttonElements");
 
 // Where the dialog is, once it has been placed, moved or resized; null for centred by CSS:
@@ -113,7 +121,7 @@ function inControl(target: EventTarget | null): boolean
 // Enter presses OK (JavaFX: the default button), unless something else has handled it:
 function keydown(e: KeyboardEvent): void
 {
-    if (e.key === "Enter" && !e.defaultPrevented && !e.isComposing && props.buttons.includes("ok")
+    if (e.key === "Enter" && props.defaultButton && !e.defaultPrevented && !e.isComposing && props.buttons.includes("ok")
         && !(e.target instanceof HTMLTextAreaElement) && !(e.target instanceof HTMLButtonElement))
     {
         e.preventDefault();
@@ -215,12 +223,15 @@ defineExpose({ button });
 <template>
   <DialogRoot
     :open="open"
+    :modal="modal"
     @update:open="setOpen"
   >
     <DialogPortal>
-      <DialogOverlay class="light-dialog-overlay" />
+      <DialogOverlay
+        v-if="modal"
+        class="light-dialog-overlay"
+      />
       <DialogContent
-        ref="content"
         class="light-dialog"
         :class="{ 'buttons-to-side': buttonsToSide }"
         :style="[style, cursor !== null ? { cursor } : {}]"
@@ -237,7 +248,10 @@ defineExpose({ button });
         <VisuallyHidden>
           <DialogTitle>{{ label }}</DialogTitle>
         </VisuallyHidden>
-        <div class="light-dialog-content">
+        <div
+          ref="inner"
+          class="light-dialog-content"
+        >
           <slot />
         </div>
         <div

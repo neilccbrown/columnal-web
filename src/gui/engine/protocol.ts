@@ -49,7 +49,12 @@ export interface TableInfo
     readonly columnAfter: readonly (string | null)[];
     // A transformation's "hat", which describes it (Java: TableHat), or null for a data table:
     readonly hat: TableHatInfo | null;
+    // For a Calculate, its source table (its columns are edited with the expression dialog), else null:
+    readonly calculate: { readonly src: string } | null;
 }
+
+/** How an edit renames the table it changes (Java: RenameOnEdit). */
+export type RenameOnEditKind = "UNNEEDED" | "IF_OLD_AUTO" | "TO_SUGGESTED";
 
 /** Which of a table's columns are shown (Java: Table.Display). */
 export type TableDisplayMode = "COLLAPSED" | "ALL" | "ALTERED" | "CUSTOM";
@@ -245,6 +250,27 @@ export interface EngineApi
     /** What an expression editor for a table (us), from the given source table, can refer to. */
     columnLookup(us: string | null, src: string | null): ColumnLookupInfo;
     /**
+     * Makes a transformation (for now, a Calculate) of the source table at the position (Java: the
+     * new-table dialog's Transform: TransformationInfo.make), giving its id, or the error.
+     */
+    createTransformation(kind: "calculate", src: string, column: number, row: number): { readonly id: string } | EngineAlert;
+    /**
+     * A Calculate column's expression (saved as in a file) for its dialog: the column's, or for one the
+     * Calculate doesn't calculate, the source's column by name (Java: TransformationEdits.editColumn_Calc).
+     * Null if there's no such Calculate.
+     */
+    calculateColumn(id: string, column: string): { readonly expression: string | null } | null;
+    /**
+     * Sets a Calculate's column (replacing oldColumn, if given) to the expression, saved as in a file
+     * (Java: TableDisplay.addColumnBefore_Calc and TransformationEdits.editColumn_Calc).
+     */
+    setCalculateColumn(id: string, oldColumn: string | null, newColumn: string, expression: string, rename: RenameOnEditKind): EngineAlert | null;
+    /**
+     * Moves the expression of a Calculate's column being edited to a new Calculate from it (Java:
+     * Calculate.makeEditor's moveExpressionToNewCalculation, a fix in the expression editor).
+     */
+    moveCalculateColumn(id: string, editingColumn: string, newColumn: string | null, expression: string): EngineAlert | null;
+    /**
      * Changes a data table's column: its name, type and default value (Java:
      * TransformationEdits.editColumn_IDS); the tables that use it are updated to its new name.
      */
@@ -307,7 +333,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

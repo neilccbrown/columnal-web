@@ -971,6 +971,23 @@ Steps (each a checkpoint with the project owner):
    (`TransformationEdits`), `editAfterCreation`, Calculate's add-column arrow, and editing a Calculate's
    column from its header. Tests: `EnterExpressionTrait`, `BaseTestExpressionEditorEntry`,
    `PropExpressionEditor`, `TestExpressionEditorResolution`.
+   - Done: `PickTransformationDialog.vue` (only Calculate enabled), `PickTableDialog.vue` (with Java's
+     `AutoComplete`, ported: its logic in `src/gui-logic/dialogs-non-expression/gui/dialog/AutoComplete.ts`,
+     the field in `src/gui/components/autoComplete.ts`, `AutoCompleteField.vue`, and on
+     `ErrorableTextField`), the grid's picking modes (`src/gui/grid/picking.ts`: tables or columns, with
+     the SELECT highlight and its arrow to the dialog), `EditColumnExpressionDialog.vue` (without the side
+     pane and recipes, which wait for Aggregate in Phase 11), and the engine's `createTransformation`,
+     `calculateColumn`, `setCalculateColumn` and `moveCalculateColumn`; a Calculate's add-column arrows and
+     header clicks open the dialog. LightDialog can be non-modal and without a default button (Java's
+     `Modality.NONE` and `setDefaultButton(false)`); the grid is now isolated as a whole (its pick pane
+     covered the dialogs). The dialog checks the expression it is given, so its names are resolved as the
+     Calculate's were (Java's dialog had the Calculate's own expression; here the engine's is loaded from
+     its saved text). `docs/gui-spec/transformations.md`, `autocomplete.md`. Tests:
+     `test/gui/expressions/` (`ExpressionEditorResolution.test.ts`, the first three of TestExpressionEditor
+     in `ExpressionEditor.test.ts`, `PropExpressionEditor.test.ts`, ignored in Java, skipped;
+     `CalculatePath.test.ts`), `test/gui-logic/dialogs-non-expression/AutoComplete.test.ts`, and the test
+     helpers `enterExpression.ts` (`EnterExpressionTrait`), `expressionEditorEntry.ts`
+     (`BaseTestExpressionEditorEntry`) and `doubleOk.ts` (`TFXUtil.doubleOk`).
 3. `TestExpressionEditor` (68 tests) and `TestExpressionEditorDelete` (20).
 4. `TestExpressionEditorPosition` (34: caret positions, clicks and double clicks over the display).
 5. The GUI parts of the tests ported headless: `BaseTestEditorCompletion` and `AutoCompleteTrait` (the

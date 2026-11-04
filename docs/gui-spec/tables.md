@@ -33,8 +33,9 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   "Tables are either plain data (left) or transformations of other tables (right)", then two columns of
   buttons, each with its title and a small grey explanation: Data Entry ("Type in data directly."), Import
   File..., Import URL..., Comment on the left; Transform and Check on the right, which need a table to
-  exist. Data Entry has the focus. Comment makes a comment (`comments.md`). Not yet: importing and the
-  transformations are disabled (Phase 11).
+  exist. Data Entry has the focus. Comment makes a comment (`comments.md`); Transform picks the
+  transformation, then its source table (`transformations.md`). Not yet: importing and Check are disabled
+  (Phase 11).
 - Data Entry opens the column dialog for a new table; OK makes the table at the cell, with that one column
   and no rows. An error doing so shows in an alert ("Error creating first column").
 
@@ -65,8 +66,8 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   default value in each row ("Error adding column" if it fails). "↓" adds a row of default values.
 - Selecting an arrow's cell and pressing Enter does the same.
 - After a change, the tables that depend on the table are re-run, and the project is saved (so Undo goes back
-  to before it). Not yet: the arrows of Calculate and Aggregate tables (whose columns need the expression
-  editor, Phases 10 and 11).
+  to before it). A Calculate's "⟶" opens the column expression dialog for a new column
+  (`transformations.md`). Not yet: Aggregate's arrows (Phase 11).
 
 ## The table name
 
@@ -109,7 +110,8 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   field starts with the column's default; for another type, with that type's. OK changes the
   column: a new type or default value remakes the table, converting each value from its text (those that
   don't convert become invalid values); a new name updates the tables that use the column. Errors: "Error
-  saving column". Not yet: Calculate's and Aggregate's columns (Phases 10 and 11).
+  saving column". Clicking any of a Calculate's columns' names or types opens the column expression dialog
+  for it (`transformations.md`). Not yet: Aggregate's columns (Phase 11).
 - Right-clicking a column name or type shows the column's menu (`id-virtGrid-column-…`, `id-recipe-…`):
   - For a data table: "New column to left", "New column to right" (the column dialog, then the column is
     added there).

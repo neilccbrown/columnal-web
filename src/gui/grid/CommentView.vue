@@ -18,13 +18,20 @@ const props = defineProps<{
 
 const ROW = VirtualGrid.rowHeight;
 
-// Java: the comment's DisplayDocument, whose setAndSave sets the comment's content.  (As in Java,
-// typing changes only the document: see docs/gui-spec/comments.md.)
+// Java: the comment's DisplayDocument, whose setAndSave sets the comment's content.  (In Java typing
+// only changed the document, so typed text was never saved: a bug.  Here leaving the field sets the
+// comment's content to what was typed.)
 class CommentDocument extends DisplayDocument
 {
     public override setAndSave(content: string): void
     {
         props.display.setContent(content);
+    }
+
+    public override focusChanged(focused: boolean): void
+    {
+        if (!focused && this.getText() !== props.display.info.content)
+            this.setAndSave(this.getText());
     }
 }
 
@@ -32,7 +39,7 @@ const document = shallowRef(new CommentDocument(props.display.info.content));
 // (A new document is a new field)
 const documentVersion = shallowRef(0);
 const field = useTemplateRef<InstanceType<typeof DocumentTextField>>("field");
-// The engine's content, as last shown (a change there, from pasting, shows; typing doesn't change it):
+// The engine's content, as last shown (a change there, from pasting, shows):
 let shownContent = props.display.info.content;
 watch(() => { props.display.infoVersion.track(); return props.display.info.content; }, content =>
 {

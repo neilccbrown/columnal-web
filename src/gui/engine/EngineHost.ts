@@ -216,16 +216,18 @@ export class EngineHost implements EngineApi
 
     public setCommentContent(id: string, content: string): void
     {
-        // (Java didn't mark the file as modified: the change is saved with the next one)
+        // (Java didn't mark the file as modified, so the change was only saved with the next one: a bug)
         this.comment(id)?.setContent(content);
         this.tablesChanged();
+        this.modified();
     }
 
     public setCommentBottomRight(id: string, column: number, row: number): void
     {
-        // (As Java, not marked as modified)
+        // (Java didn't mark the file as modified either)
         this.comment(id)?.setBottomRight(new CellPosition(CellPosition.row(row), CellPosition.col(column)));
         this.tablesChanged();
+        this.modified();
     }
 
     public removeComment(id: string): void

@@ -898,9 +898,9 @@ Steps (each a checkpoint with the project owner):
      `test/gui/windows/TypeEdit.test.ts`, `UnitEdit.test.ts` (TestTypeEdit and TestUnitEdit),
      `test/gui/tables/Comments.test.ts`. `GenUnitDefinition` now only uses letters the unit lexer accepts
      (the browser's Unicode data is newer than the generated lexer's, so it made units that couldn't be
-     loaded). Java bugs found, kept for now: typing into a comment never reaches the comment (only pasting
-     sets its text), so typed text isn't saved; and changing a comment's text or size doesn't mark the
-     project modified. The View menu's Find is commented out in Java; Edit's Settings waits for Phase 12.
+     loaded). Java bugs found and fixed (a separate commit): typing into a comment never reached the comment
+     (only pasting set its text), so typed text wasn't saved; and changing a comment's text or size didn't
+     mark the project modified. The View menu's Find is commented out in Java; Edit's Settings waits for Phase 12.
      Left for later: picking tables by highlighting (SELECT), Phase 11.
 7. Tidy up: PORT-STATUS, the `docs/gui-spec/` inventories, and carry-overs to Phase 10 and 11 here.
 

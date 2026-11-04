@@ -73,11 +73,15 @@ test("a comment: made from the new-table dialog, two by two, saved, selected as 
     await vi.waitUntil(() => document.activeElement?.closest(".grid-comment") !== null && document.activeElement?.closest(".grid-comment") !== undefined);
     await write("Hello");
     expect((document.activeElement as HTMLTextAreaElement).value).toBe("Hello");
-    // As Java: typing changes only the field, not the comment (docs/gui-spec/comments.md)
+    // Typing changes only the field until it is left; then the comment has the text, and is saved (Java
+    // did neither: docs/gui-spec/comments.md):
     expect(comments(a)[0]!.getContent()).toBe("");
+    document.querySelector<HTMLElement>("[data-testid=grid]")!.focus();
+    await vi.waitUntil(() => comments(a)[0]?.getContent() === "Hello");
+    await vi.waitUntil(async () => (await a.store.get(shownProject()!))?.content.includes("Hello") === true);
+    expect(element.querySelector("textarea")?.value).toBe("Hello");
 
     // Delete removes it, and selects the cell where it was:
-    document.querySelector<HTMLElement>("[data-testid=grid]")!.focus();
     await keyboardMoveTo(grid(a), pos(12, 2));
     await push("Delete");
     await vi.waitUntil(() => document.querySelector(".grid-comment") === null);
@@ -101,6 +105,8 @@ test("a comment is resized by dragging its bottom right corner; pasted into, and
     element.dispatchEvent(new PointerEvent("pointerup", { ...init, buttons: 0, clientX: to.x, clientY: to.y }));
     await vi.waitUntil(() => comments(a)[0]?.getBottomRight().equals(pos(14, 5)) === true);
     await vi.waitUntil(() => element.getBoundingClientRect().width === 400);
+    // Saved (Java didn't save it until the next change):
+    await vi.waitUntil(async () => (await a.store.get(shownProject()!))?.content.includes("POSITION 2 12 4 3") === true);
 
     // Pasting into a selected comment sets its text (Java: CommentSelection.doPaste), which shows, and
     // copying it copies the text:

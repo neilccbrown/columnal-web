@@ -13,6 +13,7 @@ COMMENT). Styles: `virtual-grid.scss` (`.grid-comment-field`). Web: `src/gui/gri
   the cell where it was is selected). Copy copies its text; paste sets its text (and the field shows it).
 - Near its bottom right corner (8 px), while it isn't being edited, the cursor is a resize cursor; dragging
   sets its bottom right to the cell before the nearest cell corner (at least its top left cell).
-- As in Java (a probable bug), typing into a comment changes only what the field shows: the comment's text
-  (what is saved) is only set by pasting. Also as in Java, changing its text or size doesn't save the
-  project (it is saved with the next change).
+- Leaving the field sets the comment's text to what was typed. (In Java typing changed only what the field
+  showed: the comment's text, which is saved, was only set by pasting.)
+- Changing a comment's text or size saves the project. (Java didn't: the change was saved with the next
+  one.)

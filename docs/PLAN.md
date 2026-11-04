@@ -887,6 +887,21 @@ Steps (each a checkpoint with the project owner):
 6. The Types and Units dialogs (`TypesDialog`, `UnitsDialog`, and their edit dialogs), comments
    (`GridCommentDisplay`), table highlights (`TableHighlights`), and the View menu's other items (find,
    settings). Tests: `TestTypeEdit`, `TestUnitEdit`.
+   - Done: the Types and Units dialogs (`src/gui/windows/types/`, their logic ported as
+     `src/gui-logic/app/gui/TypesDialog.ts` and `UnitsDialog.ts`), on the View menu: they edit a copy of
+     the project's types and units, sent to the engine (`setTypeInfo`, replacing the declared ones) when
+     they close. Comments (`GridCommentDisplay.ts`, `CommentView.vue`; the engine's comment requests, the
+     comments coming with the "tables" event): made from the new-table dialog, edited, resized from the
+     corner, selected, deleted, copied and pasted. Table highlights (`highlights.ts`: Java's
+     `TableHighlights`), for now a hat's source table while its name is hovered (SOURCE); SELECT waits for
+     Phase 11's table picking. `docs/gui-spec/types-and-units.md`, `comments.md`. Tests:
+     `test/gui/windows/TypeEdit.test.ts`, `UnitEdit.test.ts` (TestTypeEdit and TestUnitEdit),
+     `test/gui/tables/Comments.test.ts`. `GenUnitDefinition` now only uses letters the unit lexer accepts
+     (the browser's Unicode data is newer than the generated lexer's, so it made units that couldn't be
+     loaded). Java bugs found, kept for now: typing into a comment never reaches the comment (only pasting
+     sets its text), so typed text isn't saved; and changing a comment's text or size doesn't mark the
+     project modified. The View menu's Find is commented out in Java; Edit's Settings waits for Phase 12.
+     Left for later: picking tables by highlighting (SELECT), Phase 11.
 7. Tidy up: PORT-STATUS, the `docs/gui-spec/` inventories, and carry-overs to Phase 10 and 11 here.
 
 ### Phase 10: Expression editor

@@ -6,6 +6,7 @@ import { SingleUnit } from "../../../../../src/engine/types/data/unit/SingleUnit
 import type { Unit } from "../../../../../src/engine/types/data/unit/Unit.js";
 import { UnitDeclaration } from "../../../../../src/engine/types/data/unit/UnitDeclaration.js";
 import { Either } from "../../../../../src/engine/utility-adt/utility/adt/Either.js";
+import { IdentifierUtility } from "../../../../../src/engine/utility/utility/IdentifierUtility.js";
 import { Pair } from "../../../../../src/engine/utility-adt/utility/adt/Pair.js";
 import { Generator, type GenerationStatus, type SourceOfRandomness } from "../../../../support/quickcheck.js";
 import { GenString } from "../../../tests-basic/fixtures/gen/GenString.js";
@@ -24,9 +25,13 @@ function getValid(): number[]
         const validBuild: number[] = [];
         for (let i = 0; i <= 0x10FFFF; i++)
         {
-            if (isAlphabetic(i)
+            // PORT-NOTE: and the unit lexer accepts it: the browser's Unicode data is newer than the
+            // lexer's (from when the grammar was generated), so has letters the lexer doesn't, which
+            // would make units that can't be loaded.  (Java's Unicode data was the older.)
+            if ((isAlphabetic(i)
                 || isOtherLetter(i)
                 || CURRENCY_SYMBOL.test(String.fromCodePoint(i)))
+                && IdentifierUtility.asUnitIdentifier(String.fromCodePoint(i)) !== null)
                 validBuild.push(i);
         }
         valid = validBuild;

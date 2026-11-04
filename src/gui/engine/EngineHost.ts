@@ -38,7 +38,9 @@ import { TypeState } from "../../engine/expressions/transformations/expression/T
 import { FunctionList } from "../../engine/functions/transformations/function/FunctionList.js";
 import { Mean } from "../../engine/functions/transformations/function/Mean.js";
 import { Sum } from "../../engine/functions/transformations/function/Sum.js";
+import { SaveTag } from "../../engine/identifiers/id/SaveTag.js";
 import { TableAndColumnRenames } from "../../engine/identifiers/id/TableAndColumnRenames.js";
+import { GridComment } from "../../engine/data/data/GridComment.js";
 import { Aggregate } from "../../engine/transformations/transformations/Aggregate.js";
 import { ManualEdit } from "../../engine/transformations/transformations/ManualEdit.js";
 import { Sort } from "../../engine/transformations/transformations/Sort.js";
@@ -74,6 +76,9 @@ export class EngineHost implements EngineApi
     // Each table's columns shown (Java: TableDisplay.columnDisplay, which the table gives its display
     // when it is set, and which the display changes):
     private readonly displays = new Map<Table, Pair<Table.Display, readonly ColumnId[]>>();
+    // The comments, with the ids the GUI knows them by:
+    private readonly comments = new Map<GridComment, string>();
+    private nextCommentId = 1;
     private tablesEventScheduled = false;
     private modifiedEventScheduled = false;
     private rowsQueue: RowsRequest[] = [];
@@ -102,8 +107,18 @@ export class EngineHost implements EngineApi
                 this.addTable(t);
                 this.modified();
             },
-            addComment: () => this.modified(),
-            removeComment: () => this.modified(),
+            addComment: c =>
+            {
+                this.comments.set(c, String(this.nextCommentId++));
+                this.tablesChanged();
+                this.modified();
+            },
+            removeComment: c =>
+            {
+                this.comments.delete(c);
+                this.tablesChanged();
+                this.modified();
+            },
         });
         // Java: the app's ErrorHandler shows errors in an alert (FXUtility.showError)
         const sendAlert = (alert: EngineAlert): void => this.sendEvent({ kind: "alert", alert });
@@ -160,6 +175,64 @@ export class EngineHost implements EngineApi
         // (Each on its own line, as Table.FullSaver writes them)
         const lines = (items: readonly string[]): string => items.map(s => s.endsWith("\n") ? s : s + "\n").join("");
         return { units: lines(this.tableManager.getUnitManager().save()), types: lines(this.tableManager.getTypeManager().save()) };
+    }
+
+    public setTypeInfo(info: TypeInfo): EngineAlert | null
+    {
+        try
+        {
+            // (Units first, which the types can use)
+            const unitManager = this.tableManager.getUnitManager();
+            const typeManager = this.tableManager.getTypeManager();
+            unitManager.clearAllUser();
+            unitManager.loadUserUnits(info.units);
+            typeManager.clearAllUser();
+            typeManager.loadTypeDecls(info.types);
+            // Java: MainWindow's menu items, View.modified after the dialog
+            this.modified();
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.saving.type.change", e);
+        }
+    }
+
+    // Java: View.createTable's COMMENT, a new GridComment
+    public addComment(column: number, row: number): void
+    {
+        this.tableManager.addComment(new GridComment(SaveTag.generateRandom(), "", new CellPosition(CellPosition.row(row), CellPosition.col(column)), 2, 2));
+    }
+
+    private comment(id: string): GridComment | null
+    {
+        for (const [c, cid] of this.comments)
+        {
+            if (cid === id)
+                return c;
+        }
+        return null;
+    }
+
+    public setCommentContent(id: string, content: string): void
+    {
+        // (Java didn't mark the file as modified: the change is saved with the next one)
+        this.comment(id)?.setContent(content);
+        this.tablesChanged();
+    }
+
+    public setCommentBottomRight(id: string, column: number, row: number): void
+    {
+        // (As Java, not marked as modified)
+        this.comment(id)?.setBottomRight(new CellPosition(CellPosition.row(row), CellPosition.col(column)));
+        this.tablesChanged();
+    }
+
+    public removeComment(id: string): void
+    {
+        const c = this.comment(id);
+        if (c !== null)
+            this.tableManager.removeComment(c);
     }
 
     public createDataTable(tableName: string, column: NewColumnDetails, columnIndex: number, rowIndex: number): EngineAlert | null
@@ -720,7 +793,15 @@ export class EngineHost implements EngineApi
         {
             this.tablesEventScheduled = false;
             const tables = [...this.tables.values()].map(t => this.tableInfo(t.table, t.version));
-            this.sendEvent({ kind: "tables", tables });
+            const comments = [...this.comments].map(([c, id]) => ({
+                id,
+                column: c.getPosition().columnIndex,
+                row: c.getPosition().rowIndex,
+                bottomColumn: c.getBottomRight().columnIndex,
+                bottomRow: c.getBottomRight().rowIndex,
+                content: c.getContent(),
+            }));
+            this.sendEvent({ kind: "tables", tables, comments });
         }, 0);
     }
 

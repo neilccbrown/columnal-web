@@ -4,6 +4,7 @@
 import { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
 import { UnitManager } from "../../engine/types/data/unit/UnitManager.js";
 import type { EngineClient } from "../engine/EngineClient.js";
+import type { TypeInfo } from "../engine/protocol.js";
 
 export async function copyTypeManager(client: EngineClient): Promise<TypeManager>
 {
@@ -13,4 +14,12 @@ export async function copyTypeManager(client: EngineClient): Promise<TypeManager
     const typeManager = new TypeManager(unitManager);
     typeManager.loadTypeDecls(info.types);
     return typeManager;
+}
+
+/** The copy's declared types and units, as the engine's typeInfo gives them (to send back to it). */
+export function typeInfoOf(typeManager: TypeManager): TypeInfo
+{
+    // (Each on its own line, as Table.FullSaver writes them)
+    const lines = (items: readonly string[]): string => items.map(s => s.endsWith("\n") ? s : s + "\n").join("");
+    return { units: lines(typeManager.getUnitManager().save()), types: lines(typeManager.save()) };
 }

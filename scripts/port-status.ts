@@ -78,6 +78,8 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java", ["test/gui/windows/BlankMainWindow.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestVirtualGridScrollCoordinates.java", ["test/gui/grid/ScrollCoordinates.test.ts"]],
     ["tests-gui-tables/src/test/java/test/gui/table/TestTableEdits.java", ["test/gui/tables/TableEdits.test.ts"]],
+    ["tests-gui-side/src/test/java/test/gui/TestTypeEdit.java", ["test/gui/windows/TypeEdit.test.ts"]],
+    ["tests-gui-side/src/test/java/test/gui/TestUnitEdit.java", ["test/gui/windows/UnitEdit.test.ts"]],
     ["tests-gui-tables/src/test/java/test/gui/table/TestRowOps.java", ["test/gui/tables/RowOps.test.ts"]],
     ["tests-gui-tables/src/test/java/test/gui/table/TestTableUpdate.java", ["test/gui/tables/TableUpdate.test.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ClickTableLocationTrait.java", ["test/gui/base/clickTableLocation.ts"]],

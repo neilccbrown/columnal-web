@@ -7,7 +7,7 @@
 // re-runs it.
 import { markRaw, shallowRef, type ShallowRef } from "vue";
 import type { EngineClient } from "../engine/EngineClient.js";
-import type { TableInfo } from "../engine/protocol.js";
+import type { CommentInfo, TableInfo } from "../engine/protocol.js";
 
 /** A counter that the engine increments when something changes, and the GUI reads to follow it. */
 export class VersionCounter
@@ -32,6 +32,8 @@ export class EngineTablesStore
 {
     // The tables, in the engine's order; a new array (never mutated) on each change:
     public readonly tables: ShallowRef<readonly TableInfo[]> = shallowRef(markRaw([]));
+    // The comments on the grid, likewise:
+    public readonly comments: ShallowRef<readonly CommentInfo[]> = shallowRef(markRaw([]));
     public readonly stop: () => void;
 
     public constructor(client: EngineClient)
@@ -39,7 +41,10 @@ export class EngineTablesStore
         this.stop = client.listen(event =>
         {
             if (event.kind === "tables")
+            {
                 this.tables.value = markRaw(event.tables);
+                this.comments.value = markRaw(event.comments);
+            }
         });
     }
 }

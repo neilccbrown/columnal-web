@@ -6,7 +6,7 @@ import type { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { showAlert } from "../alerts.js";
 import AboutDialog from "../components/dialogs/AboutDialog.vue";
 import MenuBar from "../components/menus/MenuBar.vue";
-import { menu, menuItem, type MenuItem } from "../components/menus/menus.js";
+import { menu, menuItem, separator, type MenuItem } from "../components/menus/menus.js";
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import NewTableDialog, { type DataOrTransform } from "../components/dialogs/NewTableDialog.vue";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
@@ -16,7 +16,9 @@ import { ignoreClosed } from "../engine/EngineClient.js";
 import { provideEngine } from "../engine/useEngine.js";
 import type { GridTableDisplay } from "../grid/GridTableDisplay.js";
 import { provideTableActions } from "../grid/tableActions.js";
-import { copyTypeManager } from "../project/typeCopy.js";
+import { copyTypeManager, typeInfoOf } from "../project/typeCopy.js";
+import TypesDialog from "./types/TypesDialog.vue";
+import UnitsDialog from "./types/UnitsDialog.vue";
 import EditImmediateColumnDialog, { type ColumnDetails } from "./EditImmediateColumnDialog.vue";
 import ExportDialog from "./ExportDialog.vue";
 import GotoRowDialog from "./GotoRowDialog.vue";
@@ -111,6 +113,9 @@ function newTableChosen(choice: DataOrTransform, point: { x: number, y: number }
     const target = newTable.value;
     if (target !== null && choice === "DATA")
         void openColumnDialog({ kind: "table", position: target.position, point });
+    // Java: View.createTable's COMMENT, a new comment there
+    else if (target !== null && choice === "COMMENT")
+        void engine.client.request("addComment", target.position.columnIndex, target.position.rowIndex).catch(ignoreClosed);
 }
 
 function columnChosen(details: ColumnDetails): void
@@ -166,6 +171,29 @@ async function exporterChosen(exporter: number): Promise<void>
         showAlert(result.alert);
     else
         download(display.info.id + "." + (info.fileTypes[0] ?? "*.dat").replace(/^\*\./, ""), result.data as Uint8Array<ArrayBuffer>, "application/octet-stream");
+}
+
+// Java: View ▸ Types... and Units...: the dialogs change a copy of the project's types and units, which
+// goes to the engine when they close (Java: they changed the project's, then View.modified)
+const typesManager = shallowRef<TypeManager | null>(null);
+const typesOpen = shallowRef<"types" | "units" | null>(null);
+async function openTypesDialog(which: "types" | "units"): Promise<void>
+{
+    typesManager.value = markRaw(await copyTypeManager(engine.client));
+    typesOpen.value = which;
+}
+
+function typesDialogClosed(): void
+{
+    const tm = typesManager.value;
+    typesOpen.value = null;
+    if (tm === null)
+        return;
+    void engine.client.request("setTypeInfo", typeInfoOf(tm)).then(alert =>
+    {
+        if (alert !== null)
+            showAlert(alert);
+    }).catch(ignoreClosed);
 }
 
 provideTableActions({
@@ -250,8 +278,8 @@ function saveItem(): MenuItem
 }
 
 // (Java's Exit is left out: closing the tab does it.)
-// PORT-DEFERRED: Edit's Settings (Phase 12, with R), and the View menu's Types and Units (step 6), and
-// the Task Manager and the checks pane (Phase 11)
+// PORT-DEFERRED: Edit's Settings (Phase 12, with R), and the View menu's Task Manager and checks pane
+// (Phase 11).  (Java's Find is commented out.)
 const menus = computed(() => [
     menu("menu.project",
         menuItem("menu.project.new", () => void newProject()),
@@ -265,7 +293,10 @@ const menus = computed(() => [
         menuItem("menu.edit.undo", () => void session.value?.undo())),
     menu("menu.view",
         // Java: View.gotoRowDialog, the selection's gotoRow
-        menuItem("menu.view.goto.row", () => engineGrid.value?.grid.gotoRow(null))),
+        menuItem("menu.view.goto.row", () => engineGrid.value?.grid.gotoRow(null)),
+        separator(),
+        menuItem("menu.view.types", () => void openTypesDialog("types").catch(ignoreClosed)),
+        menuItem("menu.view.units", () => void openTypesDialog("units").catch(ignoreClosed))),
     menu("menu.help",
         menuItem("menu.help.about", () => { about.value = true; })),
 ]);
@@ -333,6 +364,18 @@ defineExpose({
       :initial-column="columnFor?.kind === 'edit' ? { name: columnFor.column, type: columnFor.type, defaultValue: columnFor.defaultValue } : null"
       :initial-focus="columnFor?.kind === 'edit' ? columnFor.focus : 'name'"
       @ok="columnChosen"
+    />
+    <TypesDialog
+      v-if="typesManager !== null"
+      :open="typesOpen === 'types'"
+      :type-manager="typesManager"
+      @update:open="o => { if (!o) typesDialogClosed(); }"
+    />
+    <UnitsDialog
+      v-if="typesManager !== null"
+      :open="typesOpen === 'units'"
+      :type-manager="typesManager"
+      @update:open="o => { if (!o) typesDialogClosed(); }"
     />
     <GotoRowDialog
       v-model:open="gotoRowOpen"

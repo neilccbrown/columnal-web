@@ -145,8 +145,10 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   that no longer exists has `broken-link`.
 - "◄" at the end collapses it to the transformation's kind ("Calculate ►"), and back; a middle click on it
   does the same. A middle click on the source table's name selects that table.
-- Not yet: what clicking the parts does (Phase 11's dialogs), and highlighting the source table while its
-  name is hovered (step 6, with table highlights).
+- After the pointer has been over the source table's name for 300 ms, that table is highlighted (a green
+  translucent rectangle with a 3 px outline) with a curved green arrow from its centre to where the pointer
+  was (Java: `TableHighlights`, SOURCE), until the pointer leaves the name.
+- Not yet: what clicking the parts does (Phase 11's dialogs).
 
 ## Hover text
 

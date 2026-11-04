@@ -2,7 +2,7 @@
 // A transformation's "hat" (Java: TableHat's TableHatDisplay, a floating item): the text describing it
 // (made in the engine: src/gui-logic/app/gui/table/app/TableHat.ts), above its table if there is
 // room, with a button to collapse it to just the transformation's kind (docs/gui-spec/tables.md).
-import { nextTick, onMounted, shallowRef, useTemplateRef, watch } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from "vue";
 import type { HatSegment, TableHatInfo } from "../engine/protocol.js";
 import { t } from "../i18n.js";
 import { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
@@ -19,6 +19,9 @@ const props = defineProps<{
 const emit = defineEmits<{
     // A source link's middle click (Java: selects the source table)
     selectTable: [tableId: string],
+    // A source link hovered (after 300 ms, as Java's Clickable), at the point on the grid's canvas, or
+    // no longer hovered (null)
+    hoverSource: [hover: { readonly tableId: string, readonly at: { readonly x: number, readonly y: number } } | null],
 }>();
 
 const collapsed = shallowRef(false);
@@ -92,6 +95,35 @@ function segmentClicked(segment: HatSegment, e: MouseEvent): void
     }
 }
 
+// Java: editSourceLink's Clickable.setHovering, which highlights the source table
+let hoverTimer: ReturnType<typeof setTimeout> | null = null;
+function segmentEntered(segment: HatSegment, e: MouseEvent): void
+{
+    segmentLeft();
+    const link = segment.link;
+    if (link?.kind !== "source")
+        return;
+    const canvas = (e.currentTarget as HTMLElement).closest(".grid-canvas")?.getBoundingClientRect();
+    if (canvas === undefined)
+        return;
+    const at = { x: e.clientX - canvas.left, y: e.clientY - canvas.top };
+    hoverTimer = setTimeout(() =>
+    {
+        hoverTimer = null;
+        emit("hoverSource", { tableId: link.tableId, at });
+    }, 300);
+}
+
+function segmentLeft(): void
+{
+    if (hoverTimer !== null)
+        clearTimeout(hoverTimer);
+    hoverTimer = null;
+    emit("hoverSource", null);
+}
+
+onBeforeUnmount(segmentLeft);
+
 // Java: the middle button anywhere on the hat toggles it
 function hatClicked(e: MouseEvent): void
 {
@@ -121,6 +153,8 @@ function hatClicked(e: MouseEvent): void
       :class="segment.classes"
       :title="segment.link === null ? undefined : segment.link.kind === 'source' ? t('source.link.tooltip') : segment.link.tooltipKey !== null ? t(segment.link.tooltipKey) : undefined"
       @auxclick="segmentClicked(segment, $event)"
+      @mouseenter="segmentEntered(segment, $event)"
+      @mouseleave="segmentLeft"
     >{{ segment.text }}</span></template><span
       class="table-hat-collapse"
       :title="collapsed ? 'Show detail' : 'Hide detail'"

@@ -305,7 +305,7 @@ defineExpose({ addToEnd, focusAddButton, clearSelection, items: currentItems });
         v-if="allowAdding"
         ref="addButton"
         type="button"
-        class="fancy-list-add"
+        class="fancy-list-add id-fancylist-add"
         @click="addClicked"
       >
         {{ addButtonText ?? t("fancylist.add") }}

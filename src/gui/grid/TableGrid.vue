@@ -21,14 +21,18 @@ import { useTableActions } from "./tableActions.js";
 import { CellEditDocument, ReadOnlyCellDocument } from "./CellEditDocument.js";
 import ContextMenu from "../components/menus/ContextMenu.vue";
 import type { MenuEntry } from "../components/menus/menus.js";
+import CommentView from "./CommentView.vue";
+import type { GridCommentDisplay } from "./GridCommentDisplay.js";
 import GridTable from "./GridTable.vue";
 import { GridTableDisplay } from "./GridTableDisplay.js";
 import { columnHeaderMenu, rowLabelMenu, tableHeaderMenu } from "./tableMenus.js";
+import { arrowPath, HIGHLIGHT, type GridHighlight } from "./highlights.js";
 import { VIEWPORT } from "./viewport.js";
 
 const props = defineProps<{
     grid: VirtualGrid,
     displays: readonly GridTableDisplay[],
+    comments?: readonly GridCommentDisplay[],
 }>();
 
 const ROW = VirtualGrid.rowHeight;
@@ -39,6 +43,26 @@ const scrollLeft = shallowRef(0);
 const viewWidth = shallowRef(0);
 const viewHeight = shallowRef(0);
 provide(VIEWPORT, { scrollTop, scrollLeft, viewWidth, viewHeight });
+// Java: TableHighlights, the grid's highlighted areas
+const highlight = shallowRef<GridHighlight | null>(null);
+provide(HIGHLIGHT, highlight);
+const highlightShapes = computed(() =>
+{
+    layout.track();
+    const h = highlight.value;
+    if (h === null)
+        return [];
+    return h.bounds.map((b, i) =>
+    {
+        const left = colLeft(b.topLeftIncl.columnIndex);
+        const top = b.topLeftIncl.rowIndex * ROW;
+        const width = colLeft(b.bottomRightIncl.columnIndex + 1) - left;
+        const height = (b.bottomRightIncl.rowIndex - b.topLeftIncl.rowIndex + 1) * ROW;
+        const centre = { x: left + width / 2, y: top + height / 2 };
+        const to = h.arrowTo[i] ?? null;
+        return { rect: { left: left + "px", top: top + "px", width: width + "px", height: height + "px" }, centre, path: to === null ? null : arrowPath(centre, to) };
+    });
+});
 // How many times a table's window has changed (Java's tests counted layouts):
 let windowChanges = 0;
 
@@ -158,6 +182,15 @@ function keyboardActivate(position: CellPosition): void
     {
         createTable(position, cellCentre(position));
         return;
+    }
+    // Java: a comment's floating item's keyboardActivate, which focuses its field
+    for (const c of props.comments ?? [])
+    {
+        if (c.contains(position))
+        {
+            c.requestFocus();
+            return;
+        }
     }
     for (const d of props.displays)
     {
@@ -346,8 +379,8 @@ function onClick(e: MouseEvent): void
     if (e.button !== 0 || !still || !(e.target instanceof Element) || e.target.closest(".cell-editor") !== null)
         return;
     const p = canvasPoint(e);
-    // (The table name field, and a hat, handle their own clicks)
-    if (e.target.closest(".table-name-text-field, .table-hat") !== null)
+    // (The table name field, a hat, and a comment, handle their own clicks)
+    if (e.target.closest(".table-name-text-field, .table-hat, .grid-comment") !== null)
         return;
     // Java: HeadedDisplay's table header selects the entire table:
     if (e.target.closest(".table-title") !== null)
@@ -882,6 +915,13 @@ defineExpose({
               :style="{ left: x + 'px' }"
             />
           </div>
+          <CommentView
+            v-for="c in comments ?? []"
+            :key="'comment-' + c.info.id"
+            :display="c"
+            :grid="grid"
+            :layout="layout"
+          />
           <GridTable
             v-for="d in displays"
             :key="d.getSortKey()"
@@ -913,6 +953,27 @@ defineExpose({
           >
             {{ t("create.table") }}
           </button>
+          <template
+            v-for="(shape, i) in highlightShapes"
+            :key="'highlight' + i"
+          >
+            <div
+              class="pick-table-overlay"
+              :class="highlight?.type === 'SOURCE' ? 'pick-source' : 'pick-select'"
+              :style="shape.rect"
+            />
+            <svg
+              v-if="shape.path !== null"
+              class="table-highlight-arrow-svg"
+              :style="{ left: shape.centre.x + 'px', top: shape.centre.y + 'px' }"
+            >
+              <path
+                class="table-highlight-arrow"
+                :class="highlight?.type === 'SOURCE' ? 'pick-source' : 'pick-select'"
+                :d="shape.path"
+              />
+            </svg>
+          </template>
           <div
             v-if="hoverTip !== null"
             class="virtual-grid-tooltip-flow"
@@ -1015,6 +1076,36 @@ defineExpose({
 .cell-editor {
     position: absolute;
     z-index: 6;
+}
+/* virtual-grid.scss: .pick-table-overlay (3 px outside), .table-highlight-arrow */
+.pick-table-overlay {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+    background: var(--table-pick-overlay-fill);
+    outline: 3px solid var(--table-pick-overlay-stroke);
+}
+.pick-table-overlay.pick-source {
+    background: var(--table-source-overlay-fill);
+    outline-color: var(--table-source-overlay-stroke);
+}
+.table-highlight-arrow-svg {
+    position: absolute;
+    z-index: 5;
+    width: 1px;
+    height: 1px;
+    overflow: visible;
+    pointer-events: none;
+}
+.table-highlight-arrow {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: var(--table-pick-overlay-stroke);
+}
+.table-highlight-arrow.pick-source {
+    stroke: var(--table-source-overlay-stroke);
 }
 /* virtual-grid.scss: .virtual-grid-tooltip-flow (at most 200 px wide, Java: HoverTip) */
 .virtual-grid-tooltip-flow {

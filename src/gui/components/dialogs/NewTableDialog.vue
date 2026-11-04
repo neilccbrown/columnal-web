@@ -29,9 +29,9 @@ interface ExplainedButton
     readonly disabled: boolean;
 }
 
-// PORT-DEFERRED: importing (Phase 11), comments (Phase 9 step 6), and transformations and checks
+// PORT-DEFERRED: importing, and transformations and checks
 // (Phase 11) are disabled until they're built
-const NOT_YET: ReadonlySet<DataOrTransform> = new Set(["IMPORT_FILE", "IMPORT_URL", "COMMENT", "TRANSFORM", "CHECK"]);
+const NOT_YET: ReadonlySet<DataOrTransform> = new Set(["IMPORT_FILE", "IMPORT_URL", "TRANSFORM", "CHECK"]);
 const button = (choice: DataOrTransform, titleKey: string, explanationKey: string, disabled: boolean = false): ExplainedButton =>
     ({ choice, titleKey, explanationKey, disabled: disabled || NOT_YET.has(choice) });
 

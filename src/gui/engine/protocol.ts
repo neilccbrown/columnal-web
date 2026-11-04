@@ -127,6 +127,20 @@ export interface NewColumnDetails
     readonly defaultValue: string;
 }
 
+/**
+ * A comment on the grid (Java: GridComment): an id the engine gives it, its top left and bottom right
+ * cells, and its text.
+ */
+export interface CommentInfo
+{
+    readonly id: string;
+    readonly column: number;
+    readonly row: number;
+    readonly bottomColumn: number;
+    readonly bottomRow: number;
+    readonly content: string;
+}
+
 /** The types and units the user declared, as saved in a file (each item's lines, in order). */
 export interface TypeInfo
 {
@@ -155,6 +169,19 @@ export interface EngineApi
     save(displayDetailLines: readonly string[]): string;
     /** The declared types and units, for the GUI's editors (which need a TypeManager of their own). */
     typeInfo(): TypeInfo;
+    /**
+     * Replaces the declared types and units with those given (Java: the Types and Units dialogs changed
+     * the TypeManager and UnitManager as they went; here they change a copy, which is then sent).
+     */
+    setTypeInfo(info: TypeInfo): EngineAlert | null;
+    /** Adds an empty comment, two columns by two rows, at the cell (Java: View.createTable, for a comment). */
+    addComment(column: number, row: number): void;
+    /** Sets a comment's text (Java: its DisplayDocument's setAndSave). */
+    setCommentContent(id: string, content: string): void;
+    /** Sets a comment's bottom right cell (Java: GridCommentDisplay, resizing). */
+    setCommentBottomRight(id: string, column: number, row: number): void;
+    /** Removes a comment (Java: CommentSelection.doDelete). */
+    removeComment(id: string): void;
     /**
      * Makes a data table with one column (Java: View.createTable, for a data table); its name, if
      * blank, is made up.  Gives an alert if it failed.
@@ -242,11 +269,11 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:
-    | { readonly kind: "tables", readonly tables: readonly TableInfo[] }
+    | { readonly kind: "tables", readonly tables: readonly TableInfo[], readonly comments: readonly CommentInfo[] }
     // An error after a change, from re-running the tables that depend on a table (Java: an alert):
     | { readonly kind: "alert", readonly alert: EngineAlert }
     // Something saved in the file changed (Java: what called View.modified, or saved), so it should be

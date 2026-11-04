@@ -16,7 +16,9 @@ import { type CellDisplay, columnDisplays, numberFontsReady, waitForNumberFonts 
 import { EMPTY_WINDOW, tableWindow, type TableWindow } from "./gridWindow.js";
 import { GridTableDisplay } from "./GridTableDisplay.js";
 import { useTableActions } from "./tableActions.js";
+import { useHighlight } from "./highlights.js";
 import TableHatView from "./TableHatView.vue";
+import { RectangleBounds } from "../../gui-logic/stf/gui/grid/RectangleBounds.js";
 import { VIEWPORT } from "./viewport.js";
 
 const props = defineProps<{
@@ -114,6 +116,23 @@ function selectTable(tableId: string): void
     const target = props.grid.getGridAreas().find(a => a instanceof GridTableDisplay && a.info.id === tableId);
     if (target instanceof GridTableDisplay)
         props.grid.select(new EntireTableSelection(target, target.getPosition().columnIndex));
+}
+
+// Java: editSourceLink's hovering: TableHighlights.highlightAtScreenPos, the source table (SOURCE),
+// with an arrow to where the pointer was
+const highlight = useHighlight();
+function hoverSource(hover: { readonly tableId: string, readonly at: { readonly x: number, readonly y: number } } | null): void
+{
+    if (highlight === null)
+        return;
+    const source = hover === null ? undefined : props.grid.getGridAreas().find(a => a instanceof GridTableDisplay && a.info.id === hover.tableId);
+    if (hover === null || source === undefined)
+    {
+        // Java: stopHighlightingGridArea
+        highlight.value = null;
+        return;
+    }
+    highlight.value = { type: "SOURCE", bounds: [new RectangleBounds(source.getPosition(), source.getBottomRightIncl())], arrowTo: [hover.at] };
 }
 
 // --- The column headers (Java: DataDisplay's ColumnNameItem and ColumnTypeItem) -------------------
@@ -332,6 +351,7 @@ watchEffect(() =>
     :whole-table-width="geometry.wholeWidth"
     :table-name-width="nameWidth"
     @select-table="selectTable"
+    @hover-source="hoverSource"
   />
   <template v-if="showAddRowArrows">
     <button

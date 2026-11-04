@@ -502,7 +502,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | lex-editor | 18 / 21 | 7958 / 8146 (98%) |
 | table-gui | 2 / 7 | 248 / 2794 (9%) |
 | dialogs-non-expression | 1 / 7 | 64 / 1411 (5%) |
-| app | 3 / 42 | 1317 / 13439 (10%) |
+| app | 5 / 42 | 2231 / 13439 (17%) |
 
 <details><summary>utility-gui</summary>
 
@@ -690,9 +690,9 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `app/src/main/java/xyz/columnal/gui/SelectColumnDialog.java` | `src/gui-logic/app/gui/SelectColumnDialog.ts` | 222 | – |
 | `app/src/main/java/xyz/columnal/gui/TableListDialog.java` | `src/gui-logic/app/gui/TableListDialog.ts` | 164 | – |
 | `app/src/main/java/xyz/columnal/gui/TaskManagerWindow.java` | `src/gui-logic/app/gui/TaskManagerWindow.ts` | 79 | – |
-| `app/src/main/java/xyz/columnal/gui/TypesDialog.java` | `src/gui-logic/app/gui/TypesDialog.ts` | 491 | – |
+| `app/src/main/java/xyz/columnal/gui/TypesDialog.java` | `src/gui-logic/app/gui/TypesDialog.ts` | 491 | ✅ |
 | `app/src/main/java/xyz/columnal/gui/UndoManager.java` | `src/gui-logic/app/gui/UndoManager.ts` | 215 | ✅ |
-| `app/src/main/java/xyz/columnal/gui/UnitsDialog.java` | `src/gui-logic/app/gui/UnitsDialog.ts` | 423 | – |
+| `app/src/main/java/xyz/columnal/gui/UnitsDialog.java` | `src/gui-logic/app/gui/UnitsDialog.ts` | 423 | ✅ |
 | `app/src/main/java/xyz/columnal/gui/View.java` | `src/gui-logic/app/gui/View.ts` | 1513 | – |
 | `app/src/main/java/xyz/columnal/gui/highlights/TableHighlights.java` | `src/gui-logic/app/gui/highlights/TableHighlights.ts` | 317 | – |
 | `app/src/main/java/xyz/columnal/gui/recipe/ExpressionRecipe.java` | `src/gui-logic/app/gui/recipe/ExpressionRecipe.ts` | 50 | – |
@@ -729,7 +729,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-gui-grid | 4 / 4 | 1049 / 1049 (100%) | 14 / 14 (100%) |
 | ✅ tests-gui-numbers | 1 / 1 | 380 / 380 (100%) | 14 / 14 (100%) |
 | tests-gui-r | 2 / 4 | 770 / 1147 (67%) | 10 / 27 (37%) |
-| tests-gui-side | 0 / 2 | 0 / 645 (0%) | 0 / 8 (0%) |
+| ✅ tests-gui-side | 2 / 2 | 645 / 645 (100%) | 8 / 8 (100%) |
 | ✅ tests-gui-tables | 3 / 3 | 1635 / 1635 (100%) | 12 / 12 (100%) |
 | tests-gui-transformations | 0 / 8 | 0 / 2251 (0%) | 0 / 22 (0%) |
 | tests-gui-transformations-create-edit | 0 / 1 | 0 / 651 (0%) | 0 / 2 (0%) |
@@ -971,8 +971,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-side/src/test/java/test/gui/TestTypeEdit.java` | `test/gui/tests-gui-side/gui/TestTypeEdit.test.ts` | 391 | – (0/4 tests) |
-| `tests-gui-side/src/test/java/test/gui/TestUnitEdit.java` | `test/gui/tests-gui-side/gui/TestUnitEdit.test.ts` | 254 | – (0/4 tests) |
+| `tests-gui-side/src/test/java/test/gui/TestTypeEdit.java` | `test/gui/windows/TypeEdit.test.ts` | 391 | ✅ (4/4 tests) |
+| `tests-gui-side/src/test/java/test/gui/TestUnitEdit.java` | `test/gui/windows/UnitEdit.test.ts` | 254 | ✅ (4/4 tests) |
 
 </details>
 

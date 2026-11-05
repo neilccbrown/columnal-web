@@ -28,4 +28,6 @@ jobs:
         with:
           name: gui-test-failures
           path: .vitest/
+          # (.vitest is hidden, which upload-artifact otherwise leaves out)
+          include-hidden-files: true
           retention-days: 14

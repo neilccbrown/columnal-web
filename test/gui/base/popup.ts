@@ -21,7 +21,21 @@ async function middleClickAt(p: { x: number, y: number }): Promise<void>
     if (element === null)
         return;
     const box = element.getBoundingClientRect();
-    await userEvent.click(page.elementLocator(element), { button: "middle", position: { x: p.x - box.left, y: p.y - box.top }, force: true });
+    // On Linux, a middle click in an editable field pastes the last selected text there (and moves the
+    // caret), which JavaFX didn't do: so its default is prevented.
+    const preventPaste = (e: MouseEvent): void => { if (e.button === 1) e.preventDefault(); };
+    const events = ["mousedown", "mouseup", "auxclick"] as const;
+    for (const type of events)
+        window.addEventListener(type, preventPaste, true);
+    try
+    {
+        await userEvent.click(page.elementLocator(element), { button: "middle", position: { x: p.x - box.left, y: p.y - box.top }, force: true });
+    }
+    finally
+    {
+        for (const type of events)
+            window.removeEventListener(type, preventPaste, true);
+    }
 }
 
 /** Moves to the point (client coordinates), and middle-clicks until no popup is there (at most 10 times). */

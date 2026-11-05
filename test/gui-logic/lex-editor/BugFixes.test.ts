@@ -107,4 +107,23 @@ describe("Java bug fixes", () =>
             expect(save(loaded)).toBe(saved);
         }
     });
+
+    // Java saved a call with no arguments as f(), which its expression grammars (needing at least one
+    // argument) couldn't load.  (The first grammar's change is for files of its version.)
+    test("a call with no arguments survives saving and loading", () =>
+    {
+        const mgr = DummyManager.make();
+        const typeManager = mgr.getTypeManager();
+        const functionLookup = FunctionList.getFunctionLookup(mgr.getUnitManager());
+        const lexer = new ExpressionLexer(new SimpleObjectProperty<Expression.ColumnLookup>(TFunctionUtil.dummyColumnLookup()), typeManager, functionLookup, () => TFunctionUtil.createTypeState(typeManager), null);
+        const save = (e: Expression): string => e.save(Expression.SaveDestination.TO_FILE, BracketedStatus.DONT_NEED_BRACKETS, TableAndColumnRenames.EMPTY);
+        for (const src of ["element()", "1+element()", "from text to(type{Number},element())"])
+        {
+            const original = lexer.process(src, 0, NO_INSERT).result;
+            const saved = save(original);
+            const loaded = ExpressionUtil.parse(null, saved, ExpressionVersion.latest(), typeManager, functionLookup);
+            // (The editor's expression has its function resolved, which loading leaves to checking)
+            expect(save(loaded), src + " saved as " + saved).toBe(saved);
+        }
+    });
 });

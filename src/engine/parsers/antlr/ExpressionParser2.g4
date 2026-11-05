@@ -48,7 +48,8 @@ invalidOpItem : expression;
 invalidOpExpression : INVALIDOPS OPEN_BRACKET (invalidOpItem (COMMA invalidOpItem)*)? CLOSE_BRACKET;
 
 callTarget : ident | unfinished;
-callExpression : CALL callTarget OPEN_BRACKET (topLevelExpression (COMMA topLevelExpression)*) CLOSE_BRACKET;
+// Port change: the arguments are optional (Java's needed one, but a call with none is saved as f()):
+callExpression : CALL callTarget OPEN_BRACKET (topLevelExpression (COMMA topLevelExpression)*)? CLOSE_BRACKET;
 
 recordExpression : OPEN_BRACKET singleIdent COLON topLevelExpression (COMMA singleIdent COLON topLevelExpression)* CLOSE_BRACKET;
 arrayExpression : OPEN_SQUARE (topLevelExpression (COMMA topLevelExpression)*)? CLOSE_SQUARE;

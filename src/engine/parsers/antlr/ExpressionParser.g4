@@ -56,7 +56,8 @@ constructorExpression : CONSTRUCTOR typeName SCOPE constructorName;
 
 standardFunction : FUNCTION ident;
 callTarget : varRef | standardFunction | constructorExpression | unfinished;
-callExpression : CALL callTarget OPEN_BRACKET (topLevelExpression (COMMA topLevelExpression)*) CLOSE_BRACKET;
+// Port change: the arguments are optional (Java's needed one, but a call with none is saved as f()):
+callExpression : CALL callTarget OPEN_BRACKET (topLevelExpression (COMMA topLevelExpression)*)? CLOSE_BRACKET;
 
 recordExpression : OPEN_BRACKET ident COLON topLevelExpression (COMMA ident COLON topLevelExpression)* CLOSE_BRACKET;
 arrayExpression : OPEN_SQUARE (topLevelExpression (COMMA topLevelExpression)*)? CLOSE_SQUARE;

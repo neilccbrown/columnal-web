@@ -1017,11 +1017,11 @@ Steps (each a checkpoint with the project owner):
      `ExpressionQuickFixSyntax` and `ExpressionQuickFixType` in `test/gui/expressions`, their cases taken from
      the headless ports (which share their expected errors and fix classes). Port fix: the completion list's
      rows are inside its 1px border (Java's padding), and the list is placed so their text lines up with the
-     completed text (it was 2px left; `checkPosition` allows 1). Java bug found: a call with no arguments
-     (`element()`) is saved as `@call function\\list\element()`, which the expression grammars (which
-     need at least one argument) can't load; Java only met it when a project was reopened, but here the
-     editor's expression goes to the engine as saved text, so the column isn't added (an alert says so), and
-     testFunctionError3b fails on it.
+     completed text (it was 2px left; `checkPosition` allows 1). Java bug fixed (agreed, in its own commit):
+     a call with no arguments (`element()`) was saved as `@call function\\list\element()`, which the
+     expression grammars (which needed at least one argument) couldn't load; Java only met it when a project
+     was reopened, but here the editor's expression goes to the engine as saved text, so the column wasn't
+     added (an alert said so), and testFunctionError3b failed on it.
 6. Tidy up: PORT-STATUS, `docs/gui-spec/expression-editor.md` (and the other pages), and carry-overs to
    Phase 11 here (Phase 11 then has the other transformations' dialogs, Aggregate's columns, and "Why?").
 

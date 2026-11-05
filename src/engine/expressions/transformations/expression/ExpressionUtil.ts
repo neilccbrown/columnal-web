@@ -515,6 +515,7 @@ class CompileExpression extends ExpressionParserVisitor<Expression>
     {
         const func = this.visitChildren(ctx.callTarget());
 
+        // PORT-NOTE: Java's grammar needed an argument, so a call with none (saved as f()) couldn't be loaded.
         const args = Utility.mapListI(ctx.topLevelExpression(), e => this.visitTop(e));
 
         return new CallExpression(func, args);
@@ -673,6 +674,7 @@ class CompileExpression2 extends ExpressionParser2Visitor<Expression>
     {
         const func = this.visitChildren(ctx.callTarget());
 
+        // PORT-NOTE: Java's grammar needed an argument, so a call with none (saved as f()) couldn't be loaded.
         const args = Utility.mapListI(ctx.topLevelExpression(), e => this.visitTop(e));
 
         return new CallExpression(func, args);

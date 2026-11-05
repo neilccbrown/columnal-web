@@ -353,6 +353,13 @@ function updateCompletions(): void
     };
 }
 
+// Java: the completion window's middle click, which hides it (until the caret moves)
+function hideCompletions(): void
+{
+    display._test_getAutoComplete().hide(false);
+    updateCompletions();
+}
+
 // Inserting a documentation example (Java: LexAutoCompleteWindow.enableInsertLinks)
 function insertExample(text: string): void
 {
@@ -769,6 +776,7 @@ onMounted(() => _test_editors.set(host.value!, api as unknown as TopLevelEditorA
           :list-view="completions.listView"
           @insert="insertExample"
           @clicked="updateCompletions"
+          @hide="hideCompletions"
         />
       </PopoverContent>
     </PopoverPortal>

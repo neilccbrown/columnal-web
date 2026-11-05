@@ -24,6 +24,8 @@ const emit = defineEmits<{
     insert: [text: string],
     // After a click changed the list's selection or chose a completion
     clicked: [],
+    // A middle click, which hides the completions (Java: the window's scene's filter)
+    hide: [],
 }>();
 
 const list = useTemplateRef<HTMLElement>("list");
@@ -109,6 +111,7 @@ function details(completion: LexCompletion | null): Details | null
   <div
     class="lex-complete-root"
     @mousedown.prevent
+    @mouseup="e => { if (e.button === 1) emit('hide'); }"
   >
     <div
       ref="list"

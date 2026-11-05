@@ -996,6 +996,14 @@ Steps (each a checkpoint with the project owner):
      save error (only in the tests, which unmount the app; the next test's window showed it); it now closes
      the storage after the project's last save, and the tests' `closeApp` waits for it too.
 4. `TestExpressionEditorPosition` (34: caret positions, clicks and double clicks over the display).
+   - Done: `test/gui/expressions/ExpressionEditorPosition.test.ts` (its two ignored tests skipped; caret
+     centres from CodeMirror's coordinates, and Java's faked double click as a mousedown with a click count
+     of 2). From Java, missed in Phase 9: a middle click on the completions hides them (the tests'
+     `moveAndDismissPopupsAtPos` relies on it). Java bug found: an invalid type or unit inside a type
+     literal (`type{Optional(Number{m},Text)}`, `type{Number{}}`) is saved in a form its loader can't read
+     (`@invalidtypeops` items with commas, which the type grammar doesn't allow, and whose items Java's
+     loader dropped; `@INVALIDOPS ()` in a unit), so after saving, the literal comes back as its raw saved
+     text: testPos8 and testPos9, which check the display again after the dialog is reopened, fail on it.
 5. The GUI parts of the tests ported headless: `BaseTestEditorCompletion` and `AutoCompleteTrait` (the
    completion window), `BaseTestExpressionEditorError` (underlines, the error popup, and `has-error` cells),
    `BaseTestQuickFix` (clicking a fix). The GUI and headless ports both stay; PORT-STATUS counts the GUI one.

@@ -88,7 +88,8 @@ Tests: the screen checks of `tests-gui-type-editor` (with the new-column dialog,
 - The first is selected if the lexer says so (only completion, or the top one). Clicking a row selects
   it; clicking the selected row, or double-clicking, chooses it. Choosing replaces the text from the
   completion's start to the caret, or for a guide (the Help group) opens it, and hides the completions
-  until the caret moves or the text changes.
+  until the caret moves or the text changes. A middle click on the completions hides them too (until the
+  caret moves).
 - The selected completion's further details show beside the list (500 px wide, 350 px on a screen less
   than 1200 px wide; at most 400 px high): a function documentation page (`FuncdocView`), or HTML.
   Clicking an example there inserts it at the completion's start.

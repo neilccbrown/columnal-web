@@ -22,6 +22,10 @@ ALIAS : '@ALIAS';
 CATEGORY: '@CATEGORY';
 
 UNITVAR : '@unitvar';
+// The forms the expression editor saves invalid units in (port addition: Java's grammar lacked them):
+INVALIDOPS : '@INVALIDOPS';
+UNFINISHED : '@unfinished';
+COMMA : ',';
 
 // No spaces in unit identifiers
 IDENT : [\p{Alphabetic}\p{General_Category=Other_Letter}\p{General_Category=Currency_Symbol}]+ ('_' [\p{Alphabetic}\p{General_Category=Other_Letter}\p{General_Category=Currency_Symbol}]+)*;

@@ -12,6 +12,17 @@ unit : single | OPEN_BRACKET WS? unbracketedUnit WS? CLOSE_BRACKET;
 
 unitUse : WS? unbracketedUnit WS? EOF;
 
+// Port addition: a unit as UnitExpression saves it, including the forms the expression editor saves
+// invalid units in (unfinished parts, invalid operators, whole numbers other than 1 and any powers),
+// which Java's grammar lacked, so a unit saved with them couldn't be loaded.  (Separate from unit, so
+// that the units of types and files are read as before.)
+editUnitUse : WS? editUnbracketed WS? EOF;
+editUnbracketed : editRaised ((WS? DIVIDE WS? editRaised) | (WS? TIMES WS? editRaised)+)?;
+editRaised : editBase (WS? POWER WS? editRaised)?;
+editBase : singleUnit | NUMBER | OPEN_BRACKET WS? editUnbracketed WS? CLOSE_BRACKET | invalidOps | unfinished;
+invalidOps : INVALIDOPS WS? OPEN_BRACKET WS? (editUnbracketed WS? (COMMA WS? editUnbracketed WS?)*)? CLOSE_BRACKET;
+unfinished : UNFINISHED WS? STRING;
+
 aliasDeclaration : ALIAS WS singleUnit WS? EQUALS WS? singleUnit NEWLINE;
 
 display : (PREFIX | SUFFIX) WS? STRING;

@@ -44,6 +44,8 @@ arrayTypeExpression : OPEN_SQUARE typeExpression CLOSE_SQUARE;
 functionTypeExpression : OPEN_BRACKET typeExpression (COMMA typeExpression)* CLOSE_BRACKET ARROW typeExpression; 
 recordTypeExpression : OPEN_BRACKET fieldName COLON typeExpression (COMMA fieldName COLON typeExpression)* CLOSE_BRACKET;
 typeExpression : typeExpressionTerminal | arrayTypeExpression | recordTypeExpression | functionTypeExpression | invalidOpsTypeExpression | applyTypeExpression;
-invalidOpsTypeExpression : INVALIDOPS OPEN_BRACKET (STRING | typeExpression)* CLOSE_BRACKET;
+// Port change: Java's had no commas, but InvalidOpTypeExpression saves its items separated by commas
+// (so a type saved with one couldn't be loaded):
+invalidOpsTypeExpression : INVALIDOPS OPEN_BRACKET (typeExpression (COMMA typeExpression)*)? CLOSE_BRACKET;
 
 completeTypeExpression : typeExpression EOF;

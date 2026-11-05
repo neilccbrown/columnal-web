@@ -172,7 +172,9 @@ export abstract class TypeExpression implements StyledShowable, Replaceable<Type
             {
                 if (ctx.INCOMPLETE() !== null)
                 {
-                    return new IdentTypeExpression(ctx.STRING()!.getText());
+                    // PORT-NOTE: Java made an IdentTypeExpression even of text that isn't an identifier
+                    // (such as the "," of an invalid type), which then saved unquoted.
+                    return InvalidIdentTypeExpression.identOrUnfinished(ctx.STRING()!.getText());
                 }
                 else if (ctx.UNIT() !== null)
                 {
@@ -240,11 +242,11 @@ export abstract class TypeExpression implements StyledShowable, Replaceable<Type
                 return new RecordTypeExpression(members);
             };
 
-            public override visitInvalidOpsTypeExpression = (_ctx: InvalidOpsTypeExpressionContext): TypeExpression =>
+            // PORT-NOTE: Java dropped the items (its code for them was commented out), so an invalid type
+            // came back empty after saving and loading.
+            public override visitInvalidOpsTypeExpression = (ctx: InvalidOpsTypeExpressionContext): TypeExpression =>
             {
-                return new InvalidOpTypeExpression([]/*Utility.mapListI(ctx.typeExpression(), t -> visitTypeExpression(t)),
-                    Utility.mapListI(ctx.STRING(), s -> s.getText())
-                */);
+                return new InvalidOpTypeExpression(ctx.typeExpression().map(t => this.visitTypeExpressionCtx(t)));
             };
 
             public override visitApplyTypeExpression = (ctx: ApplyTypeExpressionContext): TypeExpression =>

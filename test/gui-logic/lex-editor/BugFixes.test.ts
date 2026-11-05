@@ -1,9 +1,13 @@
 // Tests for Java bugs in the editors' logic that the port fixes (each marked with a PORT-NOTE in
 // the source).
 import { describe, expect, test } from "vitest";
-import type { Expression } from "../../../src/engine/expressions/transformations/expression/Expressions.js";
+import { BracketedStatus } from "../../../src/engine/expressions/transformations/expression/BracketedStatus.js";
+import { Expression } from "../../../src/engine/expressions/transformations/expression/Expressions.js";
+import { ExpressionUtil } from "../../../src/engine/expressions/transformations/expression/ExpressionUtil.js";
 import { FunctionList } from "../../../src/engine/functions/transformations/function/FunctionList.js";
+import { TableAndColumnRenames } from "../../../src/engine/identifiers/id/TableAndColumnRenames.js";
 import { SimpleObjectProperty } from "../../../src/engine/java/JavaFXBeans.js";
+import { ExpressionVersion } from "../../../src/engine/parsers/grammar/Versions.js";
 import { TagType } from "../../../src/engine/types/data/datatype/DataType.js";
 import { TypeManager } from "../../../src/engine/types/data/datatype/TypeManager.js";
 import type { JellyType } from "../../../src/engine/types/jellytype/JellyTypes.js";
@@ -79,5 +83,28 @@ describe("Java bug fixes", () =>
         // None where the target isn't a function, or past the parameters:
         expect(prompt("x()", 2)).toBeUndefined();
         expect(prompt("abs(1,2)", 6)).toBeUndefined();
+    });
+
+    // Java saved invalid types and units (as the editor makes them) in forms its loaders couldn't read:
+    // an invalid type's items separated by commas (and its loader dropped them anyway), and an invalid
+    // unit's items, unfinished parts, whole numbers and powers, which the unit grammar lacked.  So after
+    // saving, a literal with one came back as its saved text.
+    test("invalid types and units in literals survive saving and loading", () =>
+    {
+        const mgr = DummyManager.make();
+        const typeManager = mgr.getTypeManager();
+        const functionLookup = FunctionList.getFunctionLookup(mgr.getUnitManager());
+        const lexer = new ExpressionLexer(new SimpleObjectProperty<Expression.ColumnLookup>(TFunctionUtil.dummyColumnLookup()), typeManager, functionLookup, () => TFunctionUtil.createTypeState(typeManager), null);
+        const save = (e: Expression): string => e.save(Expression.SaveDestination.TO_FILE, BracketedStatus.DONT_NEED_BRACKETS, TableAndColumnRenames.EMPTY);
+        for (const src of ["type{Optional(Number{m},Text)}", "type{Text,Text}", "type{(Number,}", "type{[}", "type{(a:Number,b:)}",
+            "type{Number{}}", "type{Number{m s}}", "type{Number{m*(s+)}}", "type{Number{(m s)/t}}", "type{Number{m^x}}", "type{Optional(Number{m*})}",
+            "unit{}", "unit{m s}", "unit{m^}", "unit{m^2.5}", "unit{\"x}", "unit{2*m}", "unit{2}", "unit{3/s}", "unit{(m*s)^2}", "unit{m^(x*y)}", "unit{m/s/t}"])
+        {
+            const original = lexer.process(src, 0, NO_INSERT).result;
+            const saved = save(original);
+            const loaded = ExpressionUtil.parse(null, saved, ExpressionVersion.latest(), typeManager, functionLookup);
+            expect(loaded, src + " saved as " + saved).toEqual(original);
+            expect(save(loaded)).toBe(saved);
+        }
     });
 });

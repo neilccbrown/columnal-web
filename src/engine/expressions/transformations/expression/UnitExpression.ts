@@ -2,7 +2,7 @@
 // Load through UnitExpressions.ts (see "Class hierarchies split across files" in docs/CONVENTIONS.md).
 import { javaParseInt, NumberFormatException } from "../../../java/JavaString.js";
 import { UnitLexer } from "../../../parsers/generated/UnitLexer.js";
-import { UnitParser, type UnbracketedUnitContext, type UnitContext } from "../../../parsers/generated/UnitParser.js";
+import { UnitParser, type EditBaseContext, type EditRaisedContext, type EditUnbracketedContext } from "../../../parsers/generated/UnitParser.js";
 import { Unit } from "../../../types/data/unit/Unit.js";
 import type { UnitManager } from "../../../types/data/unit/UnitManager.js";
 import type { JellyUnit } from "../../../types/jellytype/JellyUnit.js";
@@ -13,7 +13,7 @@ import { Utility } from "../../../utility/utility/Utility.js";
 import { Expression } from "./Expressions.js";
 import type { QuickFix } from "./QuickFix.js";
 import type { Replaceable } from "./Replaceable.js";
-import { InvalidSingleUnitExpression, SingleUnitExpression, UnitDivideExpression, UnitExpressionIntLiteral, UnitRaiseExpression, UnitTimesExpression } from "./UnitExpressions.js";
+import { InvalidOperatorUnitExpression, InvalidSingleUnitExpression, SingleUnitExpression, UnitDivideExpression, UnitExpressionIntLiteral, UnitRaiseExpression, UnitTimesExpression } from "./UnitExpressions.js";
 
 export abstract class UnitExpression implements StyledShowable, Replaceable<UnitExpression>
 {
@@ -78,76 +78,75 @@ export abstract class UnitExpression implements StyledShowable, Replaceable<Unit
 
     // We mark as Recorded because constructors require
     // that, even though it's not actually reached GUI yet:
+    // PORT-NOTE: Java read the text with the grammar of types' units (unitUse), which lacks the forms the
+    // editor saves invalid units in, so they couldn't be loaded; editUnitUse has them too.
     private static loadText(text: string): UnitExpression
     {
-        return UnitExpression.loadUnbracketed(Utility.parseAsOne(text, s => new UnitLexer(s), t => new UnitParser(t), p => p.unitUse().unbracketedUnit()));
+        return UnitExpression.loadUnbracketed(Utility.parseAsOne(text, s => new UnitLexer(s), t => new UnitParser(t), p => p.editUnitUse().editUnbracketed()));
     }
 
-    private static loadUnit(ctx: UnitContext): UnitExpression
+    private static loadUnbracketed(ctx: EditUnbracketedContext): UnitExpression
     {
-        const unbracketed = ctx.unbracketedUnit();
-        if (unbracketed !== null)
+        const operands = ctx.editRaised().map(r => UnitExpression.loadRaised(r));
+        if (ctx.DIVIDE() !== null)
+            return new UnitDivideExpression(operands[0]!, operands[1]!);
+        else if (operands.length > 1)
+            return new UnitTimesExpression(operands);
+        else
+            return operands[0]!;
+    }
+
+    private static loadRaised(ctx: EditRaisedContext): UnitExpression
+    {
+        const base = UnitExpression.loadBase(ctx.editBase());
+        const power = ctx.editRaised();
+        if (power === null)
+            return base;
+        // A number as the power is loaded as Java did:
+        const number = power.editRaised() === null ? power.editBase().NUMBER() : null;
+        if (number !== null)
         {
+            try
+            {
+                return new UnitRaiseExpression(base, new UnitExpressionIntLiteral(javaParseInt(number.getText())));
+            }
+            catch (e)
+            {
+                if (!(e instanceof NumberFormatException))
+                    throw e;
+                return new UnitRaiseExpression(base, new InvalidSingleUnitExpression(number.getText()));
+            }
+        }
+        return new UnitRaiseExpression(base, UnitExpression.loadRaised(power));
+    }
+
+    private static loadBase(ctx: EditBaseContext): UnitExpression
+    {
+        const singleUnit = ctx.singleUnit();
+        const unbracketed = ctx.editUnbracketed();
+        const invalidOps = ctx.invalidOps();
+        const unfinished = ctx.unfinished();
+        if (singleUnit !== null)
+        {
+            // TODO we need to support unit variables here.
+            return new SingleUnitExpression(IdentifierUtility.fromParsed(singleUnit));
+        }
+        else if (unbracketed !== null)
             return UnitExpression.loadUnbracketed(unbracketed);
-        }
-        else
+        else if (invalidOps !== null)
+            return new InvalidOperatorUnitExpression(invalidOps.editUnbracketed().map(u => UnitExpression.loadUnbracketed(u)));
+        else if (unfinished !== null)
+            return new InvalidSingleUnitExpression(unfinished.STRING().getText());
+        try
         {
-            const singleItem = ctx.single()!;
-            const singleItemUnit = singleItem.singleUnit();
-            const number = singleItem.NUMBER();
-            if (singleItemUnit === null && number !== null)
-            {
-                try
-                {
-                    return new UnitExpressionIntLiteral(javaParseInt(number.getText()));
-                }
-                catch (e)
-                {
-                    if (!(e instanceof NumberFormatException))
-                        throw e;
-                    // Zero is guaranteed to be an error, so best default:
-                    return new UnitExpressionIntLiteral(0);
-                }
-            }
-            else
-            {
-                // TODO we need to support unit variables here.
-                const singleUnit = new SingleUnitExpression(IdentifierUtility.fromParsed(singleItemUnit!));
-                if (number !== null)
-                {
-                    try
-                    {
-                        return new UnitRaiseExpression(singleUnit, new UnitExpressionIntLiteral(javaParseInt(number.getText())));
-                    }
-                    catch (e)
-                    {
-                        if (!(e instanceof NumberFormatException))
-                            throw e;
-                        return new UnitRaiseExpression(singleUnit, new InvalidSingleUnitExpression(number.getText()));
-                    }
-                }
-                else
-                {
-                    return singleUnit;
-                }
-            }
+            return new UnitExpressionIntLiteral(javaParseInt(ctx.NUMBER()!.getText()));
         }
-    }
-
-    private static loadUnbracketed(ctx: UnbracketedUnitContext): UnitExpression
-    {
-        const divideBy = ctx.divideBy();
-        if (divideBy !== null)
+        catch (e)
         {
-            return new UnitDivideExpression(UnitExpression.loadUnit(ctx.unit()), UnitExpression.loadUnit(divideBy.unit()!));
-        }
-        else if (ctx.timesBy().length > 0)
-        {
-            return new UnitTimesExpression([ctx.unit(), ...ctx.timesBy().map(t => t.unit())].map(c => UnitExpression.loadUnit(c)));
-        }
-        else
-        {
-            return UnitExpression.loadUnit(ctx.unit());
+            if (!(e instanceof NumberFormatException))
+                throw e;
+            // Zero is guaranteed to be an error, so best default:
+            return new UnitExpressionIntLiteral(0);
         }
     }
 

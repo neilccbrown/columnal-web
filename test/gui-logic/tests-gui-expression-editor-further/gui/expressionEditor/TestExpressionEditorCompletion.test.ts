@@ -1,8 +1,9 @@
 // TestExpressionEditorCompletion (tests-gui-expression-editor-further), checked against the
 // expression editor's content, display and completions (see makeEditor).  The GUI test edits the
 // expression of a column "My Calc" of a Calculate "Calc" from a table "IDS" with a number column
-// "My Number".  It also checks where the completion window shows (checkPosition), which is left to
-// the GUI tests (Phase 7); here checkPosition checks the completions show.
+// "My Number".  It also checks where the completion window shows (checkPosition), which its GUI port
+// does (test/gui/expressions/ExpressionEditorCompletion.test.ts); here checkPosition checks the
+// completions show.
 import { describe, expect, test } from "vitest";
 import { ColumnUtility } from "../../../../../src/engine/data/data/ColumnUtility.js";
 import { ImmediateDataSource } from "../../../../../src/engine/data/data/DataSources.js";

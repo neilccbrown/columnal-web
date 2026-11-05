@@ -52,18 +52,13 @@ const ENGINE_TESTS_IN_GUI_MODULES = new Set([
 ]);
 
 // Tests (and their helpers) in GUI test modules that only use the logic ported into src/gui-logic,
-// which are ported as Vitest tests (test/gui-logic/tests-gui-x/<path>/X.test.ts):
+// which are ported as Vitest tests (test/gui-logic/tests-gui-x/<path>/X.test.ts).  (Some others were
+// ported so too, and since also as GUI tests, which are what GUI_TEST_PORTS counts.)
 const GUI_LOGIC_TESTS_IN_GUI_MODULES = new Set([
     "tests-gui-grid/src/test/java/test/gui/PropGridOverlap.java",
     "tests-gui-grid/src/test/java/test/gen/GenGridAreaList.java",
     "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorError.java",
-    "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorCompletion.java",
     "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeQuickFix.java",
-    "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixType.java",
-    "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorSyntaxError.java",
-    "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorTypeError.java",
-    "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixSyntax.java",
-    "tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java",
 ]);
 
 // GUI tests and test helpers whose ports are not where the mapping above puts them (the GUI tests are
@@ -87,6 +82,16 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-expression-editor-delete/src/test/java/test/gui/expressionEditor/TestExpressionEditorDelete.java", ["test/gui/expressions/ExpressionEditorDelete.test.ts"]],
     ["tests-gui-expression-editor-position/src/test/java/test/gui/expressionEditor/TestExpressionEditorPosition.java", ["test/gui/expressions/ExpressionEditorPosition.test.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterExpressionTrait.java", ["test/gui/base/enterExpression.ts"]],
+    ["tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorCompletion.java", ["test/gui/expressions/TypeEditorCompletion.test.ts"]],
+    ["tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixType.java", ["test/gui/expressions/ExpressionQuickFixType.test.ts"]],
+    ["tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorSyntaxError.java", ["test/gui/expressions/ExpressionEditorSyntaxError.test.ts"]],
+    ["tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorTypeError.java", ["test/gui/expressions/ExpressionEditorTypeError.test.ts"]],
+    ["tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixSyntax.java", ["test/gui/expressions/ExpressionQuickFixSyntax.test.ts"]],
+    ["tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java", ["test/gui/expressions/ExpressionEditorCompletion.test.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestEditorCompletion.java", ["test/gui/base/editorCompletion.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/AutoCompleteTrait.java", ["test/gui/base/autoComplete.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorError.java", ["test/gui/base/expressionEditorError.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestQuickFix.java", ["test/gui/base/quickFix.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorEntry.java", ["test/gui/base/expressionEditorEntry.ts"]],
     ["tests-gui-tables/src/test/java/test/gui/table/TestRowOps.java", ["test/gui/tables/RowOps.test.ts"]],
     ["tests-gui-tables/src/test/java/test/gui/table/TestTableUpdate.java", ["test/gui/tables/TableUpdate.test.ts"]],

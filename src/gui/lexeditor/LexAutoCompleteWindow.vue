@@ -204,16 +204,20 @@ function details(completion: LexCompletion | null): Details | null
 }
 .fade-overlay {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 1px;
+    right: 1px;
+    margin-top: 1px;
     height: 24px;
     background: linear-gradient(to bottom, rgb(from var(--autocomplete-fade) r g b / 0%) 0%, rgb(from var(--autocomplete-fade) r g b / 0%) 60%, rgb(from var(--autocomplete-fade) r g b / 50%) 90%, rgb(from var(--autocomplete-fade) r g b / 80%) 100%);
     pointer-events: none;
 }
+/* (Inside the list's 1px border, as Java's -fx-padding: 1; so the text, after the row's 2px padding,
+   is 3px in, and the editor puts the list 3px left of the completed text so they line up) */
 .lex-completion {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 1px;
+    right: 1px;
+    margin-top: 1px;
     box-sizing: border-box;
     height: 24px;
     padding: 0 2px;

@@ -1011,6 +1011,17 @@ Steps (each a checkpoint with the project owner):
 5. The GUI parts of the tests ported headless: `BaseTestEditorCompletion` and `AutoCompleteTrait` (the
    completion window), `BaseTestExpressionEditorError` (underlines, the error popup, and `has-error` cells),
    `BaseTestQuickFix` (clicking a fix). The GUI and headless ports both stay; PORT-STATUS counts the GUI one.
+   - Done: the bases in `test/gui/base` (`editorCompletion.ts`, `autoComplete.ts`, `expressionEditorError.ts`,
+     `quickFix.ts`, with `editorDisplay.ts` for finding the editor), and `ExpressionEditorCompletion`,
+     `TypeEditorCompletion`, `ExpressionEditorSyntaxError`, `ExpressionEditorTypeError`,
+     `ExpressionQuickFixSyntax` and `ExpressionQuickFixType` in `test/gui/expressions`, their cases taken from
+     the headless ports (which share their expected errors and fix classes). Port fix: the completion list's
+     rows are inside its 1px border (Java's padding), and the list is placed so their text lines up with the
+     completed text (it was 2px left; `checkPosition` allows 1). Java bug found: a call with no arguments
+     (`element()`) is saved as `@call function\\list\element()`, which the expression grammars (which
+     need at least one argument) can't load; Java only met it when a project was reopened, but here the
+     editor's expression goes to the engine as saved text, so the column isn't added (an alert says so), and
+     testFunctionError3b fails on it.
 6. Tidy up: PORT-STATUS, `docs/gui-spec/expression-editor.md` (and the other pages), and carry-overs to
    Phase 11 here (Phase 11 then has the other transformations' dialogs, Aggregate's columns, and "Why?").
 

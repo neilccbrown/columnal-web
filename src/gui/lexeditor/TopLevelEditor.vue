@@ -762,7 +762,7 @@ onMounted(() => _test_editors.set(host.value!, api as unknown as TopLevelEditorA
         v-if="completions !== null"
         side="bottom"
         align="start"
-        :align-offset="-4"
+        :align-offset="-3"
         :avoid-collisions="false"
         class="lex-autocomplete-popover"
         @open-auto-focus.prevent

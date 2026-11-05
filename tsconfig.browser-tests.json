@@ -1,7 +1,8 @@
 {
   // GUI tests in Vitest browser mode (test/gui), which run in the browser and import the app's Vue
   // components, so are checked with the app.  They also use the engine tests' generators and fixtures,
-  // and the property-test support.
+  // and the property-test support, and the lex editors' headless test helpers (whose expected errors and
+  // fix classes the GUI tests share).
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
@@ -9,6 +10,6 @@
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "types": ["vite/client"]
   },
-  "include": ["test/gui/**/*.ts", "src/**/*.ts", "src/**/*.vue", "test/engine/**/fixtures/**/*.ts", "test/gui-logic/**/fixtures/**/*.ts", "test/support/**/*.ts"],
+  "include": ["test/gui/**/*.ts", "src/**/*.ts", "src/**/*.vue", "test/engine/**/fixtures/**/*.ts", "test/gui-logic/**/fixtures/**/*.ts", "test/gui-logic/lex-editor/EditorHarness.ts", "test/gui-logic/lex-editor/*TestUtil.ts", "test/support/**/*.ts"],
   "exclude": ["test/support/**/*.test.ts"]
 }

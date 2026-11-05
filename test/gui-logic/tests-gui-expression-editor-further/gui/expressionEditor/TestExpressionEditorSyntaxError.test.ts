@@ -1,6 +1,6 @@
 // The errors from TestExpressionEditorSyntaxError (tests-gui-expression-editor-further), checked
 // against the expression lexer.  The GUI test also checks when the error underline and popup show,
-// which is left to the GUI tests (Phase 7).
+// which its GUI port does (test/gui/expressions/ExpressionEditorSyntaxError.test.ts).
 import { describe, test } from "vitest";
 import { e } from "../../../lex-editor/EditorTestUtil.js";
 import { testExpressionError as testError } from "../../../lex-editor/ExpressionEditorTestUtil.js";

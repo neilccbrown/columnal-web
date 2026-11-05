@@ -28,7 +28,7 @@ export function e(start: number, end: number, ...rest: (string | number)[]): Exp
 }
 
 // The tests' MultiSubstringMatcher: each part in order, ignoring case
-function containsInOrder(s: string, parts: readonly string[]): boolean
+export function containsInOrder(s: string, parts: readonly string[]): boolean
 {
     let curIndex = 0;
     for (const sub of parts)

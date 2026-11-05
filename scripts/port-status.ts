@@ -82,6 +82,7 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-expression-editor-delete/src/test/java/test/gui/expressionEditor/TestExpressionEditorDelete.java", ["test/gui/expressions/ExpressionEditorDelete.test.ts"]],
     ["tests-gui-expression-editor-position/src/test/java/test/gui/expressionEditor/TestExpressionEditorPosition.java", ["test/gui/expressions/ExpressionEditorPosition.test.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterExpressionTrait.java", ["test/gui/base/enterExpression.ts"]],
+    ["tests-gui-expression-editor-further/src/test/java/test/gen/GenInvalidExpressionSource.java", ["test/gui/expressions/GenInvalidExpressionSource.ts"]],
     ["tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorCompletion.java", ["test/gui/expressions/TypeEditorCompletion.test.ts"]],
     ["tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestExpressionQuickFixType.java", ["test/gui/expressions/ExpressionQuickFixType.test.ts"]],
     ["tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorSyntaxError.java", ["test/gui/expressions/ExpressionEditorSyntaxError.test.ts"]],

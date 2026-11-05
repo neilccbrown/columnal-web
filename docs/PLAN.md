@@ -910,7 +910,7 @@ Steps (each a checkpoint with the project owner):
      in step 4, weren't needed: Java uses them only in `TestCreateEditTransformation` and tests of
      `TestTableEdits` that are ignored, so they move to Phase 11.
 
-### Phase 10: Expression editor
+### Phase 10: Expression editor (done)
 - Build the expression editor on the editor from Phase 9 (steps 1 and 2): `ExpressionLexer`'s
   completions with the function documentation side panel (`DocWindow`, and the column and table pages
   `ExpressionLexer` makes), quick fixes, and the function documentation popups.
@@ -1024,8 +1024,17 @@ Steps (each a checkpoint with the project owner):
      added (an alert said so), and testFunctionError3b failed on it.
 6. Tidy up: PORT-STATUS, `docs/gui-spec/expression-editor.md` (and the other pages), and carry-overs to
    Phase 11 here (Phase 11 then has the other transformations' dialogs, Aggregate's columns, and "Why?").
+   - Done: PORT-STATUS regenerated: `tests-gui-expression-editor`, `…-delete`, `…-further` and `…-position`
+     are all ported, with `GenInvalidExpressionSource` (`test/gui/expressions/`) and the body of
+     TestExpressionEditorInvalid, which stays skipped as Java ignores it ("TODO restore"), though it passes
+     here. The `docs/gui-spec/` pages brought up to date (`expression-editor.md`, `lex-editor.md`,
+     `transformations.md` and `autocomplete.md` are this phase's). Left for Phase 11 (below): the column
+     dialog's side pane and recipes (with Aggregate), and clicking a Calculate's column in its hat (which
+     opens the column's dialog, now built), with the hat's other parts.
 
 ### Phase 11: Transformation dialogs and the rest of the app
+- From Phase 10 (`docs/gui-spec/transformations.md`): the transformation picker's other transformations,
+  and the column dialog's side pane and recipes (Aggregate's split-by and recipe buttons).
 - Rebuild the dialogs for creating and editing every transformation (sort,
   filter, aggregate/split-by, join, concatenate, hide columns, check, R), plus
   CheckDisplay, ExplanationDisplay, and the import dialogs with their live preview.
@@ -1036,7 +1045,7 @@ Steps (each a checkpoint with the project owner):
   - offering a Manual Edit when a transformation's cell is edited (`PickManualEditIdentifierDialog`; the
     edit is cancelled meanwhile), and the "=" guidance (`GuidanceWindow`, making a Calculate);
   - the table menu's Transform and Custom columns, the "Transform type" recipe, and clicking a hat's
-    parts (their dialogs);
+    parts (their dialogs; a Calculate's columns open the column dialog, built in Phase 10);
   - Aggregate's add-column arrows and editing its columns from the headers (Calculate's are Phase 10's),
     and a cell's "Why?" (explanations);
   - the View menu's Task Manager and the checks pane, and the checks status bar;

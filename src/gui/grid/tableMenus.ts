@@ -39,7 +39,7 @@ export function columnHeaderMenu(display: GridTableDisplay, columnIndex: number)
         return [];
     const r: MenuEntry[] = [];
     const actions = display.getActions();
-    // PORT-DEFERRED: adding columns to Calculate and Aggregate (Phases 10 and 11)
+    // PORT-DEFERRED: adding columns to Aggregate (Phase 11)
     if (info.canAddColumn && actions !== null)
     {
         r.push(menuItem("virtGrid.column.addBefore", () => actions.addColumn(display, column)));

@@ -723,7 +723,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
 | ✅ tests-gui-expression-editor | 1 / 1 | 593 / 593 (100%) | 68 / 68 (100%) |
 | ✅ tests-gui-expression-editor-delete | 1 / 1 | 372 / 372 (100%) | 20 / 20 (100%) |
-| tests-gui-expression-editor-further | 7 / 8 | 1532 / 1600 (96%) | 130 / 130 (100%) |
+| ✅ tests-gui-expression-editor-further | 8 / 8 | 1600 / 1600 (100%) | 130 / 130 (100%) |
 | ✅ tests-gui-expression-editor-position | 1 / 1 | 618 / 618 (100%) | 34 / 34 (100%) |
 | tests-gui-format | 3 / 4 | 574 / 920 (62%) | 2 / 6 (33%) |
 | ✅ tests-gui-grid | 4 / 4 | 1049 / 1049 (100%) | 14 / 14 (100%) |
@@ -907,7 +907,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-expression-editor-further/src/test/java/test/gen/GenInvalidExpressionSource.java` | `test/gui/tests-gui-expression-editor-further/gen/GenInvalidExpressionSource.ts` | 68 | – |
+| `tests-gui-expression-editor-further/src/test/java/test/gen/GenInvalidExpressionSource.java` | `test/gui/expressions/GenInvalidExpressionSource.ts` | 68 | ✅ |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/PropExpressionEditor.java` | `test/gui/expressions/PropExpressionEditor.test.ts` | 49 | ✅ (1/1 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorCompletion.java` | `test/gui/expressions/ExpressionEditorCompletion.test.ts` | 542 | ✅ (30/30 tests) |
 | `tests-gui-expression-editor-further/src/test/java/test/gui/expressionEditor/TestExpressionEditorInvalid.java` | `test/gui/expressions/ExpressionEditorInvalid.test.ts` | 79 | ✅ (1/1 tests) |

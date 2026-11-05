@@ -175,4 +175,4 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
 - Not done: the blur over the grid while the new-table dialog shows, and Java's tooltip arrow hovering.
 - Not yet: offering a Manual Edit when a transformation's cell is edited, and the guidance when a data
   cell's text starts with "=" (both need Phase 11's dialogs); a transformation's "Why?" cell menu item
-  (Phases 10 and 11, with explanations); R's "Re-evaluate" in the name row (Phase 12).
+  (Phase 11, with explanations); R's "Re-evaluate" in the name row (Phase 12).

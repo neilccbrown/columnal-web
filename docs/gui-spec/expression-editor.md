@@ -13,6 +13,10 @@ Java: `lex-editor/.../ExpressionEditor.java` (a `TopLevelEditor` on `ExpressionL
 - 450 px wide, at least 130 px high (the other lex editors: 250 by 25).
 - Made with the expression (saved for the editor), the column lookup, the expected type (if any), the
   type manager, the type state and the functions. Its value is the expression the lexer makes.
+- (Web) The value goes to the engine as its saved text, which the engine loads, so whatever the editor
+  makes must load back as it was. (Java bugs, fixed: an invalid type or unit in a literal, such as
+  `type{Optional(Number{m},Text)}` or `unit{2*m}`, and a call with no arguments, such as `element()`, were
+  saved in forms Java's grammars couldn't read; Java only met this when a project was reopened.)
 - The lexer checks the expression as it is edited: its errors, completions (columns, tables, functions,
   tags, variables, keywords, operators and guides), information and fixes are the lex editor's.
 

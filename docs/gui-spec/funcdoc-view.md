@@ -36,7 +36,8 @@ Web: `src/gui/components/FuncdocView.vue`, `src/gui/funcdoc.ts`, pages from `scr
   attribute); they go to the guide's page.
 - External links (one, to Wikipedia) open in a new tab; WebView would have shown the site in the view.
 
-- The view emits `insert` with the text; the expression editor (Phase 10) decides where it goes.
+- The view emits `insert` with the text; the expression editor inserts it at its caret
+  (`expression-editor.md`).
 - When the page it is given changes, it shows that page, even if a link was followed.
 - funcdoc.scss's unitless paddings (`padding: 8`) are invalid CSS, which WebView ignored; they are left out.
 - Saxon copied the source's namespace declarations (`xmlns:xi="…"`) onto copied elements; they are left out.

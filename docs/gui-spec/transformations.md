@@ -36,8 +36,9 @@ Java: `dialogs-non-expression/.../PickTransformationDialog.java`, `app/.../PickT
 
 - For a new column of a Calculate (its add-column arrow, or a column's "New column to left" or "to right":
   the new column goes at the end either way, as Java's `addColumnBefore_Calc` ignored the column; Java
-  names the table after its columns if it had its suggested name: `RenameOnEdit.ifOldAuto`), or a Calculate's column (clicking its name or type; a
-  column the Calculate doesn't calculate starts with its name as the expression).
+  names the table after its columns if it had its suggested name: `RenameOnEdit.ifOldAuto`), or a
+  Calculate's column (clicking its name or type; a column the Calculate doesn't calculate starts with its
+  name as the expression).
 - The column's name (with the help box; completions of the source table's columns starting with the text,
   ignoring case, once the text has changed from the column's) and its expression (`expression-editor.md`;
   with the help box). Tab in the name goes to the expression. The name is focused at first. Cancel and OK
@@ -53,6 +54,7 @@ Java: `dialogs-non-expression/.../PickTransformationDialog.java`, `app/.../PickT
 - The expression editor's fix "Make a new calculation that can use this table's X" closes the dialog and
   makes a new Calculate of this one with the column, which leaves this one.
 - A fix declaring a unit sends the project's types and units to the engine.
+- Not yet: the side pane, with Aggregate's split-by and recipe buttons (Phase 11, with Aggregate).
 
 ## Web differences
 

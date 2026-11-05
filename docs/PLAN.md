@@ -1069,6 +1069,13 @@ Steps (each a checkpoint with the project owner):
    with the date and time generators there. They check the engine (and the editor's loading and saving),
    so any Java bugs they find are fixed before the dialogs are built on it. `TestInfrastructure` (it checks
    the JDK's version) is not ported.
+   - Done: `test/engine/tests-gui-central/expressions/` (`TestLoadSaveExpression`, `PropReplaceExpression`,
+     `TestDisambiguate`, `TestExpressionExplanation`) and `test/engine/tests-gui-central/gen/` (the five
+     date and time generators, which no Java test uses); `PropLoadSaveExpression` in
+     `test/gui-logic/tests-gui-central/expressions/`, its editing tests loading the expression's editor
+     text into an `EditorContent` with an `ExpressionLexer`, as `ExpressionEditor.vue` does. All passed as
+     ported: no bugs found. Not ported (marked so in PORT-STATUS): `TestInfrastructure`, and `MatcherUtil`
+     (Hamcrest matchers over JavaFX nodes, which `BlankMainWindow.test.ts` does without).
 2. Filter and Check, the dialogs of one expression: `EditExpressionDialog`, `EditCheckExpressionDialog`,
    enabling them in the transformation picker, the table menu's Transform (`View.createTransform`), and
    clicking a hat's parts (the source table's `PickTableDialog`, a Calculate's columns, and the expression

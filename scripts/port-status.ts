@@ -44,6 +44,15 @@ const ENGINE_TESTS_IN_GUI_MODULES = new Set([
     "tests-gui-central/src/test/java/test/PropInsertRemoveRows.java",
     "tests-gui-central/src/test/java/test/PropStorageSet.java",
     "tests-gui-central/src/test/java/test/gen/GenEditableColumn.java",
+    "tests-gui-central/src/test/java/test/gen/GenDateTime.java",
+    "tests-gui-central/src/test/java/test/gen/GenDateTimeZoned.java",
+    "tests-gui-central/src/test/java/test/gen/GenOffsetTime.java",
+    "tests-gui-central/src/test/java/test/gen/GenTime.java",
+    "tests-gui-central/src/test/java/test/gen/GenYearMonth.java",
+    "tests-gui-central/src/test/java/test/expressions/TestLoadSaveExpression.java",
+    "tests-gui-central/src/test/java/test/expressions/PropReplaceExpression.java",
+    "tests-gui-central/src/test/java/test/expressions/TestDisambiguate.java",
+    "tests-gui-central/src/test/java/test/expressions/TestExpressionExplanation.java",
     "tests-gui-r/src/test/java/test/importExport/TestRLoadSave.java",
     "tests-gui-r/src/test/java/test/importExport/GenRCompatibleRecordSet.java",
     "tests-gui-format/src/test/java/test/TestFormat.java",
@@ -59,6 +68,7 @@ const GUI_LOGIC_TESTS_IN_GUI_MODULES = new Set([
     "tests-gui-grid/src/test/java/test/gen/GenGridAreaList.java",
     "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeEditorError.java",
     "tests-gui-type-editor/src/test/java/test/gui/expressionEditor/TestTypeQuickFix.java",
+    "tests-gui-central/src/test/java/test/expressions/PropLoadSaveExpression.java",
 ]);
 
 // GUI tests and test helpers whose ports are not where the mapping above puts them (the GUI tests are
@@ -127,6 +137,8 @@ const SKIPPED = new Map<string, string>([
     ["importers/src/main/java/xyz/columnal/importers/gui/ImporterGUI.java", "the import dialog's choice rows, rebuilt in the GUI (Phase 11)"],
     ["stf/src/main/java/xyz/columnal/gui/stable/RowSelection.java", "entirely commented out in Java"],
     ["stf/src/main/java/xyz/columnal/gui/stable/ColumnSelection.java", "entirely commented out in Java"],
+    ["tests-gui-central/src/test/java/test/MatcherUtil.java", "Hamcrest matchers over JavaFX nodes' style classes; BlankMainWindow.test.ts checks the elements' classes itself"],
+    ["tests-gui-central/src/test/java/test/TestInfrastructure.java", "checks Java runs on JDK 17 (for junit-quickcheck's random numbers)"],
 ]);
 
 function withStatus(f: FileStatus): FileStatus

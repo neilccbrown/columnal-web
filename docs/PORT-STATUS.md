@@ -719,7 +719,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
 | tests-gui-base | 18 / 26 | 2823 / 4004 (71%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
-| tests-gui-central | 7 / 21 | 2016 / 3623 (56%) | 19 / 47 (40%) |
+| tests-gui-central | 19 / 21 | 3313 / 3623 (91%) | 37 / 47 (79%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
 | ✅ tests-gui-expression-editor | 1 / 1 | 593 / 593 (100%) | 68 / 68 (100%) |
 | ✅ tests-gui-expression-editor-delete | 1 / 1 | 372 / 372 (100%) | 20 / 20 (100%) |
@@ -855,22 +855,22 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-central/src/test/java/test/MatcherUtil.java` | `test/gui/tests-gui-central/MatcherUtil.ts` | 70 | – |
+| `tests-gui-central/src/test/java/test/MatcherUtil.java` | `test/gui/tests-gui-central/MatcherUtil.ts` | 70 | skipped: Hamcrest matchers over JavaFX nodes' style classes; BlankMainWindow.test.ts checks the elements' classes itself |
 | `tests-gui-central/src/test/java/test/PropInsertRemoveRows.java` | `test/engine/tests-gui-central/PropInsertRemoveRows.test.ts` | 162 | ✅ (2/2 tests) |
 | `tests-gui-central/src/test/java/test/PropStorageSet.java` | `test/engine/tests-gui-central/PropStorageSet.test.ts` | 192 | ✅ (1/1 tests) |
-| `tests-gui-central/src/test/java/test/TestInfrastructure.java` | `test/gui/tests-gui-central/TestInfrastructure.test.ts` | 44 | – (0/1 tests) |
-| `tests-gui-central/src/test/java/test/expressions/PropLoadSaveExpression.java` | `test/gui/tests-gui-central/expressions/PropLoadSaveExpression.test.ts` | 196 | – (0/5 tests) |
-| `tests-gui-central/src/test/java/test/expressions/PropReplaceExpression.java` | `test/gui/tests-gui-central/expressions/PropReplaceExpression.test.ts` | 75 | – (0/4 tests) |
-| `tests-gui-central/src/test/java/test/expressions/TestDisambiguate.java` | `test/gui/tests-gui-central/expressions/TestDisambiguate.test.ts` | 115 | – (0/2 tests) |
-| `tests-gui-central/src/test/java/test/expressions/TestExpressionExplanation.java` | `test/gui/tests-gui-central/expressions/TestExpressionExplanation.test.ts` | 424 | – (0/4 tests) |
+| `tests-gui-central/src/test/java/test/TestInfrastructure.java` | `test/gui/tests-gui-central/TestInfrastructure.test.ts` | 44 | skipped: checks Java runs on JDK 17 (for junit-quickcheck's random numbers) (0/1 tests) |
+| `tests-gui-central/src/test/java/test/expressions/PropLoadSaveExpression.java` | `test/gui-logic/tests-gui-central/expressions/PropLoadSaveExpression.test.ts` | 196 | ✅ (5/5 tests) |
+| `tests-gui-central/src/test/java/test/expressions/PropReplaceExpression.java` | `test/engine/tests-gui-central/expressions/PropReplaceExpression.test.ts` | 75 | ✅ (4/4 tests) |
+| `tests-gui-central/src/test/java/test/expressions/TestDisambiguate.java` | `test/engine/tests-gui-central/expressions/TestDisambiguate.test.ts` | 115 | ✅ (2/2 tests) |
+| `tests-gui-central/src/test/java/test/expressions/TestExpressionExplanation.java` | `test/engine/tests-gui-central/expressions/TestExpressionExplanation.test.ts` | 424 | ✅ (4/4 tests) |
 | `tests-gui-central/src/test/java/test/expressions/TestFromDoc.java` | `test/engine/tests-gui-central/expressions/TestFromDoc.test.ts` | 361 | ✅ (1/1 tests) |
-| `tests-gui-central/src/test/java/test/expressions/TestLoadSaveExpression.java` | `test/gui/tests-gui-central/expressions/TestLoadSaveExpression.test.ts` | 144 | – (0/3 tests) |
-| `tests-gui-central/src/test/java/test/gen/GenDateTime.java` | `test/gui/tests-gui-central/gen/GenDateTime.ts` | 46 | – |
-| `tests-gui-central/src/test/java/test/gen/GenDateTimeZoned.java` | `test/gui/tests-gui-central/gen/GenDateTimeZoned.ts` | 46 | – |
+| `tests-gui-central/src/test/java/test/expressions/TestLoadSaveExpression.java` | `test/engine/tests-gui-central/expressions/TestLoadSaveExpression.test.ts` | 144 | ✅ (3/3 tests) |
+| `tests-gui-central/src/test/java/test/gen/GenDateTime.java` | `test/engine/tests-gui-central/gen/GenDateTime.ts` | 46 | ✅ |
+| `tests-gui-central/src/test/java/test/gen/GenDateTimeZoned.java` | `test/engine/tests-gui-central/gen/GenDateTimeZoned.ts` | 46 | ✅ |
 | `tests-gui-central/src/test/java/test/gen/GenEditableColumn.java` | `test/engine/tests-gui-central/gen/GenEditableColumn.ts` | 82 | ✅ |
-| `tests-gui-central/src/test/java/test/gen/GenOffsetTime.java` | `test/gui/tests-gui-central/gen/GenOffsetTime.ts` | 46 | – |
-| `tests-gui-central/src/test/java/test/gen/GenTime.java` | `test/gui/tests-gui-central/gen/GenTime.ts` | 45 | – |
-| `tests-gui-central/src/test/java/test/gen/GenYearMonth.java` | `test/gui/tests-gui-central/gen/GenYearMonth.ts` | 46 | – |
+| `tests-gui-central/src/test/java/test/gen/GenOffsetTime.java` | `test/engine/tests-gui-central/gen/GenOffsetTime.ts` | 46 | ✅ |
+| `tests-gui-central/src/test/java/test/gen/GenTime.java` | `test/engine/tests-gui-central/gen/GenTime.ts` | 45 | ✅ |
+| `tests-gui-central/src/test/java/test/gen/GenYearMonth.java` | `test/engine/tests-gui-central/gen/GenYearMonth.ts` | 46 | ✅ |
 | `tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java` | `test/gui/windows/BlankMainWindow.test.ts` | 665 | ✅ (11/11 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExplanationDisplay.java` | `test/gui/tests-gui-central/gui/TestExplanationDisplay.test.ts` | 221 | – (0/8 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExportToCSV.java` | `test/gui/tests-gui-central/gui/TestExportToCSV.test.ts` | 89 | – (0/1 tests) |

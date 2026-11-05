@@ -1054,6 +1054,46 @@ Steps (each a checkpoint with the project owner):
 **Tests:** `tests-gui-transformations`, `tests-gui-transformations-create-edit`,
 `tests-gui-format`, and the rest of `tests-gui-central`.
 
+Each dialog's transformation is already in the engine (Phase 5), and its edits go to the engine as
+Calculate's do (Phase 10 step 2: `createTransformation`, and an edit request per transformation), so the
+dialogs edit what the engine sends them and send back the result.
+
+Decided by the project owner at the start of the phase:
+- Import URL stays, though a browser can only fetch from servers that allow it (CORS): when one doesn't,
+  the error says so.
+- The Task Manager stays, listing the engine's queued tasks (`Workers`, in the engine's worker).
+
+Steps (each a checkpoint with the project owner):
+1. The headless tests left in `tests-gui-central`: `TestLoadSaveExpression`, `PropLoadSaveExpression`
+   (over `ExpressionEditor`), `PropReplaceExpression`, `TestDisambiguate` and `TestExpressionExplanation`,
+   with the date and time generators there. They check the engine (and the editor's loading and saving),
+   so any Java bugs they find are fixed before the dialogs are built on it. `TestInfrastructure` (it checks
+   the JDK's version) is not ported.
+2. Filter and Check, the dialogs of one expression: `EditExpressionDialog`, `EditCheckExpressionDialog`,
+   enabling them in the transformation picker, the table menu's Transform (`View.createTransform`), and
+   clicking a hat's parts (the source table's `PickTableDialog`, a Calculate's columns, and the expression
+   of a Filter or Check). Check's display (`CheckDisplay`), the View menu's checks pane and the checks status
+   bar (`CheckSummaryLabel`), and the new-table dialog's Check. Tests: `TestCalculate`, `TestFilter`.
+3. Sort, Join, Concatenate and Hide columns: `EditSortDialog`, `EditJoinDialog`, `TableListDialog`,
+   `HideColumnsDialog`/`HideColumnsPanel`, `SelectColumnDialog`, and the table menu's Custom columns
+   (`CustomColumnDisplayDialog`, on the hide-columns panel). Tests: `TestSort`, `TestJoin`,
+   `TestHideColumns`.
+4. Aggregate: `EditAggregateSplitByDialog` and `AggregateSplitByPane`, the column dialog's side pane and
+   recipes (`ExpressionRecipe`), Aggregate's add-column arrows and editing its columns from the headers
+   (`TransformationEdits.editColumn_Agg`), and the "Transform type" recipe (`PickTypeTransformDialog`).
+   Tests: `TestColumnRecipes`.
+5. Manual Edit: `ManualEditEntriesDialog`, offering one when a transformation's cell is edited
+   (`PickManualEditIdentifierDialog`), and the "=" guidance (`GuidanceWindow`, making a Calculate). Tests:
+   `TestManualEdit`.
+6. `TestCreateEditTransformation` (Aggregate and Check, made and edited through the GUI), with
+   `GenDataAndTransforms` and the test helpers `CreateDataTableTrait` and `EnterColumnDetailsTrait`.
+7. Explanations: `ExplanationDisplay` and a cell's "Why?". Tests: `TestExplanationDisplay`.
+8. Importing: the import dialog with its live preview (`ImportChoicesDialog`, `ImporterGUI`, rebuilt), the
+   new-table dialog's Import File and Import URL, pasting into an empty cell to make a table, and the rest
+   of clipboard import and export. Tests: `PropFormat`, `TestExportToCSV`.
+9. Tidy up: the View menu's Task Manager (`TaskManagerWindow`, listing the engine's `Workers` tasks),
+   PORT-STATUS, `docs/gui-spec/`, and carry-overs to Phase 12 or 13.
+
 ### Phase 12: R support via webR
 - Lazy-load webR. Replace `RExecution` with a webR backend that uses the ported
   ConvertToR/ConvertFromR code.

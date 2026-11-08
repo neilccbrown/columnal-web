@@ -332,7 +332,7 @@ export class CheckLookupCopy implements Expression.ColumnLookup
             else if (this.checkType === Check.CheckType.STANDALONE)
                 return null;
             else
-                return new Expression.ColumnLookup.FoundColumn(column.getFirst().id, this.srcTableId.equals(tableId), column.getFirst().getType(column.getSecond()), null);
+                return new Expression.ColumnLookup.FoundColumn(column.getFirst().id, this.srcTableId.equals(column.getFirst().id), column.getFirst().getType(column.getSecond()), null);
         }
         catch (e)
         {
@@ -368,11 +368,10 @@ export class CheckLookupCopy implements Expression.ColumnLookup
         });
     }
 
-    // (As Java: the references' tables are all null, so none matches, and clicking a column in the grid
-    // inserts nothing)
+    // (A reference without a table is to the source's column)
     public getPossibleColumnReferences(tableId: TableId, columnId: ColumnId): Expression.ColumnLookup.ClickedReference[]
     {
-        return this.getAvailableColumnReferences().filter(c => tableId.equals(c.getFirst()) && columnId.equals(c.getSecond())).map(c => new class extends Expression.ColumnLookup.ClickedReference
+        return this.getAvailableColumnReferences().filter(c => tableId.equals(c.getFirst() ?? this.srcTableId) && columnId.equals(c.getSecond())).map(c => new class extends Expression.ColumnLookup.ClickedReference
         {
             public getExpression(): Expression
             {

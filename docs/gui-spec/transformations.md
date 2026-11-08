@@ -64,12 +64,12 @@ of `TestCalculate` and `TestFilter`), `test/gui/engine/ColumnLookupCopy.test.ts`
   "Test" (the expression), each with its help box; what the expression can refer to, and whether it has a
   row, follow the type (Once: no columns, no row). In Check's, Enter and Escape don't press its buttons,
   and Tab from the expression goes to OK; in Filter's they do, as usual.
-- Neither is modal: a column clicked in the grid goes into the expression, if it can refer to it. (A
-  Check's can't, as in Java: its lookup's references have no table, so none matches the column clicked.)
+- Neither is modal: a column clicked in the grid goes into the expression, if it can refer to it (for a
+  Check, the source's columns, unless it is Once). (Java's Check took none: a bug fixed.)
 - The expression is focused at first, at its start. OK: with errors, they show and a second OK saves
   anyway (`light-dialog.md`).
-- A reference to a column by its name alone is saved by Check with the source table's name (`T\A`), as
-  Java does.
+- A reference to one of a Check's source's columns is by its name alone, so it follows a new source.
+  (Java's was resolved with the source's name, `T\A`: a bug fixed.)
 
 ## A Check on the grid
 

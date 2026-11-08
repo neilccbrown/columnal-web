@@ -289,11 +289,15 @@ else
             // And computes the same contents:
             expect(normalise(ours.getSecond())).toBe(normalise(javaContents));
             // The port reads the file saved by Java, and saves it as Java did (which is not always
-            // unchanged: java2-*.rec, if present):
+            // unchanged: java2-*.rec, if present), or as port2-*.rec has it, where the port fixes a Java
+            // bug (port2-31.rec: Java's Check resolved a reference to its source's column by name alone
+            // with the source's name, so its saves alternated between the two):
             if (javaSaved !== inputSrc)
             {
                 const java2File = DIR + input.replace("input-", "java2-");
-                expect(loadAndSave(javaSaved).getFirst()).toBe(existsSync(java2File) ? readFileSync(java2File, "utf8") : javaSaved);
+                const port2File = DIR + input.replace("input-", "port2-");
+                const expected = existsSync(port2File) ? port2File : existsSync(java2File) ? java2File : null;
+                expect(loadAndSave(javaSaved).getFirst()).toBe(expected !== null ? readFileSync(expected, "utf8") : javaSaved);
             }
         });
     });

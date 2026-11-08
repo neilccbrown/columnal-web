@@ -194,18 +194,20 @@ describe("TestExpressionExplanation", () =>
                         m("1.8 \u00B1 0.9", null, false, null, lit(new Decimal("1.8")), lit(new Decimal("0.9"))),
                     ))));
 
-        testCheckExplanation("T1", "column\\\\half false", CheckType.ALL_ROWS, e("column\\\\T1\\half false", r(0), false, l("T1", "half false", 0)));
-        testCheckExplanation("T1", "@if column\\\\half false @then column\\\\all false @else column\\\\all true @endif", CheckType.ALL_ROWS, e("@if column\\\\T1\\half false @then column\\\\T1\\all false @else column\\\\T1\\all true @endif", r(1), false, null,
-            e("column\\\\T1\\half false", r(1), true, l("T1", "half false", 1)),
-            e("column\\\\T1\\all false", r(1), false, l("T1", "all false", 1)),
+        // PORT-NOTE: Java's expected explanations had the column references with the source table's name
+        // (column\\T1\half false), as Check's lookup resolved them so: a Java bug, fixed (BugFixes.test.ts).
+        testCheckExplanation("T1", "column\\\\half false", CheckType.ALL_ROWS, e("column\\\\half false", r(0), false, l("T1", "half false", 0)));
+        testCheckExplanation("T1", "@if column\\\\half false @then column\\\\all false @else column\\\\all true @endif", CheckType.ALL_ROWS, e("@if column\\\\half false @then column\\\\all false @else column\\\\all true @endif", r(1), false, null,
+            e("column\\\\half false", r(1), true, l("T1", "half false", 1)),
+            e("column\\\\all false", r(1), false, l("T1", "all false", 1)),
         ));
-        testCheckExplanation("T1", "@match column\\\\half false @case true @then column\\\\all false @case false @then column\\\\all true @endmatch", CheckType.ALL_ROWS, e("@match column\\\\T1\\half false @case true @then column\\\\T1\\all false @case false @then column\\\\T1\\all true @endmatch", r(1), false, null,
-            e("column\\\\T1\\half false", r(1), true, l("T1", "half false", 1)),
-            clause([new Pattern(new BooleanLiteral(true), null)], "column\\\\T1\\all false", r(1), true,
+        testCheckExplanation("T1", "@match column\\\\half false @case true @then column\\\\all false @case false @then column\\\\all true @endmatch", CheckType.ALL_ROWS, e("@match column\\\\half false @case true @then column\\\\all false @case false @then column\\\\all true @endmatch", r(1), false, null,
+            e("column\\\\half false", r(1), true, l("T1", "half false", 1)),
+            clause([new Pattern(new BooleanLiteral(true), null)], "column\\\\all false", r(1), true,
                 // Bit confusing; outer true is result of pattern match,
                 // inner true is the literal that it was matched against
                 m("true", r(1), true, null, e("true", r(1), true, null))),
-            e("column\\\\T1\\all false", r(1), false, l("T1", "all false", 1))),
+            e("column\\\\all false", r(1), false, l("T1", "all false", 1))),
         );
 
         // This is a mega-match clause with multiple clauses that won't match.

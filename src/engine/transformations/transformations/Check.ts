@@ -201,10 +201,14 @@ export class Check extends VisitableTransformation implements SingleSourceTransf
                     else
                     {
 
+                        // PORT-NOTE: bug fix.  Java's table could be omitted only when the reference named
+                        // the source (srcTableId.equals(tableId)), so a reference by name alone was resolved,
+                        // and saved, with the source's name, and kept to it when the source changed.  It is
+                        // whether the column is the source's, as MultipleTableLookup has it.
                         if (checkType === Check.CheckType.STANDALONE)
                             return null;
                         else
-                            return new Expression.ColumnLookup.FoundColumn(column.getFirst(), srcTableId.equals(tableId), column.getSecond().getType(), null);
+                            return new Expression.ColumnLookup.FoundColumn(column.getFirst(), srcTableId.equals(column.getFirst()), column.getSecond().getType(), null);
                     }
                 }
                 catch (e)
@@ -243,9 +247,12 @@ export class Check extends VisitableTransformation implements SingleSourceTransf
                 });
             },
 
+            // PORT-NOTE: bug fix.  Java matched the clicked table with the references' table, which is
+            // always null (they are the source's columns, by name alone), so none matched.  A reference
+            // without a table is to the source's column.
             getPossibleColumnReferences(tableId: TableId, columnId: ColumnId): Expression.ColumnLookup.ClickedReference[]
             {
-                return lookup.getAvailableColumnReferences().filter(c => tableId.equals(c.getFirst()) && columnId.equals(c.getSecond())).map(c => new class extends Expression.ColumnLookup.ClickedReference
+                return lookup.getAvailableColumnReferences().filter(c => tableId.equals(c.getFirst() ?? srcTableId) && columnId.equals(c.getSecond())).map(c => new class extends Expression.ColumnLookup.ClickedReference
                 {
                     public getExpression(): Expression
                     {

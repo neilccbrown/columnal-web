@@ -205,7 +205,14 @@ describe("Check", () =>
         await vi.waitUntil(() => editorFocused(), { timeout: 5000 });
         expect(document.querySelector(".check-type-combo")?.textContent.trim()).toBe("For all rows");
         expect(editorText()).toBe("true");
-        await write("A>0");
+        // A, clicked in T (the expression is selected, so it replaces it):
+        const pane = document.querySelector<HTMLElement>("[data-testid=pick-pane]")!;
+        const column = [...document.querySelectorAll<HTMLElement>('[data-table="T"] .column-name')].find(e => e.textContent.trim() === "A")!.getBoundingClientRect();
+        pane.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: column.left + 5, clientY: column.top + 5 }));
+        await vi.waitUntil(() => document.querySelector(".pick-table-overlay.pick-select") !== null);
+        pane.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: column.left + 5, clientY: column.top + 5, button: 0 }));
+        await vi.waitUntil(() => editorText() === "A");
+        await write(">0");
         // Escape doesn't close it (only any completions); then Tab goes to OK:
         await push("Escape");
         expect(document.querySelector(".expression-editor")).not.toBeNull();
@@ -215,10 +222,8 @@ describe("Check", () =>
         await vi.waitUntil(() => checks(a).length === 1, { timeout: 5000 });
         const check = checks(a)[0]!;
         expect(check.getCheckType()).toBe(Check.CheckType.ALL_ROWS);
-        // (A reference by name alone is saved with the source table's name, as Java does: Check's
-        // lookup says its table can't be omitted, as it compares the source with the reference's table,
-        // which is null)
-        expect(saved(check.getCheckExpression())).toBe("column\\\\T\\A > 0");
+        // (By name alone: Java saved it with the source's name, a bug fixed)
+        expect(saved(check.getCheckExpression())).toBe("column\\\\A > 0");
         // Its name above its result, at the position:
         const display = await vi.waitUntil(() => a.mainWindow()!.grid()!.displays().find(d => d.info.id === check.getId().getRaw()));
         expect(display.getPosition().equals(pos)).toBe(true);

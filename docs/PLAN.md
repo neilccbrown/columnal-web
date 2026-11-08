@@ -1101,11 +1101,12 @@ Steps (each a checkpoint with the project owner):
      `getNextInsertPosition` (recipes, Calculate's "make a new calculation" fix, Transform) put the new
      table over the old one; and in the column dialog a Tab in the name moved to the expression before
      the name's completions could take it.
-   - Java bugs found (reported, not fixed): in `Check.getColumnLookup`, `getPossibleColumnReferences`
-     filters on the references' table, which is always null, so clicking a column in the grid puts
-     nothing into a Check's expression; and `getColumn` says a column's table can be omitted only when
-     the reference names the source table, so a reference by name alone is saved with the table's name
-     (`T\A`).
+   - Java bugs found and fixed (in their own commit, tests in `test/engine/transformations/BugFixes.test.ts`):
+     in `Check.getColumnLookup`, `getPossibleColumnReferences` filtered on the references' table, which is
+     always null, so clicking a column in the grid put nothing into a Check's expression; and `getColumn`
+     said a column's table could be omitted only when the reference named the source table, so a
+     reference by name alone was saved with the table's name (`T\A`), and a Check whose source then
+     changed still read the old source.
    - Carried over: clicking a Check's result to show why it failed (step 7, `ExplanationDisplay`); the
      other hat parts' dialogs (steps 3 to 5, R in Phase 12).
 3. Sort, Join, Concatenate and Hide columns: `EditSortDialog`, `EditJoinDialog`, `TableListDialog`,

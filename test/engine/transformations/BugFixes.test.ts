@@ -5,7 +5,18 @@ import { Table } from "../../../src/engine/data/data/Table.js";
 import { ColumnId } from "../../../src/engine/identifiers/id/ColumnId.js";
 import { TableAndColumnRenames } from "../../../src/engine/identifiers/id/TableAndColumnRenames.js";
 import { TableId } from "../../../src/engine/identifiers/id/TableId.js";
-import { BooleanLiteral } from "../../../src/engine/expressions/transformations/expression/Expressions.js";
+import { CellPosition } from "../../../src/engine/data/data/CellPosition.js";
+import { ImmediateDataSource } from "../../../src/engine/data/data/DataSources.js";
+import { EditableRecordSet } from "../../../src/engine/data/data/EditableRecordSet.js";
+import { MemoryNumericColumn } from "../../../src/engine/data/data/MemoryNumericColumn.js";
+import type { TableManager } from "../../../src/engine/data/data/TableManager.js";
+import { BracketedStatus } from "../../../src/engine/expressions/transformations/expression/BracketedStatus.js";
+import { BooleanLiteral, Expression } from "../../../src/engine/expressions/transformations/expression/Expressions.js";
+import { FunctionList } from "../../../src/engine/functions/transformations/function/FunctionList.js";
+import { Decimal, ZERO } from "../../../src/engine/java/JavaBigDecimal.js";
+import { NumberInfo } from "../../../src/engine/types/data/datatype/NumberInfo.js";
+import { Either } from "../../../src/engine/utility-adt/utility/adt/Either.js";
+import { TFunctionUtil } from "../tests-functions/fixtures/functions/TFunctionUtil.js";
 import { Check } from "../../../src/engine/transformations/transformations/Check.js";
 import { Join } from "../../../src/engine/transformations/transformations/Join.js";
 import { Pair } from "../../../src/engine/utility-adt/utility/adt/Pair.js";
@@ -53,4 +64,52 @@ describe("Java bug fixes", () =>
         expect(check("A", Check.CheckType.ALL_ROWS).equals(check("A", Check.CheckType.NO_ROWS))).toBe(false);
         expect(check("A", Check.CheckType.ALL_ROWS).equals(check("B", Check.CheckType.ALL_ROWS))).toBe(false);
     });
+
+    // Java's Check.getColumnLookup filtered the references to a clicked column on their table, which is
+    // always null (they are by name alone), so clicking a column in the grid put nothing into a Check's
+    // expression.
+    test("Check's lookup refers to a clicked column of its source", () =>
+    {
+        const mgr = withTables();
+        const lookup = Check.getColumnLookup(mgr, tableId("T"), null, Check.CheckType.ALL_ROWS);
+        const references = lookup.getPossibleColumnReferences(tableId("T"), columnId("A"));
+        expect(references.map(r => r.getExpression().save(Expression.SaveDestination.TO_FILE, BracketedStatus.DONT_NEED_BRACKETS, TableAndColumnRenames.EMPTY))).toEqual(["column\\\\A"]);
+        // Not another table's, nor a STANDALONE check's:
+        expect(lookup.getPossibleColumnReferences(tableId("U"), columnId("A"))).toEqual([]);
+        expect(Check.getColumnLookup(mgr, tableId("T"), null, Check.CheckType.STANDALONE).getPossibleColumnReferences(tableId("T"), columnId("A"))).toEqual([]);
+    });
+
+    // Java's Check.getColumnLookup said a column's table could be omitted only when the reference named
+    // the source table (rather than when the column was found in it), so a reference by name alone was
+    // resolved, and saved, with the source table's name; a Check whose source then changed still
+    // referred to the old source.
+    test("Check's references to its source's columns are by name alone", () =>
+    {
+        const mgr = withTables();
+        const functions = FunctionList.getFunctionLookup(mgr.getUnitManager());
+        const check = (src: string, expression: string): Check => new Check(mgr, new Table.InitialLoadDetails(tableId("C"), null, null, null), tableId(src), Check.CheckType.ALL_ROWS, TFunctionUtil.parseExpression(expression, mgr.getTypeManager(), functions));
+        const saved = (c: Check): string => c.getCheckExpression().save(Expression.SaveDestination.TO_FILE, BracketedStatus.DONT_NEED_BRACKETS, TableAndColumnRenames.EMPTY);
+        // (Checking it resolves its names)
+        const onT = check("T", "A > 0");
+        expect(onT.getResult()).toBe(true);
+        expect(saved(onT)).toBe("column\\\\A > 0");
+        // Saved, loaded, and its source changed to U (whose A are all negative):
+        const onU = check("U", saved(onT));
+        expect(onU.getResult()).toBe(false);
+    });
 });
+
+// Tables T (A is 1 and 2) and U (A is -1 and -2)
+function withTables(): TableManager
+{
+    const mgr = DummyManager.make();
+    const data = (id: string, values: number[]): void =>
+    {
+        mgr.record(new ImmediateDataSource(mgr, new Table.InitialLoadDetails(tableId(id), null, CellPosition.ORIGIN, null), new EditableRecordSet([
+            rs => new MemoryNumericColumn(rs, columnId("A"), NumberInfo.DEFAULT, values.map(v => Either.right(new Decimal(v))), ZERO),
+        ], () => values.length)));
+    };
+    data("T", [1, 2]);
+    data("U", [-1, -2]);
+    return mgr;
+}

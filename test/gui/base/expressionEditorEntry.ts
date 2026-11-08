@@ -21,6 +21,7 @@ import { TBasicUtil } from "../../engine/tests-basic/fixtures/data/TBasicUtil.js
 import type { ExpressionValue } from "../../engine/tests-functions/fixtures/gen/ExpressionValue.js";
 import { engineHost, renderApp, savedFile, waitForLoaded, type RenderedApp } from "../fixtures/app.js";
 import { clickOnItemInBounds } from "./clickTableLocation.js";
+import { recordsOnClipboard } from "./clipboard.js";
 import { doubleOk } from "./doubleOk.js";
 import { enterExpression, EntryBracketStatus } from "./enterExpression.js";
 import { push, write } from "./keyboard.js";
@@ -106,13 +107,3 @@ export async function testEntryImpl(expressionValue: ExpressionValue, r: JavaRan
     TBasicUtil.assertValueListEitherEqual("Transformed", expressionValue.value.map(x => Either.right<string, Value>(x)), actual.dataValues);
 }
 
-// Java: the clipboard's application/records content (written by the page as a "web " format)
-async function recordsOnClipboard(): Promise<string | null>
-{
-    for (const item of await navigator.clipboard.read())
-    {
-        if (item.types.includes("web " + ClipboardUtils.DATA_FORMAT))
-            return (await item.getType("web " + ClipboardUtils.DATA_FORMAT)).text();
-    }
-    return null;
-}

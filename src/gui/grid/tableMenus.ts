@@ -1,12 +1,15 @@
 // A table's menus (Java: TableDisplay.getTableHeaderContextMenu, getColumnActions' ColumnHeaderOps,
 // and makeRowContextMenu), as menu data (menus.ts) for the grid's context menu (docs/gui-spec/tables.md).
-import { checkMenuItem, disabled, menu, menuItem, separator, textItem, type MenuEntry, type MenuItem } from "../components/menus/menus.js";
+import { checkMenuItem, disabled, menu, menuItem, menuItemPos, separator, textItem, type MenuEntry, type MenuItem } from "../components/menus/menus.js";
 import type { TableDisplayMode } from "../engine/protocol.js";
 import type { GridTableDisplay } from "./GridTableDisplay.js";
 
 /** Java: TableDisplay.getTableHeaderContextMenu. */
 export function tableHeaderMenu(display: GridTableDisplay): MenuEntry[]
 {
+    // Java: CheckDisplay.getTableHeaderContextMenu, just Delete
+    if (display.info.check !== null)
+        return [menuItem("tableDisplay.menu.delete", () => display.doDelete())];
     const current = display.info.display;
     // Java: radio menu items, in Display's order
     const show = (key: string, mode: TableDisplayMode): MenuEntry => checkMenuItem(key, current === mode, () => display.setDisplay(mode));
@@ -22,8 +25,7 @@ export function tableHeaderMenu(display: GridTableDisplay): MenuEntry[]
         menuItem("tableDisplay.menu.exportData", () => display.getActions()?.exportTable(display)),
         menuItem("tableDisplay.menu.delete", () => display.doDelete()),
         separator(),
-        // PORT-DEFERRED: making a transformation of the table (View.createTransform, Phase 11)
-        disabled(menuItem("tableDisplay.menu.transform", () => {})),
+        menuItemPos("tableDisplay.menu.transform", point => display.getActions()?.transform(display, point)),
     ];
 }
 

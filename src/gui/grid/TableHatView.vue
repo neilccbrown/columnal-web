@@ -3,7 +3,7 @@
 // (made in the engine: src/gui-logic/app/gui/table/app/TableHat.ts), above its table if there is
 // room, with a button to collapse it to just the transformation's kind (docs/gui-spec/tables.md).
 import { nextTick, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from "vue";
-import type { HatSegment, TableHatInfo } from "../engine/protocol.js";
+import type { HatLink, HatSegment, TableHatInfo } from "../engine/protocol.js";
 import { t } from "../i18n.js";
 import { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
 
@@ -19,6 +19,8 @@ const props = defineProps<{
 const emit = defineEmits<{
     // A source link's middle click (Java: selects the source table)
     selectTable: [tableId: string],
+    // A link's primary click (Java: its Clickable's onClick), at the point on the screen
+    linkClicked: [link: HatLink, point: { readonly x: number, readonly y: number }],
     // A source link hovered (after 300 ms, as Java's Clickable), at the point on the grid's canvas, or
     // no longer hovered (null)
     hoverSource: [hover: { readonly tableId: string, readonly at: { readonly x: number, readonly y: number } } | null],
@@ -85,9 +87,13 @@ void document.fonts.ready.then(() => layout());
 
 function segmentClicked(segment: HatSegment, e: MouseEvent): void
 {
-    // Java: the middle button on a source link selects the source table.  PORT-DEFERRED: the primary
-    // button's dialogs (TableHat.ts)
-    if (e.button === 1 && segment.link?.kind === "source" && !segment.link.broken)
+    if (e.button === 0 && segment.link !== null)
+    {
+        e.stopPropagation();
+        emit("linkClicked", segment.link, { x: e.clientX, y: e.clientY });
+    }
+    // Java: the middle button on a source link selects the source table
+    else if (e.button === 1 && segment.link?.kind === "source" && !segment.link.broken)
     {
         e.preventDefault();
         e.stopPropagation();
@@ -152,6 +158,7 @@ function hatClicked(e: MouseEvent): void
     ><span
       :class="segment.classes"
       :title="segment.link === null ? undefined : segment.link.kind === 'source' ? t('source.link.tooltip') : segment.link.tooltipKey !== null ? t(segment.link.tooltipKey) : undefined"
+      @click="segmentClicked(segment, $event)"
       @auxclick="segmentClicked(segment, $event)"
       @mouseenter="segmentEntered(segment, $event)"
       @mouseleave="segmentLeft"

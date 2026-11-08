@@ -1,6 +1,7 @@
 // Port of the Java GUI tests' ClipboardTrait (tests-gui-base): copies, and returns what was copied.
 import { expect } from "vitest";
 import { userEvent } from "vitest/browser";
+import { ClipboardUtils } from "../../../src/engine/importers/importers/ClipboardUtils.js";
 import { sleep } from "./util.js";
 
 /**
@@ -21,4 +22,15 @@ export async function copyToClipboard(doCopyAction: () => Promise<void> = () => 
     }
     expect(r).not.toBe(BLANK_CLIPBOARD);
     return r;
+}
+
+/** Java: the clipboard's application/records content (written by the page as a "web " format). */
+export async function recordsOnClipboard(): Promise<string | null>
+{
+    for (const item of await navigator.clipboard.read())
+    {
+        if (item.types.includes("web " + ClipboardUtils.DATA_FORMAT))
+            return (await item.getType("web " + ClipboardUtils.DATA_FORMAT)).text();
+    }
+    return null;
 }

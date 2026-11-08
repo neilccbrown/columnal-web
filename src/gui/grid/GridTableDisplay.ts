@@ -2,6 +2,7 @@
 // table itself is in the engine worker).  Its rows are the table name, the column names, the column
 // types, then the data.  It learns the table's shape from the worker's "tables" event (TableInfo), asks
 // for its length, and asks for its rows in blocks as they come into view, keeping the blocks it has.
+// A Check is shown as its name above its result (Java: CheckDisplay), with no columns or rows.
 import type { GridAreaRowIndex } from "../../engine/anns/Annotations.js";
 import { CellPosition } from "../../engine/data/data/CellPosition.js";
 import { Either } from "../../engine/utility-adt/utility/adt/Either.js";
@@ -104,7 +105,7 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
 
     protected override updateKnownRows(_checkUpToRowInclGrid: GridAreaRowIndex, updateSizeAndPositions: () => void): void
     {
-        if (this.lengthRequested || this.info.error !== null)
+        if (this.lengthRequested || this.info.error !== null || this.info.check !== null)
             return;
         this.lengthRequested = true;
         const info = this.info;
@@ -122,6 +123,9 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
     // column of add-column arrows to its right, if the table can have them (ExpandTableArrowSupplier)
     protected override recalculateBottomRightIncl(): CellPosition
     {
+        // Java: CheckDisplay.recalculateBottomRightIncl, the result below the name
+        if (this.info.check !== null)
+            return this.getPosition().offsetByRowCols(1, 0);
         if (this.info.display === "COLLAPSED")
             return this.getPosition();
         const columns = this.info.columnNames.length;
@@ -139,7 +143,8 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
         // (Below the table's name)
         const topDataRow = position.rowIndex + 1;
         const bottomDataRow = position.rowIndex + Math.max(GridTableDisplay.HEADER_ROWS - 1, GridTableDisplay.HEADER_ROWS + this.currentKnownRows - 1);
-        if (this.info.display === "COLLAPSED" || cell.rowIndex < topDataRow || cell.rowIndex > bottomDataRow)
+        // (A Check's columns can't be picked: Java picked only from a TableDisplay)
+        if (this.info.display === "COLLAPSED" || this.info.check !== null || cell.rowIndex < topDataRow || cell.rowIndex > bottomDataRow)
             return null;
         const colIndex = cell.columnIndex - position.columnIndex;
         const column = this.info.columnNames[colIndex];
@@ -276,6 +281,9 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
      */
     public doCopy(bounds: RectangleBounds | null): void
     {
+        // Java: CheckDisplay.doCopy: "Nothing really to copy"
+        if (this.info.check !== null)
+            return;
         const pos = this.getPosition();
         const columns = this.info.columnNames.length;
         const firstColumn = bounds === null ? 0 : Math.max(0, bounds.topLeftIncl.columnIndex - pos.columnIndex);
@@ -405,7 +413,9 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
     /** Java: DataDisplay.gotoRow: asks for a row (GotoRowDialog), then selects it in the column. */
     public gotoRow(_parent: unknown, column: number): void
     {
-        this.actions?.gotoRow(this, column);
+        // (Java: CheckDisplay.gotoRow: "Only one row...")
+        if (this.info.check === null)
+            this.actions?.gotoRow(this, column);
     }
 
     /** The GotoRowDialog's row (zero-based), selected in the column (on the grid). */

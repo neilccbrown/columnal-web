@@ -48,10 +48,11 @@ reloading the tab opens it again.
     ago) or "Saving" while a change is being saved (it saves now), Save as... (Ctrl/Cmd+Alt+S), Save a
     copy..., Close project (Alt+Shift+W).
   - Edit: Undo (Ctrl/Cmd+Z).
-  - View: Goto row... (`tables.md`), then Types... and Units... (`types-and-units.md`).
+  - View: Goto row... (`tables.md`), then Types... and Units... (`types-and-units.md`), then "Close left
+    pane" and "All check results" (radio items: the checks pane, `transformations.md`).
   - Help: About.
-  - Not yet: Edit's Settings (Phase 12, with R), and the View menu's Task Manager and the checks pane
-    (Phase 11). (Java's Find is commented out.)
+  - Not yet: Edit's Settings (Phase 12, with R), and the View menu's Task Manager (Phase 11). (Java's
+    Find is commented out.)
   - The menus have the class `id-menu-…` (Java: their id); their items too (Java: `GUI.makeId`). Menus show
     no mnemonics (the browser keeps Alt and a letter); they can be used by keyboard once one is open.
     Items' shortcuts work anywhere in the page, unless the focused control takes the key (the cell and

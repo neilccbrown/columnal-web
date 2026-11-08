@@ -8,20 +8,15 @@
 import { computed, markRaw, nextTick, shallowRef, useTemplateRef, watch } from "vue";
 import { BracketedStatus } from "../../engine/expressions/transformations/expression/BracketedStatus.js";
 import { Expression } from "../../engine/expressions/transformations/expression/Expressions.js";
-import { ErrorAndTypeRecorderStorer } from "../../engine/expressions/transformations/expression/ErrorAndTypeRecorderStorer.js";
-import { ExpressionUtil } from "../../engine/expressions/transformations/expression/ExpressionUtil.js";
 import { FunctionList } from "../../engine/functions/transformations/function/FunctionList.js";
 import { ColumnId } from "../../engine/identifiers/id/ColumnId.js";
 import { TableAndColumnRenames } from "../../engine/identifiers/id/TableAndColumnRenames.js";
 import { TableId } from "../../engine/identifiers/id/TableId.js";
 import { SimpleObjectProperty } from "../../engine/java/JavaFXBeans.js";
 import { TypeState } from "../../engine/expressions/transformations/expression/TypeState.js";
-import { ExpressionVersion } from "../../engine/parsers/grammar/Versions.js";
 import type { MultipleTableLookup } from "../../engine/transformations/transformations/MultipleTableLookup.js";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
 import { Pair } from "../../engine/utility-adt/utility/adt/Pair.js";
-import { InternalException } from "../../engine/utility-error/error/InternalException.js";
-import { UserException } from "../../engine/utility-error/error/UserException.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { AutoComplete } from "../../gui-logic/dialogs-non-expression/gui/dialog/AutoComplete.js";
 import { ColumnNameTextField } from "../../gui-logic/dialogs-non-expression/gui/dialog/ColumnNameTextField.js";
@@ -36,6 +31,7 @@ import { t } from "../i18n.js";
 import ExpressionEditor from "../lexeditor/ExpressionEditor.vue";
 import type { TopLevelEditorApi } from "../lexeditor/TopLevelEditorApi.js";
 import { ColumnLookupCopy } from "../project/columnLookupCopy.js";
+import { loadEditorExpression, saveEditorExpression } from "./expressionDialogs.js";
 
 const open = defineModel<boolean>("open", { required: true });
 const props = defineProps<{
@@ -85,39 +81,10 @@ function makeColumnLookup(columnId: ColumnId | null): ColumnLookupCopy
 }
 const curColumnLookup = markRaw(new SimpleObjectProperty<Expression.ColumnLookup>(makeColumnLookup(props.initialName === null ? null : new ColumnId(props.initialName))));
 
-// The column's expression, as the engine saved it.  (Java's had been checked, by the Calculate, which
-// resolved its names: saving it for the editor uses them, so it is checked here too.)
-function loadExpression(expression: string | null): Expression | null
-{
-    if (expression === null)
-        return null;
-    let loaded: Expression;
-    try
-    {
-        loaded = ExpressionUtil.parse(null, expression, ExpressionVersion.latest(), props.typeManager, functionLookup);
-    }
-    catch
-    {
-        return null;
-    }
-    try
-    {
-        loaded.checkExpression(curColumnLookup.get(), makeTypeState(), new ErrorAndTypeRecorderStorer());
-    }
-    catch (e)
-    {
-        if (!(e instanceof UserException || e instanceof InternalException))
-            throw e;
-    }
-    return loaded;
-}
-const initialExpression = markRaw({ value: loadExpression(props.initialExpression) });
+// The column's expression, as the engine saved it
+const initialExpression = markRaw({ value: loadEditorExpression(props.initialExpression, props.typeManager, functionLookup, curColumnLookup.get(), makeTypeState()) });
 let curValue: Expression | null = null;
-
-function saveExpression(expression: Expression): string
-{
-    return expression.save(Expression.SaveDestination.TO_FILE, BracketedStatus.DONT_NEED_BRACKETS, TableAndColumnRenames.EMPTY);
-}
+const saveExpression = saveEditorExpression;
 
 function nameChanged(v: ColumnId | null): void
 {
@@ -163,10 +130,11 @@ const nameCompletions = markRaw(new AutoComplete.Model<ColumnCompletion>({
     },
 }, AutoComplete.WhitespacePolicy.ALLOW_ONE_ANYWHERE_TRIM)) as unknown as AutoComplete.Model<AutoComplete.Completion>;
 
-// Tab goes from the name to the expression (Java: an event filter on the name field)
+// Tab goes from the name to the expression (Java: an event filter on the name field, after the
+// completions' own, which take a Tab while they show, and then focus the expression themselves)
 function nameKeyDown(e: KeyboardEvent): void
 {
-    if (e.key === "Tab" && !e.shiftKey)
+    if (e.key === "Tab" && !e.shiftKey && !e.defaultPrevented)
     {
         editor()?.focus(TopLevelEditor.Focus.LEFT);
         e.preventDefault();
@@ -293,7 +261,7 @@ watch(open, isOpen =>
         <HelpBox help-id="edit-column/column-name" />
         <div
           @focusin="recentlyFocused = 'name'"
-          @keydown.capture="nameKeyDown"
+          @keydown="nameKeyDown"
         >
           <ErrorableTextField
             ref="nameField"

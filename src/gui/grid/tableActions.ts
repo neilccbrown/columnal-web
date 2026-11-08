@@ -1,5 +1,6 @@
 // What the grid asks of the project's window (Java: the TableDisplay's View): the dialogs it shows.
 import { inject, provide, type InjectionKey } from "vue";
+import type { HatLink } from "../engine/protocol.js";
 import type { GridTableDisplay } from "./GridTableDisplay.js";
 
 export interface TableActions
@@ -14,6 +15,12 @@ export interface TableActions
     gotoRow(display: GridTableDisplay, column: number): void;
     // Java: the table menu's "Export data" (ExporterManager.chooseAndExportFile)
     exportTable(display: GridTableDisplay): void;
+    // Java: a hat's Clickable parts' onClick (TableHat): the source table's PickTableDialog, or the
+    // dialog editing the part, centred on the point on the screen
+    hatLinkClicked(display: GridTableDisplay, link: HatLink, point: { readonly x: number, readonly y: number }): void;
+    // Java: the table menu's "Transform" (View.createTransform): PickTransformationDialog, then the
+    // transformation of the table is made below it and edited
+    transform(display: GridTableDisplay, point: { readonly x: number, readonly y: number }): void;
 }
 
 const TABLE_ACTIONS: InjectionKey<TableActions> = Symbol("tableActions");

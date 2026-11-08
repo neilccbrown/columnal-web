@@ -6,11 +6,11 @@ import type { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { showAlert } from "../alerts.js";
 import AboutDialog from "../components/dialogs/AboutDialog.vue";
 import MenuBar from "../components/menus/MenuBar.vue";
-import { menu, menuItem, separator, type MenuItem } from "../components/menus/menus.js";
+import { checkMenuItem, menu, menuItem, separator, type MenuItem } from "../components/menus/menus.js";
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import NewTableDialog, { type DataOrTransform } from "../components/dialogs/NewTableDialog.vue";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
-import type { ColumnLookupInfo, EngineAlert, ExporterInfo, RenameOnEditKind } from "../engine/protocol.js";
+import type { EngineAlert, ExporterInfo } from "../engine/protocol.js";
 import { download } from "../download.js";
 import { ignoreClosed } from "../engine/EngineClient.js";
 import { provideEngine } from "../engine/useEngine.js";
@@ -20,9 +20,10 @@ import { copyTypeManager, typeInfoOf } from "../project/typeCopy.js";
 import TypesDialog from "./types/TypesDialog.vue";
 import UnitsDialog from "./types/UnitsDialog.vue";
 import EditImmediateColumnDialog, { type ColumnDetails } from "./EditImmediateColumnDialog.vue";
-import EditColumnExpressionDialog from "./EditColumnExpressionDialog.vue";
-import PickTableDialog from "./PickTableDialog.vue";
-import PickTransformationDialog from "./PickTransformationDialog.vue";
+import { Either } from "../../engine/utility-adt/utility/adt/Either.js";
+import { EntireTableSelection } from "../../gui-logic/table-gui/gui/table/EntireTableSelection.js";
+import ChecksPane from "./ChecksPane.vue";
+import TransformationDialogs from "./TransformationDialogs.vue";
 import type { PickingMode } from "../grid/picking.js";
 import ExportDialog from "./ExportDialog.vue";
 import GotoRowDialog from "./GotoRowDialog.vue";
@@ -40,6 +41,7 @@ const props = defineProps<{ projectId: string }>();
 const context = useAppContext();
 const engine = provideEngine(context.makeTransport());
 const engineGrid = useTemplateRef<InstanceType<typeof EngineGrid>>("engineGrid");
+const transformations = useTemplateRef<InstanceType<typeof TransformationDialogs>>("transformations");
 const session = shallowRef<ProjectSession | null>(null);
 const recent = shallowRef<readonly ProjectSummary[]>([]);
 const opening = shallowRef(false);
@@ -115,12 +117,11 @@ async function openColumnDialog(target: ColumnFor): Promise<void>
 function newTableChosen(choice: DataOrTransform, point: { x: number, y: number }): void
 {
     const target = newTable.value;
-    // Java: View.createTable's TRANSFORM: which transformation, then its source table
+    // Java: View.createTable's TRANSFORM (which transformation, then its source table) and CHECK
     if (target !== null && choice === "TRANSFORM")
-    {
-        pickTransformationAt.value = point;
-        pickTransformationOpen.value = true;
-    }
+        transformations.value?.newTransformation(target.position, point);
+    else if (target !== null && choice === "CHECK")
+        transformations.value?.newCheck(target.position, point);
     else if (target !== null && choice === "DATA")
         void openColumnDialog({ kind: "table", position: target.position, point });
     // Java: View.createTable's COMMENT, a new comment there
@@ -150,52 +151,7 @@ function columnChosen(details: ColumnDetails): void
 // The grid's picking mode, while a dialog picks a table or column from it
 const picking = shallowRef<PickingMode | null>(null);
 
-// Java: PickTransformationDialog, then PickTableDialog (for the transformation's source table)
-const pickTransformationAt = shallowRef<{ x: number, y: number } | null>(null);
-const pickTransformationOpen = shallowRef(false);
-const pickTableAt = shallowRef<{ x: number, y: number } | null>(null);
-const pickTableOpen = shallowRef(false);
-function transformationChosen(name: string, point: { x: number, y: number }): void
-{
-    if (name !== "calculate")
-        return;
-    pickTableAt.value = point;
-    pickTableOpen.value = true;
-    // Java: View.enableTablePickingMode, while the dialog shows (from where the transformation was chosen)
-    picking.value = markRaw<PickingMode>({
-        kind: "table",
-        include: () => true,
-        onPick: picked => void tablePicked(picked.table).catch(ignoreClosed),
-        target: () => document.querySelector(".pick-table-dialog")?.closest(".light-dialog")?.getBoundingClientRect() ?? null,
-        startPoint: point,
-    });
-}
-
-watch(pickTableOpen, isOpen =>
-{
-    if (!isOpen && picking.value?.kind === "table")
-        picking.value = null;
-});
-
-// Java: TransformationInfo.make with the picked table, then TableDisplay.editAfterCreation
-async function tablePicked(src: string): Promise<void>
-{
-    const target = newTable.value;
-    pickTableOpen.value = false;
-    if (target === null)
-        return;
-    const result = await engine.client.request("createTransformation", "calculate", src, target.position.columnIndex, target.position.rowIndex);
-    if ("title" in result)
-    {
-        showAlert(result);
-        return;
-    }
-    // (Once the grid has it)
-    const created = await waitForTable(result.id);
-    if (created !== null)
-        await openCalculateColumnDialog(created, null, "TO_SUGGESTED", "transform.calculate.addInitial");
-}
-
+// The grid's display of the table, once it has it
 function waitForTable(id: string): Promise<GridTableDisplay | null>
 {
     return new Promise(resolve =>
@@ -219,70 +175,13 @@ function waitForTable(id: string): Promise<GridTableDisplay | null>
     });
 }
 
-// Java: EditColumnExpressionDialog for a Calculate's column: adding one (TableDisplay.addColumnBefore_Calc)
-// or editing one (TransformationEdits.editColumn_Calc)
-interface CalculateColumnFor
-{
-    readonly table: string;
-    readonly column: string | null;
-    readonly expression: string | null;
-    readonly lookupInfo: ColumnLookupInfo;
-    readonly typeManager: TypeManager;
-    readonly rename: RenameOnEditKind;
-    readonly topMessageKey: string | null;
-}
-const calculateColumnFor = shallowRef<CalculateColumnFor | null>(null);
-const calculateColumnOpen = shallowRef(false);
-async function openCalculateColumnDialog(display: GridTableDisplay, column: string | null, rename: RenameOnEditKind, topMessageKey: string | null = null): Promise<void>
-{
-    const src = display.info.calculate?.src;
-    if (src === undefined)
-        return;
-    const typeManager = markRaw(await copyTypeManager(engine.client));
-    const lookupInfo = markRaw(await engine.client.request("columnLookup", display.info.id, src));
-    const expression = column === null ? null : (await engine.client.request("calculateColumn", display.info.id, column))?.expression ?? null;
-    calculateColumnFor.value = { table: display.info.id, column, expression, lookupInfo, typeManager, rename, topMessageKey };
-    calculateColumnOpen.value = true;
-}
-
-watch(calculateColumnOpen, isOpen =>
-{
-    if (!isOpen && picking.value?.kind === "column")
-        picking.value = null;
-});
-
-function calculateColumnChosen(column: string, expression: string): void
-{
-    const target = calculateColumnFor.value;
-    if (target === null)
-        return;
-    void engine.client.request("setCalculateColumn", target.table, target.column, column, expression, target.rename).then(alert =>
-    {
-        if (alert !== null)
-            showAlert(alert);
-    }).catch(ignoreClosed);
-}
-
-// Java: the expression editor's fix, Calculate.makeEditor's moveExpressionToNewCalculation
-function calculateColumnMoved(editingColumn: string, newColumn: string | null, expression: string): void
-{
-    const target = calculateColumnFor.value;
-    if (target === null)
-        return;
-    void engine.client.request("moveCalculateColumn", target.table, editingColumn, newColumn, expression).then(alert =>
-    {
-        if (alert !== null)
-            showAlert(alert);
-    }).catch(ignoreClosed);
-}
-
 // Java: TransformationEdits.editColumn_IDS: the column dialog for the column
 async function editColumn(display: GridTableDisplay, column: string, focus: "name" | "type"): Promise<void>
 {
     // Java: a Calculate's columns' primary edit operation, editColumn_Calc
     if (display.info.calculate !== null)
     {
-        await openCalculateColumnDialog(display, column, "UNNEEDED");
+        transformations.value?.editCalculateColumn(display, column);
         return;
     }
     const details = await engine.client.request("columnDetails", display.info.id, display.info.version, column);
@@ -347,9 +246,30 @@ function sendTypeInfo(tm: TypeManager): void
     }).catch(ignoreClosed);
 }
 
+// Java: CheckSummaryLabel, the status bar's count of the Checks which pass (from the engine's tables;
+// "?" while any has no result), shown while there are any; clicking it shows the checks pane
+const checks = computed(() => engine.tables.tables.value.filter(t => t.check !== null));
+const checksSummary = computed(() =>
+{
+    const total = checks.value.length;
+    const passing = checks.value.some(c => c.check?.passed === null) ? null : checks.value.filter(c => c.check?.passed === true).length;
+    return { text: "Checks: " + (passing === null ? "?" : String(passing)) + "/" + String(total) + " OK", failing: passing === null || passing !== total };
+});
+
+// Java: MainWindow's left pane (the View menu's "Close left pane" and "All check results")
+const leftPane = shallowRef<"none" | "checks">("none");
+
+// Java: ChecksLeftPane's entries: the Check selected on the grid
+function selectCheck(id: string): void
+{
+    const display = engineGrid.value?.displays().find(d => d.info.id === id);
+    if (display !== undefined)
+        engineGrid.value!.grid.findAndSelect(Either.right(new EntireTableSelection(display, display.getPosition().columnIndex)));
+}
+
 provideTableActions({
     // (Java: TableDisplay.addColumnOperation: a Calculate's is addColumnBefore_Calc)
-    addColumn: (display, beforeColumn) => void (display.info.calculate !== null ? openCalculateColumnDialog(display, null, "IF_OLD_AUTO").catch(ignoreClosed) : openColumnDialog({ kind: "column", display, beforeColumn })),
+    addColumn: (display, beforeColumn) => display.info.calculate !== null ? transformations.value?.addCalculateColumn(display) : void openColumnDialog({ kind: "column", display, beforeColumn }),
     editColumn: (display, column, focus) => void editColumn(display, column, focus).catch(ignoreClosed),
     gotoRow: (display, column) =>
     {
@@ -357,6 +277,8 @@ provideTableActions({
         gotoRowOpen.value = true;
     },
     exportTable: display => void exportTable(display).catch(ignoreClosed),
+    hatLinkClicked: (display, link, point) => transformations.value?.hatLinkClicked(display, link, point),
+    transform: (display, point) => transformations.value?.transform(display, point),
 });
 
 onMounted(async () =>
@@ -430,8 +352,8 @@ function saveItem(): MenuItem
 }
 
 // (Java's Exit is left out: closing the tab does it.)
-// PORT-DEFERRED: Edit's Settings (Phase 12, with R), and the View menu's Task Manager and checks pane
-// (Phase 11).  (Java's Find is commented out.)
+// PORT-DEFERRED: Edit's Settings (Phase 12, with R), and the View menu's Task Manager (Phase 11 step 9).
+// (Java's Find is commented out.)
 const menus = computed(() => [
     menu("menu.project",
         menuItem("menu.project.new", () => void newProject()),
@@ -448,7 +370,11 @@ const menus = computed(() => [
         menuItem("menu.view.goto.row", () => engineGrid.value?.grid.gotoRow(null)),
         separator(),
         menuItem("menu.view.types", () => void openTypesDialog("types").catch(ignoreClosed)),
-        menuItem("menu.view.units", () => void openTypesDialog("units").catch(ignoreClosed))),
+        menuItem("menu.view.units", () => void openTypesDialog("units").catch(ignoreClosed)),
+        separator(),
+        // Java: radio menu items
+        checkMenuItem("menu.view.nopane", leftPane.value === "none", () => { leftPane.value = "none"; }),
+        checkMenuItem("menu.view.checks", leftPane.value === "checks", () => { leftPane.value = "checks"; })),
     menu("menu.help",
         menuItem("menu.help.about", () => { about.value = true; })),
 ]);
@@ -478,6 +404,12 @@ defineExpose({
       @opened="menuShownAt = Date.now()"
     />
     <div class="main-view">
+      <ChecksPane
+        v-if="leftPane === 'checks'"
+        :checks="checks"
+        @close="leftPane = 'none'"
+        @select="selectCheck"
+      />
       <EngineGrid
         ref="engineGrid"
         class="main-grid"
@@ -491,6 +423,16 @@ defineExpose({
       >
         {{ bannerText }}
       </div>
+    </div>
+    <div
+      v-if="checks.length > 0"
+      class="status-bar"
+    >
+      <span
+        class="check-summary-counts"
+        :class="{ failing: checksSummary.failing }"
+        @click="leftPane = 'checks'"
+      >{{ checksSummary.text }}</span>
     </div>
     <OpenProjectDialog
       v-model:open="opening"
@@ -508,31 +450,11 @@ defineExpose({
       :transform-is-valid="engine.tables.tables.value.length > 0"
       @chosen="newTableChosen"
     />
-    <PickTransformationDialog
-      v-model:open="pickTransformationOpen"
-      :centre-on="pickTransformationAt"
-      @chosen="transformationChosen"
-    />
-    <PickTableDialog
-      v-model:open="pickTableOpen"
-      :tables="engine.tables.tables.value.map(t => t.id)"
-      :exclude="[]"
-      :centre-on="pickTableAt"
-      @picked="table => void tablePicked(table).catch(ignoreClosed)"
-    />
-    <EditColumnExpressionDialog
-      v-if="calculateColumnFor !== null"
-      :key="calculateColumnFor.table + '/' + calculateColumnFor.column + '/' + String(calculateColumnOpen)"
-      v-model:open="calculateColumnOpen"
-      :type-manager="calculateColumnFor.typeManager"
-      :lookup-info="calculateColumnFor.lookupInfo"
-      :initial-name="calculateColumnFor.column"
-      :initial-expression="calculateColumnFor.expression"
-      :top-message-key="calculateColumnFor.topMessageKey"
-      @ok="calculateColumnChosen"
-      @move="calculateColumnMoved"
+    <TransformationDialogs
+      ref="transformations"
+      :find-display="waitForTable"
       @picking="mode => picking = mode"
-      @types-changed="sendTypeInfo(calculateColumnFor.typeManager)"
+      @types-changed="sendTypeInfo"
     />
     <EditImmediateColumnDialog
       v-if="columnTypeManager !== null"
@@ -578,12 +500,28 @@ defineExpose({
 }
 .main-view {
     position: relative;
+    display: flex;
     flex: 1;
     min-height: 0;
 }
 .main-grid {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     height: 100%;
+}
+/* mainview.scss: .status-bar */
+.status-bar {
+    padding: 2px 0 2px 8px;
+    border-top: 1px solid var(--status-bar-border);
+    background: var(--status-bar-background);
+    font-family: var(--font-main);
+}
+.check-summary-counts.failing {
+    color: var(--table-header-background-color-check-failing);
+}
+.check-summary-counts:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 /* mainview.scss: .banner-message */
 .banner-message {

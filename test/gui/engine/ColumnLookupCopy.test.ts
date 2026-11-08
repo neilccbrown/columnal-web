@@ -1,7 +1,8 @@
 // The GUI's copy of an expression editor's column lookup (src/gui/project/columnLookupCopy.ts) gives
 // the same answers as the engine's MultipleTableLookup it copies, for each table being edited, source
 // table and column being edited, over tables which overwrite and add columns, depend on each other,
-// have a missing source, or have an erroneous column.
+// have a missing source, or have an erroneous column.  And the copy of a Check's lookup
+// (CheckLookupCopy) gives the same answers as Check.getColumnLookup, for each check type.
 import { describe, expect, test } from "vitest";
 import { ImmediateDataSource } from "../../../src/engine/data/data/DataSources.js";
 import type { EditableColumn } from "../../../src/engine/data/data/EditableColumn.js";
@@ -16,12 +17,14 @@ import { ColumnId } from "../../../src/engine/identifiers/id/ColumnId.js";
 import { TableId } from "../../../src/engine/identifiers/id/TableId.js";
 import { HashMap } from "../../../src/engine/java/HashMap.js";
 import { Decimal, ZERO } from "../../../src/engine/java/JavaBigDecimal.js";
+import { BooleanLiteral } from "../../../src/engine/expressions/transformations/expression/Expressions.js";
 import { Calculate } from "../../../src/engine/transformations/transformations/Calculate.js";
+import { Check } from "../../../src/engine/transformations/transformations/Check.js";
 import { MultipleTableLookup } from "../../../src/engine/transformations/transformations/MultipleTableLookup.js";
 import { NumberInfo } from "../../../src/engine/types/data/datatype/NumberInfo.js";
 import { Either } from "../../../src/engine/utility-adt/utility/adt/Either.js";
 import { columnLookupInfo } from "../../../src/gui/engine/columnLookupInfo.js";
-import { ColumnLookupCopy } from "../../../src/gui/project/columnLookupCopy.js";
+import { CheckLookupCopy, ColumnLookupCopy } from "../../../src/gui/project/columnLookupCopy.js";
 import { DummyManager } from "../../engine/tests-functions/fixtures/DummyManager.js";
 import { TFunctionUtil } from "../../engine/tests-functions/fixtures/functions/TFunctionUtil.js";
 
@@ -47,6 +50,7 @@ function makeTables(): DummyManager
     // A missing source, and an erroneous column:
     calc("Bad", "Missing", { X: "1" });
     calc("Err", "T", { Y: "zzz + 1" });
+    mgr.record(new Check(mgr, new Table.InitialLoadDetails(new TableId("K"), null, null, null), new TableId("C1"), Check.CheckType.ALL_ROWS, new BooleanLiteral(true)));
     return mgr;
 }
 
@@ -63,7 +67,7 @@ function outcome<T>(f: () => T, show: (t: T) => unknown): unknown
     }
 }
 
-const TABLES = ["T", "C1", "C2", "Bad", "Err", "Missing"];
+const TABLES = ["T", "C1", "C2", "Bad", "Err", "K", "Missing"];
 const COLUMNS = ["A", "B", "D", "E", "X", "Y", "Q"];
 
 function answers(lookup: Expression.ColumnLookup, marker: unknown): unknown
@@ -119,4 +123,26 @@ describe("ColumnLookupCopy", () =>
         expect(real.getColumn(IdentExpression.column(new ColumnId("A")), null, new ColumnId("A"))?.information?.getFirst().toPlain()).toContain("re-calculated");
         expect(real.getFixForIdent("column", ["D"], IdentExpression.column(new ColumnId("D")))).not.toBeNull();
     });
+});
+
+describe("CheckLookupCopy", () =>
+{
+    const mgr = makeTables();
+    // (A new Check, and an existing one)
+    for (const us of [null, "K"])
+    {
+        for (const src of ["T", "C1", "Missing"])
+        {
+            test("us " + us + ", source " + src, () =>
+            {
+                for (const checkType of Check.CheckType.values())
+                {
+                    const real = Check.getColumnLookup(mgr, new TableId(src), us === null ? null : new TableId(us), checkType);
+                    const info = JSON.parse(JSON.stringify(columnLookupInfo(mgr, us, src))) as ReturnType<typeof columnLookupInfo>;
+                    const copy = new CheckLookupCopy(info, mgr.getTypeManager(), checkType);
+                    expect(answers(copy, null), checkType.name()).toEqual(answers(real, null));
+                }
+            });
+        }
+    }
 });

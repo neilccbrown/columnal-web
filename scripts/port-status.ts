@@ -118,6 +118,8 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/PopupTrait.java", ["test/gui/base/popup.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/ScrollToTrait.java", ["test/gui/base/scrollTo.ts"]],
     ["tests-gui-base/src/testFixtures/java/test/gui/trait/TextFieldTrait.java", ["test/gui/base/textField.ts"]],
+    ["tests-gui-transformations/src/test/java/test/gui/transformation/TestCalculate.java", ["test/gui/transformations/Calculate.test.ts"]],
+    ["tests-gui-transformations/src/test/java/test/gui/transformation/TestFilter.java", ["test/gui/transformations/Filter.test.ts"]],
 ]);
 
 // The kind of TS test (engine, gui-logic or gui) a Java test file in a test module becomes:

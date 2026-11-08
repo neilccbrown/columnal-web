@@ -49,7 +49,7 @@ import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
 import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
-import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type ColumnRecipe, type RenameOnEditKind, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type ExpressionDetails, type RenameOnEditKind, type TransformationKind, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 import { columnLookupInfo } from "./columnLookupInfo.js";
 import { RenameOnEdit } from "../../engine/data/data/RenameOnEdit.js";
 import { BracketedStatus } from "../../engine/expressions/transformations/expression/BracketedStatus.js";
@@ -57,6 +57,9 @@ import { ExpressionUtil } from "../../engine/expressions/transformations/express
 import { HashMap } from "../../engine/java/HashMap.js";
 import { ExpressionVersion } from "../../engine/parsers/grammar/Versions.js";
 import { Calculate } from "../../engine/transformations/transformations/Calculate.js";
+import { Check } from "../../engine/transformations/transformations/Check.js";
+import { Filter } from "../../engine/transformations/transformations/Filter.js";
+import type { SingleSourceTransformationInfo } from "../../engine/transformations/transformations/SingleSourceTransformationInfo.js";
 
 // How many rows requests are done for each table at once (newest first); older ones are skipped:
 const MAX_ROWS_REQUESTS_PER_TABLE = 2;
@@ -379,13 +382,16 @@ export class EngineHost implements EngineApi
         return columnLookupInfo(this.tableManager, us, src);
     }
 
-    // Java: View's new-table dialog's TRANSFORM: TransformationInfo.make, with the source table picked
-    public createTransformation(_kind: "calculate", src: string, column: number, row: number): { readonly id: string } | EngineAlert
+    // Java: View's new-table dialog's TRANSFORM, and View.createTransform: TransformationInfo.make, with
+    // the source table picked
+    public createTransformation(kind: TransformationKind, src: string, position: { readonly column: number, readonly row: number } | null): { readonly id: string } | EngineAlert
     {
         try
         {
             const srcTable = this.tableManager.getSingleTableOrThrow(new TableId(src));
-            const make = new Calculate.Info().make(this.tableManager, new CellPosition(CellPosition.row(row), CellPosition.col(column)), () => srcTable);
+            const info: SingleSourceTransformationInfo = kind === "calculate" ? new Calculate.Info() : new Filter.Info();
+            const at = position === null ? this.tableManager.getNextInsertPosition(srcTable.getId()) : new CellPosition(CellPosition.row(position.row), CellPosition.col(position.column));
+            const make = info.make(this.tableManager, at, () => srcTable);
             if (make === null)
                 throw new InternalException("No source table");
             const transformation = this.tableManager.record(make());
@@ -394,6 +400,88 @@ export class EngineHost implements EngineApi
         catch (e)
         {
             return alertFor("error.creating.transformation", e);
+        }
+    }
+
+    public expressionDetails(id: string): ExpressionDetails | null
+    {
+        const table = this.tables.get(id)?.table;
+        if (table instanceof Filter)
+            return { kind: "filter", src: table.getSrcTableId().getRaw(), expression: saveExpression(table.getFilterExpression()) };
+        if (table instanceof Check)
+            return { kind: "check", src: table.getSrcTableId().getRaw(), expression: saveExpression(table.getCheckExpression()), checkType: table.getCheckType().name() as CheckTypeName };
+        return null;
+    }
+
+    // Java: TableDisplay.editAfterCreation's Filter (renaming to the suggested name), and TableHat's
+    // editExpressionLink for a Filter (renaming if the old name was automatic)
+    public setFilterExpression(id: string, expression: string, rename: RenameOnEditKind): EngineAlert | null
+    {
+        const filter = this.tables.get(id)?.table;
+        if (!(filter instanceof Filter))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const newExp = this.loadExpression(expression);
+            mgr.edit(filter, newId => new Filter(mgr, filter.getDetailsForCopy(newId), filter.getSrcTableId(), newExp), renameOnEdit(rename, Filter.suggestedName(newExp)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor(rename === "TO_SUGGESTED" ? "error.editing.filter" : "error.editing.column", e);
+        }
+    }
+
+    // Java: TableHat's editCheckLink
+    public setCheck(id: string, checkType: CheckTypeName, expression: string): EngineAlert | null
+    {
+        const check = this.tables.get(id)?.table;
+        if (!(check instanceof Check))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const newExp = this.loadExpression(expression);
+            mgr.edit(check, newId => new Check(mgr, check.getDetailsForCopy(newId), check.getSrcTableId(), checkTypeOf(checkType), newExp), RenameOnEdit.ifOldAuto(Check.suggestedName(newExp)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.editing.column", e);
+        }
+    }
+
+    // Java: View's new-table dialog's CHECK
+    public createCheck(src: string, checkType: CheckTypeName, expression: string, column: number, row: number): EngineAlert | null
+    {
+        try
+        {
+            const position = new CellPosition(CellPosition.row(row), CellPosition.col(column));
+            this.tableManager.record(new Check(this.tableManager, new Table.InitialLoadDetails(null, null, position, null), new TableId(src), checkTypeOf(checkType), this.loadExpression(expression)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.creating.check", e);
+        }
+    }
+
+    // Java: TableHat's editSourceLink (which doesn't rename: "ideally would rename, but will live without")
+    public setSource(id: string, src: string): EngineAlert | null
+    {
+        const table = this.tables.get(id)?.table;
+        if (!(table instanceof Transformation) || !("withNewSource" in table) || typeof table.withNewSource !== "function")
+            return null;
+        try
+        {
+            const withNewSource = (table.withNewSource as (newSrcTableId: TableId) => Transformation).bind(table);
+            this.tableManager.edit(table, _id => withNewSource(new TableId(src)), RenameOnEdit.UNNEEDED);
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.editing.table", e);
         }
     }
 
@@ -431,8 +519,7 @@ export class EngineHost implements EngineApi
             const newCols = Utility.appendToMap(calc.getCalculatedColumns(), new ColumnId(newColumn), this.loadExpression(expression), oldColumn === null ? null : new ColumnId(oldColumn));
             const toCalculate = new HashMap<ColumnId, Expression>();
             newCols.forEach((v, k) => toCalculate.set(k, v));
-            const renameOnEdit = rename === "UNNEEDED" ? RenameOnEdit.UNNEEDED : rename === "IF_OLD_AUTO" ? RenameOnEdit.ifOldAuto(Calculate.suggestedName(toCalculate)) : RenameOnEdit.renameToSuggested(Calculate.suggestedName(toCalculate));
-            mgr.edit(calc, newId => new Calculate(mgr, calc.getDetailsForCopy(newId), calc.getSrcTableId(), toCalculate), renameOnEdit);
+            mgr.edit(calc, newId => new Calculate(mgr, calc.getDetailsForCopy(newId), calc.getSrcTableId(), toCalculate), renameOnEdit(rename, Calculate.suggestedName(toCalculate)));
             return null;
         }
         catch (e)
@@ -849,7 +936,7 @@ export class EngineHost implements EngineApi
                 this.displays.set(table, display);
             },
             getMostRecentPosition: () => this.position(table),
-            getBottomRightIncl: () => this.position(table),
+            getBottomRightIncl: () => this.bottomRight(table),
             // PORT-DEFERRED: offering a Manual Edit when a transformation's cell is edited (Phase 11, with
             // its PickManualEditIdentifierDialog); the edit is cancelled meanwhile, as in Java
             promptForTransformationEdit: () => {},
@@ -867,6 +954,36 @@ export class EngineHost implements EngineApi
             this.tables.set(id, { table, version: this.nextVersion++ });
             this.tablesChanged();
         }
+    }
+
+    /**
+     * Java: TableDisplay.recalculateBottomRightIncl, as the GUI's GridTableDisplay works it out, for
+     * TableManager.getNextInsertPosition: the columns shown, with any column of add-column arrows (and a
+     * Check's result below its name).  Of the rows, only the header's are counted: the length isn't
+     * worked out for this, and getNextInsertPosition only uses the column.
+     */
+    private bottomRight(table: Table): CellPosition
+    {
+        const position = this.position(table);
+        if (table instanceof Check)
+            return position.offsetByRowCols(1, 0);
+        if (this.displays.get(table)?.getFirst() === Table.Display.COLLAPSED)
+            return position;
+        let columns: number;
+        try
+        {
+            columns = this.shownColumns(table).length;
+        }
+        catch (e)
+        {
+            if (!(e instanceof UserException || e instanceof InternalException))
+                throw e;
+            return position;
+        }
+        if (columns === 0)
+            return position;
+        const addColumnArrows = table instanceof ImmediateDataSource || table instanceof Calculate;
+        return position.offsetByRowCols(2, columns + (addColumnArrows ? 1 : 0) - 1);
     }
 
     private position(table: Table): CellPosition
@@ -995,7 +1112,38 @@ export class EngineHost implements EngineApi
             columnAfter,
             hat: table instanceof VisitableTransformation ? TableHat.content(this.tableManager, table) : null,
             calculate: table instanceof Calculate ? { src: table.getSrcTableId().getRaw() } : null,
+            check: table instanceof Check ? this.checkResult(table) : null,
         };
+    }
+
+    // Java: CheckDisplay's loading of the result (and CheckSummaryLabel's), worked out once per Check
+    // (a change makes a new one)
+    private readonly checkResults = new WeakMap<Check, CheckResultInfo>();
+    private checkResult(check: Check): CheckResultInfo
+    {
+        const existing = this.checkResults.get(check);
+        if (existing !== undefined)
+            return existing;
+        let result: CheckResultInfo;
+        try
+        {
+            const pass = check.getResult();
+            result = { text: pass ? "OK" : "Fail", passed: pass, failing: !pass };
+        }
+        catch (e)
+        {
+            if (!(e instanceof UserException || e instanceof InternalException))
+                throw e;
+            if (check.getExplanation() !== null)
+                result = { text: "Error", passed: null, failing: true };
+            else
+            {
+                Log.log(e);
+                result = { text: "ERR:" + e.getLocalizedMessage(), passed: null, failing: false };
+            }
+        }
+        this.checkResults.set(check, result);
+        return result;
     }
 
     private runRowsRequests(): void
@@ -1029,6 +1177,19 @@ export class EngineHost implements EngineApi
 function saveExpression(expression: Expression): string
 {
     return expression.save(Expression.SaveDestination.TO_FILE, BracketedStatus.DONT_NEED_BRACKETS, TableAndColumnRenames.EMPTY);
+}
+
+function renameOnEdit(rename: RenameOnEditKind, suggested: TableId): RenameOnEdit
+{
+    return rename === "UNNEEDED" ? RenameOnEdit.UNNEEDED : rename === "IF_OLD_AUTO" ? RenameOnEdit.ifOldAuto(suggested) : RenameOnEdit.renameToSuggested(suggested);
+}
+
+function checkTypeOf(name: CheckTypeName): Check.CheckType
+{
+    const checkType = Check.CheckType.values().find(c => c.name() === name);
+    if (checkType === undefined)
+        throw new InternalException("Unknown check type " + name);
+    return checkType;
 }
 
 function typeText(column: Column): string

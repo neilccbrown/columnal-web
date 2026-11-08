@@ -51,7 +51,33 @@ export interface TableInfo
     readonly hat: TableHatInfo | null;
     // For a Calculate, its source table (its columns are edited with the expression dialog), else null:
     readonly calculate: { readonly src: string } | null;
+    // For a Check, its result as its display shows it (Java: CheckDisplay's result cell: "OK", "Fail",
+    // "Error", or "ERR:" and the message), whether it passed (null for an error), and whether its title
+    // shows it failing (Java: the check-failing pseudoclass); else null:
+    readonly check: CheckResultInfo | null;
 }
+
+/** A Check's result (TableInfo.check). */
+export interface CheckResultInfo
+{
+    readonly text: string;
+    readonly passed: boolean | null;
+    readonly failing: boolean;
+}
+
+/** The transformations the GUI can make (Java: PickTransformationDialog's, as each is built). */
+export type TransformationKind = "calculate" | "filter";
+
+/** A Check's type (Java: Check.CheckType, by its name). */
+export type CheckTypeName = "ALL_ROWS" | "ANY_ROW" | "NO_ROWS" | "STANDALONE";
+
+/**
+ * A Filter's or Check's details for its expression dialog: its source table, its expression (saved as
+ * in a file), and a Check's type.
+ */
+export type ExpressionDetails =
+    | { readonly kind: "filter", readonly src: string, readonly expression: string }
+    | { readonly kind: "check", readonly src: string, readonly expression: string, readonly checkType: CheckTypeName };
 
 /** How an edit renames the table it changes (Java: RenameOnEdit). */
 export type RenameOnEditKind = "UNNEEDED" | "IF_OLD_AUTO" | "TO_SUGGESTED";
@@ -78,11 +104,14 @@ export interface HatSegment
 
 /**
  * A clickable part of a hat: the source table (its id, and whether it no longer exists), or another part
- * that edits the transformation.  (Clicking either opens a Phase 11 dialog.)
+ * that edits the transformation (which part, and for a Calculate's column, which column).
  */
 export type HatLink =
     | { readonly kind: "source", readonly tableId: string, readonly broken: boolean }
-    | { readonly kind: "edit", readonly tooltipKey: string | null };
+    | { readonly kind: "edit", readonly tooltipKey: string | null, readonly part: HatEditPart, readonly column: string | null };
+
+/** Which part of a transformation a hat's edit link edits (Java: each part's Clickable in TableHat). */
+export type HatEditPart = "expression" | "calculateColumn" | "sortBy" | "splitBy" | "concatenateTables" | "concatenateToggle" | "hideColumns" | "manualEditEntries" | "manualEditIdentifier" | "join" | "r";
 
 /** A way to make a transformation from a column (Java: TableDisplay's column recipes). */
 export type ColumnRecipe = "sum" | "average" | "frequency" | "sort";
@@ -250,10 +279,24 @@ export interface EngineApi
     /** What an expression editor for a table (us), from the given source table, can refer to. */
     columnLookup(us: string | null, src: string | null): ColumnLookupInfo;
     /**
-     * Makes a transformation (for now, a Calculate) of the source table at the position (Java: the
-     * new-table dialog's Transform: TransformationInfo.make), giving its id, or the error.
+     * Makes a transformation of the source table (Java: TransformationInfo.make) at the position (the
+     * new-table dialog's Transform), or if null, below the source table (Java: View.createTransform,
+     * getNextInsertPosition), giving its id, or the error.
      */
-    createTransformation(kind: "calculate", src: string, column: number, row: number): { readonly id: string } | EngineAlert;
+    createTransformation(kind: TransformationKind, src: string, position: { readonly column: number, readonly row: number } | null): { readonly id: string } | EngineAlert;
+    /** A Filter's or Check's details for its expression dialog, or null if it is neither. */
+    expressionDetails(id: string): ExpressionDetails | null;
+    /**
+     * Sets a Filter's expression, saved as in a file (Java: TableDisplay.editAfterCreation, renaming to
+     * the suggested name, and the hat's expression link, renaming if the old name was automatic).
+     */
+    setFilterExpression(id: string, expression: string, rename: RenameOnEditKind): EngineAlert | null;
+    /** Sets a Check's type and expression, saved as in a file (Java: the hat's editCheckLink). */
+    setCheck(id: string, checkType: CheckTypeName, expression: string): EngineAlert | null;
+    /** Makes a Check of the source table at the position (Java: the new-table dialog's Check). */
+    createCheck(src: string, checkType: CheckTypeName, expression: string, column: number, row: number): EngineAlert | null;
+    /** Changes a transformation's source table (Java: the hat's editSourceLink). */
+    setSource(id: string, src: string): EngineAlert | null;
     /**
      * A Calculate column's expression (saved as in a file) for its dialog: the column's, or for one the
      * Calculate doesn't calculate, the source's column by name (Java: TransformationEdits.editColumn_Calc).
@@ -333,7 +376,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "expressionDetails", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

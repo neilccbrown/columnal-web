@@ -2,7 +2,8 @@
 // editor checks each edit as it is made, but the tables are in the engine's worker, so the engine
 // sends their columns and types (ColumnLookupInfo, from src/gui/engine/columnLookupInfo.ts) and this
 // answers the editor as Java's MultipleTableLookup (which it follows, method by method) answers over
-// the TableManager.  Values aren't copied: the editor only checks types.
+// the TableManager.  Values aren't copied: the editor only checks types.  CheckLookupCopy, below, does
+// the same for a Check's expression (Java: Check.getColumnLookup).
 import type { ExpressionIdentifier } from "../../engine/anns/Annotations.js";
 import { Column } from "../../engine/data/data/Column.js";
 import { Expression, IdentExpression } from "../../engine/expressions/transformations/expression/Expressions.js";
@@ -12,6 +13,7 @@ import { ColumnId } from "../../engine/identifiers/id/ColumnId.js";
 import { TableId } from "../../engine/identifiers/id/TableId.js";
 import { HashMap, HashSet } from "../../engine/java/HashMap.js";
 import { javaEquals } from "../../engine/java/JavaObject.js";
+import { Check } from "../../engine/transformations/transformations/Check.js";
 import type { MultipleTableLookup } from "../../engine/transformations/transformations/MultipleTableLookup.js";
 import { GetValue, type DataTypeValue } from "../../engine/types/data/datatype/DataTypeValue.js";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
@@ -203,22 +205,7 @@ export class ColumnLookupCopy implements Expression.ColumnLookup
         const t = this.available.find(table => table.id.equals(tableNameFinal)) ?? null;
         if (t === null)
             return null;
-
-        // Java: FoundTableActual
-        return {
-            getTableId: () => t.id,
-            getColumnTypes: () =>
-            {
-                const columns = new HashMap<ColumnId, DataTypeValue>();
-                for (const column of t.getColumns())
-                    columns.set(new ColumnId(column.name), t.getType(column));
-                return columns;
-            },
-            getRowCount: () =>
-            {
-                throw new InternalException("Row counts are in the engine");
-            },
-        };
+        return foundTable(t);
     }
 
     public getColumn(expression: Expression, tableId: TableId | null, columnId: ColumnId): Expression.ColumnLookup.FoundColumn | null
@@ -266,6 +253,147 @@ export class ColumnLookupCopy implements Expression.ColumnLookup
             }
         }
         return null;
+    }
+}
+
+// Java: FoundTableActual
+function foundTable(t: TableCopy): Expression.ColumnLookup.FoundTable
+{
+    return {
+        getTableId: () => t.id,
+        getColumnTypes: () =>
+        {
+            const columns = new HashMap<ColumnId, DataTypeValue>();
+            for (const column of t.getColumns())
+                columns.set(new ColumnId(column.name), t.getType(column));
+            return columns;
+        },
+        getRowCount: () =>
+        {
+            throw new InternalException("Row counts are in the engine");
+        },
+    };
+}
+
+/**
+ * Java: Check.getColumnLookup, for a Check (info.us, or null for one not yet made) of the source table
+ * (info.src) with the check type.  It is unlike MultipleTableLookup: a reference by name alone is to
+ * the source table's column, only the source table's columns are offered, and a STANDALONE check can
+ * refer to no columns.
+ */
+export class CheckLookupCopy implements Expression.ColumnLookup
+{
+    private readonly us: TableId | null;
+    private readonly srcTableId: TableId;
+    private readonly tables: readonly TableCopy[];
+    private readonly available: readonly TableId[];
+
+    public constructor(info: ColumnLookupInfo, typeManager: TypeManager, private readonly checkType: Check.CheckType)
+    {
+        if (info.src === null)
+            throw new InternalException("A Check's lookup needs its source table");
+        this.us = info.us === null ? null : new TableId(info.us);
+        this.srcTableId = new TableId(info.src);
+        this.tables = info.tables.map(t => new TableCopy(t, typeManager));
+        this.available = info.available.map(id => new TableId(id));
+    }
+
+    // Java: TableManager.getSingleTableOrNull
+    private getSingleTableOrNull(tableId: TableId): TableCopy | null
+    {
+        return this.tables.find(t => t.info.single && t.id.equals(tableId)) ?? null;
+    }
+
+    public getColumn(_expression: Expression, tableId: TableId | null, columnId: ColumnId): Expression.ColumnLookup.FoundColumn | null
+    {
+        try
+        {
+            let column: Pair<TableCopy, LookupColumnInfo> | null = null;
+            const srcTable = this.getSingleTableOrNull(this.srcTableId);
+            if (tableId === null)
+            {
+                if (srcTable !== null)
+                {
+                    const col = srcTable.getColumnOrNull(columnId);
+                    column = col === null ? null : new Pair(srcTable, col);
+                }
+            }
+            else
+            {
+                const table = this.getSingleTableOrNull(tableId);
+                if (table !== null)
+                {
+                    const col = table.getColumnOrNull(columnId);
+                    column = col === null ? null : new Pair(table, col);
+                }
+            }
+            if (column === null)
+                return null;
+            else if (this.checkType === Check.CheckType.STANDALONE)
+                return null;
+            else
+                return new Expression.ColumnLookup.FoundColumn(column.getFirst().id, this.srcTableId.equals(tableId), column.getFirst().getType(column.getSecond()), null);
+        }
+        catch (e)
+        {
+            if (!(e instanceof InternalException || e instanceof UserException))
+                throw e;
+        }
+        return null;
+    }
+
+    public getAvailableColumnReferences(): Pair<TableId | null, ColumnId>[]
+    {
+        return this.tables.flatMap((t): Pair<TableId | null, ColumnId>[] =>
+        {
+            try
+            {
+                const columns: Pair<TableId | null, ColumnId>[] = [];
+                if (t.id.equals(this.srcTableId))
+                {
+                    for (const column of t.getColumns())
+                    {
+                        if (this.checkType !== Check.CheckType.STANDALONE)
+                            columns.push(new Pair<TableId | null, ColumnId>(null, new ColumnId(column.name)));
+                    }
+                }
+                return columns;
+            }
+            catch (e)
+            {
+                if (!(e instanceof InternalException || e instanceof UserException))
+                    throw e;
+                return [];
+            }
+        });
+    }
+
+    // (As Java: the references' tables are all null, so none matches, and clicking a column in the grid
+    // inserts nothing)
+    public getPossibleColumnReferences(tableId: TableId, columnId: ColumnId): Expression.ColumnLookup.ClickedReference[]
+    {
+        return this.getAvailableColumnReferences().filter(c => tableId.equals(c.getFirst()) && columnId.equals(c.getSecond())).map(c => new class extends Expression.ColumnLookup.ClickedReference
+        {
+            public getExpression(): Expression
+            {
+                return IdentExpression.column(c.getFirst(), c.getSecond());
+            }
+        }(tableId, columnId));
+    }
+
+    public getAvailableTableReferences(): TableId[]
+    {
+        return [...this.available];
+    }
+
+    public getTable(tableName: TableId | null): Expression.ColumnLookup.FoundTable | null
+    {
+        let t: TableCopy | null;
+        if (tableName === null)
+            t = this.us === null ? null : this.getSingleTableOrNull(this.us);
+        else
+            t = this.getSingleTableOrNull(tableName);
+        return t === null ? null : foundTable(t);
     }
 }
 

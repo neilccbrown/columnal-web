@@ -731,7 +731,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | tests-gui-r | 2 / 4 | 770 / 1147 (67%) | 10 / 27 (37%) |
 | ✅ tests-gui-side | 2 / 2 | 645 / 645 (100%) | 8 / 8 (100%) |
 | ✅ tests-gui-tables | 3 / 3 | 1635 / 1635 (100%) | 12 / 12 (100%) |
-| tests-gui-transformations | 0 / 8 | 0 / 2251 (0%) | 0 / 22 (0%) |
+| tests-gui-transformations | 2 / 8 | 377 / 2251 (17%) | 2 / 22 (9%) |
 | tests-gui-transformations-create-edit | 0 / 1 | 0 / 651 (0%) | 0 / 2 (0%) |
 | ✅ tests-gui-type-editor | 4 / 4 | 954 / 954 (100%) | 57 / 57 (100%) |
 | ✅ tests-tables | 28 / 28 | 3385 / 3385 (100%) | 18 / 18 (100%) |
@@ -991,9 +991,9 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `tests-gui-transformations/src/test/java/test/gen/GenDataAndTransforms.java` | `test/gui/tests-gui-transformations/gen/GenDataAndTransforms.ts` | 188 | – |
-| `tests-gui-transformations/src/test/java/test/gui/transformation/TestCalculate.java` | `test/gui/tests-gui-transformations/gui/transformation/TestCalculate.test.ts` | 247 | – (0/1 tests) |
+| `tests-gui-transformations/src/test/java/test/gui/transformation/TestCalculate.java` | `test/gui/transformations/Calculate.test.ts` | 247 | ✅ (1/1 tests) |
 | `tests-gui-transformations/src/test/java/test/gui/transformation/TestColumnRecipes.java` | `test/gui/tests-gui-transformations/gui/transformation/TestColumnRecipes.test.ts` | 310 | – (0/16 tests) |
-| `tests-gui-transformations/src/test/java/test/gui/transformation/TestFilter.java` | `test/gui/tests-gui-transformations/gui/transformation/TestFilter.test.ts` | 130 | – (0/1 tests) |
+| `tests-gui-transformations/src/test/java/test/gui/transformation/TestFilter.java` | `test/gui/transformations/Filter.test.ts` | 130 | ✅ (1/1 tests) |
 | `tests-gui-transformations/src/test/java/test/gui/transformation/TestHideColumns.java` | `test/gui/tests-gui-transformations/gui/transformation/TestHideColumns.test.ts` | 145 | – (0/1 tests) |
 | `tests-gui-transformations/src/test/java/test/gui/transformation/TestJoin.java` | `test/gui/tests-gui-transformations/gui/transformation/TestJoin.test.ts` | 255 | – (0/1 tests) |
 | `tests-gui-transformations/src/test/java/test/gui/transformation/TestManualEdit.java` | `test/gui/tests-gui-transformations/gui/transformation/TestManualEdit.test.ts` | 755 | – (0/1 tests) |

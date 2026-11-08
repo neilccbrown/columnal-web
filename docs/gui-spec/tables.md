@@ -34,8 +34,8 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   buttons, each with its title and a small grey explanation: Data Entry ("Type in data directly."), Import
   File..., Import URL..., Comment on the left; Transform and Check on the right, which need a table to
   exist. Data Entry has the focus. Comment makes a comment (`comments.md`); Transform picks the
-  transformation, then its source table (`transformations.md`). Not yet: importing and Check are disabled
-  (Phase 11).
+  transformation, then its source table; Check picks its source table, then its type and expression
+  (`transformations.md`). Not yet: importing is disabled (Phase 11).
 - Data Entry opens the column dialog for a new table; OK makes the table at the cell, with that one column
   and no rows. An error doing so shows in an alert ("Error creating first column").
 
@@ -98,7 +98,9 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
     downloaded as `<table>.<ext>` (Java: a save dialog). Errors: "Error exporting".
   - "Delete table": deletes it (as Delete or Backspace on the entire table selected). If it was selected,
     the cell where it was is then selected (so the "New…" button shows there).
-  - (separator) "Transform...": not yet (Phase 11).
+  - (separator) "Transform...": picks a transformation of the table, made to its right
+    (`transformations.md`).
+  - A Check's menu has only "Delete table".
 
 ## Column headers
 
@@ -150,7 +152,9 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
 - After the pointer has been over the source table's name for 300 ms, that table is highlighted (a green
   translucent rectangle with a 3 px outline) with a curved green arrow from its centre to where the pointer
   was (Java: `TableHighlights`, SOURCE), until the pointer leaves the name.
-- Not yet: what clicking the parts does (Phase 11's dialogs).
+- Clicking the parts edits the transformation (`transformations.md`): the source table's name picks a new
+  source; a Filter's or Check's expression, or a Calculate's column, opens its dialog. Not yet: the other
+  parts' dialogs (Phase 11; R's, Phase 12).
 
 ## Hover text
 

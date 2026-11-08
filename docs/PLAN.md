@@ -1081,6 +1081,33 @@ Steps (each a checkpoint with the project owner):
    clicking a hat's parts (the source table's `PickTableDialog`, a Calculate's columns, and the expression
    of a Filter or Check). Check's display (`CheckDisplay`), the View menu's checks pane and the checks status
    bar (`CheckSummaryLabel`), and the new-table dialog's Check. Tests: `TestCalculate`, `TestFilter`.
+   - Notes from the survey: Check's column lookup is `Check.getColumnLookup` (only the source's columns,
+     none for `STANDALONE`, changing with the check type), not `MultipleTableLookup`, so it gets its own
+     copy beside `ColumnLookupCopy` (Filter uses that copy as it is). The hat's edit links don't say which
+     part was clicked (which Calculate column, say), so each gets a part, for all the transformations,
+     though this step handles only the source, Filter's and Check's expressions and Calculate's columns.
+     `MainWindow.vue` holds the whole Calculate path; the transformation dialogs move to a component of
+     their own rather than adding Filter and Check there.
+   - Done: `TransformationDialogs.vue` (the pickers, and Calculate's, Filter's and Check's dialogs, moved
+     out of `MainWindow.vue`), `EditExpressionDialog.vue`, `EditCheckExpressionDialog.vue` (and
+     `expressionDialogs.ts`, which they share with `EditColumnExpressionDialog.vue`), `CheckLookupCopy`
+     (tested against `Check.getColumnLookup`), `ChecksPane.vue`, the status bar, and a Check's display in
+     `GridTable.vue`/`GridTableDisplay.ts`. The hat's edit links name their part (`HatEditPart`); the
+     engine has `expressionDetails`, `setFilterExpression`, `setCheck`, `createCheck` and `setSource`, and
+     `createTransformation` takes Filter and a null position (below the source). Tests:
+     `test/gui/transformations/` (`Calculate.test.ts` and `Filter.test.ts`, the ports, and
+     `FilterAndCheck.test.ts`).
+   - Port gaps fixed on the way: the engine's table displays gave their top left as their bottom right, so
+     `getNextInsertPosition` (recipes, Calculate's "make a new calculation" fix, Transform) put the new
+     table over the old one; and in the column dialog a Tab in the name moved to the expression before
+     the name's completions could take it.
+   - Java bugs found (reported, not fixed): in `Check.getColumnLookup`, `getPossibleColumnReferences`
+     filters on the references' table, which is always null, so clicking a column in the grid puts
+     nothing into a Check's expression; and `getColumn` says a column's table can be omitted only when
+     the reference names the source table, so a reference by name alone is saved with the table's name
+     (`T\A`).
+   - Carried over: clicking a Check's result to show why it failed (step 7, `ExplanationDisplay`); the
+     other hat parts' dialogs (steps 3 to 5, R in Phase 12).
 3. Sort, Join, Concatenate and Hide columns: `EditSortDialog`, `EditJoinDialog`, `TableListDialog`,
    `HideColumnsDialog`/`HideColumnsPanel`, `SelectColumnDialog`, and the table menu's Custom columns
    (`CustomColumnDisplayDialog`, on the hide-columns panel). Tests: `TestSort`, `TestJoin`,

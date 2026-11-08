@@ -253,14 +253,14 @@ watchEffect(() =>
 <template>
   <div
     class="table"
-    :class="['table-' + display.info.kind, { 'table-selected': tableSelected, 'table-drag-source': dragSource, 'table-collapsed': collapsed }]"
+    :class="['table-' + display.info.kind, { 'table-check': display.info.check !== null, 'table-selected': tableSelected, 'table-drag-source': dragSource, 'table-collapsed': collapsed }]"
     :data-table="display.info.id"
-    :style="{ left: geometry.left + 'px', top: geometry.top + 'px', width: geometry.width + 'px', height: (collapsed ? ROW : Math.max(0, geometry.rows + HEADER - 1) * ROW) + 'px' }"
+    :style="{ left: geometry.left + 'px', top: geometry.top + 'px', width: geometry.width + 'px', height: (display.info.check !== null ? 2 * ROW : collapsed ? ROW : Math.max(0, geometry.rows + HEADER - 1) * ROW) + 'px' }"
   >
     <div
       ref="title"
       class="table-title table-display-table-title"
-      :class="[display.info.kind === 'data' ? 'immediate-table-title' : 'transformation-table-title', { flashing }]"
+      :class="[display.info.check !== null ? 'check-table-title' : display.info.kind === 'data' ? 'immediate-table-title' : 'transformation-table-title', { flashing, 'check-failing': display.info.check?.failing === true }]"
       @mousedown="e => { if (e.button === 1) e.preventDefault(); }"
       @auxclick="titleMiddleClick"
     >
@@ -276,7 +276,16 @@ watchEffect(() =>
         @focus-lost="nameFocusLost"
       />
     </div>
-    <template v-if="!collapsed">
+    <!-- Java: CheckDisplay's result, below the name.  PORT-DEFERRED: clicking it (or Enter on it) to
+         show why it failed (ExplanationDisplay, Phase 11 step 7) -->
+    <div
+      v-if="display.info.check !== null"
+      class="check-result"
+      :title="display.info.check.text"
+    >
+      {{ display.info.check.text }}
+    </div>
+    <template v-else-if="!collapsed">
       <div class="column-names">
         <div
           v-for="c in visibleColumns"
@@ -315,7 +324,7 @@ watchEffect(() =>
       {{ display.info.error }}
     </div>
     <div
-      v-if="!collapsed"
+      v-if="!collapsed && display.info.check === null"
       class="data"
     >
       <div
@@ -352,6 +361,7 @@ watchEffect(() =>
     :table-name-width="nameWidth"
     @select-table="selectTable"
     @hover-source="hoverSource"
+    @link-clicked="(link, point) => tableActions?.hatLinkClicked(display, link, point)"
   />
   <template v-if="showAddRowArrows">
     <button
@@ -471,6 +481,27 @@ watchEffect(() =>
 }
 .table-transformation .table-title {
     background: var(--table-header-transformation-background-color);
+}
+/* virtual-grid.scss: check-table-title's check-failing */
+.table-transformation .table-title.check-failing {
+    background: var(--table-header-background-color-check-failing);
+}
+.table-selected .table-title.check-failing {
+    background: var(--table-header-background-color-selected);
+}
+/* Java: CheckDisplay's two cells, the name and the result (a Label in a cell, check-result) */
+.table-check {
+    padding-bottom: 0;
+}
+.check-result {
+    height: var(--grid-row-height);
+    line-height: var(--grid-row-height);
+    padding: 0 2px;
+    box-sizing: border-box;
+    background: var(--table-cell);
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .column-names {
     position: sticky;

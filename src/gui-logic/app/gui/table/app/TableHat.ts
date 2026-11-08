@@ -5,10 +5,10 @@
 // PORT-NOTE: Java's hat is a FloatingItem holding a StyledString whose Clickable parts open the
 // transformations' dialogs.  Here the text is made in the engine (where the tables are) and sent to the
 // GUI as segments (HatSegment): each clickable part's style is a HatClickable, which records what it
-// links to.  PORT-DEFERRED: what clicking them does (the source table's PickTableDialog; the
-// expression, sort, split-by, concatenate, hide-columns, manual edit, join and R dialogs) and hovering
-// over a source link (highlighting the source table, Phase 9 step 6), Phase 11 with the dialogs.
-// Clicking "with/without source column" toggles it in Java with no dialog; it waits with the rest.
+// links to (and for an edit, which part it edits), and the GUI opens the dialogs
+// (TransformationDialogs.vue).  PORT-DEFERRED: the sort, split-by, concatenate, hide-columns, manual
+// edit and join dialogs (Phase 11 steps 3 to 5) and R's (Phase 12).  Clicking "with/without source
+// column" toggles it in Java with no dialog; it waits with Concatenate's.
 import type { LocalizableKey } from "../../../../../engine/anns/Annotations.js";
 import type { Table } from "../../../../../engine/data/data/Table.js";
 import type { TableManager } from "../../../../../engine/data/data/TableManager.js";
@@ -34,7 +34,15 @@ export namespace TableHat
     /** What a clickable part of the hat links to. */
     export type Link =
         | { readonly kind: "source", readonly tableId: string, readonly broken: boolean }
-        | { readonly kind: "edit", readonly tooltipKey: string | null };
+        | { readonly kind: "edit", readonly tooltipKey: string | null, readonly part: EditPart, readonly column: string | null };
+
+    /**
+     * Which part of the transformation an edit link edits: a Filter's or Check's expression, a Calculate's
+     * column (named in the link), Sort's order, Aggregate's split, Concatenate's tables or its toggle of
+     * the source column, the hidden columns, a Manual Edit's entries or identifier, a Join's tables or
+     * columns, or R's expression.
+     */
+    export type EditPart = "expression" | "calculateColumn" | "sortBy" | "splitBy" | "concatenateTables" | "concatenateToggle" | "hideColumns" | "manualEditEntries" | "manualEditIdentifier" | "join" | "r";
 
     export interface Segment
     {
@@ -63,14 +71,14 @@ export namespace TableHat
 
         protected onClick(): void
         {
-            // (See the PORT-DEFERRED above: the GUI handles clicks)
+            // (The GUI handles clicks)
         }
     }
 
     // (As a Clickable, the style class it combines with)
-    function edit(tooltipKey: LocalizableKey | null = "click.to.change", ...styleClasses: string[]): Clickable
+    function edit(part: EditPart, tooltipKey: LocalizableKey | null = "click.to.change", column: string | null = null, ...styleClasses: string[]): Clickable
     {
-        return new HatClickable({ kind: "edit", tooltipKey }, tooltipKey, ...styleClasses);
+        return new HatClickable({ kind: "edit", tooltipKey, part, column }, tooltipKey, ...styleClasses);
     }
 
     /** Java: the TableHat constructor's visitor, which makes the content and collapsed content. */
@@ -94,7 +102,7 @@ export namespace TableHat
                 return StyledString.concat(
                     collapsedContent = StyledString.s("Run R"),
                     StyledString.s(" expression "),
-                    StyledString.s(rExpression.trim() === "" ? "<blank>" : rExpression).limit(60).withStyle(edit()),
+                    StyledString.s(rExpression.trim() === "" ? "<blank>" : rExpression).limit(60).withStyle(edit("r")),
                 );
             },
             sort(sort: Sort): StyledString
@@ -102,7 +110,7 @@ export namespace TableHat
                 let sourceText = sort.getSortBy().length === 0
                     ? StyledString.s("original order")
                     : StyledString.joining(sort.getSortBy().map(c => StyledString.concat(c.getFirst().toStyledString(), c.getSecond().toStyledString())), ", ");
-                sourceText = sourceText.withStyle(edit()).withStyle(new StyledCSS("edit-sort-by"));
+                sourceText = sourceText.withStyle(edit("sortBy")).withStyle(new StyledCSS("edit-sort-by"));
                 return StyledString.concat(
                     collapsedContent = StyledString.s("Sort"),
                     StyledString.s(" "),
@@ -120,7 +128,7 @@ export namespace TableHat
                 // TODO should we add the calculations here if there are only one or two?
 
                 const splitBy = aggregate.getSplitBy();
-                const editSplitBy = edit();
+                const editSplitBy = edit("splitBy");
                 if (splitBy.length > 0)
                 {
                     builder.append(" splitting by ");
@@ -141,9 +149,9 @@ export namespace TableHat
                 return StyledString.concat(
                     collapsedContent = StyledString.s("Concatenate"),
                     StyledString.s(" "),
-                    sourceText.withStyle(edit("click.to.change")),
+                    sourceText.withStyle(edit("concatenateTables", "click.to.change")),
                     StyledString.s(" - "),
-                    StyledString.s(concatenate.isIncludeMarkerColumn() ? "with source column" : "without source column").withStyle(edit("click.to.toggle")),
+                    StyledString.s(concatenate.isIncludeMarkerColumn() ? "with source column" : "without source column").withStyle(edit("concatenateToggle", "click.to.toggle")),
                 );
             },
             check(check: Check): StyledString
@@ -185,7 +193,7 @@ export namespace TableHat
                 else
                 {
                     // Mention max three columns
-                    const threeEditLinks = columns.slice(0, 3).map(c => c.toStyledString().withStyle(edit()).withStyle(new StyledCSS("edit-calculate-column")));
+                    const threeEditLinks = columns.slice(0, 3).map(c => c.toStyledString().withStyle(edit("calculateColumn", "click.to.change", c.getRaw())).withStyle(new StyledCSS("edit-calculate-column")));
                     if (columns.length > 3)
                         threeEditLinks.push(StyledString.s("..."));
                     builder.append(StyledString.intercalate(StyledString.s(", "), threeEditLinks));
@@ -194,7 +202,7 @@ export namespace TableHat
             },
             hideColumns(hide: HideColumns): StyledString
             {
-                const editHide = edit(null, "edit-hide-columns");
+                const editHide = edit("hideColumns", null, null, "edit-hide-columns");
                 collapsedContent = StyledString.s("Exclude columns");
                 return StyledString.concat(
                     StyledString.s("From "),
@@ -214,15 +222,15 @@ export namespace TableHat
                     StyledString.s("Edit "),
                     editSourceLink(manager, manualEdit.getSrcTableId()),
                     StyledString.s(" to change "),
-                    StyledString.s(manualEdit.getReplacementCount().toString() + " entries").withStyle(edit()).withStyle(new StyledCSS("manual-edit-entries")),
+                    StyledString.s(manualEdit.getReplacementCount().toString() + " entries").withStyle(edit("manualEditEntries")).withStyle(new StyledCSS("manual-edit-entries")),
                     StyledString.s(" identified by "),
-                    (byColumn !== null ? byColumn.toStyledString() : StyledString.s("row number")).withStyle(edit()),
+                    (byColumn !== null ? byColumn.toStyledString() : StyledString.s("row number")).withStyle(edit("manualEditIdentifier")),
                 );
             },
             join(join: Join): StyledString
             {
                 collapsedContent = StyledString.s("Join");
-                const clickToEdit = edit();
+                const clickToEdit = edit("join");
                 return StyledString.concat(
                     StyledString.s("Join "),
                     join.getPrimarySource().toStyledString().withStyle(clickToEdit),
@@ -250,7 +258,7 @@ export namespace TableHat
     // Java: editExpressionLink and editCheckLink, whose Clickables open the expression's dialog
     function editExpressionLink(expression: StyledString): StyledString
     {
-        return expression.limit(60).withStyle(edit()).withStyle(new StyledCSS("edit-expression-link"));
+        return expression.limit(60).withStyle(edit("expression")).withStyle(new StyledCSS("edit-expression-link"));
     }
 
     // (Java: toGUI, which makes a Text per segment)

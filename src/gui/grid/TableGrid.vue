@@ -12,7 +12,7 @@ import type { CellSelection } from "../../gui-logic/stf/gui/grid/CellSelection.j
 import { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { RectangleBounds } from "../../gui-logic/stf/gui/grid/RectangleBounds.js";
 import { EntireTableSelection } from "../../gui-logic/table-gui/gui/table/EntireTableSelection.js";
-import { isMac } from "../shortcuts.js";
+import { isMac, isMenuShortcut } from "../shortcuts.js";
 import { VersionCounter } from "../store/EngineStore.js";
 import type { Document } from "../../gui-logic/stf/gui/dtf/Document.js";
 import DocumentTextField from "../components/DocumentTextField.vue";
@@ -325,8 +325,9 @@ function onKeyDown(e: KeyboardEvent): void
                 grid.copySelection();
             else if (shortcut && e.key.toLowerCase() === "v" && !e.altKey)
                 grid.pasteIntoSelection();
-            // A character typed (Java: keyTyped, without the shortcut key) starts editing:
-            else if ([...e.key].length === 1 && !e.ctrlKey && !e.metaKey)
+            // A character typed (Java: keyTyped, without the shortcut key) starts editing, unless the
+            // key is a menu's shortcut (e.g. Alt+Shift+N, which types a character on macOS):
+            else if ([...e.key].length === 1 && !e.ctrlKey && !e.metaKey && !isMenuShortcut(e))
                 grid.typed(e.key);
             else
                 return;
@@ -875,6 +876,8 @@ function pickAt(client: { x: number, y: number }): void
             const c = d.getColumnAt(pos!);
             if (c !== null && mode.include(d.info.id, c.column))
                 result = { picked: { table: d.info.id, column: c.column }, bounds: c.bounds };
+            else if (mode.kind === "tableOrColumn" && mode.include(d.info.id, null))
+                result = { picked: { table: d.info.id, column: null }, bounds: new RectangleBounds(d.getPosition(), d.getBottomRightIncl()) };
         }
         if (result !== null)
             break;

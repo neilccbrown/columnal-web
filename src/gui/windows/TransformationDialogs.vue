@@ -12,7 +12,7 @@ import { DataType } from "../../engine/types/data/datatype/DataType.js";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
 import { showAlert } from "../alerts.js";
 import { ignoreClosed } from "../engine/EngineClient.js";
-import type { CheckTypeName, ColumnLookupInfo, EngineAlert, HatLink, RenameOnEditKind, TransformationKind } from "../engine/protocol.js";
+import type { CheckTypeName, ColumnLookupInfo, SortDirectionName, EngineAlert, HatLink, RenameOnEditKind, TransformationKind } from "../engine/protocol.js";
 import { useEngine } from "../engine/useEngine.js";
 import type { GridTableDisplay } from "../grid/GridTableDisplay.js";
 import type { PickingMode } from "../grid/picking.js";
@@ -20,6 +20,10 @@ import { ColumnLookupCopy } from "../project/columnLookupCopy.js";
 import { copyTypeManager } from "../project/typeCopy.js";
 import EditCheckExpressionDialog from "./EditCheckExpressionDialog.vue";
 import EditColumnExpressionDialog from "./EditColumnExpressionDialog.vue";
+import EditJoinDialog, { type JoinDetails } from "./EditJoinDialog.vue";
+import EditSortDialog from "./EditSortDialog.vue";
+import HideColumnsDialog from "./HideColumnsDialog.vue";
+import TableListDialog from "./TableListDialog.vue";
 import EditExpressionDialog from "./EditExpressionDialog.vue";
 import PickTableDialog from "./PickTableDialog.vue";
 import PickTransformationDialog from "./PickTransformationDialog.vue";
@@ -90,16 +94,27 @@ function newCheck(position: CellPosition, point: Point): void
     openPickTable({ at: point, for: { kind: "check", position }, exclude: [] });
 }
 
+// Those of a source table (TransformationInfo.make asks for one), and those of none
+const SINGLE_SOURCE: ReadonlySet<string> = new Set<TransformationKind>(["calculate", "filter", "sort", "hideColumns"]);
+const NO_SOURCE: ReadonlySet<string> = new Set<TransformationKind>(["join", "concatenate"]);
+
 function transformationChosen(name: string, point: Point): void
 {
     const chosen = pickTransformation.value;
-    if (chosen === null || (name !== "calculate" && name !== "filter"))
+    if (chosen === null || !(SINGLE_SOURCE.has(name) || NO_SOURCE.has(name)))
         return;
+    const kind = name as TransformationKind;
+    // (From a table: of it, to its right)
     if (chosen.for.kind === "table")
-        void createTransformation(name, chosen.for.src, null).catch(ignoreClosed);
+        void createTransformation(kind, SINGLE_SOURCE.has(kind) ? chosen.for.src : null, null, chosen.for.src).catch(ignoreClosed);
+    else if (NO_SOURCE.has(kind))
+        void createTransformation(kind, null, chosen.for.position, null).catch(ignoreClosed);
     else
-        openPickTable({ at: point, for: { kind: "transformation", transformation: name, position: chosen.for.position }, exclude: [] });
+        openPickTable({ at: point, for: { kind: "transformation", transformation: kind, position: chosen.for.position }, exclude: [] });
 }
+
+// Those which can't be picked in the grid (Java picked only from a TableDisplay: not Checks)
+const checkIds = (): string[] => engine.tables.tables.value.filter(t => t.check !== null).map(t => t.id);
 
 function openPickTable(target: { readonly at: Point, readonly for: TableFor, readonly exclude: readonly string[] }): void
 {
@@ -109,7 +124,7 @@ function openPickTable(target: { readonly at: Point, readonly for: TableFor, rea
     // tables (not Checks) can be picked
     picking.value = markRaw<PickingMode>({
         kind: "table",
-        include: table => !target.exclude.includes(table) && engine.tables.tables.value.find(t => t.id === table)?.check === null,
+        include: table => !target.exclude.includes(table) && !checkIds().includes(table),
         onPick: picked => tablePicked(picked.table),
         target: () => document.querySelector(".pick-table-dialog")?.closest(".light-dialog")?.getBoundingClientRect() ?? null,
         startPoint: target.at,
@@ -129,7 +144,7 @@ function tablePicked(src: string): void
     if (target === null)
         return;
     if (target.for.kind === "transformation")
-        void createTransformation(target.for.transformation, src, target.for.position).catch(ignoreClosed);
+        void createTransformation(target.for.transformation, src, target.for.position, null).catch(ignoreClosed);
     else if (target.for.kind === "check")
         void openCheckDialog({ kind: "new", src, position: target.for.position }, "ALL_ROWS", "true", true).catch(ignoreClosed);
     // Java: editSourceLink's PickTableDialog
@@ -137,10 +152,10 @@ function tablePicked(src: string): void
         void engine.client.request("setSource", target.for.table, src).then(alertIfAny).catch(ignoreClosed);
 }
 
-// Java: TransformationInfo.make with the source table, then TableDisplay.editAfterCreation
-async function createTransformation(kind: TransformationKind, src: string, position: CellPosition | null): Promise<void>
+// Java: TransformationInfo.make with the source table (if any), then TableDisplay.editAfterCreation
+async function createTransformation(kind: TransformationKind, src: string | null, position: CellPosition | null, rightOf: string | null): Promise<void>
 {
-    const result = await engine.client.request("createTransformation", kind, src, position === null ? null : { column: position.columnIndex, row: position.rowIndex });
+    const result = await engine.client.request("createTransformation", kind, src, position === null ? null : { column: position.columnIndex, row: position.rowIndex }, rightOf);
     if ("title" in result)
     {
         showAlert(result);
@@ -150,10 +165,28 @@ async function createTransformation(kind: TransformationKind, src: string, posit
     const created = await props.findDisplay(result.id);
     if (created === null)
         return;
-    if (kind === "calculate")
-        await openCalculateColumnDialog(created, null, "TO_SUGGESTED", "transform.calculate.addInitial");
-    else
-        await openFilterDialog(created.info.id, true, "TO_SUGGESTED", null);
+    const table = created.info.id;
+    switch (kind)
+    {
+        case "calculate":
+            await openCalculateColumnDialog(created, null, "TO_SUGGESTED", "transform.calculate.addInitial");
+            break;
+        case "filter":
+            await openFilterDialog(table, true, "TO_SUGGESTED", null);
+            break;
+        case "sort":
+            await openSortDialog(table, "TO_SUGGESTED", null);
+            break;
+        case "join":
+            await openJoinDialog(table, "TO_SUGGESTED");
+            break;
+        case "concatenate":
+            await openTableListDialog(table, "TO_SUGGESTED", null);
+            break;
+        case "hideColumns":
+            await openHideColumnsDialog({ kind: "transformation", table }, "TO_SUGGESTED");
+            break;
+    }
 }
 
 // --- A Calculate's columns ---------------------------------------------------------------------------
@@ -218,7 +251,7 @@ const filterFor = shallowRef<FilterFor | null>(null);
 const filterOpen = shallowRef(false);
 async function openFilterDialog(table: string, selectAll: boolean, rename: RenameOnEditKind, centreOn: Point | null): Promise<void>
 {
-    const details = await engine.client.request("expressionDetails", table);
+    const details = await engine.client.request("transformationDetails", table);
     if (details?.kind !== "filter")
         return;
     const typeManager = markRaw(await copyTypeManager(engine.client));
@@ -265,7 +298,7 @@ async function openCheckDialog(target: CheckTarget, checkType: CheckTypeName, ex
         src = target.src;
     else
     {
-        const details = await engine.client.request("expressionDetails", target.table);
+        const details = await engine.client.request("transformationDetails", target.table);
         if (details?.kind !== "check")
             return;
         src = details.src;
@@ -287,6 +320,128 @@ function checkChosen(checkType: CheckTypeName, expression: string): void
         void engine.client.request("setCheck", target.table, checkType, expression).then(alertIfAny).catch(ignoreClosed);
 }
 
+// --- Sort, Join, Concatenate and Hide columns ---------------------------------------------------------
+
+// Java: EditSortDialog (TableHat.editSort), for the Sort's columns
+interface SortFor
+{
+    readonly table: string;
+    readonly sortBy: readonly (readonly [string, SortDirectionName])[] | null;
+    readonly lookupInfo: ColumnLookupInfo;
+    readonly typeManager: TypeManager;
+    readonly rename: RenameOnEditKind;
+    readonly centreOn: Point | null;
+}
+const sortFor = shallowRef<SortFor | null>(null);
+const sortOpen = shallowRef(false);
+async function openSortDialog(table: string, rename: RenameOnEditKind, centreOn: Point | null): Promise<void>
+{
+    const details = await engine.client.request("transformationDetails", table);
+    if (details?.kind !== "sort")
+        return;
+    const typeManager = markRaw(await copyTypeManager(engine.client));
+    const lookupInfo = markRaw(await engine.client.request("columnLookup", table, details.src));
+    // (Java: null for none, which starts with one to edit)
+    sortFor.value = { table, sortBy: details.sortBy.length === 0 ? null : details.sortBy, lookupInfo, typeManager, rename, centreOn };
+    sortOpen.value = true;
+}
+
+function sortChosen(sortBy: [string, SortDirectionName][]): void
+{
+    const target = sortFor.value;
+    if (target !== null)
+        void engine.client.request("setSort", target.table, sortBy, target.rename).then(alertIfAny).catch(ignoreClosed);
+}
+
+// Java: EditJoinDialog (TableHat.editJoin)
+const joinFor = shallowRef<{ readonly table: string, readonly initial: JoinDetails, readonly rename: RenameOnEditKind } | null>(null);
+const joinOpen = shallowRef(false);
+async function openJoinDialog(table: string, rename: RenameOnEditKind): Promise<void>
+{
+    const details = await engine.client.request("transformationDetails", table);
+    if (details?.kind !== "join")
+        return;
+    joinFor.value = { table, initial: details, rename };
+    joinOpen.value = true;
+}
+
+function joinChosen(details: JoinDetails): void
+{
+    const target = joinFor.value;
+    if (target !== null)
+        void engine.client.request("setJoin", target.table, details.primary, details.secondary, details.leftJoin, details.columns, target.rename).then(alertIfAny).catch(ignoreClosed);
+}
+
+// Java: TableListDialog (TableHat.editConcatenate), for the Concatenate's tables
+const tableListFor = shallowRef<{ readonly table: string, readonly tables: readonly string[], readonly rename: RenameOnEditKind, readonly centreOn: Point | null } | null>(null);
+const tableListOpen = shallowRef(false);
+async function openTableListDialog(table: string, rename: RenameOnEditKind, centreOn: Point | null): Promise<void>
+{
+    const details = await engine.client.request("transformationDetails", table);
+    if (details?.kind !== "concatenate")
+        return;
+    tableListFor.value = { table, tables: details.tables, rename, centreOn };
+    tableListOpen.value = true;
+}
+
+function tableListChosen(tables: string[]): void
+{
+    const target = tableListFor.value;
+    if (target !== null)
+        void engine.client.request("setConcatenate", target.table, tables, target.rename).then(alertIfAny).catch(ignoreClosed);
+}
+
+// Java: HideColumnsDialog (TableHat.editHideColumns), for a Hide columns' hidden columns, and
+// CustomColumnDisplayDialog (the table menu's Custom), for the columns a table's display hides
+type HideFor = { readonly kind: "transformation", readonly table: string } | { readonly kind: "display", readonly display: GridTableDisplay };
+interface HideColumnsFor
+{
+    readonly target: HideFor;
+    readonly srcColumns: readonly string[] | null;
+    readonly srcMessage: string;
+    readonly hidden: readonly string[];
+    readonly rename: RenameOnEditKind;
+}
+const hideFor = shallowRef<HideColumnsFor | null>(null);
+const hideOpen = shallowRef(false);
+async function openHideColumnsDialog(target: HideFor, rename: RenameOnEditKind): Promise<void>
+{
+    let src: string;
+    let hidden: readonly string[];
+    if (target.kind === "transformation")
+    {
+        const details = await engine.client.request("transformationDetails", target.table);
+        if (details?.kind !== "hideColumns")
+            return;
+        src = details.src;
+        hidden = details.hidden;
+    }
+    else
+    {
+        src = target.display.info.id;
+        hidden = target.display.info.hiddenColumns;
+    }
+    // Java: HideColumnsPanel's fetch of the source's columns
+    const lookupInfo = await engine.client.request("columnLookup", null, src);
+    const srcTable = lookupInfo.tables.find(t => t.id === src && t.single);
+    const srcColumns = srcTable?.columns?.map(c => c.name) ?? null;
+    const srcMessage = srcTable === undefined ? "Could not find source table." : "Error:" + (srcTable.error ?? "");
+    hideFor.value = { target, srcColumns, srcMessage, hidden, rename };
+    hideOpen.value = true;
+}
+
+function hideColumnsChosen(hidden: readonly string[]): void
+{
+    const target = hideFor.value;
+    if (target === null)
+        return;
+    if (target.target.kind === "transformation")
+        void engine.client.request("setHiddenColumns", target.target.table, hidden, target.rename).then(alertIfAny).catch(ignoreClosed);
+    // Java: TableDisplay.editCustomDisplay, which only switches if not cancelled
+    else
+        target.target.display.setDisplay("CUSTOM", hidden);
+}
+
 // --- The hat's links ---------------------------------------------------------------------------------
 
 /** Java: TableHat's Clickables' onClick, for the primary button. */
@@ -300,14 +455,25 @@ async function hatLinkClicked(display: GridTableDisplay, link: HatLink, point: P
         await openCalculateColumnDialog(display, link.column, "UNNEEDED");
     else if (link.part === "expression")
     {
-        const details = await engine.client.request("expressionDetails", table);
+        const details = await engine.client.request("transformationDetails", table);
         if (details?.kind === "filter")
             await openFilterDialog(table, false, "IF_OLD_AUTO", null);
         else if (details?.kind === "check")
             await openCheckDialog({ kind: "edit", table }, details.checkType, details.expression, false);
     }
-    // PORT-DEFERRED: the other parts' dialogs (Sort, Aggregate, Concatenate, Hide columns, Manual Edit
-    // and Join, Phase 11 steps 3 to 5; R, Phase 12)
+    else if (link.part === "sortBy")
+        await openSortDialog(table, "IF_OLD_AUTO", point);
+    else if (link.part === "join")
+        await openJoinDialog(table, "IF_OLD_AUTO");
+    else if (link.part === "concatenateTables")
+        await openTableListDialog(table, "IF_OLD_AUTO", point);
+    // Java: toggled with no dialog
+    else if (link.part === "concatenateToggle")
+        alertIfAny(await engine.client.request("toggleConcatenateMarker", table));
+    else if (link.part === "hideColumns")
+        await openHideColumnsDialog({ kind: "transformation", table }, "IF_OLD_AUTO");
+    // PORT-DEFERRED: the other parts' dialogs (Aggregate and Manual Edit, Phase 11 steps 4 and 5; R,
+    // Phase 12)
 }
 
 defineExpose({
@@ -319,6 +485,8 @@ defineExpose({
     addCalculateColumn: (display: GridTableDisplay) => void openCalculateColumnDialog(display, null, "IF_OLD_AUTO").catch(ignoreClosed),
     // Java: TransformationEdits.editColumn_Calc (a Calculate's columns' headers)
     editCalculateColumn: (display: GridTableDisplay, column: string) => void openCalculateColumnDialog(display, column, "UNNEEDED").catch(ignoreClosed),
+    // Java: the table menu's Custom (TableDisplay.editCustomDisplay)
+    customDisplay: (display: GridTableDisplay) => void openHideColumnsDialog({ kind: "display", display }, "UNNEEDED").catch(ignoreClosed),
 });
 </script>
 
@@ -378,5 +546,47 @@ defineExpose({
     @ok="checkChosen"
     @picking="mode => dialogPicking('column', mode)"
     @types-changed="emit('typesChanged', checkFor.typeManager)"
+  />
+  <EditSortDialog
+    v-if="sortFor !== null"
+    :key="sortFor.table + '/' + String(sortOpen)"
+    v-model:open="sortOpen"
+    :type-manager="sortFor.typeManager"
+    :lookup-info="sortFor.lookupInfo"
+    :original-sort-by="sortFor.sortBy"
+    :centre-on="sortFor.centreOn"
+    @ok="sortChosen"
+    @picking="mode => dialogPicking('column', mode)"
+  />
+  <EditJoinDialog
+    v-if="joinFor !== null"
+    :key="joinFor.table + '/' + String(joinOpen)"
+    v-model:open="joinOpen"
+    :tables="engine.tables.tables.value.map(t => t.id)"
+    :join="joinFor.table"
+    :exclude-in-grid="checkIds()"
+    :initial="joinFor.initial"
+    @ok="joinChosen"
+    @picking="mode => dialogPicking('tableOrColumn', mode)"
+  />
+  <TableListDialog
+    v-if="tableListFor !== null"
+    :key="tableListFor.table + '/' + String(tableListOpen)"
+    v-model:open="tableListOpen"
+    :tables="engine.tables.tables.value.map(t => t.id)"
+    :exclude="[tableListFor.table]"
+    :exclude-in-grid="checkIds()"
+    :original-items="tableListFor.tables"
+    :centre-on="tableListFor.centreOn"
+    @ok="tableListChosen"
+    @picking="mode => dialogPicking('table', mode)"
+  />
+  <HideColumnsDialog
+    v-if="hideFor !== null"
+    v-model:open="hideOpen"
+    :src-columns="hideFor.srcColumns"
+    :src-message="hideFor.srcMessage"
+    :initially-hidden="hideFor.hidden"
+    @ok="hideColumnsChosen"
   />
 </template>

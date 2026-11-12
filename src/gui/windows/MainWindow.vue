@@ -16,6 +16,7 @@ import { ignoreClosed } from "../engine/EngineClient.js";
 import { provideEngine } from "../engine/useEngine.js";
 import type { GridTableDisplay } from "../grid/GridTableDisplay.js";
 import { provideTableActions } from "../grid/tableActions.js";
+import { provideDialogReturnFocus } from "../components/dialogs/dialogs.js";
 import { copyTypeManager, typeInfoOf } from "../project/typeCopy.js";
 import TypesDialog from "./types/TypesDialog.vue";
 import UnitsDialog from "./types/UnitsDialog.vue";
@@ -267,6 +268,8 @@ function selectCheck(id: string): void
         engineGrid.value!.grid.findAndSelect(Either.right(new EntireTableSelection(display, display.getPosition().columnIndex)));
 }
 
+provideDialogReturnFocus(() => document.querySelector<HTMLElement>("[data-testid=grid]")?.focus());
+
 provideTableActions({
     // (Java: TableDisplay.addColumnOperation: a Calculate's is addColumnBefore_Calc)
     addColumn: (display, beforeColumn) => display.info.calculate !== null ? transformations.value?.addCalculateColumn(display) : void openColumnDialog({ kind: "column", display, beforeColumn }),
@@ -279,6 +282,7 @@ provideTableActions({
     exportTable: display => void exportTable(display).catch(ignoreClosed),
     hatLinkClicked: (display, link, point) => transformations.value?.hatLinkClicked(display, link, point),
     transform: (display, point) => transformations.value?.transform(display, point),
+    customDisplay: display => transformations.value?.customDisplay(display),
 });
 
 onMounted(async () =>

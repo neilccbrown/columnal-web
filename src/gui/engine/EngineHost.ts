@@ -49,7 +49,7 @@ import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
 import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
-import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type ExpressionDetails, type RenameOnEditKind, type TransformationKind, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 import { columnLookupInfo } from "./columnLookupInfo.js";
 import { RenameOnEdit } from "../../engine/data/data/RenameOnEdit.js";
 import { BracketedStatus } from "../../engine/expressions/transformations/expression/BracketedStatus.js";
@@ -59,7 +59,9 @@ import { ExpressionVersion } from "../../engine/parsers/grammar/Versions.js";
 import { Calculate } from "../../engine/transformations/transformations/Calculate.js";
 import { Check } from "../../engine/transformations/transformations/Check.js";
 import { Filter } from "../../engine/transformations/transformations/Filter.js";
-import type { SingleSourceTransformationInfo } from "../../engine/transformations/transformations/SingleSourceTransformationInfo.js";
+import { Concatenate } from "../../engine/transformations/transformations/Concatenate.js";
+import { HideColumns } from "../../engine/transformations/transformations/HideColumns.js";
+import { Join } from "../../engine/transformations/transformations/Join.js";
 
 // How many rows requests are done for each table at once (newest first); older ones are skipped:
 const MAX_ROWS_REQUESTS_PER_TABLE = 2;
@@ -383,14 +385,15 @@ export class EngineHost implements EngineApi
     }
 
     // Java: View's new-table dialog's TRANSFORM, and View.createTransform: TransformationInfo.make, with
-    // the source table picked
-    public createTransformation(kind: TransformationKind, src: string, position: { readonly column: number, readonly row: number } | null): { readonly id: string } | EngineAlert
+    // the source table picked (for those with one)
+    public createTransformation(kind: TransformationKind, src: string | null, position: { readonly column: number, readonly row: number } | null, rightOf: string | null): { readonly id: string } | EngineAlert
     {
         try
         {
-            const srcTable = this.tableManager.getSingleTableOrThrow(new TableId(src));
-            const info: SingleSourceTransformationInfo = kind === "calculate" ? new Calculate.Info() : new Filter.Info();
-            const at = position === null ? this.tableManager.getNextInsertPosition(srcTable.getId()) : new CellPosition(CellPosition.row(position.row), CellPosition.col(position.column));
+            const srcTable = src === null ? null : this.tableManager.getSingleTableOrThrow(new TableId(src));
+            const info = kind === "calculate" ? new Calculate.Info() : kind === "filter" ? new Filter.Info() : kind === "sort" ? new Sort.Info()
+                : kind === "hideColumns" ? new HideColumns.Info() : kind === "join" ? new Join.Info() : new Concatenate.Info();
+            const at = position === null ? this.tableManager.getNextInsertPosition(rightOf === null ? null : new TableId(rightOf)) : new CellPosition(CellPosition.row(position.row), CellPosition.col(position.column));
             const make = info.make(this.tableManager, at, () => srcTable);
             if (make === null)
                 throw new InternalException("No source table");
@@ -403,14 +406,116 @@ export class EngineHost implements EngineApi
         }
     }
 
-    public expressionDetails(id: string): ExpressionDetails | null
+    public transformationDetails(id: string): TransformationDetails | null
     {
         const table = this.tables.get(id)?.table;
         if (table instanceof Filter)
             return { kind: "filter", src: table.getSrcTableId().getRaw(), expression: saveExpression(table.getFilterExpression()) };
         if (table instanceof Check)
             return { kind: "check", src: table.getSrcTableId().getRaw(), expression: saveExpression(table.getCheckExpression()), checkType: table.getCheckType().name() as CheckTypeName };
+        if (table instanceof Sort)
+            return { kind: "sort", src: table.getSrcTableId().getRaw(), sortBy: table.getSortBy().map(p => [p.getFirst().getRaw(), p.getSecond().name() as SortDirectionName] as const) };
+        if (table instanceof Join)
+            return { kind: "join", primary: table.getPrimarySource().getRaw(), secondary: table.getSecondarySource().getRaw(), leftJoin: table.isKeepPrimaryWithNoMatch(), columns: table.getColumnsToMatch().map(p => [p.getFirst().getRaw(), p.getSecond().getRaw()] as const) };
+        if (table instanceof Concatenate)
+            return { kind: "concatenate", tables: table.getPrimarySources().map(t => t.getRaw()), includeMarkerColumn: table.isIncludeMarkerColumn() };
+        if (table instanceof HideColumns)
+            return { kind: "hideColumns", src: table.getSrcTableId().getRaw(), hidden: table.getHiddenColumns().map(c => c.getRaw()) };
         return null;
+    }
+
+    // Java: TableHat.editSort
+    public setSort(id: string, sortBy: readonly (readonly [string, SortDirectionName])[], rename: RenameOnEditKind): EngineAlert | null
+    {
+        const sort = this.tables.get(id)?.table;
+        if (!(sort instanceof Sort))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const newSort = sortBy.map(([c, d]) => new Pair(new ColumnId(c), d === "ASCENDING" ? Sort.Direction.ASCENDING : Sort.Direction.DESCENDING));
+            mgr.edit(sort, newId => new Sort(mgr, sort.getDetailsForCopy(newId), sort.getSrcTableId(), newSort), renameOnEdit(rename, Sort.suggestedName(newSort)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.editing.sort", e);
+        }
+    }
+
+    // Java: TableHat.editJoin
+    public setJoin(id: string, primary: string, secondary: string, leftJoin: boolean, columns: readonly (readonly [string, string])[], rename: RenameOnEditKind): EngineAlert | null
+    {
+        const join = this.tables.get(id)?.table;
+        if (!(join instanceof Join))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const joinOn = columns.map(([a, b]) => new Pair(new ColumnId(a), new ColumnId(b)));
+            mgr.edit(join, newId => new Join(mgr, join.getDetailsForCopy(newId), new TableId(primary), new TableId(secondary), leftJoin, joinOn), renameOnEdit(rename, Join.suggestedName(joinOn)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.editing.join", e);
+        }
+    }
+
+    // Java: TableHat.editConcatenate
+    public setConcatenate(id: string, tables: readonly string[], rename: RenameOnEditKind): EngineAlert | null
+    {
+        const concatenate = this.tables.get(id)?.table;
+        if (!(concatenate instanceof Concatenate))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const newList = tables.map(t => new TableId(t));
+            mgr.edit(concatenate, newId => new Concatenate(mgr, concatenate.getDetailsForCopy(newId), newList, concatenate.getIncompleteColumnHandling(), concatenate.isIncludeMarkerColumn()), renameOnEdit(rename, Concatenate.suggestedName(newList)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.editing.concatenate", e);
+        }
+    }
+
+    // Java: the Concatenate hat's "with/without source column", which doesn't rename
+    public toggleConcatenateMarker(id: string): EngineAlert | null
+    {
+        const concatenate = this.tables.get(id)?.table;
+        if (!(concatenate instanceof Concatenate))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            mgr.edit(concatenate, newId => new Concatenate(mgr, concatenate.getDetailsForCopy(newId), concatenate.getPrimarySources(), concatenate.getIncompleteColumnHandling(), !concatenate.isIncludeMarkerColumn()), RenameOnEdit.UNNEEDED);
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.editing.concatenate", e);
+        }
+    }
+
+    // Java: TableHat.editHideColumns
+    public setHiddenColumns(id: string, hidden: readonly string[], rename: RenameOnEditKind): EngineAlert | null
+    {
+        const hide = this.tables.get(id)?.table;
+        if (!(hide instanceof HideColumns))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const newHidden = hidden.map(c => new ColumnId(c));
+            mgr.edit(hide, newId => new HideColumns(mgr, hide.getDetailsForCopy(newId), hide.getSrcTableId(), newHidden), renameOnEdit(rename, HideColumns.suggestedName(newHidden)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.hiding.column", e);
+        }
     }
 
     // Java: TableDisplay.editAfterCreation's Filter (renaming to the suggested name), and TableHat's
@@ -613,14 +718,14 @@ export class EngineHost implements EngineApi
         }
     }
 
-    public setDisplay(id: string, display: TableDisplayMode): void
+    public setDisplay(id: string, display: TableDisplayMode, hidden: readonly string[] | null): void
     {
         const table = this.tables.get(id)?.table;
         if (table === undefined)
             return;
-        // Java: TableDisplay.setDisplay; the menu's items clear the custom list of hidden columns, and
-        // middle-clicking the header keeps it (as here)
-        const blackList = this.displays.get(table)?.getSecond() ?? [];
+        // Java: TableDisplay.setDisplay; the menu's items clear the custom list of hidden columns (or set
+        // it, for Custom), and middle-clicking the header keeps it
+        const blackList = hidden === null ? this.displays.get(table)?.getSecond() ?? [] : hidden.map(c => new ColumnId(c));
         const newState = Table.Display[display];
         this.displays.set(table, new Pair<Table.Display, readonly ColumnId[]>(newState, blackList));
         table.setShowColumns(newState, blackList);
@@ -1099,6 +1204,7 @@ export class EngineHost implements EngineApi
             canAddColumn: error === null && (table instanceof ImmediateDataSource || table instanceof Calculate),
             error,
             display: Table.Display[this.displays.get(table)?.getFirst() ?? Table.Display.ALL] as TableDisplayMode,
+            hiddenColumns: (this.displays.get(table)?.getSecond() ?? []).map(c => c.getRaw()),
             someAltered,
             canRename: operations.renameTable !== null,
             canInsertRows: error === null && operations.insertRows !== null,

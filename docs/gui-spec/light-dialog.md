@@ -24,6 +24,8 @@ Web: `src/gui/components/dialogs/` (`LightDialog.vue`, `ErrorableLightDialog.vue
   resize cursor, and dragging there resizes it (not below its minimum size).
 - A click on the background that doesn't move (still since the press) focuses OK, else Cancel, else
   Close.
+- Closed, it returns the focus to what had it when it opened; if that was nothing (as when it opened just
+  after another dialog closed), to the window's grid (Java: the window's focus owner).
 - `showAndWaitCentredOn(point, width, height)`: centred on the point (usually the mouse), kept 20 px
   inside the screen.
 

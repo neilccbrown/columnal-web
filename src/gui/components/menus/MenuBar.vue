@@ -9,7 +9,7 @@
 // the keyboard once one is open.
 import { MenubarContent, MenubarMenu, MenubarPortal, MenubarRoot, MenubarTrigger } from "reka-ui";
 import { onBeforeUnmount } from "vue";
-import { matchesShortcut } from "../../shortcuts.js";
+import { matchesShortcut, registerMenuShortcuts } from "../../shortcuts.js";
 import MenuEntries from "./MenuEntries.vue";
 import type { MenuEntry, SubMenu } from "./menus.js";
 
@@ -19,30 +19,39 @@ const emit = defineEmits<{
     opened: [],
 }>();
 
+// The enabled item whose shortcut the key is, if any:
+function itemFor(event: KeyboardEvent, entries: readonly MenuEntry[] = props.menus): MenuEntry & { kind: "item" } | null
+{
+    for (const entry of entries)
+    {
+        if (entry.kind === "item" && !entry.disabled && entry.label.shortcut !== null && matchesShortcut(entry.label.shortcut, event))
+            return entry;
+        if (entry.kind === "menu")
+        {
+            const found = itemFor(event, entry.items);
+            if (found !== null)
+                return found;
+        }
+    }
+    return null;
+}
+
 // The shortcuts act when nothing else took the key (Java: the scene's accelerators, after the focused
 // control; the cell editors, for example, take every key), and not while a dialog is open (Java's were
-// windows of their own):
+// windows of their own).  Typing in the grid gives way to them (Java: the grid types on KEY_TYPED,
+// after the accelerators acted on KEY_PRESSED), via isMenuShortcut.
 function onKeyDown(event: KeyboardEvent): void
 {
     if (event.defaultPrevented || document.querySelector("[role=dialog][data-state=open]") !== null)
         return;
-    const find = (entries: readonly MenuEntry[]): void =>
+    const item = itemFor(event);
+    if (item !== null)
     {
-        for (const entry of entries)
-        {
-            if (event.defaultPrevented)
-                return;
-            if (entry.kind === "item" && !entry.disabled && entry.label.shortcut !== null && matchesShortcut(entry.label.shortcut, event))
-            {
-                event.preventDefault();
-                entry.onAction({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-            }
-            else if (entry.kind === "menu")
-                find(entry.items);
-        }
-    };
-    find(props.menus);
+        event.preventDefault();
+        item.onAction({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    }
 }
+onBeforeUnmount(registerMenuShortcuts(event => itemFor(event) !== null));
 window.addEventListener("keydown", onKeyDown);
 onBeforeUnmount(() => window.removeEventListener("keydown", onKeyDown));
 </script>

@@ -21,9 +21,9 @@ const emit = defineEmits<{
     selectTable: [tableId: string],
     // A link's primary click (Java: its Clickable's onClick), at the point on the screen
     linkClicked: [link: HatLink, point: { readonly x: number, readonly y: number }],
-    // A source link hovered (after 300 ms, as Java's Clickable), at the point on the grid's canvas, or
-    // no longer hovered (null)
-    hoverSource: [hover: { readonly tableId: string, readonly at: { readonly x: number, readonly y: number } } | null],
+    // A source link (or Concatenate's tables) hovered (after 300 ms, as Java's Clickable), at the point
+    // on the grid's canvas, or no longer hovered (null)
+    hoverSource: [hover: { readonly tableIds: readonly string[], readonly at: { readonly x: number, readonly y: number } } | null],
 }>();
 
 const collapsed = shallowRef(false);
@@ -107,7 +107,8 @@ function segmentEntered(segment: HatSegment, e: MouseEvent): void
 {
     segmentLeft();
     const link = segment.link;
-    if (link?.kind !== "source")
+    const tableIds = link?.kind === "source" ? [link.tableId] : link?.kind === "edit" ? link.tables : [];
+    if (tableIds.length === 0)
         return;
     const canvas = (e.currentTarget as HTMLElement).closest(".grid-canvas")?.getBoundingClientRect();
     if (canvas === undefined)
@@ -116,7 +117,7 @@ function segmentEntered(segment: HatSegment, e: MouseEvent): void
     hoverTimer = setTimeout(() =>
     {
         hoverTimer = null;
-        emit("hoverSource", { tableId: link.tableId, at });
+        emit("hoverSource", { tableIds, at });
     }, 300);
 }
 

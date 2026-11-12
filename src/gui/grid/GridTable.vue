@@ -121,18 +121,18 @@ function selectTable(tableId: string): void
 // Java: editSourceLink's hovering: TableHighlights.highlightAtScreenPos, the source table (SOURCE),
 // with an arrow to where the pointer was
 const highlight = useHighlight();
-function hoverSource(hover: { readonly tableId: string, readonly at: { readonly x: number, readonly y: number } } | null): void
+function hoverSource(hover: { readonly tableIds: readonly string[], readonly at: { readonly x: number, readonly y: number } } | null): void
 {
     if (highlight === null)
         return;
-    const source = hover === null ? undefined : props.grid.getGridAreas().find(a => a instanceof GridTableDisplay && a.info.id === hover.tableId);
-    if (hover === null || source === undefined)
+    const sources = hover === null ? [] : props.grid.getGridAreas().filter(a => a instanceof GridTableDisplay && hover.tableIds.includes(a.info.id));
+    if (hover === null || sources.length === 0)
     {
         // Java: stopHighlightingGridArea
         highlight.value = null;
         return;
     }
-    highlight.value = { type: "SOURCE", bounds: [new RectangleBounds(source.getPosition(), source.getBottomRightIncl())], arrowTo: [hover.at] };
+    highlight.value = { type: "SOURCE", bounds: sources.map(s => new RectangleBounds(s.getPosition(), s.getBottomRightIncl())), arrowTo: sources.map(() => hover.at) };
 }
 
 // --- The column headers (Java: DataDisplay's ColumnNameItem and ColumnTypeItem) -------------------

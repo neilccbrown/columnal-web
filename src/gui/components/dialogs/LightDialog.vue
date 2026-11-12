@@ -5,7 +5,7 @@
 // right (Java: DialogPaneWithSideButtons), so that completion popups don't hide them.
 import { DialogContent, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, VisuallyHidden } from "reka-ui";
 import { computed, shallowRef, useTemplateRef, watch } from "vue";
-import { type DialogButton, isWindows, sortButtons } from "./dialogs.js";
+import { type DialogButton, isWindows, sortButtons, useDialogReturnFocus } from "./dialogs.js";
 
 const open = defineModel<boolean>("open", { required: true });
 const props = withDefaults(defineProps<{
@@ -206,6 +206,18 @@ function pointerDown(e: PointerEvent): void
 
 let downInControl = false;
 
+// Reka returns the focus to what had it when the dialog opened; if that was nothing (or it has gone),
+// the window's fallback has it (Java: the window's focus owner)
+const fallbackFocus = useDialogReturnFocus();
+function returnFocus(): void
+{
+    setTimeout(() =>
+    {
+        if (fallbackFocus !== null && (document.activeElement === null || document.activeElement === document.body))
+            fallbackFocus();
+    });
+}
+
 // A click on the background (still since the press) focuses the OK button, else Cancel, else Close
 // (which takes the focus out of a field):
 function click(e: MouseEvent): void
@@ -240,6 +252,7 @@ defineExpose({ button });
         @pointer-down-outside.prevent
         @interact-outside.prevent
         @escape-key-down="e => { if (!closeOnEscape) e.preventDefault(); }"
+        @close-auto-focus="returnFocus"
         @pointerdown="pointerDown"
         @pointermove="pointerMove"
         @click="click"

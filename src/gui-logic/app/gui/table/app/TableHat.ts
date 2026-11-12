@@ -34,7 +34,7 @@ export namespace TableHat
     /** What a clickable part of the hat links to. */
     export type Link =
         | { readonly kind: "source", readonly tableId: string, readonly broken: boolean }
-        | { readonly kind: "edit", readonly tooltipKey: string | null, readonly part: EditPart, readonly column: string | null };
+        | { readonly kind: "edit", readonly tooltipKey: string | null, readonly part: EditPart, readonly column: string | null, readonly tables: readonly string[] };
 
     /**
      * Which part of the transformation an edit link edits: a Filter's or Check's expression, a Calculate's
@@ -78,7 +78,7 @@ export namespace TableHat
     // (As a Clickable, the style class it combines with)
     function edit(part: EditPart, tooltipKey: LocalizableKey | null = "click.to.change", column: string | null = null, ...styleClasses: string[]): Clickable
     {
-        return new HatClickable({ kind: "edit", tooltipKey, part, column }, tooltipKey, ...styleClasses);
+        return new HatClickable({ kind: "edit", tooltipKey, part, column, tables: [] }, tooltipKey, ...styleClasses);
     }
 
     /** Java: the TableHat constructor's visitor, which makes the content and collapsed content. */
@@ -149,7 +149,8 @@ export namespace TableHat
                 return StyledString.concat(
                     collapsedContent = StyledString.s("Concatenate"),
                     StyledString.s(" "),
-                    sourceText.withStyle(edit("concatenateTables", "click.to.change")),
+                    // (Java's highlights the tables while hovered)
+                    sourceText.withStyle<Clickable>(new HatClickable({ kind: "edit", tooltipKey: "click.to.change", part: "concatenateTables", column: null, tables: concatenate.getPrimarySources().map(t => t.getRaw()) }, "click.to.change")),
                     StyledString.s(" - "),
                     StyledString.s(concatenate.isIncludeMarkerColumn() ? "with source column" : "without source column").withStyle(edit("concatenateToggle", "click.to.toggle")),
                 );

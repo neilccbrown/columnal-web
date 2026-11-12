@@ -448,10 +448,13 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
         this.alertIfAny(this.client.request("renameTable", this.info.id, newName));
     }
 
-    /** Java: TableDisplay.setDisplay. */
-    public setDisplay(display: TableDisplayMode): void
+    /**
+     * Java: TableDisplay.setDisplay, with the columns a CUSTOM display hides (the menu's other items clear
+     * them: []), or null to keep them (as the header's middle click does).
+     */
+    public setDisplay(display: TableDisplayMode, hidden: readonly string[] | null = []): void
     {
-        void this.client.request("setDisplay", this.info.id, display).catch(ignoreClosed);
+        void this.client.request("setDisplay", this.info.id, display, hidden).catch(ignoreClosed);
     }
 
     /**
@@ -463,13 +466,13 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
         switch (this.info.display)
         {
             case "COLLAPSED":
-                this.setDisplay("ALL");
+                this.setDisplay("ALL", null);
                 break;
             case "ALTERED":
-                this.setDisplay("COLLAPSED");
+                this.setDisplay("COLLAPSED", null);
                 break;
             default:
-                this.setDisplay(this.info.someAltered ? "ALTERED" : "COLLAPSED");
+                this.setDisplay(this.info.someAltered ? "ALTERED" : "COLLAPSED", null);
                 break;
         }
     }

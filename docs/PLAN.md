@@ -1113,6 +1113,34 @@ Steps (each a checkpoint with the project owner):
    `HideColumnsDialog`/`HideColumnsPanel`, `SelectColumnDialog`, and the table menu's Custom columns
    (`CustomColumnDisplayDialog`, on the hide-columns panel). Tests: `TestSort`, `TestJoin`,
    `TestHideColumns`.
+   - Done: `EditSortDialog.vue` (with `SortPane.vue` and `sortDirection.ts`), `EditJoinDialog.vue`,
+     `TableListDialog.vue`, `HideColumnsDialog.vue` (also for Custom columns), and the components
+     `PickTablePane.vue` (now also `PickTableDialog`'s), `HideColumnsPanel.vue` and `ListView.vue`; all
+     four in the picker and from the table menu's Transform (Join and Concatenate made of no table), and
+     their hat parts (Concatenate's toggle, and its tables highlighted while hovered). The grid's picking
+     has a `tableOrColumn` kind (for Join). The engine has `transformationDetails` (was
+     `expressionDetails`), `setSort`, `setJoin`, `setConcatenate`, `toggleConcatenateMarker` and
+     `setHiddenColumns`; `setDisplay` takes the custom list, and `TableInfo` has it (`hiddenColumns`).
+     Tests: `test/gui/transformations/` (`Sort.test.ts`, `Join.test.ts`, `HideColumns.test.ts`, the ports,
+     and `SortJoinConcatenateHide.test.ts`).
+   - Moved to step 4: `SelectColumnDialog`, which only Aggregate's recipes use.
+   - Port gap fixed: the table menu's display items didn't clear the custom list of hidden columns (Java's
+     do; the header's middle click keeps it).
+   - Possible Java bugs found (reported, not fixed): `HideColumnsPanel.addAllItemsToHidden` sorts by the
+     position in the remaining list as it was before (not the source's), so columns hidden earlier go first,
+     by name; `EditJoinDialog.pick` takes the field focused earliest in the last 500 ms, so a column clicked
+     just after leaving a table field goes into that table field; `TableListDialog` only takes a table that
+     was picked, so a name typed without choosing it is an error ("Invalid table name") on OK.
+   - Port gap fixed: a dialog which opened as another closed returned the focus to nothing when it closed
+     (Java's window kept its focus owner, the grid); now the grid has it (`provideDialogReturnFocus`).
+   - Port gap fixed: with the grid focused, a menu shortcut which types a character (Alt+Shift+N on macOS)
+     started editing instead (Java's accelerators act on KEY_PRESSED, the grid types on KEY_TYPED); now
+     the grid gives way to the menu bars' shortcuts (`isMenuShortcut`).
+   - Found (not this step's, to investigate): `BlankMainWindow.test.ts`'s `propEnterColumn` fails with seed
+     -1024209383 (also before this step): two Decimal zeros compare as different ("comparing "0" against
+     "0" result: 58173").
+   - Carried over: a table's error's "Edit expression" fix (Java: `TableDisplay.fixExpressionLink`, an
+     `EditExpressionDialog` for the expression in error), not yet in the plan: to step 9.
 4. Aggregate: `EditAggregateSplitByDialog` and `AggregateSplitByPane`, the column dialog's side pane and
    recipes (`ExpressionRecipe`), Aggregate's add-column arrows and editing its columns from the headers
    (`TransformationEdits.editColumn_Agg`), and the "Transform type" recipe (`PickTypeTransformDialog`).

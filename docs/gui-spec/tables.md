@@ -89,8 +89,9 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   name row shows it below the row. Items (`id-tableDisplay-menu-…`):
   - "Show columns..." ▸ Collapse table, All columns, Altered columns, Custom (checked for the current one).
     Collapsed, the table is just its name row; altered shows the columns a transformation changed or made.
-    Which is shown is saved (`SHOWCOLUMNS`). Not yet: Custom (its dialog has Phase 11's hide-columns
-    panel).
+    Which is shown is saved (`SHOWCOLUMNS`). Custom asks which columns to hide (the hide-columns panel,
+    `transformations.md`); cancelled, the display stays as it was. The other items clear the list Custom
+    hides (a middle click on the name row keeps it).
   - "Copy Values": all the table's columns' values (not just those shown) to the clipboard ("Error copying
     values" if they can't all be worked out).
   - "Export Data...": a dialog lists the exporters as "name (*.ext, …)", the first selected ("Pick

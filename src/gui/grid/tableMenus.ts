@@ -18,9 +18,7 @@ export function tableHeaderMenu(display: GridTableDisplay): MenuEntry[]
             show("tableDisplay.menu.show.collapse", "COLLAPSED"),
             show("tableDisplay.menu.show.all", "ALL"),
             show("tableDisplay.menu.show.altered", "ALTERED"),
-            // PORT-DEFERRED: the custom display, whose dialog (CustomColumnDisplayDialog) has Phase 11's
-            // HideColumnsPanel
-            checkMenuItem("tableDisplay.menu.show.custom", current === "CUSTOM", () => {}, true)),
+            checkMenuItem("tableDisplay.menu.show.custom", current === "CUSTOM", () => display.getActions()?.customDisplay(display))),
         menuItem("tableDisplay.menu.copyValues", () => display.copyAllValues()),
         menuItem("tableDisplay.menu.exportData", () => display.getActions()?.exportTable(display)),
         menuItem("tableDisplay.menu.delete", () => display.doDelete()),

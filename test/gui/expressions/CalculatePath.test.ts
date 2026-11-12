@@ -75,14 +75,14 @@ async function newTransform(a: RenderedApp, pos: CellPosition): Promise<void>
 
 describe("The Calculate path", () =>
 {
-    test("Transform shows the transformations, of which Calculate and Filter are built; it then asks for the table", async () =>
+    test("Transform shows the transformations, of which all but Aggregate, Edit and R are built; it then asks for the table", async () =>
     {
         const a = await start();
         await newTransform(a, new CellPosition(CellPosition.row(2), CellPosition.col(6)));
         const buttons = await vi.waitUntil(() => [...document.querySelectorAll<HTMLButtonElement>(".pick-transformation-tile-pane .explanation-button")].filter(b => b.textContent.length > 0));
         expect(buttons.map(b => b.querySelector(".explanation-button-title")!.textContent)).toEqual(
             ["Calculate", "Aggregate", "Filter rows", "Sort rows", "Join", "Concatenate", "Exclude columns", "Edit", "R expression"]);
-        expect(buttons.filter(b => !b.disabled).map(b => b.className)).toEqual([expect.stringContaining("id-transform-calculate"), expect.stringContaining("id-transform-filter")]);
+        expect(buttons.filter(b => !b.disabled).map(b => b.className)).toEqual(["calculate", "filter", "sort", "join", "concatenate", "hideColumns"].map(n => expect.stringContaining("id-transform-" + n)));
         await userEvent.click(document.querySelector(".id-transform-calculate")!);
         const field = await vi.waitUntil(() => document.activeElement?.classList.contains("pick-table-field") === true ? document.activeElement as HTMLInputElement : null);
         // The instruction above it, and the tables' names as completions:

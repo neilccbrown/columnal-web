@@ -54,6 +54,22 @@ export function shortcutText(combination: KeyCombination, mac: boolean = isMac()
         .filter(p => p !== null).join("+");
 }
 
+// The shown menu bars' shortcuts (see MenuBar.vue):
+const menuShortcuts = new Set<(event: KeyboardEvent) => boolean>();
+
+/** Adds a menu bar's shortcuts to isMenuShortcut's, returning the function which removes them. */
+export function registerMenuShortcuts(matches: (event: KeyboardEvent) => boolean): () => void
+{
+    menuShortcuts.add(matches);
+    return () => menuShortcuts.delete(matches);
+}
+
+/** Whether a key event is an enabled item's shortcut in a shown menu bar. */
+export function isMenuShortcut(event: KeyboardEvent): boolean
+{
+    return [...menuShortcuts].some(matches => matches(event));
+}
+
 /** Runs the action when the shortcut is pressed anywhere in the page, while the component is mounted. */
 export function useShortcut(combination: KeyCombination | null, action: () => void): void
 {

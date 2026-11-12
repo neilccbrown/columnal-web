@@ -12,7 +12,9 @@ export interface Picked
 
 export interface PickingMode
 {
-    readonly kind: "table" | "column";
+    // A table, a column, or either (Java: enableTableOrColumnPickingMode): over a column, the column if
+    // include allows it, else the table if include allows that (with a null column)
+    readonly kind: "table" | "column" | "tableOrColumn";
     // Whether the table (or the table's column) can be picked:
     readonly include: (table: string, column: string | null) => boolean;
     readonly onPick: (picked: Picked) => void;

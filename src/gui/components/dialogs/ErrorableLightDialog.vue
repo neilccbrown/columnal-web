@@ -16,6 +16,8 @@ const props = withDefaults(defineProps<{
     centreOn?: { readonly x: number, readonly y: number } | null,
     resizable?: boolean,
     closeOnEscape?: boolean,
+    // (See LightDialog's)
+    modal?: boolean,
     // Either an error or the result.  If there is an error, it may be called again.
     calculateResult: () => Either<Localized, R>,
 }>(), {
@@ -23,6 +25,7 @@ const props = withDefaults(defineProps<{
     centreOn: null,
     resizable: false,
     closeOnEscape: true,
+    modal: true,
 });
 const emit = defineEmits<{
     ok: [result: R],
@@ -67,6 +70,7 @@ defineExpose({ clearError });
     :centre-on="centreOn"
     :resizable="resizable"
     :close-on-escape="closeOnEscape"
+    :modal="modal"
     :ok-filter="okFilter"
     @ok="emit('ok', result!.value)"
     @cancel="emit('cancel')"

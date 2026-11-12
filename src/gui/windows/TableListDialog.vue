@@ -32,7 +32,7 @@ interface Item
     readonly key: number;
     readonly table: string;
 }
-type Pane = { focus(): void, setContent(table: string | null): void, lastFocusedTime(): number };
+type Pane = { focus(): void, setContent(table: string | null): void, text(): string, lastFocusedTime(): number };
 
 let nextKey = 0;
 const item = (table: string): Item => ({ key: nextKey++, table });
@@ -48,19 +48,26 @@ function setPane(key: number, pane: unknown): void
         panes.set(key, pane as Pane);
 }
 
-// Java: the cell's value is only what was picked (not what is typed)
+// (The cell's value is what was picked; what is typed since is in its pane, see calculateResult)
 function picked(cell: Item, setItem: (item: Item) => void, table: string): void
 {
     setItem({ key: cell.key, table });
     void list.value?.focusAddButton();
 }
 
+/**
+ * The tables, as their fields show them.
+ *
+ * PORT-NOTE: bug fix.  Java's cells took only a table picked (from the completions or the grid), so a
+ * name typed without choosing it was kept as the cell's previous value, and with none, OK gave "Invalid
+ * table name".
+ */
 function calculateResult(): Either<string, string[]>
 {
     const r: string[] = [];
     for (const i of items.value)
     {
-        const s = IdentifierUtility.asExpressionIdentifier(i.table);
+        const s = IdentifierUtility.asExpressionIdentifier(panes.get(i.key)?.text() ?? i.table);
         if (s === null)
             return Either.left(TranslationUtility.getString("edit.column.invalid.table.name"));
         r.push(s);

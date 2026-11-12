@@ -43,13 +43,16 @@ const button = computed(() => shownSelected.value.length > 0 ? { text: "<< Hide"
     : { text: "Transfer", disabled: true });
 
 /**
- * Java: addAllItemsToHidden.  The hidden columns are sorted by their positions in the remaining list as it
- * was before they were added (Java's list didn't refilter until afterwards), so those hidden before (not
- * in it) come first, by name.
+ * Java: addAllItemsToHidden.  The hidden columns are sorted by their positions in the source (any not in it
+ * first, by name).
+ *
+ * PORT-NOTE: bug fix.  Java sorted by the positions in the remaining list as it was before they were
+ * added (its list didn't refilter until afterwards), so those hidden before (not in it) came first, by
+ * name, instead of in the source's order.
  */
 function addAllItemsToHidden(items: readonly string[]): void
 {
-    const srcList = shown.value;
+    const srcList = props.srcColumns ?? [];
     const next = [...hidden.value];
     for (const item of items)
     {

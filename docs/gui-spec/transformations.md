@@ -92,15 +92,15 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin` and `TestHideColumns`, 
   secondary, which focuses the list's Add.
 - It isn't modal: a table or column clicked in the grid goes into the field focused in the last 500 ms (a
   table field takes a table; a column field takes a column of its side's table). Of several, the one
-  focused earliest wins, as in Java.
+  focused most recently wins (Java's, the one focused earliest, was a bug).
 - OK: tables or columns that aren't valid names are errors ("Valid source table names required", "Valid
   match column names required").
 
 ## Concatenate's table list
 
 - "Choose the tables to concatenate", then a list of table name fields (as the table picker's, not
-  including the Concatenate), and the error. A table is only taken when picked (a completion chosen, or
-  Enter on its exact name), as in Java: typed alone, it stays as it was.
+  including the Concatenate), and the error. A table picked (a completion chosen, or Enter on its exact
+  name) or typed is taken (Java took only a table picked, a bug: typed alone, it stayed as it was).
 - It isn't modal: a table clicked in the grid goes into the field edited in the last 200 ms, else is added
   at the end.
 - OK: a name that isn't valid is an error ("Invalid table name").
@@ -113,8 +113,8 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin` and `TestHideColumns`, 
   "Transfer", disabled. Selecting in one list clears the other's selection.
 - Several remaining columns can be selected (Shift, Ctrl/Cmd), and dragged to the excluded list; a double
   click (or Enter, in the remaining list) moves one across.
-- The excluded columns are kept in Java's order: those excluded before, by name, then the new ones by their
-  position.
+- The excluded columns are kept in the source's order (Java's put those excluded before first, by name, a
+  bug).
 - OK and Cancel.
 
 ## The expression dialogs (Filter and Check)

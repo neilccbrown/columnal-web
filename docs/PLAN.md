@@ -1126,11 +1126,12 @@ Steps (each a checkpoint with the project owner):
    - Moved to step 4: `SelectColumnDialog`, which only Aggregate's recipes use.
    - Port gap fixed: the table menu's display items didn't clear the custom list of hidden columns (Java's
      do; the header's middle click keeps it).
-   - Possible Java bugs found (reported, not fixed): `HideColumnsPanel.addAllItemsToHidden` sorts by the
-     position in the remaining list as it was before (not the source's), so columns hidden earlier go first,
-     by name; `EditJoinDialog.pick` takes the field focused earliest in the last 500 ms, so a column clicked
-     just after leaving a table field goes into that table field; `TableListDialog` only takes a table that
-     was picked, so a name typed without choosing it is an error ("Invalid table name") on OK.
+   - Java bugs fixed (approved; tests in `test/gui/transformations/BugFixes.test.ts`):
+     `HideColumnsPanel.addAllItemsToHidden` sorted by the position in the remaining list as it was before
+     (not the source's), so columns hidden earlier went first, by name; `EditJoinDialog.pick` took the field
+     focused earliest in the last 500 ms, so a column clicked just after leaving a table field went into that
+     table field; `TableListDialog` only took a table that was picked, so a name typed without choosing it
+     was an error ("Invalid table name") on OK.
    - Port gap fixed: a dialog which opened as another closed returned the focus to nothing when it closed
      (Java's window kept its focus owner, the grid); now the grid has it (`provideDialogReturnFocus`).
    - Port gap fixed: with the grid focused, a menu shortcut which types a character (Alt+Shift+N on macOS)

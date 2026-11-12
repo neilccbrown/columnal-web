@@ -102,7 +102,11 @@ type Pick = { readonly kind: "table", readonly set: (table: string) => void } | 
 
 /**
  * Java: pick(): of the table fields and the column fields (those whose side's table is named), the one
- * focused in the last 500 ms, earliest first (as Java sorts them).
+ * focused most recently, in the last 500 ms.
+ *
+ * PORT-NOTE: bug fix.  Java sorted the candidates by their times and took the first, the one focused
+ * earliest, so a column clicked just after leaving a table field (for a column field) went into the
+ * table field.
  */
 function pick(): Pick | null
 {
@@ -128,7 +132,7 @@ function pick(): Pick | null
             candidates.push([time, { kind: "column", table, set: column => setColumn(i.key, side, column) }]);
         }
     }
-    return candidates.filter(([time]) => time > curTime - 500).sort(([a], [b]) => a - b)[0]?.[1] ?? null;
+    return candidates.filter(([time]) => time > curTime - 500).sort(([a], [b]) => b - a)[0]?.[1] ?? null;
 }
 
 // Java: the field's setText (which its cell's value follows, as when typed)

@@ -43,7 +43,7 @@ const CHOICES: readonly Choice[] = [
     { name: "runr", titleKey: "transform.runr", explanationKey: "runr.explanation.short", image: runrImage },
 ];
 // PORT-DEFERRED: the other transformations' dialogs (Phase 11; R, Phase 12)
-const BUILT: ReadonlySet<string> = new Set(["calculate", "filter", "sort", "join", "concatenate", "hideColumns"]);
+const BUILT: ReadonlySet<string> = new Set(["calculate", "aggregate", "filter", "sort", "join", "concatenate", "hideColumns"]);
 
 function choose(c: Choice, e: MouseEvent): void
 {

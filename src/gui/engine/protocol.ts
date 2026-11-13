@@ -53,6 +53,9 @@ export interface TableInfo
     readonly hat: TableHatInfo | null;
     // For a Calculate, its source table (its columns are edited with the expression dialog), else null:
     readonly calculate: { readonly src: string } | null;
+    // For an Aggregate, its source table (its columns are edited with the expression dialog, with its
+    // split), else null:
+    readonly aggregate: { readonly src: string } | null;
     // For a Check, its result as its display shows it (Java: CheckDisplay's result cell: "OK", "Fail",
     // "Error", or "ERR:" and the message), whether it passed (null for an error), and whether its title
     // shows it failing (Java: the check-failing pseudoclass); else null:
@@ -69,9 +72,9 @@ export interface CheckResultInfo
 
 /**
  * The transformations the GUI can make (Java: PickTransformationDialog's, as each is built): the first
- * four of a source table; Join and Concatenate are made empty, of no table.
+ * five of a source table; Join and Concatenate are made empty, of no table.
  */
-export type TransformationKind = "calculate" | "filter" | "sort" | "hideColumns" | "join" | "concatenate";
+export type TransformationKind = "calculate" | "aggregate" | "filter" | "sort" | "hideColumns" | "join" | "concatenate";
 
 /** Java: Sort.Direction, by its name. */
 export type SortDirectionName = "ASCENDING" | "DESCENDING";
@@ -83,7 +86,8 @@ export type CheckTypeName = "ALL_ROWS" | "ANY_ROW" | "NO_ROWS" | "STANDALONE";
  * A transformation's details for its dialog: a Filter's or Check's source table and expression (saved as
  * in a file), and a Check's type; a Sort's source and columns; a Join's tables, whether it keeps the
  * primary's rows with no match, and the columns it matches; a Concatenate's tables, and whether it has
- * the source column; the columns a Hide columns hides.
+ * the source column; the columns a Hide columns hides; an Aggregate's source, the columns it splits by,
+ * and its columns with their expressions.
  */
 export type TransformationDetails =
     | { readonly kind: "filter", readonly src: string, readonly expression: string }
@@ -91,7 +95,20 @@ export type TransformationDetails =
     | { readonly kind: "sort", readonly src: string, readonly sortBy: readonly (readonly [string, SortDirectionName])[] }
     | { readonly kind: "join", readonly primary: string, readonly secondary: string, readonly leftJoin: boolean, readonly columns: readonly (readonly [string, string])[] }
     | { readonly kind: "concatenate", readonly tables: readonly string[], readonly includeMarkerColumn: boolean }
-    | { readonly kind: "hideColumns", readonly src: string, readonly hidden: readonly string[] };
+    | { readonly kind: "hideColumns", readonly src: string, readonly hidden: readonly string[] }
+    | { readonly kind: "aggregate", readonly src: string, readonly splitBy: readonly string[], readonly columns: readonly (readonly [string, string])[] };
+
+/**
+ * A type a column could be transformed into (Java: PickTypeTransformDialog.TypeTransform): the type as
+ * shown, and the expression which does it (saved as in a file), or for unwrapping an Optional, its
+ * inner type (saved as in a file; the GUI asks for the value to use for None).
+ */
+export interface TypeTransformInfo
+{
+    readonly destType: string;
+    readonly expression: string | null;
+    readonly unwrap: string | null;
+}
 
 /** How an edit renames the table it changes (Java: RenameOnEdit). */
 export type RenameOnEditKind = "UNNEEDED" | "IF_OLD_AUTO" | "TO_SUGGESTED";
@@ -339,6 +356,24 @@ export interface EngineApi
      */
     moveCalculateColumn(id: string, editingColumn: string, newColumn: string | null, expression: string): EngineAlert | null;
     /**
+     * Sets an Aggregate's column (replacing oldColumn, if given; else added at the end) to the expression,
+     * saved as in a file, and the columns it splits by (Java: TableDisplay.addColumnBefore_Agg,
+     * TransformationEdits.editColumn_Agg, and editAfterCreation's).
+     */
+    setAggregateColumn(id: string, oldColumn: string | null, newColumn: string, expression: string, splitBy: readonly string[], rename: RenameOnEditKind): EngineAlert | null;
+    /** Sets the columns an Aggregate splits by (Java: TransformationEdits.editAggregateSplitBy). */
+    setAggregateSplitBy(id: string, splitBy: readonly string[], rename: RenameOnEditKind): EngineAlert | null;
+    /**
+     * The types a column could be transformed into, judged from a sample of its values (Java:
+     * TableDisplay.transformType), or the error.  Null if the table has changed.
+     */
+    typeTransforms(id: string, version: number, column: string): { readonly transforms: readonly TypeTransformInfo[] } | EngineAlert | null;
+    /**
+     * Makes a Calculate of the table, to the right of the others, giving the column the expression (saved
+     * as in a file; Java: TableDisplay.transformType's, once the type is picked).
+     */
+    createTypeTransform(id: string, column: string, expression: string): EngineAlert | null;
+    /**
      * Changes a data table's column: its name, type and default value (Java:
      * TransformationEdits.editColumn_IDS); the tables that use it are updated to its new name.
      */
@@ -404,7 +439,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

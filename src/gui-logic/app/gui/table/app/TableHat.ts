@@ -6,9 +6,8 @@
 // transformations' dialogs.  Here the text is made in the engine (where the tables are) and sent to the
 // GUI as segments (HatSegment): each clickable part's style is a HatClickable, which records what it
 // links to (and for an edit, which part it edits), and the GUI opens the dialogs
-// (TransformationDialogs.vue).  PORT-DEFERRED: the sort, split-by, concatenate, hide-columns, manual
-// edit and join dialogs (Phase 11 steps 3 to 5) and R's (Phase 12).  Clicking "with/without source
-// column" toggles it in Java with no dialog; it waits with Concatenate's.
+// (TransformationDialogs.vue; clicking "with/without source column" toggles it with no dialog).
+// PORT-DEFERRED: the manual edit dialogs (Phase 11 step 5) and R's (Phase 12).
 import type { LocalizableKey } from "../../../../../engine/anns/Annotations.js";
 import type { Table } from "../../../../../engine/data/data/Table.js";
 import type { TableManager } from "../../../../../engine/data/data/TableManager.js";

@@ -121,6 +121,7 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-transformations/src/test/java/test/gui/transformation/TestCalculate.java", ["test/gui/transformations/Calculate.test.ts"]],
     ["tests-gui-transformations/src/test/java/test/gui/transformation/TestFilter.java", ["test/gui/transformations/Filter.test.ts"]],
     ["tests-gui-transformations/src/test/java/test/gui/transformation/TestSort.java", ["test/gui/transformations/Sort.test.ts"]],
+    ["tests-gui-transformations/src/test/java/test/gui/transformation/TestColumnRecipes.java", ["test/gui/transformations/ColumnRecipes.test.ts"]],
     ["tests-gui-transformations/src/test/java/test/gui/transformation/TestJoin.java", ["test/gui/transformations/Join.test.ts"]],
     ["tests-gui-transformations/src/test/java/test/gui/transformation/TestHideColumns.java", ["test/gui/transformations/HideColumns.test.ts"]],
 ]);

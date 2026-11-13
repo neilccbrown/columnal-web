@@ -27,6 +27,8 @@ const props = withDefaults(defineProps<{
     modal?: boolean,
     // Java: OK is the default button, pressed by Enter (EditColumnExpressionDialog turns this off)
     defaultButton?: boolean,
+    // Java: OK's setDisable
+    okDisabled?: boolean,
 }>(), {
     buttons: () => ["cancel", "ok"],
     buttonsToSide: false,
@@ -36,6 +38,7 @@ const props = withDefaults(defineProps<{
     closeOnEscape: true,
     modal: true,
     defaultButton: true,
+    okDisabled: false,
 });
 const emit = defineEmits<{
     ok: [],
@@ -121,7 +124,7 @@ function inControl(target: EventTarget | null): boolean
 // Enter presses OK (JavaFX: the default button), unless something else has handled it:
 function keydown(e: KeyboardEvent): void
 {
-    if (e.key === "Enter" && props.defaultButton && !e.defaultPrevented && !e.isComposing && props.buttons.includes("ok")
+    if (e.key === "Enter" && props.defaultButton && !props.okDisabled && !e.defaultPrevented && !e.isComposing && props.buttons.includes("ok")
         && !(e.target instanceof HTMLTextAreaElement) && !(e.target instanceof HTMLButtonElement))
     {
         e.preventDefault();
@@ -278,6 +281,7 @@ defineExpose({ button });
             type="button"
             :class="`${b}-button`"
             :data-button="b"
+            :disabled="b === 'ok' && okDisabled"
             @click.stop="press(b)"
           >
             {{ BUTTON_TEXT[b] }}

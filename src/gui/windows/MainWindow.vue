@@ -179,10 +179,16 @@ function waitForTable(id: string): Promise<GridTableDisplay | null>
 // Java: TransformationEdits.editColumn_IDS: the column dialog for the column
 async function editColumn(display: GridTableDisplay, column: string, focus: "name" | "type"): Promise<void>
 {
-    // Java: a Calculate's columns' primary edit operation, editColumn_Calc
+    // Java: a Calculate's columns' primary edit operation, editColumn_Calc, and an Aggregate's,
+    // editColumn_Agg
     if (display.info.calculate !== null)
     {
         transformations.value?.editCalculateColumn(display, column);
+        return;
+    }
+    if (display.info.aggregate !== null)
+    {
+        transformations.value?.editAggregateColumn(display, column);
         return;
     }
     const details = await engine.client.request("columnDetails", display.info.id, display.info.version, column);
@@ -271,8 +277,17 @@ function selectCheck(id: string): void
 provideDialogReturnFocus(() => document.querySelector<HTMLElement>("[data-testid=grid]")?.focus());
 
 provideTableActions({
-    // (Java: TableDisplay.addColumnOperation: a Calculate's is addColumnBefore_Calc)
-    addColumn: (display, beforeColumn) => display.info.calculate !== null ? transformations.value?.addCalculateColumn(display) : void openColumnDialog({ kind: "column", display, beforeColumn }),
+    // (Java: TableDisplay.addColumnOperation: a Calculate's is addColumnBefore_Calc, an Aggregate's
+    // addColumnBefore_Agg; both add the column at the end)
+    addColumn: (display, beforeColumn) =>
+    {
+        if (display.info.calculate !== null)
+            transformations.value?.addCalculateColumn(display);
+        else if (display.info.aggregate !== null)
+            transformations.value?.addAggregateColumn(display);
+        else
+            void openColumnDialog({ kind: "column", display, beforeColumn });
+    },
     editColumn: (display, column, focus) => void editColumn(display, column, focus).catch(ignoreClosed),
     gotoRow: (display, column) =>
     {
@@ -282,6 +297,7 @@ provideTableActions({
     exportTable: display => void exportTable(display).catch(ignoreClosed),
     hatLinkClicked: (display, link, point) => transformations.value?.hatLinkClicked(display, link, point),
     transform: (display, point) => transformations.value?.transform(display, point),
+    transformType: (display, column) => transformations.value?.transformType(display, column),
     customDisplay: display => transformations.value?.customDisplay(display),
 });
 

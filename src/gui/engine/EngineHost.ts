@@ -49,8 +49,9 @@ import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
 import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
-import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type TypeTransformInfo, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 import { columnLookupInfo } from "./columnLookupInfo.js";
+import { typeTransforms } from "./typeTransforms.js";
 import { RenameOnEdit } from "../../engine/data/data/RenameOnEdit.js";
 import { BracketedStatus } from "../../engine/expressions/transformations/expression/BracketedStatus.js";
 import { ExpressionUtil } from "../../engine/expressions/transformations/expression/ExpressionUtil.js";
@@ -391,7 +392,7 @@ export class EngineHost implements EngineApi
         try
         {
             const srcTable = src === null ? null : this.tableManager.getSingleTableOrThrow(new TableId(src));
-            const info = kind === "calculate" ? new Calculate.Info() : kind === "filter" ? new Filter.Info() : kind === "sort" ? new Sort.Info()
+            const info = kind === "calculate" ? new Calculate.Info() : kind === "aggregate" ? new Aggregate.Info() : kind === "filter" ? new Filter.Info() : kind === "sort" ? new Sort.Info()
                 : kind === "hideColumns" ? new HideColumns.Info() : kind === "join" ? new Join.Info() : new Concatenate.Info();
             const at = position === null ? this.tableManager.getNextInsertPosition(rightOf === null ? null : new TableId(rightOf)) : new CellPosition(CellPosition.row(position.row), CellPosition.col(position.column));
             const make = info.make(this.tableManager, at, () => srcTable);
@@ -421,6 +422,8 @@ export class EngineHost implements EngineApi
             return { kind: "concatenate", tables: table.getPrimarySources().map(t => t.getRaw()), includeMarkerColumn: table.isIncludeMarkerColumn() };
         if (table instanceof HideColumns)
             return { kind: "hideColumns", src: table.getSrcTableId().getRaw(), hidden: table.getHiddenColumns().map(c => c.getRaw()) };
+        if (table instanceof Aggregate)
+            return { kind: "aggregate", src: table.getSrcTableId().getRaw(), splitBy: table.getSplitBy().map(c => c.getRaw()), columns: table.getColumnExpressions().map(p => [p.getFirst().getRaw(), saveExpression(p.getSecond())] as const) };
         return null;
     }
 
@@ -646,6 +649,98 @@ export class EngineHost implements EngineApi
         catch (e)
         {
             return alertFor("error.moving.calculate", e);
+        }
+    }
+
+    // Java: TableDisplay.addColumnBefore_Agg (added at the end), TransformationEdits.editColumn_Agg, and
+    // editAfterCreation's (TableDisplay's aggregate visitor)
+    public setAggregateColumn(id: string, oldColumn: string | null, newColumn: string, expression: string, splitBy: readonly string[], rename: RenameOnEditKind): EngineAlert | null
+    {
+        const agg = this.tables.get(id)?.table;
+        if (!(agg instanceof Aggregate))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const newColumnId = new ColumnId(newColumn);
+            const loaded = this.loadExpression(expression);
+            const newSplitBy = splitBy.map(c => new ColumnId(c));
+            const oldColumns = agg.getColumnExpressions();
+            const newCols = oldColumn === null ? [...oldColumns, new Pair(newColumnId, loaded)]
+                : oldColumns.map(c => c.getFirst().equals(new ColumnId(oldColumn)) ? new Pair(newColumnId, loaded) : c);
+            // PORT-NOTE: Java bug, kept: addColumnBefore_Agg (adding a column, renaming if the old name
+            // was automatic) suggests the name from the old split, not the one chosen in the dialog,
+            // which the Aggregate is given.
+            const nameSplitBy = oldColumn === null && rename === "IF_OLD_AUTO" ? agg.getSplitBy() : newSplitBy;
+            mgr.edit(agg, newId => new Aggregate(mgr, agg.getDetailsForCopy(newId), agg.getSrcTableId(), newCols, newSplitBy), renameOnEdit(rename, Aggregate.suggestedName(nameSplitBy, newCols)));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor(oldColumn === null ? "error.adding.column" : "error.saving.column", e);
+        }
+    }
+
+    // Java: TransformationEdits.editAggregateSplitBy
+    public setAggregateSplitBy(id: string, splitBy: readonly string[], rename: RenameOnEditKind): EngineAlert | null
+    {
+        const agg = this.tables.get(id)?.table;
+        if (!(agg instanceof Aggregate))
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const newSplitBy = splitBy.map(c => new ColumnId(c));
+            mgr.edit(agg, newId => new Aggregate(mgr, agg.getDetailsForCopy(newId), agg.getSrcTableId(), agg.getColumnExpressions(), newSplitBy), renameOnEdit(rename, Aggregate.suggestedName(newSplitBy, agg.getColumnExpressions())));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.editing.aggregate", e);
+        }
+    }
+
+    // Java: TableDisplay.transformType's possibles
+    public typeTransforms(id: string, version: number, column: string): { readonly transforms: readonly TypeTransformInfo[] } | EngineAlert | null
+    {
+        const table = this.current(id, version);
+        if (table === null)
+            return null;
+        try
+        {
+            const saveType = (t: DataType): string => TypeExpression.fromDataType(t).save(Expression.SaveDestination.TO_FILE, TableAndColumnRenames.EMPTY);
+            return {
+                transforms: typeTransforms(this.tableManager, table, new ColumnId(column)).map(tt => ({
+                    destType: tt.destType.toString(),
+                    expression: "expression" in tt ? saveExpression(tt.expression) : null,
+                    unwrap: "unwrap" in tt ? saveType(tt.unwrap) : null,
+                })),
+            };
+        }
+        catch (e)
+        {
+            return alertFor("error.investigating.type.transformation", e);
+        }
+    }
+
+    // Java: TableDisplay.transformType, once the type is picked: a Calculate to the right of the others
+    public createTypeTransform(id: string, column: string, expression: string): EngineAlert | null
+    {
+        const table = this.tables.get(id)?.table;
+        if (table === undefined)
+            return null;
+        try
+        {
+            const tableManager = this.tableManager;
+            const targetPos = tableManager.getNextInsertPosition(table.getId());
+            const columns = new HashMap<ColumnId, Expression>();
+            columns.set(new ColumnId(column), this.loadExpression(expression));
+            tableManager.record(new Calculate(tableManager, new Table.InitialLoadDetails(null, null, targetPos, null), table.getId(), columns));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.making.type.transformation", e);
         }
     }
 
@@ -1201,7 +1296,7 @@ export class EngineHost implements EngineApi
             columnNumber,
             columnStyles,
             canAppendRows: error === null && operations.appendRows !== null,
-            canAddColumn: error === null && (table instanceof ImmediateDataSource || table instanceof Calculate),
+            canAddColumn: error === null && (table instanceof ImmediateDataSource || table instanceof Calculate || table instanceof Aggregate),
             error,
             display: Table.Display[this.displays.get(table)?.getFirst() ?? Table.Display.ALL] as TableDisplayMode,
             hiddenColumns: (this.displays.get(table)?.getSecond() ?? []).map(c => c.getRaw()),
@@ -1210,14 +1305,15 @@ export class EngineHost implements EngineApi
             canInsertRows: error === null && operations.insertRows !== null,
             canDeleteRows: error === null && operations.deleteRows !== null,
             columnDeletable,
-            // (Java: any of a Calculate's columns, TransformationEdits.editColumn_Calc)
-            // PORT-DEFERRED: editing Aggregate's columns by clicking their headers (Java:
-            // TransformationEdits.editColumn_Agg, Phase 11)
-            columnHeaderEditable: columnNames.map(() => table instanceof ImmediateDataSource || table instanceof Calculate),
+            // (Java: any of a Calculate's columns, TransformationEdits.editColumn_Calc; an Aggregate's
+            // calculated columns, not those it splits by, editColumn_Agg)
+            columnHeaderEditable: columnNames.map(c => table instanceof ImmediateDataSource || table instanceof Calculate
+                || (table instanceof Aggregate && table.getColumnExpressions().some(p => p.getFirst().getRaw() === c))),
             columnHeaderClasses,
             columnAfter,
             hat: table instanceof VisitableTransformation ? TableHat.content(this.tableManager, table) : null,
             calculate: table instanceof Calculate ? { src: table.getSrcTableId().getRaw() } : null,
+            aggregate: table instanceof Aggregate ? { src: table.getSrcTableId().getRaw() } : null,
             check: table instanceof Check ? this.checkResult(table) : null,
         };
     }

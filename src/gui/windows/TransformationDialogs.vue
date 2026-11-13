@@ -2,23 +2,38 @@
 // The dialogs which make and edit transformations, for the project's window
 // (docs/gui-spec/transformations.md): picking a transformation and its source table (Java: View.createTable's
 // TRANSFORM and CHECK, and View.createTransform), then editing the new transformation (Java:
-// TableDisplay.editAfterCreation); and editing a transformation from its hat's links (Java: TableHat's
-// Clickables) and a Calculate's columns from their headers (TransformationEdits.editColumn_Calc).
+// TableDisplay.editAfterCreation); editing a transformation from its hat's links (Java: TableHat's
+// Clickables) and a Calculate's or an Aggregate's columns from their headers (TransformationEdits.editColumn_Calc
+// and editColumn_Agg); and the column menu's Transform type (TableDisplay.transformType).
 import { markRaw, shallowRef, watch } from "vue";
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import type { TypeState } from "../../engine/expressions/transformations/expression/TypeState.js";
+import { CallExpression, IdentExpression } from "../../engine/expressions/transformations/expression/Expressions.js";
+import { TypeExpression } from "../../engine/expressions/transformations/expression/type/TypeExpressions.js";
+import { FunctionList } from "../../engine/functions/transformations/function/FunctionList.js";
+import { GetOptionalOrDefault } from "../../engine/functions/transformations/function/optional/GetOptionalOrDefault.js";
+import { ColumnId } from "../../engine/identifiers/id/ColumnId.js";
 import { Filter } from "../../engine/transformations/transformations/Filter.js";
 import { DataType } from "../../engine/types/data/datatype/DataType.js";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
+import { InternalException } from "../../engine/utility-error/error/InternalException.js";
+import { UserException } from "../../engine/utility-error/error/UserException.js";
+import type { Value } from "../../engine/utility/utility/Value.js";
+import { AppUtility } from "../../gui-logic/app/apputility/AppUtility.js";
 import { showAlert } from "../alerts.js";
 import { ignoreClosed } from "../engine/EngineClient.js";
-import type { CheckTypeName, ColumnLookupInfo, SortDirectionName, EngineAlert, HatLink, RenameOnEditKind, TransformationKind } from "../engine/protocol.js";
+import type { CheckTypeName, ColumnLookupInfo, SortDirectionName, EngineAlert, HatLink, RenameOnEditKind, TransformationKind, TypeTransformInfo } from "../engine/protocol.js";
 import { useEngine } from "../engine/useEngine.js";
 import type { GridTableDisplay } from "../grid/GridTableDisplay.js";
 import type { PickingMode } from "../grid/picking.js";
 import { ColumnLookupCopy } from "../project/columnLookupCopy.js";
 import { copyTypeManager } from "../project/typeCopy.js";
+import { t } from "../i18n.js";
+import EditAggregateSplitByDialog from "./EditAggregateSplitByDialog.vue";
 import EditCheckExpressionDialog from "./EditCheckExpressionDialog.vue";
+import EnterValueDialog from "./EnterValueDialog.vue";
+import PickTypeTransformDialog from "./PickTypeTransformDialog.vue";
+import { saveEditorExpression } from "./expressionDialogs.js";
 import EditColumnExpressionDialog from "./EditColumnExpressionDialog.vue";
 import EditJoinDialog, { type JoinDetails } from "./EditJoinDialog.vue";
 import EditSortDialog from "./EditSortDialog.vue";
@@ -95,7 +110,7 @@ function newCheck(position: CellPosition, point: Point): void
 }
 
 // Those of a source table (TransformationInfo.make asks for one), and those of none
-const SINGLE_SOURCE: ReadonlySet<string> = new Set<TransformationKind>(["calculate", "filter", "sort", "hideColumns"]);
+const SINGLE_SOURCE: ReadonlySet<string> = new Set<TransformationKind>(["calculate", "aggregate", "filter", "sort", "hideColumns"]);
 const NO_SOURCE: ReadonlySet<string> = new Set<TransformationKind>(["join", "concatenate"]);
 
 function transformationChosen(name: string, point: Point): void
@@ -171,6 +186,10 @@ async function createTransformation(kind: TransformationKind, src: string | null
         case "calculate":
             await openCalculateColumnDialog(created, null, "TO_SUGGESTED", "transform.calculate.addInitial");
             break;
+        // (Java: cancelled, the Aggregate is removed)
+        case "aggregate":
+            await openAggregateColumnDialog(table, null, "TO_SUGGESTED", true);
+            break;
         case "filter":
             await openFilterDialog(table, true, "TO_SUGGESTED", null);
             break;
@@ -230,6 +249,150 @@ function calculateColumnMoved(editingColumn: string, newColumn: string | null, e
     const target = calculateColumnFor.value;
     if (target !== null)
         void engine.client.request("moveCalculateColumn", target.table, editingColumn, newColumn, expression).then(alertIfAny).catch(ignoreClosed);
+}
+
+// --- An Aggregate's columns and split ----------------------------------------------------------------
+
+// Java: AggregateSplitByPane.editColumn (EditColumnExpressionDialog with the split to its side) for an
+// Aggregate's column: after it is made (TableDisplay.editAfterCreation, removing the Aggregate if
+// cancelled), adding one (addColumnBefore_Agg) or editing one (TransformationEdits.editColumn_Agg)
+interface AggregateColumnFor
+{
+    readonly table: string;
+    readonly column: string | null;
+    readonly expression: string | null;
+    readonly splitBy: readonly string[];
+    readonly lookupInfo: ColumnLookupInfo;
+    readonly typeManager: TypeManager;
+    readonly rename: RenameOnEditKind;
+    readonly removeIfCancelled: boolean;
+}
+const aggregateColumnFor = shallowRef<AggregateColumnFor | null>(null);
+const aggregateColumnOpen = shallowRef(false);
+let aggregateColumnOked = false;
+async function openAggregateColumnDialog(table: string, column: string | null, rename: RenameOnEditKind, removeIfCancelled: boolean): Promise<void>
+{
+    const details = await engine.client.request("transformationDetails", table);
+    if (details?.kind !== "aggregate")
+        return;
+    const typeManager = markRaw(await copyTypeManager(engine.client));
+    // Java: agg.getColumnLookup()
+    const lookupInfo = markRaw(await engine.client.request("columnLookup", table, details.src));
+    // Java: editColumn_Agg starts with the existing value (and edits nothing if there's none)
+    const expression = column === null ? null : details.columns.find(([c]) => c === column)?.[1];
+    if (expression === undefined)
+        return;
+    aggregateColumnFor.value = { table, column, expression, splitBy: details.splitBy, lookupInfo, typeManager, rename, removeIfCancelled };
+    aggregateColumnOked = false;
+    aggregateColumnOpen.value = true;
+}
+
+function aggregateColumnChosen(column: string, expression: string, splitBy: string[] | null): void
+{
+    const target = aggregateColumnFor.value;
+    aggregateColumnOked = true;
+    if (target !== null)
+        void engine.client.request("setAggregateColumn", target.table, target.column, column, expression, splitBy ?? [], target.rename).then(alertIfAny).catch(ignoreClosed);
+}
+
+watch(aggregateColumnOpen, isOpen =>
+{
+    const target = aggregateColumnFor.value;
+    if (!isOpen && target !== null && target.removeIfCancelled && !aggregateColumnOked)
+        void engine.client.request("deleteTable", target.table).catch(ignoreClosed);
+});
+
+// Java: EditAggregateSplitByDialog (TransformationEdits.editAggregateSplitBy), from the hat
+const splitByFor = shallowRef<{ readonly table: string, readonly src: string, readonly srcColumns: readonly string[], readonly splitBy: readonly string[] } | null>(null);
+const splitByOpen = shallowRef(false);
+async function openSplitByDialog(table: string): Promise<void>
+{
+    const details = await engine.client.request("transformationDetails", table);
+    if (details?.kind !== "aggregate")
+        return;
+    const lookupInfo = await engine.client.request("columnLookup", table, details.src);
+    const srcColumns = lookupInfo.tables.find(t => t.id === details.src && t.single)?.columns?.map(c => c.name) ?? [];
+    splitByFor.value = { table, src: details.src, srcColumns, splitBy: details.splitBy };
+    splitByOpen.value = true;
+}
+
+function splitByChosen(splitBy: string[]): void
+{
+    const target = splitByFor.value;
+    if (target !== null)
+        void engine.client.request("setAggregateSplitBy", target.table, splitBy, "IF_OLD_AUTO").then(alertIfAny).catch(ignoreClosed);
+}
+
+// --- Transform type ----------------------------------------------------------------------------------
+
+// Java: TableDisplay.transformType: the types the column's values could be transformed into
+// (PickTypeTransformDialog), then (for unwrapping an Optional, after EnterValueDialog asks for the value
+// for None) a Calculate of the table to its right, the column transformed
+interface TransformTypeFor
+{
+    readonly display: GridTableDisplay;
+    readonly column: string;
+    readonly transforms: readonly TypeTransformInfo[];
+}
+const transformTypeFor = shallowRef<TransformTypeFor | null>(null);
+const transformTypeOpen = shallowRef(false);
+async function openTransformType(display: GridTableDisplay, column: string): Promise<void>
+{
+    const result = await engine.client.request("typeTransforms", display.info.id, display.info.version, column);
+    if (result === null)
+        return;
+    if ("title" in result)
+    {
+        showAlert(result);
+        return;
+    }
+    transformTypeFor.value = { display, column, transforms: result.transforms };
+    transformTypeOpen.value = true;
+}
+
+const enterValueFor = shallowRef<{ readonly table: string, readonly column: string, readonly dataType: DataType, readonly typeManager: TypeManager } | null>(null);
+const enterValueOpen = shallowRef(false);
+async function typeTransformPicked(index: number): Promise<void>
+{
+    const target = transformTypeFor.value;
+    const transform = target?.transforms[index];
+    if (target === null || transform === undefined)
+        return;
+    const table = target.display.info.id;
+    if (transform.expression !== null)
+        alertIfAny(await engine.client.request("createTypeTransform", table, target.column, transform.expression));
+    else if (transform.unwrap !== null)
+    {
+        const typeManager = markRaw(await copyTypeManager(engine.client));
+        const dataType = TypeExpression.parseTypeExpression(transform.unwrap).toDataType(typeManager);
+        if (dataType === null)
+            return;
+        enterValueFor.value = { table, column: target.column, dataType: markRaw(dataType), typeManager };
+        enterValueOpen.value = true;
+    }
+}
+
+// Java: transformType's unwrapOptionalType: the column's value, or the one entered for None
+function unwrapValueEntered(value: Value): void
+{
+    const target = enterValueFor.value;
+    if (target === null)
+        return;
+    let expression: string;
+    try
+    {
+        const functionLookup = FunctionList.getFunctionLookup(target.typeManager.getUnitManager());
+        const defaultValueExpression = AppUtility.valueToExpressionFX(target.typeManager, functionLookup, target.dataType, value);
+        expression = saveEditorExpression(new CallExpression(functionLookup, GetOptionalOrDefault.NAME, IdentExpression.column(new ColumnId(target.column)), defaultValueExpression));
+    }
+    catch (e)
+    {
+        if (!(e instanceof UserException || e instanceof InternalException))
+            throw e;
+        showAlert({ title: t("error.converting.value.to.expression"), message: e.getLocalizedMessage() ?? "" });
+        return;
+    }
+    void engine.client.request("createTypeTransform", target.table, target.column, expression).then(alertIfAny).catch(ignoreClosed);
 }
 
 // --- A Filter's expression ---------------------------------------------------------------------------
@@ -472,8 +635,9 @@ async function hatLinkClicked(display: GridTableDisplay, link: HatLink, point: P
         alertIfAny(await engine.client.request("toggleConcatenateMarker", table));
     else if (link.part === "hideColumns")
         await openHideColumnsDialog({ kind: "transformation", table }, "IF_OLD_AUTO");
-    // PORT-DEFERRED: the other parts' dialogs (Aggregate and Manual Edit, Phase 11 steps 4 and 5; R,
-    // Phase 12)
+    else if (link.part === "splitBy")
+        await openSplitByDialog(table);
+    // PORT-DEFERRED: the other parts' dialogs (Manual Edit, Phase 11 step 5; R, Phase 12)
 }
 
 defineExpose({
@@ -485,6 +649,12 @@ defineExpose({
     addCalculateColumn: (display: GridTableDisplay) => void openCalculateColumnDialog(display, null, "IF_OLD_AUTO").catch(ignoreClosed),
     // Java: TransformationEdits.editColumn_Calc (a Calculate's columns' headers)
     editCalculateColumn: (display: GridTableDisplay, column: string) => void openCalculateColumnDialog(display, column, "UNNEEDED").catch(ignoreClosed),
+    // Java: TableDisplay.addColumnBefore_Agg (from the add-column arrows and the column menu)
+    addAggregateColumn: (display: GridTableDisplay) => void openAggregateColumnDialog(display.info.id, null, "IF_OLD_AUTO", false).catch(ignoreClosed),
+    // Java: TransformationEdits.editColumn_Agg (an Aggregate's calculated columns' headers)
+    editAggregateColumn: (display: GridTableDisplay, column: string) => void openAggregateColumnDialog(display.info.id, column, "IF_OLD_AUTO", false).catch(ignoreClosed),
+    // Java: the column menu's Transform type (TableDisplay.transformType)
+    transformType: (display: GridTableDisplay, column: string) => void openTransformType(display, column).catch(ignoreClosed),
     // Java: the table menu's Custom (TableDisplay.editCustomDisplay)
     customDisplay: (display: GridTableDisplay) => void openHideColumnsDialog({ kind: "display", display }, "UNNEEDED").catch(ignoreClosed),
 });
@@ -516,6 +686,45 @@ defineExpose({
     @move="calculateColumnMoved"
     @picking="mode => dialogPicking('column', mode)"
     @types-changed="emit('typesChanged', calculateColumnFor.typeManager)"
+  />
+  <EditColumnExpressionDialog
+    v-if="aggregateColumnFor !== null"
+    :key="aggregateColumnFor.table + '/' + aggregateColumnFor.column + '/' + String(aggregateColumnOpen)"
+    v-model:open="aggregateColumnOpen"
+    :type-manager="aggregateColumnFor.typeManager"
+    :lookup-info="aggregateColumnFor.lookupInfo"
+    :initial-name="aggregateColumnFor.column"
+    :initial-expression="aggregateColumnFor.expression"
+    top-message-key="aggregate.header"
+    :aggregate="{ splitBy: aggregateColumnFor.splitBy }"
+    @ok="aggregateColumnChosen"
+    @picking="mode => dialogPicking('column', mode)"
+    @types-changed="emit('typesChanged', aggregateColumnFor.typeManager)"
+  />
+  <EditAggregateSplitByDialog
+    v-if="splitByFor !== null"
+    :key="splitByFor.table + '/' + String(splitByOpen)"
+    v-model:open="splitByOpen"
+    :src="splitByFor.src"
+    :src-columns="splitByFor.srcColumns"
+    :original-split-by="splitByFor.splitBy"
+    :centre-on="null"
+    @ok="splitByChosen"
+    @picking="mode => dialogPicking('column', mode)"
+  />
+  <PickTypeTransformDialog
+    v-if="transformTypeFor !== null"
+    :key="transformTypeFor.display.info.id + '/' + transformTypeFor.column + '/' + String(transformTypeOpen)"
+    v-model:open="transformTypeOpen"
+    :types="transformTypeFor.transforms.map(tt => tt.destType)"
+    @ok="i => void typeTransformPicked(i).catch(ignoreClosed)"
+  />
+  <EnterValueDialog
+    v-if="enterValueFor !== null"
+    :key="enterValueFor.table + '/' + String(enterValueOpen)"
+    v-model:open="enterValueOpen"
+    :data-type="enterValueFor.dataType"
+    @ok="unwrapValueEntered"
   />
   <EditExpressionDialog
     v-if="filterFor !== null"

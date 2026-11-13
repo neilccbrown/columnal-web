@@ -39,7 +39,6 @@ export function columnHeaderMenu(display: GridTableDisplay, columnIndex: number)
         return [];
     const r: MenuEntry[] = [];
     const actions = display.getActions();
-    // PORT-DEFERRED: adding columns to Aggregate (Phase 11)
     if (info.canAddColumn && actions !== null)
     {
         r.push(menuItem("virtGrid.column.addBefore", () => actions.addColumn(display, column)));
@@ -59,8 +58,9 @@ export function columnHeaderMenu(display: GridTableDisplay, columnIndex: number)
         }
         r.push(recipe("recipe.frequency", "frequency"));
         r.push(recipe("recipe.sort", "sort"));
-        // PORT-DEFERRED: transforming the column's type (PickTypeTransformDialog, Phase 11)
-        r.push(disabled(menuItem("recipe.transformType", () => {}, "recipe-menu-item")));
+        // (Without the window, as for a grid on its own, it can't be done)
+        const transformType = menuItem("recipe.transformType", () => actions?.transformType(display, column), "recipe-menu-item");
+        r.push(actions === null ? disabled(transformType) : transformType);
     }
     if (r.length === 0)
         r.push(textItem("No operations"));

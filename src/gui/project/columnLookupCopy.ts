@@ -3,7 +3,8 @@
 // sends their columns and types (ColumnLookupInfo, from src/gui/engine/columnLookupInfo.ts) and this
 // answers the editor as Java's MultipleTableLookup (which it follows, method by method) answers over
 // the TableManager.  Values aren't copied: the editor only checks types.  CheckLookupCopy, below, does
-// the same for a Check's expression (Java: Check.getColumnLookup).
+// the same for a Check's expression (Java: Check.getColumnLookup), and AggregateLookupCopy for an
+// Aggregate's (Java: Aggregate.getColumnLookup).
 import type { ExpressionIdentifier } from "../../engine/anns/Annotations.js";
 import { Column } from "../../engine/data/data/Column.js";
 import { Expression, IdentExpression } from "../../engine/expressions/transformations/expression/Expressions.js";
@@ -15,7 +16,7 @@ import { HashMap, HashSet } from "../../engine/java/HashMap.js";
 import { javaEquals } from "../../engine/java/JavaObject.js";
 import { Check } from "../../engine/transformations/transformations/Check.js";
 import type { MultipleTableLookup } from "../../engine/transformations/transformations/MultipleTableLookup.js";
-import { GetValue, type DataTypeValue } from "../../engine/types/data/datatype/DataTypeValue.js";
+import { DataTypeValue, GetValue } from "../../engine/types/data/datatype/DataTypeValue.js";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
 import { Pair } from "../../engine/utility-adt/utility/adt/Pair.js";
 import { InternalException } from "../../engine/utility-error/error/InternalException.js";
@@ -392,6 +393,147 @@ export class CheckLookupCopy implements Expression.ColumnLookup
             t = this.us === null ? null : this.getSingleTableOrNull(this.us);
         else
             t = this.getSingleTableOrNull(tableName);
+        return t === null ? null : foundTable(t);
+    }
+}
+
+/**
+ * An Aggregate's copy (Java: Aggregate.getColumnLookup, of the Aggregate as it is, with its split; info.us
+ * is the Aggregate, info.src its source): a column of the source (or of us) which isn't split by is a
+ * list of the group's values; one split by is a single value.  A reference by name alone is to us or the
+ * source; one clicked names its table.  If the Aggregate has no result (it failed), there is nothing to
+ * refer to.
+ */
+export class AggregateLookupCopy implements Expression.ColumnLookup
+{
+    private readonly us: TableId;
+    private readonly srcTableId: TableId;
+    private readonly splitBy: readonly ColumnId[];
+    private readonly tables: readonly TableCopy[];
+    // Java: thisRecordSet, the Aggregate's result (null if it has none)
+    private readonly usTable: TableCopy | null;
+    private readonly available: readonly TableCopy[];
+
+    public constructor(info: ColumnLookupInfo, typeManager: TypeManager, splitBy: readonly string[])
+    {
+        if (info.us === null || info.src === null)
+            throw new InternalException("An Aggregate's lookup needs the Aggregate and its source table");
+        this.us = new TableId(info.us);
+        this.srcTableId = new TableId(info.src);
+        this.splitBy = splitBy.map(c => new ColumnId(c));
+        this.tables = info.tables.map(t => new TableCopy(t, typeManager));
+        const usTable = this.tables.find(t => t.info.single && t.id.equals(this.us)) ?? null;
+        this.usTable = usTable?.info.columns === null ? null : usTable;
+        this.available = info.available.map(id => this.tables.find(t => t.id.getRaw() === id)).filter(t => t !== undefined);
+    }
+
+    // Java: TableManager.getSingleTableOrNull
+    private getSingleTableOrNull(tableId: TableId): TableCopy | null
+    {
+        return this.tables.find(t => t.info.single && t.id.equals(tableId)) ?? null;
+    }
+
+    public getColumn(_expression: Expression, tableId: TableId | null, columnId: ColumnId): Expression.ColumnLookup.FoundColumn | null
+    {
+        if (this.usTable === null)
+            return null;
+        let grouped = false;
+        // It's us -- may be a grouped or split column
+        if (tableId === null || tableId.equals(this.us) || tableId.equals(this.srcTableId))
+            grouped = !this.splitBy.some(s => s.equals(columnId));
+        try
+        {
+            let table: TableCopy;
+            if (!grouped && (tableId === null || tableId.equals(this.us)))
+                table = this.usTable;
+            else
+            {
+                const found = this.getSingleTableOrNull(tableId ?? this.srcTableId);
+                if (found === null)
+                    return null;
+                table = found;
+            }
+            let column = table.getColumnOrNull(columnId);
+            if (column === null && tableId === null)
+            {
+                // Could be in our source table but not copied forwards to us:
+                const srcTable = this.getSingleTableOrNull(this.srcTableId);
+                if (srcTable !== null)
+                {
+                    column = srcTable.getColumnOrNull(columnId);
+                    table = srcTable;
+                }
+            }
+            if (column === null)
+                throw new UserException("Could not find column: " + columnId.getRaw());
+            const type = table.getType(column);
+            const fromSrc = tableId !== null && this.srcTableId.equals(tableId);
+            if (grouped)
+            {
+                return new Expression.ColumnLookup.FoundColumn(table.id, fromSrc, DataTypeValue.array(type.getType(), GetValue.of(() =>
+                {
+                    throw new InternalException("Column values are in the engine");
+                })), null);
+            }
+            // If not grouped, must be in split by
+            return new Expression.ColumnLookup.FoundColumn(table.id, fromSrc, type, null);
+        }
+        catch (e)
+        {
+            if (!(e instanceof InternalException || e instanceof UserException))
+                throw e;
+        }
+        return null;
+    }
+
+    private availableColumnReferences(nullIds: boolean): Pair<TableId | null, ColumnId>[]
+    {
+        if (this.usTable === null)
+            return [];
+        const all = this.available.flatMap((t): Pair<TableId | null, ColumnId>[] =>
+        {
+            try
+            {
+                const tableId = (t.id.equals(this.us) || t.id.equals(this.srcTableId)) && nullIds ? null : t.id;
+                return t.getColumns().map(c => new Pair<TableId | null, ColumnId>(tableId, new ColumnId(c.name)));
+            }
+            catch (e)
+            {
+                if (!(e instanceof InternalException || e instanceof UserException))
+                    throw e;
+                return [];
+            }
+        });
+        // Stream.distinct():
+        return [...new HashSet(all)];
+    }
+
+    public getAvailableColumnReferences(): Pair<TableId | null, ColumnId>[]
+    {
+        return this.availableColumnReferences(true);
+    }
+
+    public getPossibleColumnReferences(tableId: TableId, columnId: ColumnId): Expression.ColumnLookup.ClickedReference[]
+    {
+        return this.availableColumnReferences(false).filter(c => tableId.equals(c.getFirst()) && columnId.equals(c.getSecond())).map(c => new class extends Expression.ColumnLookup.ClickedReference
+        {
+            public getExpression(): Expression
+            {
+                return IdentExpression.column(c.getFirst(), c.getSecond());
+            }
+        }(tableId, columnId));
+    }
+
+    public getAvailableTableReferences(): TableId[]
+    {
+        return this.usTable === null ? [] : this.available.map(t => t.id);
+    }
+
+    public getTable(tableName: TableId | null): Expression.ColumnLookup.FoundTable | null
+    {
+        if (this.usTable === null)
+            return null;
+        const t = this.getSingleTableOrNull(tableName ?? this.us);
         return t === null ? null : foundTable(t);
     }
 }

@@ -1,4 +1,4 @@
-# Transformations: making them, and editing them (Calculate, Filter, Check, Sort, Join, Concatenate and Hide columns)
+# Transformations: making them, and editing them (Calculate, Aggregate, Filter, Check, Sort, Join, Concatenate and Hide columns)
 
 Java: `dialogs-non-expression/.../PickTransformationDialog.java`, `app/.../PickTableDialog.java` and
 `PickTablePane.java`, `View.java` (`createTable`'s TRANSFORM and CHECK, `createTransform`, the picking
@@ -6,28 +6,34 @@ modes), `TableHighlights.java` (SELECT), `EditColumnExpressionDialog.java`, `Edi
 `EditCheckExpressionDialog.java`, `TableDisplay.java` (`editAfterCreation`, `addColumnBefore_Calc`),
 `TransformationEdits.java` (`editColumn_Calc`), `TableHat.java` (its Clickables), `CheckDisplay.java`,
 `CheckSummaryLabel.java`, `MainWindow.java` (`ChecksLeftPane`), `EditSortDialog.java`, `EditJoinDialog.java`,
-`TableListDialog.java`, `HideColumnsPanel.java`, `HideColumnsDialog.java`, `CustomColumnDisplayDialog.java`;
+`TableListDialog.java`, `HideColumnsPanel.java`, `HideColumnsDialog.java`, `CustomColumnDisplayDialog.java`,
+`AggregateSplitByPane.java`, `EditAggregateSplitByDialog.java`, `SelectColumnDialog.java`, `ExpressionRecipe.java`,
+`PickTypeTransformDialog.java`, `EnterValueDialog.java` (and `TableDisplay.java`'s `transformType`,
+`addColumnBefore_Agg`, `TransformationEdits.java`'s `editColumn_Agg` and `editAggregateSplitBy`);
 the engine's transformations. Web: `src/gui/windows/TransformationDialogs.vue` (the dialogs, for `MainWindow.vue`),
 `PickTransformationDialog.vue`, `PickTableDialog.vue`, `EditColumnExpressionDialog.vue`,
 `EditExpressionDialog.vue`, `EditCheckExpressionDialog.vue`, `ChecksPane.vue`, `EditSortDialog.vue` (and
 `SortPane.vue`, `sortDirection.ts`), `EditJoinDialog.vue`, `TableListDialog.vue`, `HideColumnsDialog.vue`,
+`EditAggregateSplitByDialog.vue`, `SelectColumnDialog.vue`, `PickTypeTransformDialog.vue`, `EnterValueDialog.vue`,
+`src/gui/components/AggregateSplitByPane.vue`, `src/gui/engine/typeTransforms.ts`,
 `src/gui/components/PickTablePane.vue`, `HideColumnsPanel.vue`, `ListView.vue`, `src/gui/grid/picking.ts`
 (and `TableGrid.vue`'s pick pane), `GridTable.vue` and `GridTableDisplay.ts` (a Check's display),
-`src/gui/project/columnLookupCopy.ts` (`CheckLookupCopy`); the engine's `createTransformation`,
+`src/gui/project/columnLookupCopy.ts` (`CheckLookupCopy`, `AggregateLookupCopy`); the engine's `createTransformation`,
+`setAggregateColumn`, `setAggregateSplitBy`, `typeTransforms`, `createTypeTransform`,
 `calculateColumn`, `setCalculateColumn`, `moveCalculateColumn`, `transformationDetails`,
 `setFilterExpression`, `setCheck`, `createCheck`, `setSource`, `setSort`, `setJoin`, `setConcatenate`,
 `toggleConcatenateMarker`, `setHiddenColumns` and `setDisplay`. Tests: `test/gui/expressions/` (`CalculatePath.test.ts`, and the
 ports of the expression editor tests), `test/gui/transformations/` (`FilterAndCheck.test.ts`, and the ports
-of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin` and `TestHideColumns`, and
-`SortJoinConcatenateHide.test.ts`), `test/gui/engine/ColumnLookupCopy.test.ts`.
+of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and `TestColumnRecipes`, and
+`SortJoinConcatenateHide.test.ts`, `Aggregate.test.ts`), `test/gui/engine/ColumnLookupCopy.test.ts`.
 
 ## Making a transformation
 
 - The new-table dialog's Transform (with at least one table) shows the transformations: a button each (150
   by 165: its title, a preview image 100 px wide, and its short explanation), three to a row, scrolling,
-  centred where Transform was clicked, with Cancel. Not yet: Aggregate, Edit and R are disabled (Phase 11;
-  R, Phase 12).
-- Calculate, Filter, Sort and Exclude columns then ask for their source table (the table picker), and are
+  centred where Transform was clicked, with Cancel. Not yet: Edit and R are disabled (Phase 11; R, Phase
+  12).
+- Calculate, Aggregate, Filter, Sort and Exclude columns then ask for their source table (the table picker), and are
   made of it at the empty cell; Join and Concatenate are made at once, of no tables. A table's menu's
   Transform instead makes it of that table (Join and Concatenate of none), to its right (Java's
   `TableManager.getNextInsertPosition`: just past its add-column arrows, or past the next table that starts
@@ -35,6 +41,8 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin` and `TestHideColumns`, 
 - A Calculate is made empty; its first column's dialog then shows, with "Enter the details for the first
   column to calculate." above it, and OK names the table after the column ("Calc DestCol": Java's
   `RenameOnEdit.renameToSuggested`). Cancel leaves the empty Calculate.
+- An Aggregate is made with no columns, across the whole table; its first column's dialog (with the split)
+  then shows, and OK names it after its split and columns ("Agg N", "Agg N by B"). Cancel removes it.
 - A Filter is made keeping all rows (`true`); its expression's dialog then shows, the expression selected,
   and OK names it after the expression's first column ("Filt A").
 - Sort's dialog starts with one column to edit; Concatenate's with one table to edit (Java centred it on
@@ -69,7 +77,9 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin` and `TestHideColumns`, 
   editing join", "Error editing concatenate", "Error hiding column"). Concatenate's "with/without source
   column" toggles it, with no dialog and no rename. While Concatenate's tables are hovered, they are all
   highlighted (as a source table is).
-- Not yet: Aggregate's and Edit's parts (Phase 11), R's (Phase 12).
+- An Aggregate's split (its columns, or "across whole table"): the split dialog, renaming as above (error:
+  "Error editing aggregate").
+- Not yet: Edit's parts (Phase 11), R's (Phase 12).
 
 ## Sort's dialog
 
@@ -166,7 +176,60 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin` and `TestHideColumns`, 
 - The expression editor's fix "Make a new calculation that can use this table's X" closes the dialog and
   makes a new Calculate of this one with the column, which leaves this one.
 - A fix declaring a unit sends the project's types and units to the engine.
-- Not yet: the side pane, with Aggregate's split-by and recipe buttons (Phase 11, with Aggregate).
+- A column clicked in the grid goes into the field focused last (Java: the one focused earliest in the last
+  250 ms, the bug fixed in Join's dialog).
+
+## An Aggregate's column expression dialog
+
+- For a new Aggregate's first column; a new column of an Aggregate (its add-column arrow, or a column's "New
+  column to left" or "to right": at the end either way; renamed if its name was the suggested one, after
+  its split as it was: Java's bug, kept), or one of its calculated columns (clicking its name or type; not
+  those it splits by), renamed as for a new column but after the split chosen.
+- As the column expression dialog, with "Expression to calculate:" above it, the expression editor 300 px
+  wide, and to its left the split: "Calculate each expression once per:", then radio buttons "Whole table"
+  and "Each unique value of:" (each with its help box), and below them the list of columns (shown only for
+  the second; choosing it with none adds one, focused). Each column has completions of the source's columns
+  containing the text, and "Type column name or click on column" above it while focused. "Add column" adds
+  one; columns can be deleted and reordered (`fancy-list.md`). The expression refers to the source's
+  columns as lists of the group's values, and those split by as single values (and "group count"), as the
+  Aggregate is (not as the split being chosen).
+- Choosing "Whole table" only hides the list: its columns are still the split (Java's bug, kept). A column
+  that isn't a valid name stops OK.
+- A column of the source clicked in the grid, while a split column was focused last, goes into the column
+  edited in the last 200 ms, else is added at the end.
+- While the expression is empty, recipe buttons above it: "Count" (sets it to `group count`), "Sum…",
+  "Lowest…" and "Highest…", which ask for columns in a dialog of their own, then set the expression
+  (`sum(column)`; `minimum(column)`, or with a different result column, `element(result, minimum
+  index(column))`; likewise `maximum`).
+- The columns' dialog (not modal): a row per column asked for: "Source column:" (Sum's: completions only of
+  number columns), or "Compare column:" and "Result column:" (with help boxes), each with completions of the
+  source's columns containing the text and "Type column name or click on column" above it while focused.
+  The first is focused. Choosing a column (a completion, or a column of the source clicked in the grid,
+  which goes into the field focused last) focuses the next field with its text selected, and Result is set
+  to the column chosen for Compare (whatever it held: Java's possible bug, kept). OK with a field that
+  isn't a valid name: "Invalid column name".
+
+## The split dialog
+
+- From an Aggregate's hat: the split as in the column dialog, and the error. It isn't modal: a column of the
+  source clicked in the grid goes into the column edited in the last 200 ms, else is added at the end. OK
+  with a column that isn't a valid name: "Invalid column name".
+
+## Transform type (the column menu)
+
+- The types the column's values could become, judged from up to half a second's sample of its values:
+  for a number, Text, and Boolean if the column has no unit and holds only 0s and 1s (some of each); for
+  text (with some values; Text isn't offered), Number, Optional(Number), each date and time type and
+  Boolean, each kept if it fails for at most a fifth of the sample; for a Boolean, Text and Number; for a
+  date or time, Text and the smaller ones it can be cut to; for an Optional, its inner type, and Text;
+  otherwise Text.
+- The dialog: "Type to transform into:" and the list (the first selected and focused), with OK and Cancel to
+  the side; with none, "No suitable destination types" and OK disabled. OK makes a Calculate of the table,
+  to the right of the others, giving the column the expression (`to text`, `extract number`, `from text
+  to`, ...; errors: "Error investigating type transformation", "Error making type transformation").
+- For an Optional's inner type, a dialog first asks for the value for None (a field recognising the type,
+  starting with its default value selected; an invalid value is the error), and the expression is `get
+  optional or(column, value)`.
 
 ## Web differences
 

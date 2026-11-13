@@ -1146,6 +1146,27 @@ Steps (each a checkpoint with the project owner):
    recipes (`ExpressionRecipe`), Aggregate's add-column arrows and editing its columns from the headers
    (`TransformationEdits.editColumn_Agg`), and the "Transform type" recipe (`PickTypeTransformDialog`).
    Tests: `TestColumnRecipes`.
+   - Done: `EditColumnExpressionDialog.vue` has Aggregate's side pane (`AggregateSplitByPane.vue`) and
+     recipe bar, whose Sum, Lowest and Highest ask with `SelectColumnDialog.vue` (moved from step 3; grid
+     clicks go to it, Java's sub-picker); `EditAggregateSplitByDialog.vue` (the hat's split);
+     `PickTypeTransformDialog.vue` and `EnterValueDialog.vue` (unwrapping an Optional). Aggregate is in the
+     picker and the table menu's Transform (cancelling its first column removes it); its calculated
+     columns' headers, add-column arrows and column menu edit and add columns. The GUI's
+     `AggregateLookupCopy` follows `Aggregate.getColumnLookup`. The engine has `setAggregateColumn`,
+     `setAggregateSplitBy`, `typeTransforms` (`src/gui/engine/typeTransforms.ts`, from
+     `TableDisplay.transformType`) and `createTypeTransform`; `TableInfo.aggregate`. `LightDialog` has
+     `okDisabled`. Tests: `test/gui/transformations/ColumnRecipes.test.ts` (the port) and
+     `Aggregate.test.ts`.
+   - Dropped: `editAggregateSplitBy`'s example split (`calculateExampleSplit`, half a second's search for a
+     column with few values), as `AggregateSplitByPane` only used it in a footer that was commented out.
+   - Possible Java bugs found (reported, kept, marked PORT-NOTE): choosing "Whole table" in
+     `AggregateSplitByPane` only hides the list, so `getItems` still gives its columns (a split Aggregate
+     can't go back to the whole table; a blank column left there stops OK); `addColumnBefore_Agg` names
+     the Aggregate (if its name was automatic) after its old split, not the one chosen in the dialog;
+     `SelectColumnDialog` copies the compare column into the result column whatever it holds (its comment
+     says only if blank). Also `TimedFocusable.getRecentlyFocused` takes the field focused earliest in the
+     last 250 ms (as `EditJoinDialog.pick` did): the port's column dialog has always taken the one focused
+     last, now marked PORT-NOTE.
 5. Manual Edit: `ManualEditEntriesDialog`, offering one when a transformation's cell is edited
    (`PickManualEditIdentifierDialog`), and the "=" guidance (`GuidanceWindow`, making a Calculate). Tests:
    `TestManualEdit`.

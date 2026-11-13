@@ -114,17 +114,18 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   column: a new type or default value remakes the table, converting each value from its text (those that
   don't convert become invalid values); a new name updates the tables that use the column. Errors: "Error
   saving column". Clicking any of a Calculate's columns' names or types opens the column expression dialog
-  for it (`transformations.md`). Not yet: Aggregate's columns (Phase 11).
+  for it (`transformations.md`), as do an Aggregate's calculated columns (not those it splits by).
 - Right-clicking a column name or type shows the column's menu (`id-virtGrid-column-…`, `id-recipe-…`):
   - For a data table: "New column to left", "New column to right" (the column dialog, then the column is
-    added there).
+    added there; for a Calculate or an Aggregate, the column expression dialog, and the column goes at the
+    end).
   - "Delete column", if the table can delete it (a data table's columns, a Calculate's own columns). Delete
     or Backspace on the column's name (or the name row above it, as Java has it) deletes it too.
   - "Recipes" (a heading), then, in the recipe style (Kalam font, a pale yellow background): "Calculate
     sum" and "Calculate average" (number columns), "Make frequency table", "Sort by": each makes a
     transformation (an Aggregate of `sum` or `average` of the column into "Sum <column>" or "Average
     <column>", a count by the column into "Freq <column>", or a Sort ascending), placed to the right of the
-    other tables. "Transform type": not yet (its dialog is Phase 11's).
+    other tables. "Transform type": its dialog (`transformations.md`), then a Calculate of the column.
   - With nothing to show: "No operations" (disabled).
 
 ## Row labels

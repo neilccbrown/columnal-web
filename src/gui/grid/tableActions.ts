@@ -21,6 +21,9 @@ export interface TableActions
     // Java: the table menu's "Transform" (View.createTransform): PickTransformationDialog, then the
     // transformation of the table is made below it and edited
     transform(display: GridTableDisplay, point: { readonly x: number, readonly y: number }): void;
+    // Java: the column menu's Transform type (TableDisplay.transformType): PickTypeTransformDialog, then a
+    // Calculate of the table, the column transformed
+    transformType(display: GridTableDisplay, column: string): void;
     // Java: the table menu's Custom (TableDisplay.editCustomDisplay): CustomColumnDisplayDialog, then the
     // table shows all but the columns hidden there
     customDisplay(display: GridTableDisplay): void;

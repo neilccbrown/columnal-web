@@ -88,14 +88,16 @@ function chooseWholeTable(whole: boolean): void
 }
 
 /**
- * Java: getItems: the columns, or null if one isn't a valid name.
+ * Java: getItems: the columns (none for "Whole table"), or null if one isn't a valid name.
  *
- * PORT-NOTE: Java bug, kept: the list is only hidden for "Whole table", so its columns are still the
- * result: an Aggregate split by columns can't be made to use the whole table (and with a blank column
- * left in the list, the dialog can't be OKed).
+ * PORT-NOTE: bug fix.  Java only hid the list for "Whole table", so its columns were still the result: an
+ * Aggregate split by columns couldn't be made to use the whole table (and with a blank column left in the
+ * list, the dialog couldn't be OKed).
  */
 function getItems(): string[] | null
 {
+    if (wholeTable.value)
+        return [];
     const r: string[] = [];
     for (const i of items.value)
     {

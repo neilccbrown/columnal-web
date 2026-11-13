@@ -7,14 +7,18 @@ import type { EditableColumn } from "../../../src/engine/data/data/EditableColum
 import { EditableRecordSet } from "../../../src/engine/data/data/EditableRecordSet.js";
 import { MemoryStringColumn } from "../../../src/engine/data/data/MemoryStringColumn.js";
 import type { RecordSet } from "../../../src/engine/data/data/RecordSet.js";
+import { IdentExpression } from "../../../src/engine/expressions/transformations/expression/Expressions.js";
+import { TypeState } from "../../../src/engine/expressions/transformations/expression/TypeState.js";
+import { Aggregate } from "../../../src/engine/transformations/transformations/Aggregate.js";
 import { Concatenate } from "../../../src/engine/transformations/transformations/Concatenate.js";
 import { HideColumns } from "../../../src/engine/transformations/transformations/HideColumns.js";
 import { Join } from "../../../src/engine/transformations/transformations/Join.js";
 import { Pair } from "../../../src/engine/utility-adt/utility/adt/Pair.js";
-import { write } from "../base/keyboard.js";
+import { push, write } from "../base/keyboard.js";
 import { moveAndDismissPopupsAtPos } from "../base/popup.js";
 import { selectGivenListViewItem } from "../base/listUtil.js";
-import { at, centre, closeStarted, columnHeader, columnId, hatPart, pickAt, start, table, tableId } from "./fixtures.js";
+import { engineHost } from "../fixtures/app.js";
+import { at, centre, closeStarted, columnHeader, columnId, hatPart, pickAt, settled, start, table, tableId } from "./fixtures.js";
 
 afterEach(closeStarted);
 
@@ -77,4 +81,98 @@ test("a table's name typed in the table list, without choosing it from the compl
     await moveAndDismissPopupsAtPos(centre(".ok-button"));
     await userEvent.click(document.querySelector(".ok-button")!);
     await vi.waitUntil(() => table<Concatenate>(a, "C").getPrimarySources().map(t => t.getRaw()).join() === "T,U", { timeout: 5000 });
+});
+
+// An Aggregate of T, with the group count as N, split by the columns (named as suggested unless given)
+const withAggregate = (splitBy: readonly string[], name: string | null = null): ReturnType<typeof start> => start(mgr =>
+{
+    const columns = [new Pair(columnId("N"), IdentExpression.load(TypeState.GROUP_COUNT))];
+    const split = splitBy.map(columnId);
+    mgr.record(new Aggregate(mgr, at(name ?? Aggregate.suggestedName(split, columns).getRaw(), 1, 10), tableId("T"), columns, split));
+});
+const editorText = (): string => document.querySelector(".edit-column-expression-content .cm-content")?.textContent ?? "";
+const header = (id: string, column: string): HTMLElement => [...document.querySelectorAll<HTMLElement>(`[data-table="${id}"] .column-name`)].find(e => e.textContent.trim() === column)!;
+
+// AggregateSplitByPane.getItems
+test("choosing Whole table makes an Aggregate split by columns use the whole table, even with a blank column", async () =>
+{
+    const a = await withAggregate(["B"], "G");
+    await userEvent.click(await vi.waitUntil(() => hatPart("G", "B")));
+    await vi.waitUntil(() => document.querySelector(".split-by-dialog") !== null, { timeout: 5000 });
+    // (A blank column too)
+    await userEvent.click(document.querySelector(".split-by-dialog .id-fancylist-add")!);
+    await vi.waitUntil(() => document.querySelectorAll(".split-by-column-field").length === 2);
+    await userEvent.click(document.querySelector(".split-by-whole-table")!);
+    // (Java: still split by B, or "Invalid column name")
+    await userEvent.click(document.querySelector(".ok-button")!);
+    await vi.waitUntil(() => table<Aggregate>(a, "G").getSplitBy().length === 0, { timeout: 5000 });
+});
+
+// TableDisplay.addColumnBefore_Agg
+test("a column added to an Aggregate with its suggested name renames it after the split chosen", async () =>
+{
+    const a = await withAggregate([]);
+    await settled(a);
+    await userEvent.click(header("Agg N", "N"), { button: "right" });
+    await userEvent.click(await vi.waitUntil(() => document.querySelector(".id-virtGrid-column-addBefore")));
+    await vi.waitUntil(() => document.activeElement?.classList.contains("column-name-text-field") === true, { timeout: 5000 });
+    await write("M");
+    await userEvent.click(document.querySelector(".recipe-button")!);
+    await vi.waitUntil(() => editorText() === "group count");
+    await userEvent.click(document.querySelector(".split-by-columns")!);
+    await vi.waitUntil(() => document.activeElement?.classList.contains("split-by-column-field") === true);
+    await write("B");
+    await moveAndDismissPopupsAtPos(centre(".ok-button"));
+    await userEvent.click(document.querySelector(".ok-button")!);
+    // (Java: still "Agg N", after the old split)
+    const agg = await vi.waitUntil(() => engineHost(a).tableManager.getAllTables().find((t): t is Aggregate => t instanceof Aggregate && t.getColumnExpressions().length === 2), { timeout: 5000 });
+    expect(agg.getSplitBy().map(c => c.getRaw())).toEqual(["B"]);
+    expect(agg.getId().getRaw()).toBe("Agg N by B");
+});
+
+// SelectColumnDialog.nameSetForIndex
+test("choosing the compare column copies it into the result column only if that is blank", async () =>
+{
+    await withAggregate([], "G");
+    await userEvent.click(await vi.waitUntil(() => header("G", "N")));
+    await vi.waitUntil(() => editorText() === "group count", { timeout: 5000 });
+    await userEvent.click(document.querySelector(".edit-column-expression-content .cm-content")!);
+    await userEvent.keyboard("{ControlOrMeta>}a{/ControlOrMeta}{Backspace}");
+    await vi.waitUntil(() => getComputedStyle(document.querySelector(".recipe-bar")!).visibility === "visible");
+    await userEvent.click([...document.querySelectorAll<HTMLElement>(".recipe-button")].find(b => b.textContent.trim() === "Lowest…")!);
+    const fields = (): HTMLInputElement[] => [...document.querySelectorAll<HTMLInputElement>(".select-column-field")];
+    await vi.waitUntil(() => fields().length === 2 && document.activeElement === fields()[0]);
+    // The result first, then the compare column, chosen:
+    await moveAndDismissPopupsAtPos(centre(".select-column-dialog"));
+    await userEvent.click(fields()[1]!);
+    await write("B");
+    await moveAndDismissPopupsAtPos(centre(".select-column-dialog"));
+    await userEvent.click(fields()[0]!);
+    await userEvent.clear(fields()[0]!);
+    await write("A");
+    await vi.waitUntil(() => document.querySelector(".autocomplete .completion-cell-text") !== null);
+    await push("ArrowDown");
+    await push("Enter");
+    await vi.waitUntil(() => document.activeElement === fields()[1]);
+    // (Java: A)
+    expect(fields()[1]!.value).toBe("B");
+    await moveAndDismissPopupsAtPos(centre(".select-column-dialog"));
+    await userEvent.click(document.querySelector(".select-column-dialog")!.closest(".light-dialog")!.querySelector(".ok-button")!);
+    await vi.waitUntil(() => editorText() === "element(B, minimum index(A))");
+});
+
+// TimedFocusable.getRecentlyFocused, in EditColumnExpressionDialog
+test("a column clicked just after moving from the name to the expression goes into the expression", async () =>
+{
+    await withAggregate([], "G");
+    await userEvent.click(await vi.waitUntil(() => header("G", "N")));
+    await vi.waitUntil(() => editorText() === "group count", { timeout: 5000 });
+    await vi.waitUntil(() => document.activeElement?.classList.contains("column-name-text-field") === true);
+    await userEvent.click(document.querySelector(".edit-column-expression-content .cm-content")!);
+    await userEvent.keyboard("{End} + ");
+    // (Within 250 ms of leaving the name; Java put the column there)
+    await pickAt(columnHeader("T", "A"));
+    await vi.waitUntil(() => editorText() !== "group count + ");
+    expect(editorText()).toMatch(/^group count \+ .*A/);
+    expect(document.querySelector<HTMLInputElement>(".column-name-text-field")!.value).toBe("N");
 });

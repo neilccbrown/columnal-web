@@ -1159,14 +1159,15 @@ Steps (each a checkpoint with the project owner):
      `Aggregate.test.ts`.
    - Dropped: `editAggregateSplitBy`'s example split (`calculateExampleSplit`, half a second's search for a
      column with few values), as `AggregateSplitByPane` only used it in a footer that was commented out.
-   - Possible Java bugs found (reported, kept, marked PORT-NOTE): choosing "Whole table" in
-     `AggregateSplitByPane` only hides the list, so `getItems` still gives its columns (a split Aggregate
-     can't go back to the whole table; a blank column left there stops OK); `addColumnBefore_Agg` names
-     the Aggregate (if its name was automatic) after its old split, not the one chosen in the dialog;
-     `SelectColumnDialog` copies the compare column into the result column whatever it holds (its comment
-     says only if blank). Also `TimedFocusable.getRecentlyFocused` takes the field focused earliest in the
-     last 250 ms (as `EditJoinDialog.pick` did): the port's column dialog has always taken the one focused
-     last, now marked PORT-NOTE.
+   - Java bugs fixed (approved; tests in `test/gui/transformations/BugFixes.test.ts`): choosing "Whole
+     table" in `AggregateSplitByPane` only hid the list, so `getItems` still gave its columns (a split
+     Aggregate couldn't go back to the whole table; a blank column left there stopped OK);
+     `addColumnBefore_Agg` named the Aggregate (if its name was automatic) after its old split, not the one
+     chosen in the dialog; `SelectColumnDialog` copied the compare column into the result column whatever it
+     held (its comment says only if blank); `TimedFocusable.getRecentlyFocused` took the field focused
+     earliest in the last 250 ms (as `EditJoinDialog.pick` did), so in the column dialog a column clicked
+     just after moving to the expression went into the name (the port had always taken the one focused
+     last).
 5. Manual Edit: `ManualEditEntriesDialog`, offering one when a transformation's cell is edited
    (`PickManualEditIdentifierDialog`), and the "=" guidance (`GuidanceWindow`, making a Calculate). Tests:
    `TestManualEdit`.

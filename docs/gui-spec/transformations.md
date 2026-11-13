@@ -176,15 +176,15 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
 - The expression editor's fix "Make a new calculation that can use this table's X" closes the dialog and
   makes a new Calculate of this one with the column, which leaves this one.
 - A fix declaring a unit sends the project's types and units to the engine.
-- A column clicked in the grid goes into the field focused last (Java: the one focused earliest in the last
-  250 ms, the bug fixed in Join's dialog).
+- A column clicked in the grid goes into the field focused last (Java's, the one focused earliest in the
+  last 250 ms, was a bug, as in Join's dialog).
 
 ## An Aggregate's column expression dialog
 
 - For a new Aggregate's first column; a new column of an Aggregate (its add-column arrow, or a column's "New
-  column to left" or "to right": at the end either way; renamed if its name was the suggested one, after
-  its split as it was: Java's bug, kept), or one of its calculated columns (clicking its name or type; not
-  those it splits by), renamed as for a new column but after the split chosen.
+  column to left" or "to right": at the end either way), or one of its calculated columns (clicking its name
+  or type; not those it splits by). OK renames it after its columns and the split chosen if its name was
+  the suggested one (Java named a new column's Aggregate after its old split, a bug).
 - As the column expression dialog, with "Expression to calculate:" above it, the expression editor 300 px
   wide, and to its left the split: "Calculate each expression once per:", then radio buttons "Whole table"
   and "Each unique value of:" (each with its help box), and below them the list of columns (shown only for
@@ -193,8 +193,8 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
   one; columns can be deleted and reordered (`fancy-list.md`). The expression refers to the source's
   columns as lists of the group's values, and those split by as single values (and "group count"), as the
   Aggregate is (not as the split being chosen).
-- Choosing "Whole table" only hides the list: its columns are still the split (Java's bug, kept). A column
-  that isn't a valid name stops OK.
+- Choosing "Whole table" hides the list, and the Aggregate isn't split (whatever the list holds; Java's
+  list was still the split, a bug). Otherwise a column that isn't a valid name stops OK.
 - A column of the source clicked in the grid, while a split column was focused last, goes into the column
   edited in the last 200 ms, else is added at the end.
 - While the expression is empty, recipe buttons above it: "Count" (sets it to `group count`), "Sum…",
@@ -205,8 +205,8 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
   number columns), or "Compare column:" and "Result column:" (with help boxes), each with completions of the
   source's columns containing the text and "Type column name or click on column" above it while focused.
   The first is focused. Choosing a column (a completion, or a column of the source clicked in the grid,
-  which goes into the field focused last) focuses the next field with its text selected, and Result is set
-  to the column chosen for Compare (whatever it held: Java's possible bug, kept). OK with a field that
+  which goes into the field focused last) focuses the next field with its text selected, and Result, if
+  blank, is set to the column chosen for Compare (Java set it whatever it held, a bug). OK with a field that
   isn't a valid name: "Invalid column name".
 
 ## The split dialog

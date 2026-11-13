@@ -7,9 +7,10 @@
 // recipe buttons above the expression while it's empty make one (asking for columns with
 // SelectColumnDialog).  (docs/gui-spec/transformations.md)
 //
-// PORT-NOTE: Java took a column clicked in the grid into the field focused earliest in the last 250 ms
-// (TimedFocusable.getRecentlyFocused sorts by time and takes the first: the bug fixed in EditJoinDialog);
-// this takes it into the one focused last.
+// PORT-NOTE: bug fix.  Java took a column clicked in the grid into the field focused earliest in the last
+// 250 ms (TimedFocusable.getRecentlyFocused sorts by time and takes the first, as EditJoinDialog.pick did),
+// so one clicked just after moving from the name to the expression went into the name; this takes it
+// into the one focused last.
 import { computed, markRaw, nextTick, shallowRef, useTemplateRef, watch } from "vue";
 import { BracketedStatus } from "../../engine/expressions/transformations/expression/BracketedStatus.js";
 import { CallExpression, Expression, IdentExpression } from "../../engine/expressions/transformations/expression/Expressions.js";

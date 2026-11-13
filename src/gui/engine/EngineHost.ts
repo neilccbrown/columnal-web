@@ -668,11 +668,10 @@ export class EngineHost implements EngineApi
             const oldColumns = agg.getColumnExpressions();
             const newCols = oldColumn === null ? [...oldColumns, new Pair(newColumnId, loaded)]
                 : oldColumns.map(c => c.getFirst().equals(new ColumnId(oldColumn)) ? new Pair(newColumnId, loaded) : c);
-            // PORT-NOTE: Java bug, kept: addColumnBefore_Agg (adding a column, renaming if the old name
-            // was automatic) suggests the name from the old split, not the one chosen in the dialog,
+            // PORT-NOTE: bug fix.  Java's addColumnBefore_Agg (adding a column, renaming if the old name
+            // was automatic) suggested the name from the old split, not the one chosen in the dialog,
             // which the Aggregate is given.
-            const nameSplitBy = oldColumn === null && rename === "IF_OLD_AUTO" ? agg.getSplitBy() : newSplitBy;
-            mgr.edit(agg, newId => new Aggregate(mgr, agg.getDetailsForCopy(newId), agg.getSrcTableId(), newCols, newSplitBy), renameOnEdit(rename, Aggregate.suggestedName(nameSplitBy, newCols)));
+            mgr.edit(agg, newId => new Aggregate(mgr, agg.getDetailsForCopy(newId), agg.getSrcTableId(), newCols, newSplitBy), renameOnEdit(rename, Aggregate.suggestedName(newSplitBy, newCols)));
             return null;
         }
         catch (e)

@@ -22,9 +22,7 @@ export interface SelectInfo
     readonly helpKey: string | null;
     // Which of the source's columns the completions offer
     readonly filterColumn: (column: string) => boolean;
-    // Once the previous item is set, should it be copied to this?
-    // PORT-NOTE: possible Java bug, kept: Java's comment adds "if this is blank at the time", but it's
-    // copied whatever this holds (so changing the previous column replaces a column chosen here).
+    // Once the previous item is set, should it be copied to this if this is blank at the time?
     readonly copyFromPrevious: boolean;
 }
 
@@ -95,13 +93,18 @@ function focused(index: number): void
     mostRecentlyFocused = index;
 }
 
-// Java: nameSetForIndex: the next field is focused (with its text selected), after the column is copied
-// into it if it's to be
+/**
+ * Java: nameSetForIndex: the next field is focused (with its text selected), after the column is copied
+ * into it if it's to be and it's blank.
+ *
+ * PORT-NOTE: bug fix.  Java copied it whatever the next field held (its SelectInfo's comment says only if
+ * blank), so choosing the compare column replaced a result column already chosen.
+ */
 function nameSetForIndex(name: string, index: number): void
 {
     if (index + 1 >= props.selectors.length)
         return;
-    if (props.selectors[index + 1]!.copyFromPrevious)
+    if (props.selectors[index + 1]!.copyFromPrevious && texts.value[index + 1]!.trim() === "")
     {
         fields[index + 1]?.setContentDirect(name);
         setText(index + 1, name);

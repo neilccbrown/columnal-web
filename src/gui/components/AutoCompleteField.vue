@@ -12,6 +12,7 @@ const props = defineProps<{
     fieldClass?: string,
     ariaLabel?: string,
     placeholder?: string,
+    disabled?: boolean,
 }>();
 const emit = defineEmits<{
     focus: [],
@@ -37,6 +38,7 @@ defineExpose({
     :value="text"
     :aria-label="ariaLabel"
     :placeholder="placeholder"
+    :disabled="disabled"
     autocomplete="off"
     spellcheck="false"
     @input="state.onInput"

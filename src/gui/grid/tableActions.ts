@@ -24,6 +24,8 @@ export interface TableActions
     // Java: the column menu's Transform type (TableDisplay.transformType): PickTypeTransformDialog, then a
     // Calculate of the table, the column transformed
     transformType(display: GridTableDisplay, column: string): void;
+    // Java: DataCellSupplier's GuidanceWindow, when a cell of the table's text starts with "="
+    formulaTyped(display: GridTableDisplay): void;
     // Java: the table menu's Custom (TableDisplay.editCustomDisplay): CustomColumnDisplayDialog, then the
     // table shows all but the columns hidden there
     customDisplay(display: GridTableDisplay): void;

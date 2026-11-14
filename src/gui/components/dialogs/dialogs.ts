@@ -1,8 +1,8 @@
 // What the dialog components share.
 import { inject, provide, type InjectionKey } from "vue";
 
-/** A dialog's buttons (JavaFX's ButtonType.OK, CANCEL and CLOSE). */
-export type DialogButton = "ok" | "cancel" | "close";
+/** A dialog's buttons (JavaFX's ButtonType.OK, CANCEL, CLOSE and YES; YES does as OK does). */
+export type DialogButton = "ok" | "yes" | "cancel" | "close";
 
 const RETURN_FOCUS: InjectionKey<() => void> = Symbol("returnFocus");
 
@@ -35,6 +35,6 @@ export function isWindows(): boolean
  */
 export function sortButtons(buttons: readonly DialogButton[], windows: boolean): DialogButton[]
 {
-    const order: readonly DialogButton[] = windows ? ["ok", "cancel", "close"] : ["cancel", "close", "ok"];
+    const order: readonly DialogButton[] = windows ? ["yes", "ok", "cancel", "close"] : ["cancel", "close", "yes", "ok"];
     return [...buttons].sort((a, b) => order.indexOf(a) - order.indexOf(b));
 }

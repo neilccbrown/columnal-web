@@ -778,6 +778,31 @@ function editorFocusLost(): void
     editing.value = null;
 }
 
+// Java: DataCellSupplier's cells' documentChanged: the first time a cell's text starts with "=" while it's
+// focused, the guidance on making a Calculate (again if it stops starting with "=", then starts again)
+const shownGuidanceFor = new WeakSet<Document>();
+function formulaCheck(document: Document): void
+{
+    const state = editing.value;
+    if (state === null || state.document !== document)
+        return;
+    if (document.getText().startsWith("=") && editor.value?.isFocused() === true)
+    {
+        if (!shownGuidanceFor.has(document))
+        {
+            shownGuidanceFor.add(document);
+            tableActions?.formulaTyped(state.display);
+        }
+    }
+    else
+        shownGuidanceFor.delete(document);
+}
+watch(editing, (state, old) =>
+{
+    old?.document.removeListener(formulaCheck);
+    state?.document.addListener(formulaCheck);
+});
+
 // --- VirtualGrid's Display ---------------------------------------------------------------------
 
 function ensureVisible(target: CellPosition): void
@@ -1042,7 +1067,7 @@ defineExpose({
             v-if="createTableButton !== null"
             type="button"
             tabindex="-1"
-            class="create-table-grid-button"
+            class="create-table-grid-button id-create-table"
             :style="createTableButton.style"
             @mousedown.stop
             @click.stop="e => createTable(createTableButton!.position, { x: e.clientX, y: e.clientY })"

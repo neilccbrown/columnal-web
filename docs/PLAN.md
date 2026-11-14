@@ -1171,8 +1171,26 @@ Steps (each a checkpoint with the project owner):
 5. Manual Edit: `ManualEditEntriesDialog`, offering one when a transformation's cell is edited
    (`PickManualEditIdentifierDialog`), and the "=" guidance (`GuidanceWindow`, making a Calculate). Tests:
    `TestManualEdit`.
+   - Done: `PickManualEditIdentifierDialog.vue`, `ManualEditEntriesDialog.vue` (the hat's parts, and
+     Edit in the picker and the table menu's Transform, removed if its first dialog is cancelled); the
+     "Create edit transformation?" question when a transformation's cell is edited (the engine's
+     `transformationEditPrompt` event, alerts with Yes and Cancel: `Alert.onYes`, `DialogButton` "yes");
+     the "=" guidance (`GuidanceWindow.vue`, `guidance.ts`, `formulaGuidance.ts`, from the grid's cell
+     editor via `TableActions.formulaTyped`). The engine has `createManualEditFromPrompt`,
+     `setManualEditIdentifier`, `setManualEditEntries` (`manualEditEntries.ts`), and Manual Edit's
+     `transformationDetails`. `LightDialog` has `buttonsCentred`; `AutoCompleteField` has `disabled`; the
+     empty cell's button has Java's `id-create-table`. Tests: `test/gui/transformations/ManualEdit.test.ts`
+     (the port, with `GenDataAndTransforms.ts`, moved here from step 6) and `ManualEditDialogs.test.ts`.
+   - Step 4's fixed: the engine's extent of an Aggregate (`EngineHost.bottomRight`) left out its add-column
+     arrows, so a table made to its right could be put on them.
+   - Possible Java bugs found (reported, kept, marked PORT-NOTE): the entries dialog's links only go to the
+     entry when an entry was also deleted (the jump is inside `editList`'s check for a change); the
+     guidance's "click on an empty cell" step (`EmptyCellSelectedCondition`) goes on when any single cell is
+     selected; the identifier dialog takes a column clicked in any table whose name is one of the columns;
+     and `TestManualEdit` gives up when the Manual Edit is by row number (it only lists unique keys for a
+     key column), so that case is never tested past making it.
 6. `TestCreateEditTransformation` (Aggregate and Check, made and edited through the GUI), with
-   `GenDataAndTransforms` and the test helpers `CreateDataTableTrait` and `EnterColumnDetailsTrait`.
+   `GenDataAndTransforms` (ported in step 5) and the test helpers `CreateDataTableTrait` and `EnterColumnDetailsTrait`.
 7. Explanations: `ExplanationDisplay` and a cell's "Why?". Tests: `TestExplanationDisplay`.
 8. Importing: the import dialog with its live preview (`ImportChoicesDialog`, `ImporterGUI`, rebuilt), the
    new-table dialog's Import File and Import URL, pasting into an empty cell to make a table, and the rest

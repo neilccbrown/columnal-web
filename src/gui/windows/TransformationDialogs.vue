@@ -22,9 +22,8 @@ import type { Value } from "../../engine/utility/utility/Value.js";
 import { AppUtility } from "../../gui-logic/app/apputility/AppUtility.js";
 import { showAlert } from "../alerts.js";
 import { ignoreClosed } from "../engine/EngineClient.js";
-import type { CheckTypeName, ColumnLookupInfo, SortDirectionName, EngineAlert, HatLink, RenameOnEditKind, TransformationKind, TypeTransformInfo } from "../engine/protocol.js";
+import type { CheckTypeName, ColumnLookupInfo, SortDirectionName, EngineAlert, HatLink, ManualEditEntryInfo, RenameOnEditKind, TransformationKind, TypeTransformInfo } from "../engine/protocol.js";
 import { useEngine } from "../engine/useEngine.js";
-import type { GridTableDisplay } from "../grid/GridTableDisplay.js";
 import type { PickingMode } from "../grid/picking.js";
 import { ColumnLookupCopy } from "../project/columnLookupCopy.js";
 import { copyTypeManager } from "../project/typeCopy.js";
@@ -32,6 +31,9 @@ import { t } from "../i18n.js";
 import EditAggregateSplitByDialog from "./EditAggregateSplitByDialog.vue";
 import EditCheckExpressionDialog from "./EditCheckExpressionDialog.vue";
 import EnterValueDialog from "./EnterValueDialog.vue";
+import ManualEditEntriesDialog from "./ManualEditEntriesDialog.vue";
+import PickManualEditIdentifierDialog from "./PickManualEditIdentifierDialog.vue";
+import { GridTableDisplay } from "../grid/GridTableDisplay.js";
 import PickTypeTransformDialog from "./PickTypeTransformDialog.vue";
 import { saveEditorExpression } from "./expressionDialogs.js";
 import EditColumnExpressionDialog from "./EditColumnExpressionDialog.vue";
@@ -54,6 +56,8 @@ const emit = defineEmits<{
     picking: [mode: PickingMode | null],
     // A fix in an expression editor declared a unit in the copy of the project's types
     typesChanged: [typeManager: TypeManager],
+    // A cell to select in the grid (Java: the grid's findAndSelect)
+    selectCell: [position: CellPosition],
 }>();
 
 const engine = useEngine();
@@ -110,7 +114,7 @@ function newCheck(position: CellPosition, point: Point): void
 }
 
 // Those of a source table (TransformationInfo.make asks for one), and those of none
-const SINGLE_SOURCE: ReadonlySet<string> = new Set<TransformationKind>(["calculate", "aggregate", "filter", "sort", "hideColumns"]);
+const SINGLE_SOURCE: ReadonlySet<string> = new Set<TransformationKind>(["calculate", "aggregate", "filter", "sort", "hideColumns", "edit"]);
 const NO_SOURCE: ReadonlySet<string> = new Set<TransformationKind>(["join", "concatenate"]);
 
 function transformationChosen(name: string, point: Point): void
@@ -204,6 +208,10 @@ async function createTransformation(kind: TransformationKind, src: string | null
             break;
         case "hideColumns":
             await openHideColumnsDialog({ kind: "transformation", table }, "TO_SUGGESTED");
+            break;
+        // (Java: cancelled, the Manual Edit is removed)
+        case "edit":
+            await openManualEditIdentifierDialog(table, "creation");
             break;
     }
 }
@@ -393,6 +401,100 @@ function unwrapValueEntered(value: Value): void
         return;
     }
     void engine.client.request("createTypeTransform", target.table, target.column, expression).then(alertIfAny).catch(ignoreClosed);
+}
+
+// --- A Manual Edit -------------------------------------------------------------------------------------
+
+// Java: TableDisplay.promptForTransformationEdit, once Yes is clicked: a Manual Edit with the edit, then
+// how it identifies its rows (TableHat.editManualEdit, removing it if cancelled)
+async function manualEditFromPrompt(prompt: number): Promise<void>
+{
+    const result = await engine.client.request("createManualEditFromPrompt", prompt);
+    if (result === null)
+        return;
+    if ("title" in result)
+    {
+        showAlert(result);
+        return;
+    }
+    if (await props.findDisplay(result.id) !== null)
+        await openManualEditIdentifierDialog(result.id, "creation");
+}
+
+// Java: PickManualEditIdentifierDialog: just made (TableHat.editManualEdit: starting by column, blank;
+// the source's columns; renamed to its suggested name; removed if cancelled), or from the hat's "identified
+// by" (starting as it is; its own columns; renamed if its name was automatic)
+interface ManualEditIdentifierFor
+{
+    readonly table: string;
+    readonly from: "creation" | "hat";
+    readonly startingValue: string | null | undefined;
+    readonly columns: readonly string[];
+}
+const manualEditIdentifierFor = shallowRef<ManualEditIdentifierFor | null>(null);
+const manualEditIdentifierOpen = shallowRef(false);
+let manualEditIdentifierOked = false;
+async function openManualEditIdentifierDialog(table: string, from: "creation" | "hat"): Promise<void>
+{
+    const details = await engine.client.request("transformationDetails", table);
+    if (details?.kind !== "manualEdit")
+        return;
+    manualEditIdentifierFor.value = from === "creation"
+        ? { table, from, startingValue: undefined, columns: details.srcColumns }
+        : { table, from, startingValue: details.identifier, columns: details.columns };
+    manualEditIdentifierOked = false;
+    manualEditIdentifierOpen.value = true;
+}
+
+function manualEditIdentifierChosen(column: string | null): void
+{
+    const target = manualEditIdentifierFor.value;
+    manualEditIdentifierOked = true;
+    if (target !== null)
+        void engine.client.request("setManualEditIdentifier", target.table, column, target.from === "creation" ? "TO_SUGGESTED" : "IF_OLD_AUTO", target.from).then(alertIfAny).catch(ignoreClosed);
+}
+
+watch(manualEditIdentifierOpen, isOpen =>
+{
+    const target = manualEditIdentifierFor.value;
+    if (!isOpen && target !== null && target.from === "creation" && !manualEditIdentifierOked)
+        void engine.client.request("deleteTable", target.table).catch(ignoreClosed);
+});
+
+// Java: ManualEditEntriesDialog (the hat's entries), then the entries deleted are removed, and (if one was
+// clicked) its cell is selected
+const manualEditEntriesFor = shallowRef<{ readonly table: string, readonly entries: readonly ManualEditEntryInfo[] } | null>(null);
+const manualEditEntriesOpen = shallowRef(false);
+async function openManualEditEntriesDialog(table: string): Promise<void>
+{
+    const details = await engine.client.request("transformationDetails", table);
+    if (details?.kind !== "manualEdit")
+        return;
+    manualEditEntriesFor.value = { table, entries: details.entries };
+    manualEditEntriesOpen.value = true;
+}
+
+async function manualEditEntriesClosed(keep: number[], jumpTo: number | null): Promise<void>
+{
+    const target = manualEditEntriesFor.value;
+    if (target === null)
+        return;
+    const result = await engine.client.request("setManualEditEntries", target.table, keep, jumpTo);
+    if (result === null)
+        return;
+    if ("title" in result)
+    {
+        showAlert(result);
+        return;
+    }
+    if (result.jumpTo === null)
+        return;
+    // (Once the grid has the remade Manual Edit; Java waited half a second)
+    await engine.client.request("idle");
+    const display = await props.findDisplay(target.table);
+    const column = display?.info.columnNames.indexOf(result.jumpTo.column) ?? -1;
+    if (display !== null && column !== -1)
+        emit("selectCell", display.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS + result.jumpTo.row, column));
 }
 
 // --- A Filter's expression ---------------------------------------------------------------------------
@@ -637,7 +739,11 @@ async function hatLinkClicked(display: GridTableDisplay, link: HatLink, point: P
         await openHideColumnsDialog({ kind: "transformation", table }, "IF_OLD_AUTO");
     else if (link.part === "splitBy")
         await openSplitByDialog(table);
-    // PORT-DEFERRED: the other parts' dialogs (Manual Edit, Phase 11 step 5; R, Phase 12)
+    else if (link.part === "manualEditIdentifier")
+        await openManualEditIdentifierDialog(table, "hat");
+    else if (link.part === "manualEditEntries")
+        await openManualEditEntriesDialog(table);
+    // PORT-DEFERRED: R's dialog (Phase 12)
 }
 
 defineExpose({
@@ -653,6 +759,8 @@ defineExpose({
     addAggregateColumn: (display: GridTableDisplay) => void openAggregateColumnDialog(display.info.id, null, "IF_OLD_AUTO", false).catch(ignoreClosed),
     // Java: TransformationEdits.editColumn_Agg (an Aggregate's calculated columns' headers)
     editAggregateColumn: (display: GridTableDisplay, column: string) => void openAggregateColumnDialog(display.info.id, column, "IF_OLD_AUTO", false).catch(ignoreClosed),
+    // Java: TableDisplay.promptForTransformationEdit, Yes clicked
+    manualEditFromPrompt: (prompt: number) => void manualEditFromPrompt(prompt).catch(ignoreClosed),
     // Java: the column menu's Transform type (TableDisplay.transformType)
     transformType: (display: GridTableDisplay, column: string) => void openTransformType(display, column).catch(ignoreClosed),
     // Java: the table menu's Custom (TableDisplay.editCustomDisplay)
@@ -718,6 +826,22 @@ defineExpose({
     v-model:open="transformTypeOpen"
     :types="transformTypeFor.transforms.map(tt => tt.destType)"
     @ok="i => void typeTransformPicked(i).catch(ignoreClosed)"
+  />
+  <PickManualEditIdentifierDialog
+    v-if="manualEditIdentifierFor !== null"
+    :key="manualEditIdentifierFor.table + '/' + String(manualEditIdentifierOpen)"
+    v-model:open="manualEditIdentifierOpen"
+    :starting-value="manualEditIdentifierFor.startingValue"
+    :columns="manualEditIdentifierFor.columns"
+    @ok="manualEditIdentifierChosen"
+    @picking="mode => dialogPicking('column', mode)"
+  />
+  <ManualEditEntriesDialog
+    v-if="manualEditEntriesFor !== null"
+    :key="manualEditEntriesFor.table + '/' + String(manualEditEntriesOpen)"
+    v-model:open="manualEditEntriesOpen"
+    :entries="manualEditEntriesFor.entries"
+    @closed="(keep, jumpTo) => void manualEditEntriesClosed(keep, jumpTo).catch(ignoreClosed)"
   />
   <EnterValueDialog
     v-if="enterValueFor !== null"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Shows the alerts (src/gui/alerts.ts) one at a time (Java: FXUtility.showError's Alert): the title,
-// then the message, and OK.  The app shows one of these.
+// then the message, and OK (or for a question, Yes and Cancel).  The app shows one of these.
 import { alerts, closeAlert } from "../../alerts.js";
 import LightDialog from "./LightDialog.vue";
 </script>
@@ -9,7 +9,8 @@ import LightDialog from "./LightDialog.vue";
   <LightDialog
     :open="alerts.length > 0"
     :label="alerts[0]?.title ?? ''"
-    :buttons="['ok']"
+    :buttons="alerts[0]?.onYes ? ['yes', 'cancel'] : ['ok']"
+    @ok="alerts[0]?.onYes?.()"
     @update:open="open => { if (!open) closeAlert(); }"
   >
     <div class="alert-header">

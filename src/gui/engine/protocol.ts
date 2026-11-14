@@ -72,9 +72,9 @@ export interface CheckResultInfo
 
 /**
  * The transformations the GUI can make (Java: PickTransformationDialog's, as each is built): the first
- * five of a source table; Join and Concatenate are made empty, of no table.
+ * six of a source table ("edit" is a Manual Edit); Join and Concatenate are made empty, of no table.
  */
-export type TransformationKind = "calculate" | "aggregate" | "filter" | "sort" | "hideColumns" | "join" | "concatenate";
+export type TransformationKind = "calculate" | "aggregate" | "filter" | "sort" | "hideColumns" | "edit" | "join" | "concatenate";
 
 /** Java: Sort.Direction, by its name. */
 export type SortDirectionName = "ASCENDING" | "DESCENDING";
@@ -87,7 +87,8 @@ export type CheckTypeName = "ALL_ROWS" | "ANY_ROW" | "NO_ROWS" | "STANDALONE";
  * in a file), and a Check's type; a Sort's source and columns; a Join's tables, whether it keeps the
  * primary's rows with no match, and the columns it matches; a Concatenate's tables, and whether it has
  * the source column; the columns a Hide columns hides; an Aggregate's source, the columns it splits by,
- * and its columns with their expressions.
+ * and its columns with their expressions; a Manual Edit's source, the column identifying its rows (null
+ * for the row number), its own columns and the source's, and its entries.
  */
 export type TransformationDetails =
     | { readonly kind: "filter", readonly src: string, readonly expression: string }
@@ -96,7 +97,15 @@ export type TransformationDetails =
     | { readonly kind: "join", readonly primary: string, readonly secondary: string, readonly leftJoin: boolean, readonly columns: readonly (readonly [string, string])[] }
     | { readonly kind: "concatenate", readonly tables: readonly string[], readonly includeMarkerColumn: boolean }
     | { readonly kind: "hideColumns", readonly src: string, readonly hidden: readonly string[] }
-    | { readonly kind: "aggregate", readonly src: string, readonly splitBy: readonly string[], readonly columns: readonly (readonly [string, string])[] };
+    | { readonly kind: "aggregate", readonly src: string, readonly splitBy: readonly string[], readonly columns: readonly (readonly [string, string])[] }
+    | { readonly kind: "manualEdit", readonly src: string, readonly identifier: string | null, readonly columns: readonly string[], readonly srcColumns: readonly string[], readonly entries: readonly ManualEditEntryInfo[] };
+
+/**
+ * One of a Manual Edit's entries (Java: ManualEditEntriesDialog.Entry), as its dialog shows it: the key
+ * (a value of the identifying column, or a row number), the column, and the value (or an invalid
+ * value's text); or the error if it can't be shown.
+ */
+export type ManualEditEntryInfo = { readonly key: string, readonly column: string, readonly value: string } | { readonly error: string };
 
 /**
  * A type a column could be transformed into (Java: PickTypeTransformDialog.TypeTransform): the type as
@@ -374,6 +383,24 @@ export interface EngineApi
      */
     createTypeTransform(id: string, column: string, expression: string): EngineAlert | null;
     /**
+     * After the GUI's "Create edit transformation?" (a transformationEditPrompt event) is answered Yes:
+     * a Manual Edit of the table, to the right of the others, with the edit made (Java:
+     * TableDisplay.promptForTransformationEdit).  Null if the prompt is no longer known.
+     */
+    createManualEditFromPrompt(prompt: number): { readonly id: string } | EngineAlert | null;
+    /**
+     * Sets the column which identifies a Manual Edit's rows (null for the row number): just made (Java:
+     * TableHat.editManualEdit; error "Error editing manual edit"), or from its hat (error "Error changing
+     * edit transformation").
+     */
+    setManualEditIdentifier(id: string, column: string | null, rename: RenameOnEditKind, from: "creation" | "hat"): EngineAlert | null;
+    /**
+     * Keeps those of a Manual Edit's entries (by their indexes in its details) not deleted in its entries
+     * dialog (Java: TableHat's editList), and if one was clicked (its index), where it is in the Manual
+     * Edit: its data row and column.
+     */
+    setManualEditEntries(id: string, keep: readonly number[], jumpTo: number | null): { readonly jumpTo: { readonly row: number, readonly column: string } | null } | EngineAlert | null;
+    /**
      * Changes a data table's column: its name, type and default value (Java:
      * TransformationEdits.editColumn_IDS); the tables that use it are updated to its new name.
      */
@@ -439,13 +466,17 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:
     | { readonly kind: "tables", readonly tables: readonly TableInfo[], readonly comments: readonly CommentInfo[] }
     // An error after a change, from re-running the tables that depend on a table (Java: an alert):
     | { readonly kind: "alert", readonly alert: EngineAlert }
+    // A transformation's cell was edited: the GUI asks whether to make a Manual Edit with the edit (Java:
+    // TableDisplay.promptForTransformationEdit; the edit itself is cancelled), answering with
+    // createManualEditFromPrompt:
+    | { readonly kind: "transformationEditPrompt", readonly prompt: number }
     // Something saved in the file changed (Java: what called View.modified, or saved), so it should be
     // saved:
     | { readonly kind: "modified" };

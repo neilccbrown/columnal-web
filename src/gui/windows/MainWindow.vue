@@ -2,6 +2,9 @@
 // A project's window (Java: MainWindow, with View's file handling in ProjectSession): its menu bar,
 // the grid of its tables, and a banner while loading or read-only (docs/gui-spec/projects.md).
 import { computed, markRaw, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from "vue";
+import GuidanceWindow from "../components/GuidanceWindow.vue";
+import type { Guidance } from "../components/guidance.js";
+import { formulaGuidance } from "./formulaGuidance.js";
 import type { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { showAlert } from "../alerts.js";
 import AboutDialog from "../components/dialogs/AboutDialog.vue";
@@ -78,6 +81,16 @@ const stopListening = engine.client.listen(event =>
         session.value?.modified();
     else if (event.kind === "alert")
         showAlert(event.alert);
+    // Java: TableDisplay.promptForTransformationEdit
+    else if (event.kind === "transformationEditPrompt")
+    {
+        const prompt = event.prompt;
+        showAlert({
+            title: "Create edit transformation?",
+            message: "Transformation results cannot be directly edited.  Add an edit transformation to allow editing of specific items?",
+            onYes: () => transformations.value?.manualEditFromPrompt(prompt),
+        });
+    }
 });
 
 // Java: View.createTable: what to make, at the empty cell
@@ -274,6 +287,17 @@ function selectCheck(id: string): void
         engineGrid.value!.grid.findAndSelect(Either.right(new EntireTableSelection(display, display.getPosition().columnIndex)));
 }
 
+// Java: DataCellSupplier's GuidanceWindow.  PORT-NOTE: one at a time here (a new one replaces it); Java
+// opened another window each time.
+const guidance = shallowRef<Guidance | null>(null);
+let guidanceCount = 0;
+
+// Java: the grid's findAndSelect, of a cell
+function selectCell(position: CellPosition): void
+{
+    engineGrid.value?.grid.findAndSelect(Either.left(position));
+}
+
 provideDialogReturnFocus(() => document.querySelector<HTMLElement>("[data-testid=grid]")?.focus());
 
 provideTableActions({
@@ -298,6 +322,15 @@ provideTableActions({
     hatLinkClicked: (display, link, point) => transformations.value?.hatLinkClicked(display, link, point),
     transform: (display, point) => transformations.value?.transform(display, point),
     transformType: (display, column) => transformations.value?.transformType(display, column),
+    formulaTyped: display =>
+    {
+        const grid = engineGrid.value?.grid;
+        if (grid === undefined)
+            return;
+        const id = display.info.id;
+        guidanceCount++;
+        guidance.value = markRaw(formulaGuidance(grid, () => document.querySelector(`.table[data-table="${CSS.escape(id)}"]`)?.getBoundingClientRect() ?? null));
+    },
     customDisplay: display => transformations.value?.customDisplay(display),
 });
 
@@ -470,11 +503,18 @@ defineExpose({
       :transform-is-valid="engine.tables.tables.value.length > 0"
       @chosen="newTableChosen"
     />
+    <GuidanceWindow
+      v-if="guidance !== null"
+      :key="guidanceCount"
+      :initial-guidance="guidance"
+      @close="guidance = null"
+    />
     <TransformationDialogs
       ref="transformations"
       :find-display="waitForTable"
       @picking="mode => picking = mode"
       @types-changed="sendTypeInfo"
+      @select-cell="selectCell"
     />
     <EditImmediateColumnDialog
       v-if="columnTypeManager !== null"

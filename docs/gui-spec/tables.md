@@ -179,6 +179,17 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   type goes to the engine as its saved text, and the default value as its display text, which the engine
   recognises again.
 - Not done: the blur over the grid while the new-table dialog shows, and Java's tooltip arrow hovering.
-- Not yet: offering a Manual Edit when a transformation's cell is edited, and the guidance when a data
-  cell's text starts with "=" (both need Phase 11's dialogs); a transformation's "Why?" cell menu item
-  (Phase 11, with explanations); R's "Re-evaluate" in the name row (Phase 12).
+- The guidance on making a Calculate (Java: `DataCellSupplier`'s `GuidanceWindow`), when a cell's text
+  starts with "=" (`cell-editor.md`): a small panel near the top right of the window, 300 px wide, its
+  background pulsing between grey and white, which can be dragged, with Close. Its steps: "Data tables
+  cannot contain formulas.  To perform a calculation, create a Calculate transformation." (with "Show
+  Me..."); "To create a transformation, click on an empty cell." (until a single cell is selected: any
+  cell, as Java has it); "Click the New... button." (the empty cell's button outlined in blue, until the
+  new-table dialog shows); "Click the Transform button." (outlined, until the transformations show); "Click
+  the Calculate button." (outlined, until the table picker shows); "Click on the table you want to use in the
+  calculation" (the table outlined, until the column dialog shows); "Enter the column name and expression you
+  want to calculate, then click Ok." (until it closes); then it closes. One shows at a time (Java opened
+  another each time). `src/gui/components/GuidanceWindow.vue`, `guidance.ts`,
+  `src/gui/windows/formulaGuidance.ts`.
+- Not yet: a transformation's "Why?" cell menu item (Phase 11, with explanations); R's "Re-evaluate" in the
+  name row (Phase 12).

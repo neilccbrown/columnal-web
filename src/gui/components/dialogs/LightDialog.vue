@@ -29,6 +29,8 @@ const props = withDefaults(defineProps<{
     defaultButton?: boolean,
     // Java: OK's setDisable
     okDisabled?: boolean,
+    // Java: LightDialog.centreDialogButtons
+    buttonsCentred?: boolean,
 }>(), {
     buttons: () => ["cancel", "ok"],
     buttonsToSide: false,
@@ -39,6 +41,7 @@ const props = withDefaults(defineProps<{
     modal: true,
     defaultButton: true,
     okDisabled: false,
+    buttonsCentred: false,
 });
 const emit = defineEmits<{
     ok: [],
@@ -46,7 +49,7 @@ const emit = defineEmits<{
     cancel: [],
 }>();
 
-const BUTTON_TEXT: Record<DialogButton, string> = { ok: "OK", cancel: "Cancel", close: "Close" };
+const BUTTON_TEXT: Record<DialogButton, string> = { ok: "OK", yes: "Yes", cancel: "Cancel", close: "Close" };
 const sortedButtons = computed(() => sortButtons(props.buttons, isWindows()));
 
 // The dialog's element (found from its content: when not modal, Reka's DialogContent's root isn't it)
@@ -94,7 +97,7 @@ function button(which: DialogButton): HTMLButtonElement | null
 
 function press(which: DialogButton): void
 {
-    if (which === "ok")
+    if (which === "ok" || which === "yes")
     {
         if (!props.okFilter())
             return;
@@ -124,11 +127,12 @@ function inControl(target: EventTarget | null): boolean
 // Enter presses OK (JavaFX: the default button), unless something else has handled it:
 function keydown(e: KeyboardEvent): void
 {
-    if (e.key === "Enter" && props.defaultButton && !props.okDisabled && !e.defaultPrevented && !e.isComposing && props.buttons.includes("ok")
+    const defaultButton = props.buttons.includes("ok") ? "ok" : props.buttons.includes("yes") ? "yes" : null;
+    if (e.key === "Enter" && props.defaultButton && !props.okDisabled && !e.defaultPrevented && !e.isComposing && defaultButton !== null
         && !(e.target instanceof HTMLTextAreaElement) && !(e.target instanceof HTMLButtonElement))
     {
         e.preventDefault();
-        press("ok");
+        press(defaultButton);
     }
 }
 
@@ -272,7 +276,7 @@ defineExpose({ button });
         </div>
         <div
           class="light-dialog-buttons"
-          :class="buttonsToSide ? 'side-button-bar' : 'button-bar'"
+          :class="[buttonsToSide ? 'side-button-bar' : 'button-bar', { 'buttons-centred': buttonsCentred }]"
         >
           <button
             v-for="b in sortedButtons"
@@ -335,6 +339,9 @@ defineExpose({ button });
     justify-content: flex-end;
     gap: 0.5em;
     padding: 0.833em;
+}
+.light-dialog-buttons.button-bar.buttons-centred {
+    justify-content: center;
 }
 .light-dialog-buttons.side-button-bar {
     display: flex;

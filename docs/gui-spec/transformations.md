@@ -1,4 +1,4 @@
-# Transformations: making them, and editing them (Calculate, Aggregate, Filter, Check, Sort, Join, Concatenate and Hide columns)
+# Transformations: making them, and editing them (Calculate, Aggregate, Filter, Check, Sort, Join, Concatenate, Hide columns and Manual Edit)
 
 Java: `dialogs-non-expression/.../PickTransformationDialog.java`, `app/.../PickTableDialog.java` and
 `PickTablePane.java`, `View.java` (`createTable`'s TRANSFORM and CHECK, `createTransform`, the picking
@@ -9,17 +9,21 @@ modes), `TableHighlights.java` (SELECT), `EditColumnExpressionDialog.java`, `Edi
 `TableListDialog.java`, `HideColumnsPanel.java`, `HideColumnsDialog.java`, `CustomColumnDisplayDialog.java`,
 `AggregateSplitByPane.java`, `EditAggregateSplitByDialog.java`, `SelectColumnDialog.java`, `ExpressionRecipe.java`,
 `PickTypeTransformDialog.java`, `EnterValueDialog.java` (and `TableDisplay.java`'s `transformType`,
-`addColumnBefore_Agg`, `TransformationEdits.java`'s `editColumn_Agg` and `editAggregateSplitBy`);
+`addColumnBefore_Agg`, `TransformationEdits.java`'s `editColumn_Agg` and `editAggregateSplitBy`),
+`PickManualEditIdentifierDialog.java`, `ManualEditEntriesDialog.java` (and `TableHat.java`'s
+`editManualEdit`, `TableDisplay.java`'s `promptForTransformationEdit`);
 the engine's transformations. Web: `src/gui/windows/TransformationDialogs.vue` (the dialogs, for `MainWindow.vue`),
 `PickTransformationDialog.vue`, `PickTableDialog.vue`, `EditColumnExpressionDialog.vue`,
 `EditExpressionDialog.vue`, `EditCheckExpressionDialog.vue`, `ChecksPane.vue`, `EditSortDialog.vue` (and
 `SortPane.vue`, `sortDirection.ts`), `EditJoinDialog.vue`, `TableListDialog.vue`, `HideColumnsDialog.vue`,
 `EditAggregateSplitByDialog.vue`, `SelectColumnDialog.vue`, `PickTypeTransformDialog.vue`, `EnterValueDialog.vue`,
+`PickManualEditIdentifierDialog.vue`, `ManualEditEntriesDialog.vue`, `src/gui/engine/manualEditEntries.ts`,
 `src/gui/components/AggregateSplitByPane.vue`, `src/gui/engine/typeTransforms.ts`,
 `src/gui/components/PickTablePane.vue`, `HideColumnsPanel.vue`, `ListView.vue`, `src/gui/grid/picking.ts`
 (and `TableGrid.vue`'s pick pane), `GridTable.vue` and `GridTableDisplay.ts` (a Check's display),
 `src/gui/project/columnLookupCopy.ts` (`CheckLookupCopy`, `AggregateLookupCopy`); the engine's `createTransformation`,
-`setAggregateColumn`, `setAggregateSplitBy`, `typeTransforms`, `createTypeTransform`,
+`setAggregateColumn`, `setAggregateSplitBy`, `typeTransforms`, `createTypeTransform`, `createManualEditFromPrompt`,
+`setManualEditIdentifier`, `setManualEditEntries`,
 `calculateColumn`, `setCalculateColumn`, `moveCalculateColumn`, `transformationDetails`,
 `setFilterExpression`, `setCheck`, `createCheck`, `setSource`, `setSort`, `setJoin`, `setConcatenate`,
 `toggleConcatenateMarker`, `setHiddenColumns` and `setDisplay`. Tests: `test/gui/expressions/` (`CalculatePath.test.ts`, and the
@@ -31,9 +35,8 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
 
 - The new-table dialog's Transform (with at least one table) shows the transformations: a button each (150
   by 165: its title, a preview image 100 px wide, and its short explanation), three to a row, scrolling,
-  centred where Transform was clicked, with Cancel. Not yet: Edit and R are disabled (Phase 11; R, Phase
-  12).
-- Calculate, Aggregate, Filter, Sort and Exclude columns then ask for their source table (the table picker), and are
+  centred where Transform was clicked, with Cancel. Not yet: R is disabled (Phase 12).
+- Calculate, Aggregate, Filter, Sort, Exclude columns and Edit then ask for their source table (the table picker), and are
   made of it at the empty cell; Join and Concatenate are made at once, of no tables. A table's menu's
   Transform instead makes it of that table (Join and Concatenate of none), to its right (Java's
   `TableManager.getNextInsertPosition`: just past its add-column arrows, or past the next table that starts
@@ -43,6 +46,9 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
   `RenameOnEdit.renameToSuggested`). Cancel leaves the empty Calculate.
 - An Aggregate is made with no columns, across the whole table; its first column's dialog (with the split)
   then shows, and OK names it after its split and columns ("Agg N", "Agg N by B"). Cancel removes it.
+- A Manual Edit (Edit) is made with no edits, by row number; how it identifies rows is then asked (the
+  identifier dialog, starting by column, blank), and OK names it after that ("Edit by row", "Edit by B").
+  Cancel removes it.
 - A Filter is made keeping all rows (`true`); its expression's dialog then shows, the expression selected,
   and OK names it after the expression's first column ("Filt A").
 - Sort's dialog starts with one column to edit; Concatenate's with one table to edit (Java centred it on
@@ -79,7 +85,10 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
   highlighted (as a source table is).
 - An Aggregate's split (its columns, or "across whole table"): the split dialog, renaming as above (error:
   "Error editing aggregate").
-- Not yet: Edit's parts (Phase 11), R's (Phase 12).
+- A Manual Edit's "N entries": the entries dialog; its "identified by" (a column, or "row number"): the
+  identifier dialog, starting as it is (with its own columns), renaming as above (error: "Error changing
+  edit transformation").
+- Not yet: R's parts (Phase 12).
 
 ## Sort's dialog
 
@@ -230,6 +239,25 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
 - For an Optional's inner type, a dialog first asks for the value for None (a field recognising the type,
   starting with its default value selected; an invalid value is the error), and the expression is `get
   optional or(column, value)`.
+
+## Manual Edit
+
+- Editing a transformation's cell (other than a Manual Edit's) doesn't change it; instead a question:
+  "Create edit transformation?", "Transformation results cannot be directly edited.  Add an edit
+  transformation to allow editing of specific items?", with Yes and Cancel. Yes makes a Manual Edit of the
+  table, to the right of the others, with that edit (keyed by its row number), then asks how it identifies
+  rows (as for a new Manual Edit; errors: "Error creating edit", "Error editing manual edit").
+- The identifier dialog (not modal): "Pick column to use to identify the edited rows if the source data
+  changes:", then radio buttons "By identifier column:" (with a field: completions of the columns starting
+  with the text) and "By row number (not recommended)" (the field disabled), and the error. A column clicked
+  in the grid (any table's column with one of the names) chooses it by column. OK with a name that isn't one
+  of the columns: "Column not found: <name>".
+- The entries dialog (resizable, at least 300 by 200): the entries, by column then key, each its key (a
+  value of the identifying column, or the row number), its column and its value (an invalid value's text),
+  as links, deletable with the cross; "No edits" when there are none; Close, centred. Closing it (Close or
+  Escape) keeps the entries not deleted, renaming the Manual Edit if its name was automatic (error: "Error
+  deleting manual edits"). Clicking an entry's link does too, then selects the entry's cell in the Manual
+  Edit, but only if an entry was deleted (Java's bug, kept: the jump was inside its check for a change).
 
 ## Web differences
 

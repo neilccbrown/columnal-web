@@ -52,6 +52,10 @@ import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
 import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type TypeTransformInfo, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 import { columnLookupInfo } from "./columnLookupInfo.js";
 import { typeTransforms } from "./typeTransforms.js";
+import { entryInfo, manualEditEntries, type ManualEditEntry } from "./manualEditEntries.js";
+import { ComparableEither } from "../../engine/utility-adt/utility/adt/ComparableEither.js";
+import { Decimal } from "../../engine/java/JavaBigDecimal.js";
+import ComparableValue = DataTypeUtility.ComparableValue;
 import { RenameOnEdit } from "../../engine/data/data/RenameOnEdit.js";
 import { BracketedStatus } from "../../engine/expressions/transformations/expression/BracketedStatus.js";
 import { ExpressionUtil } from "../../engine/expressions/transformations/expression/ExpressionUtil.js";
@@ -83,6 +87,10 @@ export class EngineHost implements EngineApi
     // The current tables by id, with the version the GUI knows them by:
     private readonly tables = new Map<string, { readonly table: Table, readonly version: number }>();
     private nextVersion = 1;
+    // The edits of transformations' cells awaiting the GUI's answer to "Create edit transformation?"
+    // (Java: TableDisplay.promptForTransformationEdit's arguments, while its Alert showed):
+    private readonly transformationEditPrompts = new Map<number, { readonly table: Table, readonly index: number, readonly column: Pair<ColumnId, DataType>, readonly value: Either<string, Value> }>();
+    private nextPrompt = 1;
     // Each table's position.  (Java: its TableDisplay, which the table asks for its position when
     // saving; a re-run table takes the position of the table it replaces.)
     private readonly positions = new Map<Table, CellPosition>();
@@ -393,7 +401,7 @@ export class EngineHost implements EngineApi
         {
             const srcTable = src === null ? null : this.tableManager.getSingleTableOrThrow(new TableId(src));
             const info = kind === "calculate" ? new Calculate.Info() : kind === "aggregate" ? new Aggregate.Info() : kind === "filter" ? new Filter.Info() : kind === "sort" ? new Sort.Info()
-                : kind === "hideColumns" ? new HideColumns.Info() : kind === "join" ? new Join.Info() : new Concatenate.Info();
+                : kind === "hideColumns" ? new HideColumns.Info() : kind === "edit" ? new ManualEdit.Info() : kind === "join" ? new Join.Info() : new Concatenate.Info();
             const at = position === null ? this.tableManager.getNextInsertPosition(rightOf === null ? null : new TableId(rightOf)) : new CellPosition(CellPosition.row(position.row), CellPosition.col(position.column));
             const make = info.make(this.tableManager, at, () => srcTable);
             if (make === null)
@@ -422,6 +430,23 @@ export class EngineHost implements EngineApi
             return { kind: "concatenate", tables: table.getPrimarySources().map(t => t.getRaw()), includeMarkerColumn: table.isIncludeMarkerColumn() };
         if (table instanceof HideColumns)
             return { kind: "hideColumns", src: table.getSrcTableId().getRaw(), hidden: table.getHiddenColumns().map(c => c.getRaw()) };
+        if (table instanceof ManualEdit)
+        {
+            const columnIds = (t: Table | null): string[] =>
+            {
+                try
+                {
+                    return t === null ? [] : t.getData().getColumnIds().map(c => c.getRaw());
+                }
+                catch (e)
+                {
+                    if (!(e instanceof UserException || e instanceof InternalException))
+                        throw e;
+                    return [];
+                }
+            };
+            return { kind: "manualEdit", src: table.getSrcTableId().getRaw(), identifier: table.getReplacementIdentifier()?.getRaw() ?? null, columns: columnIds(table), srcColumns: columnIds(table.getSrcTable()), entries: manualEditEntries(table).map(entryInfo) };
+        }
         if (table instanceof Aggregate)
             return { kind: "aggregate", src: table.getSrcTableId().getRaw(), splitBy: table.getSplitBy().map(c => c.getRaw()), columns: table.getColumnExpressions().map(p => [p.getFirst().getRaw(), saveExpression(p.getSecond())] as const) };
         return null;
@@ -740,6 +765,127 @@ export class EngineHost implements EngineApi
         catch (e)
         {
             return alertFor("error.making.type.transformation", e);
+        }
+    }
+
+    // Java: TableDisplay.promptForTransformationEdit, once Yes is clicked: a Manual Edit of the table to
+    // the right of the others, with the edit
+    public createManualEditFromPrompt(prompt: number): { readonly id: string } | EngineAlert | null
+    {
+        const details = this.transformationEditPrompts.get(prompt);
+        this.transformationEditPrompts.delete(prompt);
+        if (details === undefined)
+            return null;
+        try
+        {
+            const mgr = this.tableManager;
+            const insertPos = mgr.getNextInsertPosition(details.table.getId());
+            const manualEdit = mgr.record(new ManualEdit(mgr, new Table.InitialLoadDetails(null, null, insertPos, null), details.table.getId(), null,
+                [[details.column.getFirst(), new ManualEdit.ColumnReplacementValues(details.column.getSecond(), [new Pair<Value, Either<string, Value>>(new Decimal(details.index), details.value)])]]));
+            return { id: manualEdit.getId().getRaw() };
+        }
+        catch (e)
+        {
+            return alertFor("error.creating.edit", e);
+        }
+    }
+
+    // Java: TableHat.editManualEdit (just made), and the hat's editBy
+    public setManualEditIdentifier(id: string, column: string | null, rename: RenameOnEditKind, from: "creation" | "hat"): EngineAlert | null
+    {
+        const manualEdit = this.tables.get(id)?.table;
+        if (!(manualEdit instanceof ManualEdit))
+            return null;
+        try
+        {
+            const newReplacementKey = column === null ? null : new ColumnId(column);
+            this.tableManager.edit(manualEdit, manualEdit.swapReplacementIdentifierTo(newReplacementKey), renameOnEdit(rename, ManualEdit.suggestedName(newReplacementKey, manualEdit.getReplacements())));
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor(from === "creation" ? "error.editing.manual.edit" : "error.changing.edit.transformation", e);
+        }
+    }
+
+    // Java: TableHat's editList, once ManualEditEntriesDialog closes
+    public setManualEditEntries(id: string, keep: readonly number[], jumpTo: number | null): { readonly jumpTo: { readonly row: number, readonly column: string } | null } | EngineAlert | null
+    {
+        const manualEdit = this.tables.get(id)?.table;
+        if (!(manualEdit instanceof ManualEdit))
+            return null;
+        try
+        {
+            const entries = manualEditEntries(manualEdit);
+            const jumpEntry = jumpTo === null ? null : entries[jumpTo] ?? null;
+            // Java: ManualEditEntriesDialog.fromEntries
+            const items = HashMap.javaOrder<ColumnId, [ComparableValue, ComparableEither<string, ComparableValue>][]>();
+            for (const entry of keep.map(i => entries[i]).filter(e => e !== undefined))
+            {
+                const forColumn = items.get(entry.column) ?? [];
+                const existing = forColumn.findIndex(([k]) => k.compareTo(entry.key) === 0);
+                if (existing === -1)
+                    forColumn.push([entry.key, entry.value]);
+                else
+                    forColumn[existing] = [entry.key, entry.value];
+                items.set(entry.column, forColumn);
+            }
+            const newValues = HashMap.javaOrder<ColumnId, ManualEdit.ColumnReplacementValues>();
+            items.forEach((m, c) => newValues.set(c, new ManualEdit.ColumnReplacementValues(manualEdit.getData().getColumn(c).getType().getType(), m.map(([k, v]) => new Pair<Value, Either<string, Value>>(k.getValue(), v.map(x => x.getValue()))))));
+            if (newValues.equals(manualEdit.getReplacements()))
+                return { jumpTo: null };
+            this.tableManager.edit(manualEdit, manualEdit.swapReplacementsTo([...newValues.entries()]), renameOnEdit("IF_OLD_AUTO", ManualEdit.suggestedName(manualEdit.getReplacementIdentifier(), newValues)));
+            // PORT-NOTE: Java bug, kept: the jump to the entry clicked was only made after a change
+            // (inside the check above), so clicking an entry with none deleted did nothing.
+            return { jumpTo: jumpEntry === null ? null : this.manualEditLocation(manualEdit, jumpEntry) };
+        }
+        catch (e)
+        {
+            return alertFor("error.deleting.manual.edits", e);
+        }
+    }
+
+    // Java: editList's "Finding manual edit location": the row of the entry's key in the source (the
+    // last, if several), or for a row number, that row
+    private manualEditLocation(manualEdit: ManualEdit, entry: ManualEditEntry): { readonly row: number, readonly column: string } | null
+    {
+        try
+        {
+            const srcTable = manualEdit.getSrcTable();
+            if (srcTable === null)
+                return null;
+            const srcData = srcTable.getData();
+            const keyColumnId = manualEdit.getReplacementIdentifier();
+            let rowIndex = -1;
+            if (keyColumnId === null)
+                rowIndex = Number((entry.key.getValue() as Decimal).toString());
+            else
+            {
+                const keyColumn = srcData.getColumn(keyColumnId).getType();
+                for (let row = 0; row < srcData.getLength(); row++)
+                {
+                    try
+                    {
+                        if (Utility.compareValues(keyColumn.getCollapsed(row), entry.key.getValue()) === 0)
+                            rowIndex = row;
+                    }
+                    catch (e)
+                    {
+                        // Ignore fetch issues, just check following value.
+                        if (!(e instanceof UserException))
+                            throw e;
+                    }
+                }
+            }
+            return rowIndex === -1 ? null : { row: Math.trunc(rowIndex), column: entry.column.getRaw() };
+        }
+        catch (e)
+        {
+            if (e instanceof InternalException)
+                Log.log(e);
+            else if (!(e instanceof UserException))
+                throw e;
+            return null;
         }
     }
 
@@ -1136,9 +1282,13 @@ export class EngineHost implements EngineApi
             },
             getMostRecentPosition: () => this.position(table),
             getBottomRightIncl: () => this.bottomRight(table),
-            // PORT-DEFERRED: offering a Manual Edit when a transformation's cell is edited (Phase 11, with
-            // its PickManualEditIdentifierDialog); the edit is cancelled meanwhile, as in Java
-            promptForTransformationEdit: () => {},
+            // (The GUI asks; the edit itself is cancelled, as in Java)
+            promptForTransformationEdit: (index, column, value) =>
+            {
+                const prompt = this.nextPrompt++;
+                this.transformationEditPrompts.set(prompt, { table, index, column, value });
+                this.sendEvent({ kind: "transformationEditPrompt", prompt });
+            },
             getTable: () => table,
         });
         this.tablesChanged();
@@ -1181,7 +1331,8 @@ export class EngineHost implements EngineApi
         }
         if (columns === 0)
             return position;
-        const addColumnArrows = table instanceof ImmediateDataSource || table instanceof Calculate;
+        // (As TableInfo.canAddColumn: the tables whose columns can be added to)
+        const addColumnArrows = table instanceof ImmediateDataSource || table instanceof Calculate || table instanceof Aggregate;
         return position.offsetByRowCols(2, columns + (addColumnArrows ? 1 : 0) - 1);
     }
 

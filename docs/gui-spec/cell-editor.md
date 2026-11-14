@@ -52,7 +52,8 @@ Web: `src/gui/components/DocumentTextField.vue`, `src/gui/grid/CellEditDocument.
 - When the edit ends, if the text changed it is stored: the column's recogniser reads it; the value is
   stored, or the text as an invalid value if it can't be read. Then the tables that depend on the table
   are re-run. The cell shows what was stored.
-- Storing into a transformation's column is cancelled (Java then offers to make a Manual Edit).
+- Storing into a transformation's column is cancelled, and a Manual Edit is offered instead
+  (`transformations.md`).
 - An error storing the value ("Error storing data value"), or re-running the dependent tables ("Error
   updating dependent transformations"), is shown in an alert (title as the header, then the message, an
   OK button). Alerts show one at a time.
@@ -81,8 +82,8 @@ Web: `src/gui/components/DocumentTextField.vue`, `src/gui/grid/CellEditDocument.
   cell was reloaded.
 - An edit of a table that was replaced while it was being edited is not stored, and an alert says so (in
   Java, tables changed on one thread, so this couldn't happen).
-- Not yet: the guidance shown when a data cell's text starts with "=" (Java: `DataCellSupplier`'s
-  `GuidanceWindow`, which walks through making a Calculate: Phase 11, with the transformation dialogs), and
-  the cell's context menu items (`getAdditionalMenuItems`: a transformation's "Why?", Phases 10 and 11,
+- The first time a cell's text starts with "=" while it's being edited (again if it stops, then starts
+  again), the guidance on making a Calculate shows (`tables.md`).
+- Not yet: the cell's context menu items (`getAdditionalMenuItems`: a transformation's "Why?", Phases 10 and 11,
   with explanations). Hover text for cut-off values is in `tables.md`; the file is saved after an edit
   (`projects.md`).

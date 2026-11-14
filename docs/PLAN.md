@@ -1200,9 +1200,10 @@ Steps (each a checkpoint with the project owner):
      `id-agg-split-*` classes. Keys on a focused grid button (an arrow, or "New…") other than Enter and
      Space now go on to the grid, as in Java (they were ignored, so after adding a column by its arrow
      the keyboard did nothing until the grid was clicked).
-   - Java test bugs: `testAggregate` clicked the split list's Add after choosing "Each unique value of",
-     which already adds a blank column, so the dialog couldn't be OKed (fixed in the port, PORT-NOTE);
-     `testCheck` picks from ALL_ROWS, NO_ROWS, ALL_ROWS, so ANY_ROW is never tested (kept, PORT-NOTE).
+   - Java test bugs fixed (approved; PORT-NOTEs in the port): `testAggregate` clicked the split list's
+     Add after choosing "Each unique value of", which already adds a blank column, so the dialog couldn't
+     be OKed; `testCheck` picked from ALL_ROWS, NO_ROWS, ALL_ROWS, so ANY_ROW was never tested (now
+     ALL_ROWS, NO_ROWS, ANY_ROW).
    - Found (not this step's, to investigate; it fails the same at step 5's commit):
      `BlankMainWindow.test.ts`'s `propEnterColumn` fails with seed -2117298089: a text value typed onto
      a selected cell (typing starts the edit) loses a character ("󹡒t𘭺e" entered as "t𘭺e", the first

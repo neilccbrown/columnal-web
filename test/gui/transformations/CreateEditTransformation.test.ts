@@ -394,8 +394,9 @@ test("testCheck", () => checkProperty([new GenImmediateData(), new GenRandom()],
     const srcColumn = srcColumns[r.nextInt(srcColumns.length)]!;
 
     // Standalone is randomly substituted for some of these later on:
-    // PORT-NOTE: possible Java bug, kept: ALL_ROWS twice, so ANY_ROW is never tested.
-    const possibleTypes = [Check.CheckType.ALL_ROWS, Check.CheckType.NO_ROWS, Check.CheckType.ALL_ROWS];
+    // PORT-NOTE: Java test bug, fixed: Java listed ALL_ROWS twice (and no ANY_ROW), so ANY_ROW, which
+    // the rest handles, was never tested.
+    const possibleTypes = [Check.CheckType.ALL_ROWS, Check.CheckType.NO_ROWS, Check.CheckType.ANY_ROW];
     let checkType = possibleTypes[r.nextInt(possibleTypes.length)]!;
     if (srcColumn.getLength() === 0)
         return;

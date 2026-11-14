@@ -1183,12 +1183,13 @@ Steps (each a checkpoint with the project owner):
      (the port, with `GenDataAndTransforms.ts`, moved here from step 6) and `ManualEditDialogs.test.ts`.
    - Step 4's fixed: the engine's extent of an Aggregate (`EngineHost.bottomRight`) left out its add-column
      arrows, so a table made to its right could be put on them.
-   - Possible Java bugs found (reported, kept, marked PORT-NOTE): the entries dialog's links only go to the
-     entry when an entry was also deleted (the jump is inside `editList`'s check for a change); the
-     guidance's "click on an empty cell" step (`EmptyCellSelectedCondition`) goes on when any single cell is
-     selected; the identifier dialog takes a column clicked in any table whose name is one of the columns;
-     and `TestManualEdit` gives up when the Manual Edit is by row number (it only lists unique keys for a
-     key column), so that case is never tested past making it.
+   - Java bugs fixed (approved; tests in `test/gui/transformations/BugFixes.test.ts`): the entries
+     dialog's links only went to the entry when an entry was also deleted (the jump was inside `editList`'s
+     check for a change); the guidance's "click on an empty cell" step (`EmptyCellSelectedCondition`) went
+     on when any single cell was selected; the identifier dialog took a column clicked in any table whose
+     name is one of the columns (now only the source's or the Manual Edit's); and `TestManualEdit` gave up
+     when the Manual Edit was by row number (it only listed unique keys for a key column), so that case was
+     never tested past making it (it now lists every row).
 6. `TestCreateEditTransformation` (Aggregate and Check, made and edited through the GUI), with
    `GenDataAndTransforms` (ported in step 5) and the test helpers `CreateDataTableTrait` and `EnterColumnDetailsTrait`.
 7. Explanations: `ExplanationDisplay` and a cell's "Why?". Tests: `TestExplanationDisplay`.

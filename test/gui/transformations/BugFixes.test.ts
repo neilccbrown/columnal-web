@@ -2,6 +2,7 @@
 // "bug fix" PORT-NOTEs).
 import { afterEach, expect, test, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
+import { CellPosition } from "../../../src/engine/data/data/CellPosition.js";
 import { ImmediateDataSource } from "../../../src/engine/data/data/DataSources.js";
 import type { EditableColumn } from "../../../src/engine/data/data/EditableColumn.js";
 import { EditableRecordSet } from "../../../src/engine/data/data/EditableRecordSet.js";
@@ -13,11 +14,16 @@ import { Aggregate } from "../../../src/engine/transformations/transformations/A
 import { Concatenate } from "../../../src/engine/transformations/transformations/Concatenate.js";
 import { HideColumns } from "../../../src/engine/transformations/transformations/HideColumns.js";
 import { Join } from "../../../src/engine/transformations/transformations/Join.js";
+import { ManualEdit } from "../../../src/engine/transformations/transformations/ManualEdit.js";
+import { Sort } from "../../../src/engine/transformations/transformations/Sort.js";
 import { Pair } from "../../../src/engine/utility-adt/utility/adt/Pair.js";
+import { GridTableDisplay } from "../../../src/gui/grid/GridTableDisplay.js";
 import { push, write } from "../base/keyboard.js";
 import { moveAndDismissPopupsAtPos } from "../base/popup.js";
 import { selectGivenListViewItem } from "../base/listUtil.js";
-import { engineHost } from "../fixtures/app.js";
+import { keyboardMoveToTableCell } from "../base/scrollTo.js";
+import { sleep } from "../base/util.js";
+import { engineHost, type RenderedApp } from "../fixtures/app.js";
 import { at, centre, closeStarted, columnHeader, columnId, hatPart, pickAt, settled, start, table, tableId } from "./fixtures.js";
 
 afterEach(closeStarted);
@@ -175,4 +181,76 @@ test("a column clicked just after moving from the name to the expression goes in
     await vi.waitUntil(() => editorText() !== "group count + ");
     expect(editorText()).toMatch(/^group count \+ .*A/);
     expect(document.querySelector<HTMLInputElement>(".column-name-text-field")!.value).toBe("N");
+});
+
+// Manual Edit: S (a Sort of T by A), with its first cell edited to 5 and Yes said to a Manual Edit, whose
+// identifier dialog is then showing
+async function makingManualEdit(): Promise<RenderedApp>
+{
+    const a = await start(mgr => mgr.record(new Sort(mgr, at("S", 1, 10), tableId("T"), [new Pair(columnId("A"), Sort.Direction.ASCENDING)])));
+    const display = a.mainWindow()!.grid()!.displays().find(d => d.info.id === "S")!;
+    await keyboardMoveToTableCell(a.mainWindow()!.grid()!.grid, display, 0, 0);
+    await push("Enter");
+    await userEvent.keyboard("{ControlOrMeta>}a{/ControlOrMeta}");
+    await write("5");
+    await push("Enter");
+    await userEvent.click(await vi.waitUntil(() => document.querySelector(".yes-button"), { timeout: 5000 }));
+    await vi.waitUntil(() => document.activeElement?.classList.contains("manual-edit-column-field") === true, { timeout: 5000 });
+    return a;
+}
+const manualEdit = (a: RenderedApp): ManualEdit | undefined => engineHost(a).tableManager.getAllTables().find((t): t is ManualEdit => t instanceof ManualEdit);
+
+// EngineHost.setManualEditEntries (Java: TableHat's editList)
+test("clicking an entry's link goes to its cell even with no entry deleted", async () =>
+{
+    const a = await makingManualEdit();
+    await userEvent.click(document.querySelector(".id-manual-edit-byrownum")!);
+    await userEvent.click(document.querySelector(".ok-button")!);
+    await vi.waitUntil(() => manualEdit(a)?.getId().getRaw() === "Edit by row", { timeout: 5000 });
+    await settled(a);
+    const grid = a.mainWindow()!.grid()!.grid;
+    grid._test_keyboardMoveTo(new CellPosition(CellPosition.row(20), CellPosition.col(1)));
+    (await vi.waitUntil(() => document.querySelector<HTMLElement>('.table-hat[data-table="Edit by row"] .manual-edit-entries'))).click();
+    await userEvent.click(await vi.waitUntil(() => document.querySelector<HTMLElement>(".manual-edit-entries-dialog .jump-to-link"), { timeout: 5000 }));
+    await vi.waitUntil(() => document.querySelector(".manual-edit-entries-dialog") === null);
+    const d = a.mainWindow()!.grid()!.displays().find(x => x.info.id === "Edit by row")!;
+    await vi.waitUntil(() => grid._test_getSelection()?.getActivateTarget().equals(d.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS, 0)) === true, { timeout: 5000 });
+    expect(manualEdit(a)!.getReplacementCount()).toBe(1);
+});
+
+// PickManualEditIdentifierDialog's picking
+test("a column clicked in another table with one of the names doesn't identify a Manual Edit's rows", async () =>
+{
+    await makingManualEdit();
+    // (T's B isn't highlighted, and clicking it does nothing)
+    const pane = document.querySelector<HTMLElement>("[data-testid=pick-pane]")!;
+    const box = columnHeader("T", "B");
+    const point = { clientX: box.left + 5, clientY: box.top + 5 };
+    pane.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, ...point }));
+    await sleep(300);
+    expect(document.querySelector(".pick-table-overlay.pick-select")).toBeNull();
+    pane.dispatchEvent(new MouseEvent("click", { bubbles: true, ...point, button: 0 }));
+    await sleep(300);
+    expect(document.querySelector<HTMLInputElement>(".manual-edit-column-field")!.value).toBe("");
+    await pickAt(columnHeader("S", "B"));
+    await vi.waitUntil(() => document.querySelector<HTMLInputElement>(".manual-edit-column-field")?.value === "B");
+});
+
+// formulaGuidance's emptyCellSelected (Java: EmptyCellSelectedCondition)
+test("the guidance's step asking for an empty cell waits for an empty cell, not a data cell", async () =>
+{
+    const a = await start();
+    const grid = a.mainWindow()!.grid()!.grid;
+    const guidanceText = (): string | null => document.querySelector(".guidance-content")?.textContent.trim() ?? null;
+    await keyboardMoveToTableCell(grid, a.mainWindow()!.grid()!.displays().find(d => d.info.id === "T")!, 0, 1);
+    await write("=");
+    await vi.waitUntil(() => guidanceText()?.startsWith("Data tables cannot contain formulas.") === true, { timeout: 5000 });
+    await push("Escape");
+    await userEvent.click(document.querySelector(".id-guidance-show-me")!);
+    await vi.waitUntil(() => guidanceText() === "To create a transformation, click on an empty cell.");
+    await keyboardMoveToTableCell(grid, a.mainWindow()!.grid()!.displays().find(d => d.info.id === "T")!, 1, 0);
+    await sleep(300);
+    expect(guidanceText()).toBe("To create a transformation, click on an empty cell.");
+    grid._test_keyboardMoveTo(new CellPosition(CellPosition.row(8), CellPosition.col(1)));
+    await vi.waitUntil(() => guidanceText() === "Click the New... button.", { timeout: 5000 });
 });

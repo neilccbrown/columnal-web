@@ -5,9 +5,10 @@ import { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { elementFinder, lookupCondition, type Condition, type Guidance } from "../components/guidance.js";
 
 /**
- * Java: EmptyCellSelectedCondition: when a single cell is selected.
+ * Java: EmptyCellSelectedCondition: when an empty cell is selected.
  *
- * PORT-NOTE: possible Java bug, kept: any single cell (a data cell too), not only an empty one.
+ * PORT-NOTE: bug fix: Java went on when any single cell was selected (a data cell too), not only an
+ * empty one.
  */
 function emptyCellSelected(grid: VirtualGrid): Condition
 {
@@ -18,7 +19,7 @@ function emptyCellSelected(grid: VirtualGrid): Condition
         {
             if (stopped)
                 return new Pair(VirtualGrid.ListenerOutcome.REMOVE, null);
-            if (newSelection !== null && newSelection.isExactly(newSelection.getActivateTarget()))
+            if (newSelection instanceof VirtualGrid.EmptyCellSelection)
             {
                 setTimeout(onSatisfied);
                 return new Pair(VirtualGrid.ListenerOutcome.REMOVE, null);

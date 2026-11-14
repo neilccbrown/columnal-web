@@ -179,11 +179,13 @@ test("propManualEdit", () => checkProperty([new GenDataAndTransforms(), new GenR
                     rowIndexesWithUniqueKey.push(rowIndexes[0]!);
             });
         }
+        // PORT-NOTE: bug fix: Java only filled the list for a key column, so a Manual Edit by row number
+        // always gave up below; each row number is unique.
+        else
+            rowIndexesWithUniqueKey.push(...Array.from({ length: findSrc().getData().getLength() }, (_x, i) => i));
     }
 
     // Can happen e.g. with boolean keys, just going to have to give up:
-    // (PORT-NOTE: as in Java, which only filled the list for a key column, so a Manual Edit by row
-    // number always gives up here)
     if (rowIndexesWithUniqueKey.length === 0)
         return;
 

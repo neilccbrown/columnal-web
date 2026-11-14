@@ -430,6 +430,8 @@ interface ManualEditIdentifierFor
     readonly from: "creation" | "hat";
     readonly startingValue: string | null | undefined;
     readonly columns: readonly string[];
+    // The tables whose columns can be clicked: the source and the Manual Edit
+    readonly tables: readonly string[];
 }
 const manualEditIdentifierFor = shallowRef<ManualEditIdentifierFor | null>(null);
 const manualEditIdentifierOpen = shallowRef(false);
@@ -440,8 +442,8 @@ async function openManualEditIdentifierDialog(table: string, from: "creation" | 
     if (details?.kind !== "manualEdit")
         return;
     manualEditIdentifierFor.value = from === "creation"
-        ? { table, from, startingValue: undefined, columns: details.srcColumns }
-        : { table, from, startingValue: details.identifier, columns: details.columns };
+        ? { table, from, startingValue: undefined, columns: details.srcColumns, tables: [details.src, table] }
+        : { table, from, startingValue: details.identifier, columns: details.columns, tables: [details.src, table] };
     manualEditIdentifierOked = false;
     manualEditIdentifierOpen.value = true;
 }
@@ -833,6 +835,7 @@ defineExpose({
     v-model:open="manualEditIdentifierOpen"
     :starting-value="manualEditIdentifierFor.startingValue"
     :columns="manualEditIdentifierFor.columns"
+    :tables="manualEditIdentifierFor.tables"
     @ok="manualEditIdentifierChosen"
     @picking="mode => dialogPicking('column', mode)"
   />

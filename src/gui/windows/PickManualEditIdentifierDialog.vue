@@ -21,6 +21,8 @@ const props = defineProps<{
     startingValue: string | null | undefined,
     // The columns which can identify the rows
     columns: readonly string[],
+    // The tables whose columns can be clicked in the grid
+    tables: readonly string[],
 }>();
 const emit = defineEmits<{
     // The column, or null for the row number
@@ -59,10 +61,11 @@ function calculateResult(): Either<string, string | null>
 }
 
 // Java: enableColumnPickingMode while showing: a column with one of the names picks it.
-// PORT-NOTE: possible Java bug, kept: a column of any table with one of the names, not only the source's.
+// PORT-NOTE: bug fix: Java took a column of any table with one of the names; here only the source's or
+// the Manual Edit's.
 const picking = markRaw<PickingMode>({
     kind: "column",
-    include: (_table, column) => column !== null && props.columns.includes(column),
+    include: (table, column) => column !== null && props.tables.includes(table) && props.columns.includes(column),
     onPick: picked =>
     {
         if (picked.column === null)

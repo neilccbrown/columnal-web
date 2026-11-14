@@ -183,9 +183,9 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   starts with "=" (`cell-editor.md`): a small panel near the top right of the window, 300 px wide, its
   background pulsing between grey and white, which can be dragged, with Close. Its steps: "Data tables
   cannot contain formulas.  To perform a calculation, create a Calculate transformation." (with "Show
-  Me..."); "To create a transformation, click on an empty cell." (until a single cell is selected: any
-  cell, as Java has it); "Click the New... button." (the empty cell's button outlined in blue, until the
-  new-table dialog shows); "Click the Transform button." (outlined, until the transformations show); "Click
+  Me..."); "To create a transformation, click on an empty cell." (until an empty cell is selected; Java
+  went on for any single cell, fixed); "Click the New... button." (the empty cell's button outlined in
+  blue, until the new-table dialog shows); "Click the Transform button." (outlined, until the transformations show); "Click
   the Calculate button." (outlined, until the table picker shows); "Click on the table you want to use in the
   calculation" (the table outlined, until the column dialog shows); "Enter the column name and expression you
   want to calculate, then click Ok." (until it closes); then it closes. One shows at a time (Java opened

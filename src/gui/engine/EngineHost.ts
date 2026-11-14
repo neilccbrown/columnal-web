@@ -832,12 +832,12 @@ export class EngineHost implements EngineApi
             }
             const newValues = HashMap.javaOrder<ColumnId, ManualEdit.ColumnReplacementValues>();
             items.forEach((m, c) => newValues.set(c, new ManualEdit.ColumnReplacementValues(manualEdit.getData().getColumn(c).getType().getType(), m.map(([k, v]) => new Pair<Value, Either<string, Value>>(k.getValue(), v.map(x => x.getValue()))))));
-            if (newValues.equals(manualEdit.getReplacements()))
-                return { jumpTo: null };
-            this.tableManager.edit(manualEdit, manualEdit.swapReplacementsTo([...newValues.entries()]), renameOnEdit("IF_OLD_AUTO", ManualEdit.suggestedName(manualEdit.getReplacementIdentifier(), newValues)));
-            // PORT-NOTE: Java bug, kept: the jump to the entry clicked was only made after a change
-            // (inside the check above), so clicking an entry with none deleted did nothing.
-            return { jumpTo: jumpEntry === null ? null : this.manualEditLocation(manualEdit, jumpEntry) };
+            // PORT-NOTE: bug fix: Java only jumped to the entry clicked after a change (inside the check
+            // below), so clicking an entry with none deleted did nothing; here it jumps either way.
+            const jump = jumpEntry === null ? null : this.manualEditLocation(manualEdit, jumpEntry);
+            if (!newValues.equals(manualEdit.getReplacements()))
+                this.tableManager.edit(manualEdit, manualEdit.swapReplacementsTo([...newValues.entries()]), renameOnEdit("IF_OLD_AUTO", ManualEdit.suggestedName(manualEdit.getReplacementIdentifier(), newValues)));
+            return { jumpTo: jump };
         }
         catch (e)
         {

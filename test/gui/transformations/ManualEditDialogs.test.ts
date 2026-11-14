@@ -76,7 +76,7 @@ describe("Editing a transformation's cell", () =>
         await moveAndDismissPopupsAtPos(centre(".ok-button"));
         await userEvent.click(document.querySelector(".ok-button")!);
         await vi.waitUntil(() => document.querySelector(".error-label")?.textContent.includes("Column not found: Q") === true);
-        await pickAt(columnHeader("T", "B"));
+        await pickAt(columnHeader("S", "B"));
         await vi.waitUntil(() => document.querySelector<HTMLInputElement>(".manual-edit-column-field")?.value === "B");
         await userEvent.click(document.querySelector(".ok-button")!);
         await vi.waitUntil(() => manualEdits(a)[0]?.getReplacementIdentifier()?.getRaw() === "B", { timeout: 5000 });
@@ -109,7 +109,7 @@ describe("A Manual Edit's hat", () =>
         return a;
     };
 
-    test("its entries: links to them, which only go to one if one was deleted (Java's bug, kept); deleting them all, \"No edits\"", async () =>
+    test("its entries: links to them; deleting them all, \"No edits\"", async () =>
     {
         const a = await withManualEdit();
         const entries = (): string[] => [...document.querySelectorAll(".manual-edit-entries-dialog .fancy-list-cell")].map(c => [...c.querySelectorAll(".jump-to-link")].map(l => l.textContent.trim()).join("|"));
@@ -120,15 +120,8 @@ describe("A Manual Edit's hat", () =>
         };
         await openEntries();
         expect(entries()).toEqual(["0|A|5", "1|A|7"]);
-        // Clicking one with none deleted closes it, but doesn't go to it:
-        a.mainWindow()!.grid()!.grid._test_keyboardMoveTo(new CellPosition(CellPosition.row(20), CellPosition.col(1)));
-        await userEvent.click(document.querySelectorAll<HTMLElement>(".jump-to-link")[3]!);
-        await vi.waitUntil(() => document.querySelector(".manual-edit-entries-dialog") === null);
-        await sleep(500);
-        expect(a.mainWindow()!.grid()!.grid._test_getSelection()?.getActivateTarget().rowIndex).toBe(20);
 
         // Deleting the first, then clicking the second, goes to it:
-        await openEntries();
         await userEvent.click(document.querySelector(".manual-edit-entries-dialog .fancy-list-cell .small-delete")!);
         await vi.waitUntil(() => entries().length === 1, { timeout: 5000 });
         await userEvent.click(document.querySelector<HTMLElement>(".jump-to-link")!);

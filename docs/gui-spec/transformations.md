@@ -249,15 +249,15 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
   rows (as for a new Manual Edit; errors: "Error creating edit", "Error editing manual edit").
 - The identifier dialog (not modal): "Pick column to use to identify the edited rows if the source data
   changes:", then radio buttons "By identifier column:" (with a field: completions of the columns starting
-  with the text) and "By row number (not recommended)" (the field disabled), and the error. A column clicked
-  in the grid (any table's column with one of the names) chooses it by column. OK with a name that isn't one
+  with the text) and "By row number (not recommended)" (the field disabled), and the error. A column of the
+  source or the Manual Edit clicked in the grid chooses it by column. OK with a name that isn't one
   of the columns: "Column not found: <name>".
 - The entries dialog (resizable, at least 300 by 200): the entries, by column then key, each its key (a
   value of the identifying column, or the row number), its column and its value (an invalid value's text),
   as links, deletable with the cross; "No edits" when there are none; Close, centred. Closing it (Close or
   Escape) keeps the entries not deleted, renaming the Manual Edit if its name was automatic (error: "Error
   deleting manual edits"). Clicking an entry's link does too, then selects the entry's cell in the Manual
-  Edit, but only if an entry was deleted (Java's bug, kept: the jump was inside its check for a change).
+  Edit (Java only did so if an entry was deleted; fixed).
 
 ## Web differences
 

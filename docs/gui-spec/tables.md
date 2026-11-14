@@ -29,6 +29,10 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
 
 - A selected empty cell shows a "New…" button over it (at least the cell's width). Clicking it, or
   activating the cell (Enter), offers to make a table there.
+- Ctrl/Cmd+V on a selected empty cell, with Columnal's values on the clipboard (from Copy, or a table's
+  "Copy values"), makes a data table of them there, its name made up, and selects it (error: "Error
+  pasting table data"). Other clipboard content does nothing. `MainWindow.vue`'s `pasteIntoEmpty`,
+  `EngineHost.pasteTable`.
 - The new-table dialog (380 × 290, centred on the click, or on the cell's centre from the keyboard; Cancel):
   "Tables are either plain data (left) or transformations of other tables (right)", then two columns of
   buttons, each with its title and a small grey explanation: Data Entry ("Type in data directly."), Import

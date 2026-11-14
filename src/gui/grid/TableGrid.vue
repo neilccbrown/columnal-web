@@ -298,7 +298,10 @@ function tableSelected(display: GridTableDisplay): boolean
 
 function onKeyDown(e: KeyboardEvent): void
 {
-    if (e.target !== scroller.value)
+    // (Keys that a focused button of the grid's, an arrow or the "New…" button, doesn't use, go on to the
+    // grid, as in Java, where they bubble up to it)
+    const fromGridButton = e.target instanceof HTMLButtonElement && e.target.matches(".expand-arrow, .create-table-grid-button") && e.key !== "Enter" && e.key !== " ";
+    if (e.target !== scroller.value && !fromGridButton)
         return;
     const grid = props.grid;
     const shortcut = isMac() ? e.metaKey : e.ctrlKey;

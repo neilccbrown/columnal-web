@@ -7,6 +7,7 @@ import type { Guidance } from "../components/guidance.js";
 import { formulaGuidance } from "./formulaGuidance.js";
 import type { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { showAlert } from "../alerts.js";
+import { readClipboardRecords } from "../clipboard.js";
 import AboutDialog from "../components/dialogs/AboutDialog.vue";
 import MenuBar from "../components/menus/MenuBar.vue";
 import { checkMenuItem, menu, menuItem, separator, type MenuItem } from "../components/menus/menus.js";
@@ -59,9 +60,7 @@ const menuShownAt = shallowRef(Date.now());
 let cancelSave: ReturnType<typeof setTimeout> | null = null;
 const manager: VirtualGrid.VirtualGridManager = markRaw({
     createTable: (position, point) => createTable(position, point as { x: number, y: number }),
-    // PORT-DEFERRED: pasting into an empty cell, which makes a table of the clipboard's values (Phase 11,
-    // with importing)
-    pasteIntoEmpty: () => {},
+    pasteIntoEmpty: target => void pasteIntoEmpty(target).catch(ignoreClosed),
     notifyColumnSizeChanged: () =>
     {
         // Save after five seconds of no resizing:
@@ -96,6 +95,23 @@ const stopListening = engine.client.listen(event =>
 // Java: View.createTable: what to make, at the empty cell
 const newTable = shallowRef<{ position: CellPosition, point: { x: number, y: number } } | null>(null);
 const newTableOpen = shallowRef(false);
+// Java: View's pasteIntoEmpty: a data table of the clipboard's values (if it has Columnal's), made at the
+// cell, then selected
+async function pasteIntoEmpty(target: CellPosition): Promise<void>
+{
+    const result = await engine.client.request("pasteTable", await readClipboardRecords(), target.columnIndex, target.rowIndex);
+    if (result === null)
+        return;
+    if ("title" in result)
+    {
+        showAlert(result);
+        return;
+    }
+    const display = await waitForTable(result.id);
+    if (display !== null)
+        engineGrid.value?.grid.select(new EntireTableSelection(display, target.columnIndex));
+}
+
 function createTable(position: CellPosition, point: { x: number, y: number }): void
 {
     newTable.value = { position, point };

@@ -1,4 +1,5 @@
-// Writing to the system clipboard (Java: ClipboardUtils put the content on the system clipboard).
+// Writing to and reading from the system clipboard (Java: ClipboardUtils put the content on the system
+// clipboard, and read it from there).
 // The engine gives the content as a map from MIME type to text: "text/plain", and Columnal's own
 // format ("application/records"), which a web page can only write as a "web " custom format, where the
 // browser supports them.
@@ -24,4 +25,25 @@ export async function writeClipboard(content: Readonly<Record<string, string>>):
     {
         Log.log("Copying to the clipboard", e);
     }
+}
+
+/**
+ * Java: ClipboardUtils.loadValuesFromClipboard's reading of the clipboard: its Columnal content (the
+ * "web " format), or null if there is none (or it can't be read).
+ */
+export async function readClipboardRecords(): Promise<string | null>
+{
+    try
+    {
+        for (const item of await navigator.clipboard.read())
+        {
+            if (item.types.includes("web application/records"))
+                return await (await item.getType("web application/records")).text();
+        }
+    }
+    catch (e)
+    {
+        Log.log("Pasting from the clipboard", e);
+    }
+    return null;
 }

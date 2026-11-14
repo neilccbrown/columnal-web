@@ -138,7 +138,7 @@ defineExpose({
       <input
         :id="radioName + '-whole'"
         type="radio"
-        class="split-by-whole-table"
+        class="split-by-whole-table id-agg-split-whole-table"
         :name="radioName"
         :checked="wholeTable"
         @change="chooseWholeTable(true)"
@@ -148,7 +148,7 @@ defineExpose({
       <input
         :id="radioName + '-columns'"
         type="radio"
-        class="split-by-columns"
+        class="split-by-columns id-agg-split-columns"
         :name="radioName"
         :checked="!wholeTable"
         @change="chooseWholeTable(false)"

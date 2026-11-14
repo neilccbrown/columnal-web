@@ -63,6 +63,9 @@ Web: `src/gui/grid/` (`EngineGrid.vue`, `TableGrid.vue`, `GridTable.vue`, `GridT
   Delete or Backspace deletes it; F11 or Ctrl/Cmd+C copies, Ctrl/Cmd+V pastes; typing a character
   starts editing with it, unless the key is a menu item's shortcut (e.g. Alt+Shift+N, which types a
   character on macOS; Java's accelerators act on the key's press, typing on the character). Moving keeps the selection in view, scrolling smoothly.
+  With the focus on one of the grid's buttons (an add-row or add-column arrow, or the "New…" button,
+  focused by clicking it), Enter and Space press the button and other keys go on to the grid (as in
+  Java, where they bubble up to it).
 - A click (still since the press): on a cell selects it (with Shift, extends the selection to it); on
   an empty cell (not in row or column 0) selects it; on the cell that is selected by itself, or a double
   click, starts editing (`cell-editor.md`). A click on a table's name row selects the entire table (focused on the column

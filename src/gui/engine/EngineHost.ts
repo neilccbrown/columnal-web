@@ -274,6 +274,25 @@ export class EngineHost implements EngineApi
         }
     }
 
+    // Java: View's pasteIntoEmpty
+    public pasteTable(content: string | null, columnIndex: number, rowIndex: number): { readonly id: string } | EngineAlert | null
+    {
+        const loaded = ClipboardUtils.loadValuesFromClipboard(this.tableManager.getTypeManager(), content);
+        if (loaded === null || loaded.length === 0)
+            return null;
+        try
+        {
+            const initialLoadDetails = new Table.InitialLoadDetails(null, null, new CellPosition(CellPosition.row(rowIndex), CellPosition.col(columnIndex)), null);
+            const data = new ImmediateDataSource(this.tableManager, initialLoadDetails, new EditableRecordSet(loaded.map((c, i) => c.load(i)), () => Math.max(0, ...loaded.map(c => c.dataValues.length))));
+            this.tableManager.record(data);
+            return { id: data.getId().getRaw() };
+        }
+        catch (e)
+        {
+            return alertFor("error.pasting.table.data", e);
+        }
+    }
+
     public addColumn(id: string, version: number, beforeColumn: string | null, column: NewColumnDetails): EngineAlert | null
     {
         const table = this.current(id, version);

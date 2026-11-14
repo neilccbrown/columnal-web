@@ -1192,10 +1192,28 @@ Steps (each a checkpoint with the project owner):
      never tested past making it (it now lists every row).
 6. `TestCreateEditTransformation` (Aggregate and Check, made and edited through the GUI), with
    `GenDataAndTransforms` (ported in step 5) and the test helpers `CreateDataTableTrait` and `EnterColumnDetailsTrait`.
-7. Explanations: `ExplanationDisplay` and a cell's "Why?". Tests: `TestExplanationDisplay`.
+   - Done: `test/gui/transformations/CreateEditTransformation.test.ts` (the port), with
+     `test/gui/base/createDataTable.ts` and `enterColumnDetails.ts` (tested in `Helpers.test.ts`, since
+     Java only uses it in ignored tests). Brought forward from step 8, as `CreateDataTableTrait` pastes:
+     pasting Columnal's values into an empty cell makes a data table (`MainWindow.vue`'s `pasteIntoEmpty`,
+     `EngineHost.pasteTable`, `clipboard.ts`'s `readClipboardRecords`). The split radio buttons have Java's
+     `id-agg-split-*` classes. Keys on a focused grid button (an arrow, or "New…") other than Enter and
+     Space now go on to the grid, as in Java (they were ignored, so after adding a column by its arrow
+     the keyboard did nothing until the grid was clicked).
+   - Java test bugs: `testAggregate` clicked the split list's Add after choosing "Each unique value of",
+     which already adds a blank column, so the dialog couldn't be OKed (fixed in the port, PORT-NOTE);
+     `testCheck` picks from ALL_ROWS, NO_ROWS, ALL_ROWS, so ANY_ROW is never tested (kept, PORT-NOTE).
+   - Found (not this step's, to investigate; it fails the same at step 5's commit):
+     `BlankMainWindow.test.ts`'s `propEnterColumn` fails with seed -2117298089: a text value typed onto
+     a selected cell (typing starts the edit) loses a character ("󹡒t𘭺e" entered as "t𘭺e", the first
+     character outside the Basic Multilingual Plane), perhaps a key arriving before the editor is ready.
+   - For step 7: `testCheck`'s last part (clicking a failing Check's result, or Enter on it, shows its
+     explanation, `.explanation-flow`) is PORT-DEFERRED in the port.
+7. Explanations: `ExplanationDisplay` and a cell's "Why?". Tests: `TestExplanationDisplay` (and the end of
+   `TestCreateEditTransformation.testCheck`, step 6).
 8. Importing: the import dialog with its live preview (`ImportChoicesDialog`, `ImporterGUI`, rebuilt), the
-   new-table dialog's Import File and Import URL, pasting into an empty cell to make a table, and the rest
-   of clipboard import and export. Tests: `PropFormat`, `TestExportToCSV`.
+   new-table dialog's Import File and Import URL, and the rest of clipboard import and export (pasting
+   into an empty cell was done in step 6). Tests: `PropFormat`, `TestExportToCSV`.
 9. Tidy up: the View menu's Task Manager (`TaskManagerWindow`, listing the engine's `Workers` tasks),
    PORT-STATUS, `docs/gui-spec/`, and carry-overs to Phase 12 or 13.
 

@@ -126,6 +126,9 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-transformations/src/test/java/test/gen/GenDataAndTransforms.java", ["test/gui/transformations/GenDataAndTransforms.ts"]],
     ["tests-gui-transformations/src/test/java/test/gui/transformation/TestJoin.java", ["test/gui/transformations/Join.test.ts"]],
     ["tests-gui-transformations/src/test/java/test/gui/transformation/TestHideColumns.java", ["test/gui/transformations/HideColumns.test.ts"]],
+    ["tests-gui-transformations-create-edit/src/test/java/test/gui/transformation/TestCreateEditTransformation.java", ["test/gui/transformations/CreateEditTransformation.test.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/CreateDataTableTrait.java", ["test/gui/base/createDataTable.ts"]],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/EnterColumnDetailsTrait.java", ["test/gui/base/enterColumnDetails.ts"]],
 ]);
 
 // The kind of TS test (engine, gui-logic or gui) a Java test file in a test module becomes:

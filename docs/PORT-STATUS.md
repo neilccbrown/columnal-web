@@ -717,7 +717,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | ✅ tests-basic | 17 / 17 | 1783 / 1783 (100%) | 9 / 9 (100%) |
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
-| tests-gui-base | 18 / 26 | 2823 / 4004 (71%) |  |
+| tests-gui-base | 20 / 26 | 3059 / 4004 (76%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
 | tests-gui-central | 19 / 21 | 3313 / 3623 (91%) | 37 / 47 (79%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
@@ -732,7 +732,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-gui-side | 2 / 2 | 645 / 645 (100%) | 8 / 8 (100%) |
 | ✅ tests-gui-tables | 3 / 3 | 1635 / 1635 (100%) | 12 / 12 (100%) |
 | ✅ tests-gui-transformations | 8 / 8 | 2251 / 2251 (100%) | 22 / 22 (100%) |
-| tests-gui-transformations-create-edit | 0 / 1 | 0 / 651 (0%) | 0 / 2 (0%) |
+| ✅ tests-gui-transformations-create-edit | 1 / 1 | 651 / 651 (100%) | 2 / 2 (100%) |
 | ✅ tests-gui-type-editor | 4 / 4 | 954 / 954 (100%) | 57 / 57 (100%) |
 | ✅ tests-tables | 28 / 28 | 3385 / 3385 (100%) | 18 / 18 (100%) |
 
@@ -827,8 +827,8 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ClickTableLocationTrait.java` | `test/gui/base/clickTableLocation.ts` | 88 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ClipboardTrait.java` | `test/gui/base/clipboard.ts` | 50 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ComboUtilTrait.java` | `test/gui/base/comboUtil.ts` | 61 | ✅ |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/CreateDataTableTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/CreateDataTableTrait.ts` | 149 | – |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterColumnDetailsTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/EnterColumnDetailsTrait.ts` | 87 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/CreateDataTableTrait.java` | `test/gui/base/createDataTable.ts` | 149 | ✅ |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterColumnDetailsTrait.java` | `test/gui/base/enterColumnDetails.ts` | 87 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterExpressionTrait.java` | `test/gui/base/enterExpression.ts` | 549 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterStructuredValueTrait.java` | `test/gui-logic/stf/fixtures/textToType.ts` | 286 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/EnterTypeTrait.java` | `test/gui/base/enterType.ts` | 168 | ✅ |
@@ -1005,7 +1005,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-transformations-create-edit/src/test/java/test/gui/transformation/TestCreateEditTransformation.java` | `test/gui/tests-gui-transformations-create-edit/gui/transformation/TestCreateEditTransformation.test.ts` | 651 | – (0/2 tests) |
+| `tests-gui-transformations-create-edit/src/test/java/test/gui/transformation/TestCreateEditTransformation.java` | `test/gui/transformations/CreateEditTransformation.test.ts` | 651 | ✅ (parts deferred) (2/2 tests) |
 
 </details>
 

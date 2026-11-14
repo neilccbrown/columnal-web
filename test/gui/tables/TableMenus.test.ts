@@ -3,11 +3,14 @@
 // on a table's header rows.
 import { afterEach, expect, test, vi } from "vitest";
 import { userEvent } from "vitest/browser";
+import { CellPosition } from "../../../src/engine/data/data/CellPosition.js";
+import { ImmediateDataSource } from "../../../src/engine/data/data/DataSources.js";
 import { EntireTableSelection } from "../../../src/gui-logic/table-gui/gui/table/EntireTableSelection.js";
 import { isMac } from "../../../src/gui/shortcuts.js";
 import { copyToClipboard } from "../base/clipboard.js";
 import { push, write } from "../base/keyboard.js";
 import { keyboardMoveTo } from "../base/scrollTo.js";
+import { sleep } from "../base/util.js";
 import { clickMenu, closeApp, engineHost, renderApp, waitForLoaded, type RenderedApp } from "../fixtures/app.js";
 import { GRID_FIXTURE } from "../fixtures/gridFixture.js";
 
@@ -100,6 +103,57 @@ test("copy values copies all the table's values", async () =>
         await userEvent.click(document.querySelector(".id-tableDisplay-menu-copyValues")!);
     });
     expect(text).toBe("1, \"a\", 2\n2.5, \"b\", 5\n-3, \"c\", -6");
+});
+
+test("pasting copied values into an empty cell makes a data table of them there, selected; plain text doesn't", async () =>
+{
+    const a = await start();
+    const target = new CellPosition(CellPosition.row(20), CellPosition.col(2));
+    const tables = (): number => engineHost(a).tableManager.getAllTables().length;
+    // Plain text does nothing:
+    await navigator.clipboard.writeText("1, 2");
+    await keyboardMoveTo(grid(a).grid, target);
+    await userEvent.keyboard("{ControlOrMeta>}v{/ControlOrMeta}");
+    await sleep(500);
+    expect(tables()).toBe(2);
+
+    await copyToClipboard(async () =>
+    {
+        await tableMenu("C");
+        await userEvent.click(document.querySelector(".id-tableDisplay-menu-copyValues")!);
+    });
+    await keyboardMoveTo(grid(a).grid, target);
+    await userEvent.keyboard("{ControlOrMeta>}v{/ControlOrMeta}");
+    await vi.waitUntil(() => tables() === 3, { timeout: 5000 });
+    const pasted = engineHost(a).tableManager.getAllTables().find(t => !["T", "C"].includes(t.getId().getRaw()))!;
+    expect(pasted).toBeInstanceOf(ImmediateDataSource);
+    const pastedDisplay = await vi.waitUntil(() => display(a, pasted.getId().getRaw()), { timeout: 5000 });
+    expect(pastedDisplay.getPosition().equals(target)).toBe(true);
+    await vi.waitUntil(() => grid(a).grid._test_getSelection() instanceof EntireTableSelection, { timeout: 5000 });
+    const text = await copyToClipboard(async () =>
+    {
+        await tableMenu(pasted.getId().getRaw());
+        await userEvent.click(document.querySelector(".id-tableDisplay-menu-copyValues")!);
+    });
+    expect(text).toBe("1, \"a\", 2\n2.5, \"b\", 5\n-3, \"c\", -6");
+});
+
+test("keys on a focused add-column arrow (after its dialog) go on to the grid, but Enter stays with it", async () =>
+{
+    const a = await start();
+    const arrow = await vi.waitUntil(() => headerArrow("T"));
+    await userEvent.click(arrow);
+    await vi.waitUntil(() => document.querySelector(".edit-column-content") !== null, { timeout: 5000 });
+    await userEvent.click(document.querySelector(".cancel-button")!);
+    await vi.waitUntil(() => document.querySelector(".edit-column-content") === null);
+    arrow.focus();
+    await userEvent.keyboard("{ControlOrMeta>}{Home}{/ControlOrMeta}");
+    await push("ArrowDown");
+    await vi.waitUntil(() => grid(a).grid._test_getSelection()?.getActivateTarget().equals(new CellPosition(CellPosition.row(2), CellPosition.col(1))) === true);
+    // (Enter clicks the arrow, not activating the selection)
+    await push("Enter");
+    await vi.waitUntil(() => document.querySelector(".edit-column-content") !== null, { timeout: 5000 });
+    await userEvent.click(document.querySelector(".cancel-button")!);
 });
 
 test("recipes make a transformation of the column, to the right of the others", async () =>
@@ -279,3 +333,12 @@ test("editing a column starts from its own default value, which OK keeps", async
     const after = n().getAllTables().find(t => t.getId().getRaw() === "T")!;
     expect(after.getData().getColumns()[0]!.getDefaultValue()!.toString()).toBe("7");
 });
+
+// The table's add-column arrow by its header row: the one just right of the table's element
+function headerArrow(id: string): HTMLElement | undefined
+{
+    const table = document.querySelector(`.table[data-table="${id}"]`)?.getBoundingClientRect();
+    if (table === undefined)
+        return undefined;
+    return [...document.querySelectorAll<HTMLElement>(".expand-arrow.expand-right-header")].find(b => Math.abs(b.getBoundingClientRect().left - table.right) < 3 && b.getBoundingClientRect().top < table.top + 60);
+}

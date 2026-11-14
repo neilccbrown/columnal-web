@@ -1,5 +1,5 @@
 // The test helpers (ports of the Java GUI tests' generic traits), each against a small component.
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-vue";
 import { SelectContent, SelectItem, SelectItemText, SelectPortal, SelectRoot, SelectTrigger, SelectValue, SelectViewport } from "reka-ui";
@@ -7,8 +7,16 @@ import { defineComponent, h, ref } from "vue";
 import LightDialog from "../../../src/gui/components/dialogs/LightDialog.vue";
 import ErrorableTextField from "../../../src/gui/components/ErrorableTextField.vue";
 import { ErrorableTextField as Conversion } from "../../../src/gui-logic/utility-gui/utility/gui/ErrorableTextField.js";
+import { ColumnId } from "../../../src/engine/identifiers/id/ColumnId.js";
+import { TableId } from "../../../src/engine/identifiers/id/TableId.js";
+import { JavaRandom } from "../../../src/engine/java/JavaRandom.js";
+import { DataType } from "../../../src/engine/types/data/datatype/DataType.js";
+import { DataTypeUtility } from "../../../src/engine/types/data/datatype/DataTypeUtility.js";
+import { engineHost } from "../fixtures/app.js";
+import { closeStarted, start } from "../transformations/fixtures.js";
 import { copyToClipboard } from "./clipboard.js";
 import { selectGivenComboBoxItem } from "./comboUtil.js";
+import { ColumnDialogDetails, enterColumnDetails } from "./enterColumnDetails.js";
 import { checkDialogFocused, getFocusOwner, getFocusOwnerAs } from "./focusOwner.js";
 import { selectGivenListViewItem } from "./listUtil.js";
 import { moveAndDismissPopupsAtPos } from "./popup.js";
@@ -139,3 +147,29 @@ describe("scrollTo", () =>
         expect(scroller.scrollLeft).toBeGreaterThan(400);
     });
 });
+
+describe("enterColumnDetails", () =>
+{
+    afterEach(closeStarted);
+
+    it("fills in the column dialog (name, type, default value) and clicks OK", async () =>
+    {
+        const a = await start();
+        await userEvent.click(await vi.waitUntil(() => headerArrow("T")));
+        await vi.waitUntil(() => document.activeElement?.classList.contains("column-name-text-field") === true, { timeout: 5000 });
+        await enterColumnDetails(new ColumnDialogDetails(new ColumnId("New"), DataType.TEXT, DataTypeUtility.value("hi")), new JavaRandom(1n));
+        await vi.waitUntil(() => engineHost(a).tableManager.getSingleTableOrThrow(new TableId("T")).getData().getColumns().length === 3, { timeout: 5000 });
+        const column = engineHost(a).tableManager.getSingleTableOrThrow(new TableId("T")).getData().getColumn(new ColumnId("New"));
+        expect(column.getType().getType().equals(DataType.TEXT)).toBe(true);
+        expect(column.getType().getCollapsed(0)).toBe("hi");
+    });
+});
+
+// The table's add-column arrow by its header row: the one just right of the table's element
+function headerArrow(id: string): HTMLElement | undefined
+{
+    const table = document.querySelector(`.table[data-table="${id}"]`)?.getBoundingClientRect();
+    if (table === undefined)
+        return undefined;
+    return [...document.querySelectorAll<HTMLElement>(".expand-arrow.expand-right-header")].find(b => Math.abs(b.getBoundingClientRect().left - table.right) < 3 && b.getBoundingClientRect().top < table.top + 60);
+}

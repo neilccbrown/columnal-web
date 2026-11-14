@@ -298,6 +298,11 @@ export interface EngineApi
      * blank, is made up.  Gives an alert if it failed.
      */
     createDataTable(tableName: string, column: NewColumnDetails, columnIndex: number, rowIndex: number): EngineAlert | null;
+    /**
+     * Makes a data table of the clipboard's Columnal content, at the position (Java: View's
+     * pasteIntoEmpty); its id, null if there is nothing to paste, or an alert if it failed.
+     */
+    pasteTable(content: string | null, columnIndex: number, rowIndex: number): { readonly id: string } | EngineAlert | null;
     /** Adds a column to a data table, before the given column, or at the end (Java: TableDisplay.addColumnBefore_IDS). */
     addColumn(id: string, version: number, beforeColumn: string | null, column: NewColumnDetails): EngineAlert | null;
     /** Adds rows at the end of the table (Java: ExpandTableArrowSupplier's add-row button). */
@@ -466,7 +471,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "pasteTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

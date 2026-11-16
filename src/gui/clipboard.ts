@@ -28,22 +28,27 @@ export async function writeClipboard(content: Readonly<Record<string, string>>):
 }
 
 /**
- * Java: ClipboardUtils.loadValuesFromClipboard's reading of the clipboard: its Columnal content (the
- * "web " format), or null if there is none (or it can't be read).
+ * Java: what View's pasteIntoEmpty reads from the clipboard: its Columnal content (the "web " format,
+ * as ClipboardUtils.loadValuesFromClipboard reads it), and its text; each null if there is none (or it
+ * can't be read).
  */
-export async function readClipboardRecords(): Promise<string | null>
+export async function readClipboard(): Promise<{ readonly records: string | null, readonly text: string | null }>
 {
+    let records: string | null = null;
+    let text: string | null = null;
     try
     {
         for (const item of await navigator.clipboard.read())
         {
-            if (item.types.includes("web application/records"))
-                return await (await item.getType("web application/records")).text();
+            if (records === null && item.types.includes("web application/records"))
+                records = await (await item.getType("web application/records")).text();
+            if (text === null && item.types.includes("text/plain"))
+                text = await (await item.getType("text/plain")).text();
         }
     }
     catch (e)
     {
         Log.log("Pasting from the clipboard", e);
     }
-    return null;
+    return { records, text };
 }

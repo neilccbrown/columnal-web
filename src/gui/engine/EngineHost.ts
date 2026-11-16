@@ -49,7 +49,7 @@ import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
 import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
-import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type TypeTransformInfo, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExplanationInfo, type ExplanationTarget, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type TypeTransformInfo, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExplanationInfo, type ExplanationTarget, type ExporterInfo, type ImportChoiceChange, type ImporterInfo, type ImportPreview, type ImportTrim, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 import { columnLookupInfo } from "./columnLookupInfo.js";
 import { typeTransforms } from "./typeTransforms.js";
 import { entryInfo, manualEditEntries, type ManualEditEntry } from "./manualEditEntries.js";
@@ -68,6 +68,9 @@ import { EvaluateState } from "../../engine/expressions/transformations/expressi
 import { EvaluationException } from "../../engine/expressions/transformations/expression/EvaluationException.js";
 import type { Explanation } from "../../engine/expressions/transformations/expression/explanation/Explanation.js";
 import { explanationInfo } from "./explanations.js";
+import { ImportSessions } from "./importSessions.js";
+import { JavaFile } from "../../engine/java/JavaFile.js";
+import { javaUtf8Bytes } from "../../engine/java/JavaString.js";
 import { Concatenate } from "../../engine/transformations/transformations/Concatenate.js";
 import { HideColumns } from "../../engine/transformations/transformations/HideColumns.js";
 import { Join } from "../../engine/transformations/transformations/Join.js";
@@ -93,6 +96,8 @@ export class EngineHost implements EngineApi
     private nextVersion = 1;
     // The edits of transformations' cells awaiting the GUI's answer to "Create edit transformation?"
     // (Java: TableDisplay.promptForTransformationEdit's arguments, while its Alert showed):
+    // The importers' dialogs, and the import dialog's sessions:
+    private readonly imports: ImportSessions;
     private readonly transformationEditPrompts = new Map<number, { readonly table: Table, readonly index: number, readonly column: Pair<ColumnId, DataType>, readonly value: Either<string, Value> }>();
     private nextPrompt = 1;
     // Each table's position.  (Java: its TableDisplay, which the table asks for its position when
@@ -113,6 +118,7 @@ export class EngineHost implements EngineApi
     {
         this.post = post;
         this.tableManager = new TableManager(TransformationManager.getInstance(), { getHandledContent: () => new Map() });
+        this.imports = new ImportSessions(this.tableManager, e => this.sendEvent(e), (c, row) => cellContent(c, 0, row), typeText);
         this.tableManager.addListener({
             // Java: View's TableManagerListener, which saves after each
             removeTable: t =>
@@ -279,14 +285,28 @@ export class EngineHost implements EngineApi
     }
 
     // Java: View's pasteIntoEmpty
-    public pasteTable(content: string | null, columnIndex: number, rowIndex: number): { readonly id: string } | EngineAlert | null
+    public pasteTable(content: string | null, text: string | null, columnIndex: number, rowIndex: number): { readonly id: string } | EngineAlert | null
     {
+        const target = new CellPosition(CellPosition.row(rowIndex), CellPosition.col(columnIndex));
         const loaded = ClipboardUtils.loadValuesFromClipboard(this.tableManager.getTypeManager(), content);
-        if (loaded === null || loaded.length === 0)
+        if (loaded === null)
+        {
+            // Try treating them as text values (Java: a temporary file of them, text imported):
+            if (text !== null && text.trim() !== "")
+            {
+                this.imports.importText(new JavaFile("clipboard.txt", javaUtf8Bytes(text)), target, t =>
+                {
+                    this.tableManager.record(t);
+                    this.sendEvent({ kind: "tableImported", id: t.getId().getRaw(), column: columnIndex });
+                });
+            }
+            return null;
+        }
+        if (loaded.length === 0)
             return null;
         try
         {
-            const initialLoadDetails = new Table.InitialLoadDetails(null, null, new CellPosition(CellPosition.row(rowIndex), CellPosition.col(columnIndex)), null);
+            const initialLoadDetails = new Table.InitialLoadDetails(null, null, target, null);
             const data = new ImmediateDataSource(this.tableManager, initialLoadDetails, new EditableRecordSet(loaded.map((c, i) => c.load(i)), () => Math.max(0, ...loaded.map(c => c.dataValues.length))));
             this.tableManager.record(data);
             return { id: data.getId().getRaw() };
@@ -295,6 +315,52 @@ export class EngineHost implements EngineApi
         {
             return alertFor("error.pasting.table.data", e);
         }
+    }
+
+    public importers(): readonly ImporterInfo[]
+    {
+        return this.imports.importers();
+    }
+
+    // Java: View.createTable's Import File and Import URL (ImporterManager), recording the tables made
+    public importFile(name: string, bytes: Uint8Array, url: string | null, importer: number | null, columnIndex: number, rowIndex: number): void
+    {
+        this.imports.importFile(name, bytes, url, importer, new CellPosition(CellPosition.row(rowIndex), CellPosition.col(columnIndex)), d => this.tableManager.record(d));
+    }
+
+    public importChoice(session: number, index: number, change: ImportChoiceChange): { readonly error: string | null, readonly changed: boolean }
+    {
+        return this.imports.choice(session, index, change);
+    }
+
+    public importSource(session: number): ImportPreview
+    {
+        return this.imports.source(session);
+    }
+
+    public importDest(session: number, trim: ImportTrim): ImportPreview
+    {
+        return this.imports.dest(session, trim);
+    }
+
+    public importClose(session: number, ok: boolean): void
+    {
+        this.imports.close(session, ok);
+    }
+
+    public htmlTablePicked(request: number, picked: { readonly vals: readonly (readonly string[])[], readonly columnNames: readonly string[] } | null): void
+    {
+        this.imports.answer(request, picked);
+    }
+
+    public rTablesPicked(request: number, picked: readonly number[] | null): void
+    {
+        this.imports.answer(request, picked);
+    }
+
+    public importerPicked(request: number, importer: number | null): void
+    {
+        this.imports.answer(request, importer);
     }
 
     public addColumn(id: string, version: number, beforeColumn: string | null, column: NewColumnDetails): EngineAlert | null

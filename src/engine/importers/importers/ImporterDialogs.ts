@@ -6,6 +6,7 @@
 // can't wait for one, so the importers take an ImporterDialogs in place of the Window.  Each
 // method shows its dialog and calls `then` once it closes, with the result, or with null if it
 // was cancelled (Java: showAndWait() returning an empty Optional).
+import type { Localized } from "../../anns/Annotations.js";
 import type { EditableRecordSet } from "../../data/data/EditableRecordSet.js";
 import type { JavaFile } from "../../java/JavaFile.js";
 import type { Pair } from "../../utility-adt/utility/adt/Pair.js";
@@ -20,8 +21,11 @@ export interface ImporterDialogs
     /**
      * Java: HTMLImporter.PickHTMLTableDialog, which shows the document (with each table that can be
      * imported wrapped in a link to "gui_import:id<index>") and gives the index of the table clicked.
+     * PORT-NOTE: here the dialog also parses the file (HTMLImporter.prepareForPicking), and reads the
+     * table clicked (HTMLImporter.readTable), as they need the DOM, which the engine's Web Worker doesn't
+     * have; it gives the table's rows and column names.
      */
-    pickHTMLTable(doc: Document, then: (tableIndex: number | null) => void): void;
+    pickHTMLTable(htmlFile: JavaFile, source: URL, then: (picked: Pair<string[][], Localized[]> | null) => void): void;
 
     /** Java: RImporter.PickImportsDialog, which picks some of the tables in an R file (all selected at first). */
     pickRTables(tables: readonly Pair<string, EditableRecordSet>[], then: (picked: readonly Pair<string, EditableRecordSet>[] | null) => void): void;

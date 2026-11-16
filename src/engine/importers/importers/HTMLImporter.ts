@@ -5,10 +5,8 @@
 // table (Java's PickHTMLTableDialog, a WebView whose "gui_import:id<n>" links pick table n) is
 // rebuilt in the GUI and shown through ImporterDialogs.pickHTMLTable.
 //
-// PORT-DEFERRED: the options shown in the import dialog (Java's getGUI, Phase 11): check boxes for
-// trimming whitespace ("import.trimWhitespace") and, for a page from Wikipedia, removing footnotes
-// ("import.removeWikipediaFootnotes"), which set trimWhitespace and removeWikipediaFootnotes below
-// and refresh the format.
+// The options shown in the import dialog (Java's getGUI) are HTMLImport.getChoices: check boxes for
+// trimming whitespace and, for a page from Wikipedia, removing footnotes.
 import type { Localized } from "../../anns/Annotations.js";
 import type { CellPosition } from "../../data/data/CellPosition.js";
 import type { DataSource } from "../../data/data/DataSource.js";
@@ -34,6 +32,7 @@ import { UnitType } from "../../utility/utility/UnitType.js";
 import { Utility } from "../../utility/utility/Utility.js";
 import { Workers } from "../../utility/utility/Workers.js";
 import type { GuessFormat } from "./GuessFormat.js";
+import type { ImportChoice } from "./gui/ImporterGUI.js";
 import type { Importer } from "./Importer.js";
 import type { ImporterDialogs } from "./ImporterDialogs.js";
 import { ImporterUtility } from "./ImporterUtility.js";
@@ -71,6 +70,26 @@ export class HTMLImporter implements Importer
         dialogs: ImporterDialogs, mgr: TableManager, htmlFile: JavaFile, source: URL, destination: CellPosition, withDataSources: SimulationConsumer<readonly DataSource[]>): Pair<Document, (tableIndex: number) => void>
     {
         const results: PendingImport[] = [];
+        const { doc, tables } = HTMLImporter.prepareForPicking(htmlFile, source);
+        const importTable = (tableIndex: number): void =>
+        {
+            HTMLImporter.importTable(dialogs, mgr, htmlFile, destination, withDataSources, results, HTMLImporter.readTable(tables[tableIndex]!), HTMLImporter.isFromWikipedia(source));
+        };
+
+        return new Pair(doc, importTable);
+    }
+
+    /**
+     * Java: importHTMLFile's work on the document: it is parsed, given a base (the source's directory)
+     * and the import stylesheet, and each table that can be imported (one with no tables inside it) is
+     * wrapped in a link to "gui_import:id<index>"; with the tables, by index.
+     *
+     * PORT-NOTE: split out of importHTMLFile, as it needs the DOM (DOMParser), which the engine's Web
+     * Worker doesn't have: the GUI does this, and reads the table picked (readTable), in its
+     * PickHTMLTableDialog (ImporterDialogs.pickHTMLTable).
+     */
+    public static prepareForPicking(htmlFile: JavaFile, source: URL): { readonly doc: Document, readonly tables: readonly Element[] }
+    {
         const doc = HTMLImporter.parse(htmlFile);
         let parent = source;
         try
@@ -100,13 +119,13 @@ export class HTMLImporter implements Importer
                 wrapper.appendChild(table);
             }
         }
+        return { doc, tables };
+    }
 
-        const importTable = (tableIndex: number): void =>
-        {
-            HTMLImporter.importTable(dialogs, mgr, htmlFile, destination, withDataSources, results, tables, tableIndex, source.href.includes("wikipedia.org"));
-        };
-
-        return new Pair(doc, importTable);
+    // Java: importHTMLFile's source.toString().contains("wikipedia.org")
+    public static isFromWikipedia(source: URL): boolean
+    {
+        return source.href.includes("wikipedia.org");
     }
 
     /**
@@ -251,10 +270,8 @@ export class HTMLImporter implements Importer
         return new HTMLImporter.HTMLImport(vals.length === 0 ? 0 : vals[0]!.length, mgr, vals, columnNames, fromWikipedia);
     }
 
-    protected static importTable(dialogs: ImporterDialogs, mgr: TableManager, htmlFile: JavaFile, destination: CellPosition, withDataSources: SimulationConsumer<readonly DataSource[]>, results: PendingImport[], tables: readonly Element[], tableIndex: number, fromWikipedia: boolean): void
+    protected static importTable(dialogs: ImporterDialogs, mgr: TableManager, htmlFile: JavaFile, destination: CellPosition, withDataSources: SimulationConsumer<readonly DataSource[]>, results: PendingImport[], read: Pair<string[][], Localized[]>, fromWikipedia: boolean): void
     {
-        const table = tables[tableIndex]!;
-        const read = HTMLImporter.readTable(table);
         const vals = read.getFirst();
         const columnNames = read.getSecond();
         ImporterUtility.rectangulariseAndRemoveBlankRows(vals);
@@ -296,15 +313,17 @@ export class HTMLImporter implements Importer
         showNext(0);
     }
 
+    // PORT-NOTE: the dialog parses the file and reads the table picked (prepareForPicking and readTable,
+    // which need the DOM), giving its contents
     private static importHTMLFileThen(dialogs: ImporterDialogs, mgr: TableManager, htmlFile: JavaFile, destination: CellPosition, source: URL, withDataSources: SimulationConsumer<readonly DataSource[]>): void
     {
-        const p = HTMLImporter.importHTMLFile(dialogs, mgr, htmlFile, source, destination, withDataSources);
+        const results: PendingImport[] = [];
         Platform.runLater(() =>
         {
-            dialogs.pickHTMLTable(p.getFirst(), n =>
+            dialogs.pickHTMLTable(htmlFile, source, picked =>
             {
-                if (n !== null)
-                    p.getSecond()(n);
+                if (picked !== null)
+                    HTMLImporter.importTable(dialogs, mgr, htmlFile, destination, withDataSources, results, picked, HTMLImporter.isFromWikipedia(source));
             });
         });
     }
@@ -357,7 +376,7 @@ export namespace HTMLImporter
         public readonly trimWhitespace: { value: boolean } = { value: true };
         public readonly removeWikipediaFootnotes: { value: boolean };
 
-        public constructor(numSrcColumns: number, mgr: TableManager, private readonly tableVals: readonly (readonly string[])[], private readonly columnNames: readonly Localized[], fromWikipedia: boolean)
+        public constructor(numSrcColumns: number, mgr: TableManager, private readonly tableVals: readonly (readonly string[])[], private readonly columnNames: readonly Localized[], private readonly fromWikipedia: boolean)
         {
             super(numSrcColumns, mgr, tableVals);
             this.removeWikipediaFootnotes = { value: fromWikipedia };
@@ -409,6 +428,19 @@ export namespace HTMLImporter
                 }));
             else
                 return all;
+        }
+
+        /**
+         * Java: getGUI: a check box for trimming whitespace, and (only for a page from Wikipedia) one for
+         * removing footnotes, each changing its option, then forcing a refresh of the format.
+         */
+        public getChoices(): readonly ImportChoice[]
+        {
+            const choices: ImportChoice[] = [{ kind: "check", labelKey: "import.trimWhitespace", helpKey: "guess-format/trimWhitespace", get: () => this.trimWhitespace.value, set: b => this.setOptions(b, this.removeWikipediaFootnotes.value) }];
+            // Only show wikipedia box if applicable:
+            if (this.fromWikipedia)
+                choices.push({ kind: "check", labelKey: "import.removeWikipediaFootnotes", helpKey: "guess-format/remove-wikipedia-footnotes", get: () => this.removeWikipediaFootnotes.value, set: b => this.setOptions(this.trimWhitespace.value, b) });
+            return choices;
         }
 
         /** Java: the check boxes in getGUI change the options, then force a refresh of the format. */

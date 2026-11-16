@@ -31,7 +31,8 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   activating the cell (Enter), offers to make a table there.
 - Ctrl/Cmd+V on a selected empty cell, with Columnal's values on the clipboard (from Copy, or a table's
   "Copy values"), makes a data table of them there, its name made up, and selects it (error: "Error
-  pasting table data"). Other clipboard content does nothing. `MainWindow.vue`'s `pasteIntoEmpty`,
+  pasting table data"). Otherwise its text (if not blank) is imported, through the text import dialog
+  (`importing.md`), as "clipboard", and the table selected. `MainWindow.vue`'s `pasteIntoEmpty`,
   `EngineHost.pasteTable`.
 - The new-table dialog (380 × 290, centred on the click, or on the cell's centre from the keyboard; Cancel):
   "Tables are either plain data (left) or transformations of other tables (right)", then two columns of
@@ -39,7 +40,7 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   File..., Import URL..., Comment on the left; Transform and Check on the right, which need a table to
   exist. Data Entry has the focus. Comment makes a comment (`comments.md`); Transform picks the
   transformation, then its source table; Check picks its source table, then its type and expression
-  (`transformations.md`). Not yet: importing is disabled (Phase 11).
+  (`transformations.md`); Import File... and Import URL... import a table there (`importing.md`).
 - Data Entry opens the column dialog for a new table; OK makes the table at the cell, with that one column
   and no rows. An error doing so shows in an alert ("Error creating first column").
 

@@ -466,16 +466,16 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `importers/src/main/java/xyz/columnal/importers/DateFormat.java` | `src/engine/importers/importers/DateFormat.ts` | 47 | ✅ |
 | `importers/src/main/java/xyz/columnal/importers/ExcelImporter.java` | `src/engine/importers/importers/ExcelImporter.ts` | 245 | ✅ |
 | `importers/src/main/java/xyz/columnal/importers/Format.java` | `src/engine/importers/importers/Format.ts` | 80 | ✅ |
-| `importers/src/main/java/xyz/columnal/importers/GuessFormat.java` | `src/engine/importers/importers/GuessFormat.ts` | 1080 | ✅ (parts deferred) |
-| `importers/src/main/java/xyz/columnal/importers/HTMLImporter.java` | `src/engine/importers/importers/HTMLImporter.ts` | 512 | ✅ (parts deferred) |
+| `importers/src/main/java/xyz/columnal/importers/GuessFormat.java` | `src/engine/importers/importers/GuessFormat.ts` | 1080 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/HTMLImporter.java` | `src/engine/importers/importers/HTMLImporter.ts` | 512 | ✅ |
 | `importers/src/main/java/xyz/columnal/importers/ImportPlainTable.java` | `src/engine/importers/importers/ImportPlainTable.ts` | 117 | ✅ |
 | `importers/src/main/java/xyz/columnal/importers/Importer.java` | `src/engine/importers/importers/Importer.ts` | 64 | ✅ |
 | `importers/src/main/java/xyz/columnal/importers/ImporterUtility.java` | `src/engine/importers/importers/ImporterUtility.ts` | 164 | ✅ |
 | `importers/src/main/java/xyz/columnal/importers/RImporter.java` | `src/engine/importers/importers/RImporter.ts` | 156 | ✅ |
 | `importers/src/main/java/xyz/columnal/importers/TextImporter.java` | `src/engine/importers/importers/TextImporter.ts` | 305 | ✅ |
-| `importers/src/main/java/xyz/columnal/importers/gui/ImportChoicesDialog.java` | `src/engine/importers/importers/gui/ImportChoicesDialog.ts` | 740 | skipped: the import dialog, rebuilt in the GUI (Phase 11); the importers show it through ImporterDialogs |
-| `importers/src/main/java/xyz/columnal/importers/gui/ImporterGUI.java` | `src/engine/importers/importers/gui/ImporterGUI.ts` | 184 | skipped: the import dialog's choice rows, rebuilt in the GUI (Phase 11) |
-| `importers/src/main/java/xyz/columnal/importers/manager/ImporterManager.java` | `src/engine/importers/importers/manager/ImporterManager.ts` | 340 | ✅ (parts deferred) |
+| `importers/src/main/java/xyz/columnal/importers/gui/ImportChoicesDialog.java` | `src/engine/importers/importers/gui/ImportChoicesDialog.ts` | 740 | skipped: the import dialog, rebuilt in the GUI (src/gui/windows/import/ImportChoicesDialog.vue); the importers show it through ImporterDialogs |
+| `importers/src/main/java/xyz/columnal/importers/gui/ImporterGUI.java` | `src/engine/importers/importers/gui/ImporterGUI.ts` | 184 | ✅ |
+| `importers/src/main/java/xyz/columnal/importers/manager/ImporterManager.java` | `src/engine/importers/importers/manager/ImporterManager.ts` | 340 | ✅ |
 
 </details>
 
@@ -719,13 +719,13 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
 | tests-gui-base | 20 / 26 | 3059 / 4004 (76%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
-| tests-gui-central | 20 / 21 | 3534 / 3623 (98%) | 45 / 47 (96%) |
+| ✅ tests-gui-central | 21 / 21 | 3623 / 3623 (100%) | 46 / 47 (98%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
 | ✅ tests-gui-expression-editor | 1 / 1 | 593 / 593 (100%) | 68 / 68 (100%) |
 | ✅ tests-gui-expression-editor-delete | 1 / 1 | 372 / 372 (100%) | 20 / 20 (100%) |
 | ✅ tests-gui-expression-editor-further | 8 / 8 | 1600 / 1600 (100%) | 130 / 130 (100%) |
 | ✅ tests-gui-expression-editor-position | 1 / 1 | 618 / 618 (100%) | 34 / 34 (100%) |
-| tests-gui-format | 3 / 4 | 574 / 920 (62%) | 2 / 6 (33%) |
+| ✅ tests-gui-format | 4 / 4 | 920 / 920 (100%) | 6 / 6 (100%) |
 | ✅ tests-gui-grid | 4 / 4 | 1049 / 1049 (100%) | 14 / 14 (100%) |
 | ✅ tests-gui-numbers | 1 / 1 | 380 / 380 (100%) | 14 / 14 (100%) |
 | tests-gui-r | 2 / 4 | 770 / 1147 (67%) | 10 / 27 (37%) |
@@ -873,7 +873,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-central/src/test/java/test/gen/GenYearMonth.java` | `test/engine/tests-gui-central/gen/GenYearMonth.ts` | 46 | ✅ |
 | `tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java` | `test/gui/windows/BlankMainWindow.test.ts` | 665 | ✅ (11/11 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestExplanationDisplay.java` | `test/gui/tables/ExplanationDisplay.test.ts` | 221 | ✅ (8/8 tests) |
-| `tests-gui-central/src/test/java/test/gui/TestExportToCSV.java` | `test/gui/tests-gui-central/gui/TestExportToCSV.test.ts` | 89 | – (0/1 tests) |
+| `tests-gui-central/src/test/java/test/gui/TestExportToCSV.java` | `test/gui/tables/ExportToCSV.test.ts` | 89 | ✅ (1/1 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestInitialWindow.java` | `test/gui/windows/InitialWindow.test.ts` | 66 | ✅ (1/1 tests) |
 | `tests-gui-central/src/test/java/test/gui/TestVirtualGridScrollCoordinates.java` | `test/gui/grid/ScrollCoordinates.test.ts` | 488 | ✅ (3/3 tests) |
 
@@ -931,7 +931,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
 | `tests-gui-format/src/test/java/test/TestFormat.java` | `test/engine/tests-gui-format/TestFormat.test.ts` | 154 | ✅ (2/2 tests) |
-| `tests-gui-format/src/test/java/test/gui/PropFormat.java` | `test/gui/tests-gui-format/gui/PropFormat.test.ts` | 346 | – (0/4 tests) |
+| `tests-gui-format/src/test/java/test/gui/PropFormat.java` | `test/gui/importing/PropFormat.test.ts` | 346 | ✅ (4/4 tests) |
 | `tests-gui-format/src/testFixtures/java/test/gen/GenFormat.java` | `test/engine/tests-gui-format/fixtures/gen/GenFormat.ts` | 160 | ✅ |
 | `tests-gui-format/src/testFixtures/java/test/gen/GenFormattedData.java` | `test/engine/tests-gui-format/fixtures/gen/GenFormattedData.ts` | 260 | ✅ |
 

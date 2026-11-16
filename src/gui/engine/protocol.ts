@@ -76,6 +76,55 @@ export interface CheckResultInfo
     readonly explainable: boolean;
 }
 
+/** An importer, as the importer lists show it (Java: its getName and getSupportedFileTypes). */
+export interface ImporterInfo
+{
+    readonly name: string;
+    readonly fileTypes: readonly string[];
+}
+
+/**
+ * A choice in the import dialog (Java: a row of the import's getGUI): a choice of value (Java:
+ * ImporterGUI.makeGUI: a label when there is only one option or none, else a combo box, with
+ * "Other..." last if a value can be typed in), or a check box; with its label's key and help.
+ */
+export type ImportChoiceInfo =
+    | { readonly kind: "label", readonly labelKey: string, readonly helpId: string, readonly text: string }
+    | { readonly kind: "combo", readonly labelKey: string, readonly helpId: string, readonly items: readonly string[], readonly other: boolean, readonly selected: number }
+    | { readonly kind: "check", readonly labelKey: string, readonly helpId: string, readonly checked: boolean };
+
+/** A change to an import choice: the combo box's item (the last for "Other...", with the text typed), or the check box. */
+export type ImportChoiceChange = { readonly selected: number, readonly otherText: string } | { readonly checked: boolean };
+
+/** Java: GuessFormat.TrimChoice: how many rows and columns of the source are left out at each side. */
+export interface ImportTrim
+{
+    readonly top: number;
+    readonly bottom: number;
+    readonly left: number;
+    readonly right: number;
+}
+
+/**
+ * The import dialog's source or preview: none (no source format), an error (Java logged it and
+ * showed no columns), or the table: its columns (a source's names, a preview's names and types), its
+ * cells, and for a source, the trim guessed.
+ */
+export type ImportPreview =
+    | { readonly kind: "none" }
+    | { readonly kind: "error" }
+    | { readonly kind: "table", readonly columns: readonly { readonly name: string, readonly type: string | null }[], readonly rows: readonly (readonly CellContent[])[], readonly trim: ImportTrim | null };
+
+/**
+ * A dialog the importers ask for (Java: shown with showAndWait; ImporterDialogs): picking an HTML file's
+ * table (the page parses the file, as the engine's Web Worker has no DOM), some of an R file's tables,
+ * or the importer for a file whose extension none handles.
+ */
+export type ImportDialogRequest =
+    | { readonly kind: "pickHTMLTable", readonly fileName: string, readonly bytes: Uint8Array, readonly source: string }
+    | { readonly kind: "pickRTables", readonly tables: readonly string[] }
+    | { readonly kind: "pickImporter", readonly fileName: string, readonly guess: number | null };
+
 /**
  * What explanation to show (Java: ExplanationDisplay's explanation): a Check's, or a transformation's cell's
  * (Java: TableDisplay.getMenuItems' "Why?").
@@ -348,10 +397,38 @@ export interface EngineApi
      */
     createDataTable(tableName: string, column: NewColumnDetails, columnIndex: number, rowIndex: number): EngineAlert | null;
     /**
-     * Makes a data table of the clipboard's Columnal content, at the position (Java: View's
-     * pasteIntoEmpty); its id, null if there is nothing to paste, or an alert if it failed.
+     * Makes a data table of the clipboard's content, at the position (Java: View's pasteIntoEmpty): of
+     * its Columnal content, giving its id; else of its text, through the text importer (with the import
+     * dialog; the table is then selected through a "tableImported" event); null if there is nothing to
+     * paste, or an alert if it failed.
      */
-    pasteTable(content: string | null, columnIndex: number, rowIndex: number): { readonly id: string } | EngineAlert | null;
+    pasteTable(content: string | null, text: string | null, columnIndex: number, rowIndex: number): { readonly id: string } | EngineAlert | null;
+    /** The importers (Java: ImporterManager's registered importers, as PickImporterPane lists them). */
+    importers(): readonly ImporterInfo[];
+    /**
+     * Imports a file (its name, bytes, and the URL it came from, null for a file picked), with the given
+     * importer, or (null) the one for its extension (Java: ImporterManager.importFile, or for Import URL,
+     * the importer picked), at the position.  The importer asks for the dialogs it needs through
+     * "importChoices" and "importDialog" events.
+     */
+    importFile(name: string, bytes: Uint8Array, url: string | null, importer: number | null, columnIndex: number, rowIndex: number): void;
+    /**
+     * A choice in the import dialog changed (Java: its control's listener): its error, if any, and whether
+     * the source format changed (Java: the dialog reloads the source only then).
+     */
+    importChoice(session: number, index: number, change: ImportChoiceChange): { readonly error: string | null, readonly changed: boolean };
+    /** The import dialog's source (Java: Import.loadSource, for the current source format). */
+    importSource(session: number): ImportPreview;
+    /** The import dialog's preview of the result (Java: Import.loadDest, for the trim). */
+    importDest(session: number, trim: ImportTrim): ImportPreview;
+    /** The import dialog closed, with OK (importing with the last preview's format) or not. */
+    importClose(session: number, ok: boolean): void;
+    /** PickHTMLTableDialog's result: the table picked's rows and column names (HTMLImporter.readTable), or null. */
+    htmlTablePicked(request: number, picked: { readonly vals: readonly (readonly string[])[], readonly columnNames: readonly string[] } | null): void;
+    /** PickImportsDialog's result: the R tables picked (by index), or null. */
+    rTablesPicked(request: number, picked: readonly number[] | null): void;
+    /** PickImporterDialog's result: the importer picked (by index), or null. */
+    importerPicked(request: number, importer: number | null): void;
     /** Adds a column to a data table, before the given column, or at the end (Java: TableDisplay.addColumnBefore_IDS). */
     addColumn(id: string, version: number, beforeColumn: string | null, column: NewColumnDetails): EngineAlert | null;
     /** Adds rows at the end of the table (Java: ExpandTableArrowSupplier's add-row button). */
@@ -525,7 +602,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "pasteTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "explanation", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "pasteTable", "importers", "importFile", "importChoice", "importSource", "importDest", "importClose", "htmlTablePicked", "rTablesPicked", "importerPicked", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "explanation", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:
@@ -536,6 +613,15 @@ export type EngineEvent =
     // TableDisplay.promptForTransformationEdit; the edit itself is cancelled), answering with
     // createManualEditFromPrompt:
     | { readonly kind: "transformationEditPrompt", readonly prompt: number }
+    // An importer shows the import dialog (Java: ImportChoicesDialog), for the session, with the table's
+    // suggested name and the choices; the GUI asks for the source and previews, and closes it with
+    // importClose:
+    | { readonly kind: "importChoices", readonly session: number, readonly suggestedName: string, readonly choices: readonly ImportChoiceInfo[] }
+    // An importer asks for another dialog, answered with htmlTablePicked, rTablesPicked or importerPicked:
+    | { readonly kind: "importDialog", readonly request: number, readonly dialog: ImportDialogRequest }
+    // A table made by pasting text (through the text importer) was recorded, to be selected (Java:
+    // pasteIntoEmpty's selectAfter), at the column pasted into:
+    | { readonly kind: "tableImported", readonly id: string, readonly column: number }
     // Something saved in the file changed (Java: what called View.modified, or saved), so it should be
     // saved:
     | { readonly kind: "modified" };

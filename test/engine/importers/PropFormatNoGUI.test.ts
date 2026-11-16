@@ -68,9 +68,9 @@ function dialogs(choose: (imp: GuessFormat.Import<unknown, unknown>) => unknown)
         {
             then(new GuessFormat.ImportInfo<FORMAT>("Imported", choose(importer as GuessFormat.Import<unknown, unknown>) as FORMAT));
         },
-        pickHTMLTable(_doc: Document, then: (tableIndex: number | null) => void): void
+        pickHTMLTable(htmlFile, source, then): void
         {
-            then(0);
+            then(HTMLImporter.readTable(HTMLImporter.prepareForPicking(htmlFile, source).tables[0]!));
         },
         pickRTables(tables, then): void
         {

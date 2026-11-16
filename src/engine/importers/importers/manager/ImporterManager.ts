@@ -1,10 +1,14 @@
 // Port of xyz.columnal.importers.manager.ImporterManager (importers module).
 //
-// PORT-DEFERRED: chooseAndImportFile and chooseAndImportURL, with the dialogs they show (a file
-// chooser, and ImportURLDialog, which suggests a URL from the clipboard, picks an importer from the
-// link's extension, and downloads the file), and download (Phase 11; the browser's file pickers and
-// fetching are asynchronous).  PickImporterPane's guessImporterFromFileExtension is here, and
-// PickImporterDialog is shown through ImporterDialogs.pickImporter.
+// PORT-NOTE: chooseAndImportFile and chooseAndImportURL, with the dialogs they show (a file chooser,
+// and ImportURLDialog, which suggests a URL from the clipboard, picks an importer from the link's
+// extension, and downloads the file), and download, are in the GUI (src/gui/windows/import/
+// ImportDialogs.vue and ImportURLDialog.vue: the browser's file picker and fetching are
+// asynchronous), which gives importFile the file.  PickImporterPane's guessImporterFromFileExtension is
+// here, and PickImporterDialog is shown through ImporterDialogs.pickImporter.
+//
+// PORT-NOTE: possible Java bug, kept: importFile matches extensions with case (so "DATA.CSV" asks which
+// importer), where guessImporterFromFileExtension ignores case.
 import type { Localized } from "../../../anns/Annotations.js";
 import type { CellPosition } from "../../../data/data/CellPosition.js";
 import type { DataSource } from "../../../data/data/DataSource.js";

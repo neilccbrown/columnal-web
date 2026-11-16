@@ -40,7 +40,7 @@ function dialogs(overrides: Partial<ImporterDialogs>): ImporterDialogs
 {
     return {
         showImportChoices: (_n, _i, then) => then(null),
-        pickHTMLTable: (_d, then) => then(null),
+        pickHTMLTable: (_f, _s, then) => then(null),
         pickRTables: (tables, then) => then(tables),
         pickImporter: (_s, _i, then) => then(null),
         ...overrides,

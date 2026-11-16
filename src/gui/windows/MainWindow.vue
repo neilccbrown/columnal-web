@@ -7,7 +7,7 @@ import type { Guidance } from "../components/guidance.js";
 import { formulaGuidance } from "./formulaGuidance.js";
 import type { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
 import { showAlert } from "../alerts.js";
-import { readClipboardRecords } from "../clipboard.js";
+import { readClipboard } from "../clipboard.js";
 import AboutDialog from "../components/dialogs/AboutDialog.vue";
 import MenuBar from "../components/menus/MenuBar.vue";
 import { checkMenuItem, menu, menuItem, separator, type MenuItem } from "../components/menus/menus.js";
@@ -29,6 +29,7 @@ import { Either } from "../../engine/utility-adt/utility/adt/Either.js";
 import { EntireTableSelection } from "../../gui-logic/table-gui/gui/table/EntireTableSelection.js";
 import ChecksPane from "./ChecksPane.vue";
 import TransformationDialogs from "./TransformationDialogs.vue";
+import ImportDialogs from "./import/ImportDialogs.vue";
 import type { PickingMode } from "../grid/picking.js";
 import ExportDialog from "./ExportDialog.vue";
 import GotoRowDialog from "./GotoRowDialog.vue";
@@ -47,6 +48,7 @@ const context = useAppContext();
 const engine = provideEngine(context.makeTransport());
 const engineGrid = useTemplateRef<InstanceType<typeof EngineGrid>>("engineGrid");
 const transformations = useTemplateRef<InstanceType<typeof TransformationDialogs>>("transformations");
+const imports = useTemplateRef<InstanceType<typeof ImportDialogs>>("imports");
 const session = shallowRef<ProjectSession | null>(null);
 const recent = shallowRef<readonly ProjectSummary[]>([]);
 const opening = shallowRef(false);
@@ -90,16 +92,28 @@ const stopListening = engine.client.listen(event =>
             onYes: () => transformations.value?.manualEditFromPrompt(prompt),
         });
     }
+    // Java: pasteIntoEmpty's selectAfter, for a table made by pasting text
+    else if (event.kind === "tableImported")
+    {
+        const { id, column } = event;
+        void waitForTable(id).then(display =>
+        {
+            if (display !== null)
+                engineGrid.value?.grid.select(new EntireTableSelection(display, column));
+        });
+    }
 });
 
 // Java: View.createTable: what to make, at the empty cell
 const newTable = shallowRef<{ position: CellPosition, point: { x: number, y: number } } | null>(null);
 const newTableOpen = shallowRef(false);
 // Java: View's pasteIntoEmpty: a data table of the clipboard's values (if it has Columnal's), made at the
-// cell, then selected
+// cell, then selected; else of its text, through the text importer (selected once it is made: the
+// "tableImported" event)
 async function pasteIntoEmpty(target: CellPosition): Promise<void>
 {
-    const result = await engine.client.request("pasteTable", await readClipboardRecords(), target.columnIndex, target.rowIndex);
+    const clip = await readClipboard();
+    const result = await engine.client.request("pasteTable", clip.records, clip.text, target.columnIndex, target.rowIndex);
     if (result === null)
         return;
     if ("title" in result)
@@ -154,6 +168,12 @@ function newTableChosen(choice: DataOrTransform, point: { x: number, y: number }
         transformations.value?.newCheck(target.position, point);
     else if (target !== null && choice === "DATA")
         void openColumnDialog({ kind: "table", position: target.position, point });
+    // Java: View.createTable's IMPORT_FILE and IMPORT_URL (ImporterManager.chooseAndImportFile and
+    // chooseAndImportURL), which record the tables imported
+    else if (target !== null && choice === "IMPORT_FILE")
+        imports.value?.chooseAndImportFile(target.position);
+    else if (target !== null && choice === "IMPORT_URL")
+        imports.value?.chooseAndImportURL(target.position);
     // Java: View.createTable's COMMENT, a new comment there
     else if (target !== null && choice === "COMMENT")
         void engine.client.request("addComment", target.position.columnIndex, target.position.rowIndex).catch(ignoreClosed);
@@ -584,6 +604,7 @@ defineExpose({
       :initial-guidance="guidance"
       @close="guidance = null"
     />
+    <ImportDialogs ref="imports" />
     <TransformationDialogs
       ref="transformations"
       :find-display="waitForTable"

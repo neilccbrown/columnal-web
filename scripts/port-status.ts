@@ -82,6 +82,8 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-central/src/test/java/test/gui/TestInitialWindow.java", ["test/gui/windows/InitialWindow.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java", ["test/gui/windows/BlankMainWindow.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestExplanationDisplay.java", ["test/gui/tables/ExplanationDisplay.test.ts"]],
+    ["tests-gui-central/src/test/java/test/gui/TestExportToCSV.java", ["test/gui/tables/ExportToCSV.test.ts"]],
+    ["tests-gui-format/src/test/java/test/gui/PropFormat.java", ["test/gui/importing/PropFormat.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestVirtualGridScrollCoordinates.java", ["test/gui/grid/ScrollCoordinates.test.ts"]],
     ["tests-gui-tables/src/test/java/test/gui/table/TestTableEdits.java", ["test/gui/tables/TableEdits.test.ts"]],
     ["tests-gui-side/src/test/java/test/gui/TestTypeEdit.java", ["test/gui/windows/TypeEdit.test.ts"]],
@@ -145,8 +147,7 @@ function testKind(javaPath: string, moduleKind: string): string
 // Java files that are deliberately not ported (paths relative to reference/columnal):
 const SKIPPED = new Map<string, string>([
     ["utility/src/main/java/xyz/columnal/utility/ResourceUtility.java", "loads classpath resources; resources are bundled by Vite instead"],
-    ["importers/src/main/java/xyz/columnal/importers/gui/ImportChoicesDialog.java", "the import dialog, rebuilt in the GUI (Phase 11); the importers show it through ImporterDialogs"],
-    ["importers/src/main/java/xyz/columnal/importers/gui/ImporterGUI.java", "the import dialog's choice rows, rebuilt in the GUI (Phase 11)"],
+    ["importers/src/main/java/xyz/columnal/importers/gui/ImportChoicesDialog.java", "the import dialog, rebuilt in the GUI (src/gui/windows/import/ImportChoicesDialog.vue); the importers show it through ImporterDialogs"],
     ["stf/src/main/java/xyz/columnal/gui/stable/RowSelection.java", "entirely commented out in Java"],
     ["stf/src/main/java/xyz/columnal/gui/stable/ColumnSelection.java", "entirely commented out in Java"],
     ["tests-gui-central/src/test/java/test/MatcherUtil.java", "Hamcrest matchers over JavaFX nodes' style classes; BlankMainWindow.test.ts checks the elements' classes itself"],

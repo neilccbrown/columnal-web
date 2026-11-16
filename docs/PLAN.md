@@ -1229,6 +1229,25 @@ Steps (each a checkpoint with the project owner):
 8. Importing: the import dialog with its live preview (`ImportChoicesDialog`, `ImporterGUI`, rebuilt), the
    new-table dialog's Import File and Import URL, and the rest of clipboard import and export (pasting
    into an empty cell was done in step 6). Tests: `PropFormat`, `TestExportToCSV`.
+   - Done: `src/gui/windows/import/` (the import dialog, its grids and area, the URL, importer, HTML table
+     and R tables dialogs, and `ImportDialogs.vue`, which shows them); the engine's side in
+     `src/gui/engine/importSessions.ts` (registering the importers, as Java's Main; `ImporterDialogs`
+     answered through events and methods), with `ImporterGUI.ts` (the choice rows' model) and the
+     imports' `getChoices` (Java's `getGUI`). The page parses HTML files (the worker has no DOM, as decided):
+     `HTMLImporter.prepareForPicking` and `readTable` run in `PickHTMLTableDialog`, and
+     `ImporterDialogs.pickHTMLTable` takes the file and gives the table's cells. Pasting text into an empty
+     cell imports it (step 6 had it do nothing). Tests: `test/gui/importing/ImportDialog.test.ts`,
+     `test/engine/importers/ImporterGUI.test.ts`, `test/gui/tables/ExportToCSV.test.ts` (the port);
+     `PropFormat` is ignored in Java (stubs in `test/gui/importing/PropFormat.test.ts`).
+   - Possible Java bugs found (reported, kept, marked PORT-NOTE): "Undo area" and "Reset area" don't remake
+     the preview, so OK then imports the old area; a choice that isn't one of the combo box's options shows
+     as the first option, while the choice stays; the area's left edge can be dragged onto the row
+     numbers (a trim of -1 from the left); a file's importer is found by extension with case ("DATA.CSV"
+     asks which), though guessing it ignores case; a URL's table is named after the temporary file it was
+     downloaded to (e.g. "dataxlsx1234567890"); and a newly loaded original's area is added to the undo
+     chain twice, so the first "Undo area" after it does nothing.
+   - Not yet (web differences to consider): dragging the area near the edge doesn't scroll; the split
+     between the grids can't be moved.
 9. Tidy up: the View menu's Task Manager (`TaskManagerWindow`, listing the engine's `Workers` tasks),
    PORT-STATUS, `docs/gui-spec/`, and carry-overs to Phase 12 or 13.
 

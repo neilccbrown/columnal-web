@@ -1,9 +1,9 @@
 // Port of xyz.columnal.importers.GuessFormat (importers module).
 //
-// PORT-DEFERRED: Import.getGUI (Phase 11).  For a text file, Java's getGUI shows a row for each
-// of the charset, separator and quote choices (ImporterGUI.makeGUI, with the ChoiceDetails
-// below) bound to the properties in guessTextFormat, and updates the source format whenever one
-// changes.  The import dialogs are rebuilt in the GUI and are reached through ImporterDialogs.
+// PORT-NOTE: Import.getGUI is getChoices here: for a text file, the charset, separator and quote
+// choices (ImporterGUI.makeGUI shows each, with the ChoiceDetails below), bound to the properties in
+// guessTextFormat, updating the source format whenever one changes.  The import dialogs are rebuilt in
+// the GUI and are reached through ImporterDialogs.
 import type { ExpressionIdentifier, Localized } from "../../anns/Annotations.js";
 import type { CellPosition } from "../../data/data/CellPosition.js";
 import { BlankColumnType, BoolColumnType, CleanDateColumnType, ColumnType, NumericColumnType, OrBlankColumnType, TextColumnType } from "../../data/data/columntype/ColumnTypes.js";
@@ -36,6 +36,7 @@ import { TranslationUtility } from "../../utility/utility/TranslationUtility.js"
 import { Utility } from "../../utility/utility/Utility.js";
 import { Workers } from "../../utility/utility/Workers.js";
 import { ChoiceDetails } from "./ChoiceDetails.js";
+import type { ImportChoice } from "./gui/ImporterGUI.js";
 import { ColumnInfo } from "./ColumnInfo.js";
 import { DateFormat } from "./DateFormat.js";
 import type { ImporterDialogs } from "./ImporterDialogs.js";
@@ -130,7 +131,28 @@ export class GuessFormat
             return Utility.mapListI(rowInfos, r => r.columnContents);
         };
 
+        let choices: readonly ImportChoice[] | null = null;
         return {
+            getChoices(): readonly ImportChoice[]
+            {
+                if (choices === null)
+                {
+                    choices = [
+                        { kind: "pick", details: GuessFormat.charsetChoiceDetails([...initialByCharset.keys()]) as ChoiceDetails<unknown>, choice: charsetChoice as SimpleObjectProperty<unknown> },
+                        { kind: "pick", details: GuessFormat.separatorChoiceDetails() as ChoiceDetails<unknown>, choice: sepChoice as SimpleObjectProperty<unknown> },
+                        { kind: "pick", details: GuessFormat.quoteChoiceDetails() as ChoiceDetails<unknown>, choice: quoteChoice as SimpleObjectProperty<unknown> },
+                    ];
+                    const update = (): void =>
+                    {
+                        srcFormat.set(GuessFormat.makeInitialTextFormat(charsetChoice, sepChoice, quoteChoice));
+                    };
+                    charsetChoice.addListener(update);
+                    quoteChoice.addListener(update);
+                    sepChoice.addListener(update);
+                }
+                return choices;
+            },
+
             currentSrcFormat(): ObjectExpression<GuessFormat.InitialTextFormat | null>
             {
                 return srcFormat;
@@ -831,6 +853,13 @@ export namespace GuessFormat
     // DEST_FORMAT is what you calculate post-trim for the column formats for the final item.
     export interface Import<SRC_FORMAT, DEST_FORMAT>
     {
+        /**
+         * Java: getGUI, the controls for the import's choices (none by default).  PORT-NOTE: here the
+         * choices themselves, which the import dialog shows (ImporterGUI.makeGUI); changing one changes
+         * currentSrcFormat, as Java's controls did.
+         */
+        getChoices?(): readonly ImportChoice[];
+
         currentSrcFormat(): ObjectExpression<SRC_FORMAT | null>;
 
         // Get the function which would load the source (import LHS) for the given format.

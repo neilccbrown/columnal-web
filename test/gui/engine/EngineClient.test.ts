@@ -126,4 +126,37 @@ describe("in the worker", () =>
         const rows = await client.request("rows", c.id, c.version, 0, 3);
         expect(rows?.map(r => r[2]!.text)).toEqual(["2", "5", "-6"]);
     });
+
+    it("imports an HTML file, which the page parses (the worker has no DOM)", async () =>
+    {
+        const { client, tables } = start(new WorkerTransport());
+        const events: EngineEvent[] = [];
+        client.listen(e =>
+        {
+            if (e.kind === "importDialog" || e.kind === "importChoices")
+                events.push(e);
+        });
+        expect(await client.request("load", GRID_FIXTURE)).toEqual({ errors: [], columnWidths: [] });
+        const html = "<table><tr><th>X</th></tr><tr><td>1</td></tr><tr><td>2</td></tr></table>";
+        await client.request("importFile", "t.html", new TextEncoder().encode(html), null, null, 20, 1);
+        await expect.poll(() => events.length).toBe(1);
+        const ask = events[0]!;
+        if (ask.kind !== "importDialog" || ask.dialog.kind !== "pickHTMLTable")
+            throw new Error("Expected the HTML table picker: " + JSON.stringify(ask));
+        expect(new TextDecoder().decode(ask.dialog.bytes)).toBe(html);
+        // (As PickHTMLTableDialog would, having read the table)
+        await client.request("htmlTablePicked", ask.request, { vals: [["X"], ["1"], ["2"]], columnNames: ["X"] });
+        await expect.poll(() => events.length).toBe(2);
+        const choices = events[1]!;
+        if (choices.kind !== "importChoices")
+            throw new Error("Expected the import dialog");
+        const source = await client.request("importSource", choices.session);
+        expect(source.kind).toBe("table");
+        const trim = source.kind === "table" ? source.trim! : { top: 0, bottom: 0, left: 0, right: 0 };
+        const dest = await client.request("importDest", choices.session, trim);
+        expect(dest.kind === "table" ? dest.rows.map(r => r[0]!.text) : null).toEqual(["1", "2"]);
+        await client.request("importClose", choices.session, true);
+        await client.whenIdle();
+        await expect.poll(() => tables().map(t => t.id).filter(id => id !== "T" && id !== "C").length).toBe(1);
+    });
 });

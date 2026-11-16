@@ -105,16 +105,19 @@ test("copy values copies all the table's values", async () =>
     expect(text).toBe("1, \"a\", 2\n2.5, \"b\", 5\n-3, \"c\", -6");
 });
 
-test("pasting copied values into an empty cell makes a data table of them there, selected; plain text doesn't", async () =>
+test("pasting copied values into an empty cell makes a data table of them there, selected; plain text is imported", async () =>
 {
     const a = await start();
     const target = new CellPosition(CellPosition.row(20), CellPosition.col(2));
     const tables = (): number => engineHost(a).tableManager.getAllTables().length;
-    // Plain text does nothing:
+    // Plain text goes to the text import dialog (test/gui/importing), cancelled here:
     await navigator.clipboard.writeText("1, 2");
     await keyboardMoveTo(grid(a).grid, target);
     await userEvent.keyboard("{ControlOrMeta>}v{/ControlOrMeta}");
-    await sleep(500);
+    await vi.waitUntil(() => document.querySelector(".guess-format-content") !== null, { timeout: 5000 });
+    await userEvent.click(document.querySelector(".guess-format-content")!.closest("[role=dialog]")!.querySelector(".cancel-button")!);
+    await vi.waitUntil(() => document.querySelector(".guess-format-content") === null);
+    await sleep(300);
     expect(tables()).toBe(2);
 
     await copyToClipboard(async () =>

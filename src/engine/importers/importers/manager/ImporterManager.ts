@@ -6,9 +6,7 @@
 // ImportDialogs.vue and ImportURLDialog.vue: the browser's file picker and fetching are
 // asynchronous), which gives importFile the file.  PickImporterPane's guessImporterFromFileExtension is
 // here, and PickImporterDialog is shown through ImporterDialogs.pickImporter.
-//
-// PORT-NOTE: possible Java bug, kept: importFile matches extensions with case (so "DATA.CSV" asks which
-// importer), where guessImporterFromFileExtension ignores case.
+
 import type { Localized } from "../../../anns/Annotations.js";
 import type { CellPosition } from "../../../data/data/CellPosition.js";
 import type { DataSource } from "../../../data/data/DataSource.js";
@@ -61,9 +59,11 @@ export class ImporterManager
         });
     }
 
+    // PORT-NOTE: bug fix: Java matched with case (so "DATA.CSV" asked which importer), where
+    // guessImporterFromFileExtension ignores case; here neither does.
     private static matches(file: JavaFile, wildcard: string): boolean
     {
-        if (wildcard.startsWith("*") && file.getName().endsWith(wildcard.substring(1)))
+        if (wildcard.startsWith("*") && file.getName().toLowerCase().endsWith(wildcard.substring(1).toLowerCase()))
             return true;
         return false;
     }

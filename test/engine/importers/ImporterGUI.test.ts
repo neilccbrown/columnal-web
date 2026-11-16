@@ -30,14 +30,20 @@ describe("ImporterGUI.makeGUI", () =>
     test("otherwise a combo box: the picks (invisible ones named), then Other... if a value can be typed; the choice selected", () =>
     {
         const choice = new SimpleObjectProperty<string | null>("\t");
-        expect(ImporterGUI.makeGUI(details([",", "\t", " ", ""], true), choice)).toEqual({ kind: "combo", items: [",", "Tab", "Space", "None", "Other..."], other: true, selected: 1 });
+        expect(ImporterGUI.makeGUI(details([",", "\t", " ", ""], true), choice)).toEqual({ kind: "combo", items: [",", "Tab", "Space", "None", "Other..."], other: true, selected: 1, otherText: "" });
     });
 
-    test("a choice that isn't a pick shows as the first, but stays (Java's, kept)", () =>
+    test("a choice that isn't a pick shows as Other..., with its text (none as the \"\" pick); with no Other..., the first is chosen", () =>
     {
         const choice = new SimpleObjectProperty<string | null>("#");
-        expect(ImporterGUI.makeGUI(details([",", ";"], true), choice)).toMatchObject({ kind: "combo", selected: 0 });
+        expect(ImporterGUI.makeGUI(details([",", ";"], true), choice)).toEqual({ kind: "combo", items: [",", ";", "Other..."], other: true, selected: 2, otherText: "#" });
         expect(choice.get()).toBe("#");
+        const none = new SimpleObjectProperty<string | null>(null);
+        expect(ImporterGUI.makeGUI(details([",", ""], true), none)).toMatchObject({ selected: 1, otherText: "" });
+        expect(ImporterGUI.makeGUI(details([",", ";"], true), none)).toMatchObject({ selected: 2, otherText: "" });
+        const fixed = new SimpleObjectProperty<string | null>("#");
+        expect(ImporterGUI.makeGUI(details([",", ";"], false), fixed)).toMatchObject({ selected: 0 });
+        expect(fixed.get()).toBe(",");
     });
 });
 

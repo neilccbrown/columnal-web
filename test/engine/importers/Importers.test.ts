@@ -154,8 +154,13 @@ describe("ImporterManager", () =>
         let asked = false;
         const d = dialogs({ pickImporter: (_s, importers, then) => { asked = true; then(importers[1]!); } });
         manager.importFile(d, DummyManager.make(), CellPosition.ORIGIN, new JavaFile("/a/b.csv"), new URL("file:///a/b.csv"), () => {});
+        // (Ignoring case: a bug fix, as Java matched with case)
         manager.importFile(d, DummyManager.make(), CellPosition.ORIGIN, new JavaFile("/a/b.HTML"), new URL("file:///a/b.HTML"), () => {});
         expect(used).toEqual(["text", "html"]);
+        expect(asked).toBe(false);
+        // An extension none handles: asked, and the importer picked used:
+        manager.importFile(d, DummyManager.make(), CellPosition.ORIGIN, new JavaFile("/a/b.xyz"), new URL("file:///a/b.xyz"), () => {});
+        expect(used).toEqual(["text", "html", "html"]);
         expect(asked).toBe(true);
         expect(manager.guessImporterFromFileExtension("HTML")!.getName()).toBe("html");
         expect(manager.guessImporterFromFileExtension("xyz")).toBeNull();

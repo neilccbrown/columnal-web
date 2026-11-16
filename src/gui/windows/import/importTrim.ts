@@ -96,11 +96,18 @@ export function edgesAt(box: { readonly x: number, readonly y: number, readonly 
  * Java: the mouse drag: the selection, resized by its edges being dragged (to the grid line nearest the
  * mouse, pos), or else from the cell pressed to pos.  Null if there is no pos.
  *
- * PORT-NOTE: possible Java bug, kept: the left edge isn't kept off the row labels' column, so it can make
- * a trim of -1 from the left (the engine's trim treats it as 0).
+ * PORT-NOTE: bug fix: Java only kept the area below the column names, so its left edge could go onto the
+ * row labels' column (a trim of -1 from the left, which imports as 0); here it is kept within the data
+ * (of the rows and columns) on every side.
  */
-export function dragged(current: Bounds, edges: Edges, pos: { readonly row: number, readonly column: number } | null, pressed: { readonly row: number, readonly column: number }): Bounds | null
+export function dragged(current: Bounds, edges: Edges, pos: { readonly row: number, readonly column: number } | null, pressed: { readonly row: number, readonly column: number }, rows: number, columns: number): Bounds | null
 {
+    const within = (b: Bounds): Bounds =>
+    {
+        const top = Math.max(DATA_TOP, Math.min(b.top, lastRow(rows)));
+        const left = Math.max(DATA_LEFT, Math.min(b.left, lastColumn(columns)));
+        return { top, left, bottom: Math.max(top, Math.min(b.bottom, lastRow(rows))), right: Math.max(left, Math.min(b.right, lastColumn(columns))) };
+    };
     let newTop: number, newBottom: number, newLeft: number, newRight: number;
     if (edges.top || edges.bottom || edges.left || edges.right)
     {
@@ -132,7 +139,7 @@ export function dragged(current: Bounds, edges: Edges, pos: { readonly row: numb
         newLeft = Math.min(pos.column, pressed.column);
         newRight = Math.max(pos.column, pressed.column);
     }
-    return { top: newTop, left: newLeft, bottom: newBottom, right: newRight };
+    return within({ top: newTop, left: newLeft, bottom: newBottom, right: newRight });
 }
 
 /**

@@ -3,65 +3,17 @@
 // picked), Import URL, and pasting text into an empty cell; the dialog's choices, area and preview.
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
-import { CellPosition } from "../../../src/engine/data/data/CellPosition.js";
-import { TableId } from "../../../src/engine/identifiers/id/TableId.js";
-import { DataTypeUtility } from "../../../src/engine/types/data/datatype/DataTypeUtility.js";
 import { RectangleBounds } from "../../../src/gui-logic/stf/gui/grid/RectangleBounds.js";
 import { clickOnItemInBounds } from "../base/clickTableLocation.js";
 import { selectGivenComboBoxItem } from "../base/comboUtil.js";
 import { keyboardMoveTo } from "../base/scrollTo.js";
 import { sleep } from "../base/util.js";
-import { engineHost, type RenderedApp } from "../fixtures/app.js";
+import type { RenderedApp } from "../fixtures/app.js";
 import { closeStarted, start } from "../transformations/fixtures.js";
+import { cells, description, dialogShowing, drag, importFile, newTables, ok, PEOPLE, ROW, tableValues, TARGET, texts, WIDTH } from "./fixtures.js";
 
 afterEach(closeStarted);
 
-const TARGET = new CellPosition(CellPosition.row(8), CellPosition.col(1));
-const PEOPLE = "Name,Age\nAlice,30\nBob,41\nCarol,25\n";
-
-// Picks the file (as the browser's file picker would) for the new-table dialog's Import File, at the cell
-async function importFile(a: RenderedApp, name: string, content: BlobPart): Promise<void>
-{
-    const grid = a.mainWindow()!.grid()!.grid;
-    await keyboardMoveTo(grid, TARGET);
-    await clickOnItemInBounds("[data-testid=grid]", grid, new RectangleBounds(TARGET, TARGET));
-    await userEvent.click(await vi.waitUntil(() => document.querySelector(".id-import-file")));
-    const input = document.querySelector<HTMLInputElement>(".import-file-input")!;
-    const transfer = new DataTransfer();
-    transfer.items.add(new File([content], name));
-    input.files = transfer.files;
-    input.dispatchEvent(new Event("change", { bubbles: true }));
-}
-
-const dialogShowing = (): boolean => document.querySelector(".guess-format-content") !== null;
-const texts = (selector: string): string[] => [...document.querySelectorAll(selector)].map(e => e.textContent.trim());
-const description = (): string => document.querySelector(".import-selection-description")?.textContent ?? "";
-const cells = (grid: string): string[][] =>
-{
-    const byTop = new Map<number, [number, string][]>();
-    for (const cell of document.querySelectorAll<HTMLElement>(`${grid} .import-data-cell`))
-    {
-        const top = Number.parseFloat(cell.style.top);
-        byTop.set(top, [...byTop.get(top) ?? [], [Number.parseFloat(cell.style.left), cell.textContent.trim()]]);
-    }
-    return [...byTop.entries()].sort((x, y) => x[0] - y[0]).map(([, row]) => row.sort((x, y) => x[0] - y[0]).map(c => c[1]));
-};
-const tableValues = (a: RenderedApp, id: string): string[][] =>
-{
-    const data = engineHost(a).tableManager.getSingleTableOrThrow(new TableId(id)).getData();
-    const columns = data.getColumns();
-    const r: string[][] = [];
-    for (let row = 0; row < data.getLength(); row++)
-        r.push(columns.map(c => DataTypeUtility.valueToString(c.getType().getCollapsed(row))));
-    return r;
-};
-const newTables = (a: RenderedApp): string[] => engineHost(a).tableManager.getAllTables().map(t => t.getId().getRaw()).filter(id => id !== "T" && id !== "U");
-
-async function ok(): Promise<void>
-{
-    await userEvent.click(document.querySelector(".guess-format-content")!.closest("[role=dialog]")!.querySelector(".ok-button")!);
-    await vi.waitUntil(() => !dialogShowing(), { timeout: 5000 });
-}
 
 describe("Importing a text file", () =>
 {
@@ -131,29 +83,9 @@ describe("Importing a text file", () =>
     });
 });
 
-// Drags in the original from one point to another (in its canvas, in pixels), as the mouse would
-async function drag(from: { x: number, y: number }, to: { x: number, y: number }): Promise<void>
-{
-    const pane = document.querySelector<HTMLElement>(".import-mouse-pane")!;
-    const box = pane.getBoundingClientRect();
-    const at = (p: { x: number, y: number }, type: string, buttons: number): void =>
-    {
-        pane.dispatchEvent(new PointerEvent(type, { bubbles: true, clientX: box.left + p.x, clientY: box.top + p.y, button: 0, buttons, pointerId: 1 }));
-    };
-    at(from, "pointermove", 0);
-    at(from, "pointerdown", 1);
-    at({ x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 }, "pointermove", 1);
-    at(to, "pointermove", 1);
-    at(to, "pointerup", 0);
-    await sleep(100);
-}
 
 describe("The area of the original", () =>
 {
-    // (Columns are 100 px, rows 24 px; the original's data starts at row 2, column 1)
-    const ROW = 24;
-    const WIDTH = 100;
-
     test("its edge dragged leaves out more (the cursor shows which edge); the preview follows", async () =>
     {
         await start().then(a => importFile(a, "people.csv", PEOPLE));
@@ -183,22 +115,21 @@ describe("The area of the original", () =>
         await vi.waitUntil(() => cells(".import-dest-grid").length === 2 && cells(".import-dest-grid")[0]?.length === 1, { timeout: 5000 });
     });
 
-    test("Undo area goes back to the area before, and Reset area to the one guessed; neither remakes the preview (Java's bug, kept)", async () =>
+    test("Undo area goes back to the area before, and Reset area to the one guessed, each remaking the preview", async () =>
     {
         await start().then(a => importFile(a, "people.csv", PEOPLE));
         await vi.waitUntil(() => cells(".import-dest-grid").length === 3, { timeout: 5000 });
         await drag({ x: 1.5 * WIDTH, y: 3 * ROW }, { x: 1.5 * WIDTH, y: 4 * ROW + 3 });
         await vi.waitUntil(() => cells(".import-dest-grid").length === 2, { timeout: 5000 });
         await userEvent.click(document.querySelector(".id-undo-import-selection-change")!);
-        expect(description()).toBe("Rows ↕ 2-4 of 4.  Columns ↔ 1-2 of 2.");
-        await sleep(300);
-        expect(cells(".import-dest-grid").length).toBe(2);
+        expect(description()).toBe("Rows \u2195 2-4 of 4.  Columns \u2194 1-2 of 2.");
+        await vi.waitUntil(() => cells(".import-dest-grid").length === 3, { timeout: 5000 });
         await drag({ x: 1.5 * WIDTH, y: 3 * ROW }, { x: 1.5 * WIDTH, y: 5 * ROW + 3 });
-        expect(description()).toBe("Rows ↕ 4-4 of 4.  Columns ↔ 1-2 of 2.");
+        expect(description()).toBe("Rows \u2195 4-4 of 4.  Columns \u2194 1-2 of 2.");
+        await vi.waitUntil(() => cells(".import-dest-grid").length === 1, { timeout: 5000 });
         await userEvent.click(document.querySelector(".id-reset-import-selection")!);
-        expect(description()).toBe("Rows ↕ 2-4 of 4.  Columns ↔ 1-2 of 2.");
-        await sleep(300);
-        expect(cells(".import-dest-grid").length).toBe(1);
+        expect(description()).toBe("Rows \u2195 2-4 of 4.  Columns \u2194 1-2 of 2.");
+        await vi.waitUntil(() => cells(".import-dest-grid").length === 3, { timeout: 5000 });
     });
 });
 
@@ -315,7 +246,7 @@ describe("Import URL", () =>
     const selectedImporter = (): string => document.querySelector(".importer-item.selected")?.textContent.trim() ?? "";
     const okButton = (): HTMLElement => document.querySelector(".import-link-contents")!.closest("[role=dialog]")!.querySelector(".ok-button")!;
 
-    test("the clipboard's URL is filled in, and the importer follows its extension; OK downloads it, to import (named after the download: Java's bug, kept)", async () =>
+    test("the clipboard's URL is filled in, and the importer follows its extension; OK downloads it, to import (named after the link's file)", async () =>
     {
         const a = await start();
         const url = new URL("resources/people.csv", import.meta.url).href;
@@ -327,7 +258,7 @@ describe("Import URL", () =>
         await vi.waitUntil(() => cells(".import-dest-grid").length === 3, { timeout: 5000 });
         await ok();
         await vi.waitUntil(() => newTables(a).length === 1, { timeout: 5000 });
-        expect(newTables(a)[0]).toMatch(/^testguiimportingresourcespeoplecsv[0-9]+$/);
+        expect(newTables(a)).toEqual(["people"]);
         expect(tableValues(a, newTables(a)[0]!)).toEqual([["\"Alice\"", "30"], ["\"Bob\"", "41"], ["\"Carol\"", "25"]]);
     });
 

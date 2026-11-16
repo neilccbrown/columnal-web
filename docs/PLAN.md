@@ -1239,13 +1239,14 @@ Steps (each a checkpoint with the project owner):
      cell imports it (step 6 had it do nothing). Tests: `test/gui/importing/ImportDialog.test.ts`,
      `test/engine/importers/ImporterGUI.test.ts`, `test/gui/tables/ExportToCSV.test.ts` (the port);
      `PropFormat` is ignored in Java (stubs in `test/gui/importing/PropFormat.test.ts`).
-   - Possible Java bugs found (reported, kept, marked PORT-NOTE): "Undo area" and "Reset area" don't remake
-     the preview, so OK then imports the old area; a choice that isn't one of the combo box's options shows
-     as the first option, while the choice stays; the area's left edge can be dragged onto the row
-     numbers (a trim of -1 from the left); a file's importer is found by extension with case ("DATA.CSV"
-     asks which), though guessing it ignores case; a URL's table is named after the temporary file it was
-     downloaded to (e.g. "dataxlsx1234567890"); and a newly loaded original's area is added to the undo
-     chain twice, so the first "Undo area" after it does nothing.
+   - Java bugs fixed (approved; tests in `test/gui/importing/BugFixes.test.ts`): "Undo area" and "Reset
+     area" didn't remake the preview, so OK then imported the old area; a choice that isn't one of the
+     combo box's options showed as the first option, while the choice stayed (now "Other..." with its
+     text); the area's left edge could be dragged onto the row numbers (now kept within the data); a
+     file's importer was found by extension with case ("DATA.CSV" asked which), though guessing it ignored
+     case; a URL's table was named after the temporary file it was downloaded to (now the link's file);
+     and a newly loaded original's area was added to the undo chain twice, so the first "Undo area" after
+     it did nothing.
    - Not yet (web differences to consider): dragging the area near the edge doesn't scroll; the split
      between the grids can't be moved.
 9. Tidy up: the View menu's Task Manager (`TaskManagerWindow`, listing the engine's `Workers` tasks),

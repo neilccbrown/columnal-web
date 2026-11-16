@@ -90,7 +90,7 @@ export interface ImporterInfo
  */
 export type ImportChoiceInfo =
     | { readonly kind: "label", readonly labelKey: string, readonly helpId: string, readonly text: string }
-    | { readonly kind: "combo", readonly labelKey: string, readonly helpId: string, readonly items: readonly string[], readonly other: boolean, readonly selected: number }
+    | { readonly kind: "combo", readonly labelKey: string, readonly helpId: string, readonly items: readonly string[], readonly other: boolean, readonly selected: number, readonly otherText: string }
     | { readonly kind: "check", readonly labelKey: string, readonly helpId: string, readonly checked: boolean };
 
 /** A change to an import choice: the combo box's item (the last for "Other...", with the text typed), or the check box. */

@@ -232,7 +232,7 @@ function choiceInfo(choice: ImportChoice): ImportChoiceInfo
     const row = ImporterGUI.makeGUI(choice.details, choice.choice);
     const labelKey = choice.details.getLabelKey();
     const helpId = choice.details.getHelpId();
-    return row.kind === "label" ? { kind: "label", labelKey, helpId, text: row.text } : { kind: "combo", labelKey, helpId, items: row.items, other: row.other, selected: row.selected };
+    return row.kind === "label" ? { kind: "label", labelKey, helpId, text: row.text } : { kind: "combo", labelKey, helpId, items: row.items, other: row.other, selected: row.selected, otherText: row.otherText };
 }
 
 // (Java logged the error, and showed no columns)

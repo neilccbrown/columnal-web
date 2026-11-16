@@ -18,7 +18,7 @@ export namespace ImporterGUI
      */
     export type ChoiceRow =
         | { readonly kind: "label", readonly text: string }
-        | { readonly kind: "combo", readonly items: readonly string[], readonly other: boolean, readonly selected: number };
+        | { readonly kind: "combo", readonly items: readonly string[], readonly other: boolean, readonly selected: number, readonly otherText: string };
 
     /** Java: makeGUI: the row for the choice (setting the choice when it shows a label). */
     export function makeGUI<C>(choiceDetails: ChoiceDetails<C>, currentChoice: SimpleObjectProperty<C | null>): ChoiceRow
@@ -37,12 +37,19 @@ export namespace ImporterGUI
         }
         const items = choiceDetails.quickPicks.map(p => new PickOrOther(p).toString());
         const choice = currentChoice.get();
-        // PORT-NOTE: possible Java bug, kept: a choice that isn't one of the quick picks (e.g. a separator
-        // typed in, or guessed, that isn't listed) shows as the first item, while the choice itself stays.
-        const index = choice === null ? -1 : choiceDetails.quickPicks.findIndex(p => new PickOrOther(p).equals(new PickOrOther(choice)));
         if (choiceDetails.stringEntry !== null)
             items.push(new PickOrOther<C>().toString());
-        return { kind: "combo", items, other: choiceDetails.stringEntry !== null, selected: Math.max(0, index) };
+        // PORT-NOTE: bug fix: Java showed a choice that isn't one of the quick picks (e.g. a separator
+        // guessed that isn't listed, or none) as the first item, while the choice itself stayed.  Here it
+        // shows as "Other..." with its text (none matching the "" pick, as the text formats take "" as
+        // none), or, if nothing can be typed, the first item is chosen.
+        const index = choiceDetails.quickPicks.findIndex(p => choice === null ? p === "" : new PickOrOther(p).equals(new PickOrOther(choice)));
+        if (index !== -1)
+            return { kind: "combo", items, other: choiceDetails.stringEntry !== null, selected: index, otherText: "" };
+        if (choiceDetails.stringEntry !== null)
+            return { kind: "combo", items, other: true, selected: items.length - 1, otherText: choice === null ? "" : String(choice) };
+        currentChoice.set(choiceDetails.quickPicks[0]!);
+        return { kind: "combo", items, other: false, selected: 0, otherText: "" };
     }
 
     /**

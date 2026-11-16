@@ -66,20 +66,23 @@ watch(open, isOpen =>
     setTimeout(() => field.value?.focus());
 }, { immediate: true });
 
-// Java: download's temporary file name: the URL's path (after its first slash), only letters and
-// digits, with "abc" if it is shorter than 3, then File.createTempFile's random number and ".tmp".
-// PORT-NOTE: possible Java bug, kept: the importers suggest the table's name from the file's name, so a
-// URL's table is suggested a name like "dataxlsx1234567890.tmp".
+// The name of the file downloaded: the link's last part (or, if it has none, its host).
+// PORT-NOTE: bug fix: Java downloaded to a temporary file, named from the link's path (only its letters
+// and digits) with a random number and ".tmp", and the importers suggest the table's name from the
+// file's, so a link's table was suggested a name like "dataxlsx1234567890".
 function downloadName(url: URL): string
 {
-    let suggested = url.pathname;
-    const slash = suggested.indexOf("/");
-    if (slash !== -1)
-        suggested = suggested.substring(slash + 1);
-    suggested = suggested.replace(/[^\p{L}\p{N}]/gu, "");
-    if (suggested.length < 3)
-        suggested += "abc";
-    return suggested + String(Math.floor(Math.random() * 1e18)) + ".tmp";
+    const parts = url.pathname.split("/").filter(p => p !== "");
+    let last = parts.at(-1) ?? "";
+    try
+    {
+        last = decodeURIComponent(last);
+    }
+    catch (_e)
+    {
+        // (Not decodable: as it is)
+    }
+    return last !== "" ? last : url.hostname;
 }
 
 let downloading = false;

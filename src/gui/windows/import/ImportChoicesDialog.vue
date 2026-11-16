@@ -35,7 +35,7 @@ const WIDTH = 100;
 
 // Each combo box's item, the "Other..." text, its error, and each check box:
 const selected = shallowRef(props.choices.map(c => c.kind === "combo" ? c.selected : 0));
-const otherText = shallowRef(props.choices.map(() => ""));
+const otherText = shallowRef(props.choices.map(c => c.kind === "combo" ? c.otherText : ""));
 const otherError = shallowRef<(string | null)[]>(props.choices.map(() => null));
 const checked = shallowRef(props.choices.map(c => c.kind === "check" && c.checked));
 
@@ -109,10 +109,9 @@ async function loadSource(): Promise<void>
         setTrim(loaded.trim!, true);
     else
         setTrim(trim.value, true);
-    // (Java: then, once the columns are shown, numRowsChanged: setTrim(trim, true) again, and a preview)
-    // PORT-NOTE: possible Java bug, kept: so the area is added to the undo chain twice, and the first
-    // "Undo area" after a source loads changes nothing.
-    setTrim(trim.value, true);
+    // PORT-NOTE: bug fix: Java then, once the columns were shown, called numRowsChanged, which did
+    // setTrim(trim, true) again, adding the area to the undo chain twice, so the first "Undo area" after
+    // a source loaded changed nothing.
     await updateDestPreview();
 }
 
@@ -201,7 +200,7 @@ function pointerMove(e: PointerEvent): void
         edges = at.edges;
         return;
     }
-    const next = dragged(area.value, edges, nearestTopLeft(p), pressed);
+    const next = dragged(area.value, edges, nearestTopLeft(p), pressed, srcRows.value, srcColumns.value);
     if (next === null)
         return;
     area.value = next;
@@ -245,17 +244,18 @@ function pointerUp(e: PointerEvent): void
         setTrim(trim.value, true);
 }
 
-// PORT-NOTE: possible Java bug, kept: the buttons only set the trim (setTrim), so the preview isn't
-// remade for the area they set (it moves, but shows the old area's rows), and OK then imports the old
-// area.
+// PORT-NOTE: bug fix: in Java the buttons only set the trim (setTrim), so the preview wasn't remade for
+// the area they set (it moved, but showed the old area's rows), and OK then imported the old area.
 function undoClicked(): void
 {
     undoArea();
+    void updateDestPreview().catch(ignoreClosed);
 }
 
 function resetClicked(): void
 {
     resetArea();
+    void updateDestPreview().catch(ignoreClosed);
 }
 
 onMounted(() => void loadSource().catch(ignoreClosed));

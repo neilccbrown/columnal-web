@@ -68,6 +68,8 @@
     --grid-comment: rgb(241 242 194);
     --grid-comment-hover: rgb(251 252 202);
     --cell-error: rgb(204 82 82); /* virtual-grid.scss .table-data-cell:has-error, hsb(0, 60%, 80%) */
+    --explained-expression: #263e87; /* virtual-grid.scss .explanation-pane .explained-expression */
+    --explained-expression-highlight: royalblue; /* (and its :highlight) */
 
     /* Grid sizes (VirtualGrid.rowHeight, and the row labels' font in virtual-grid.scss) */
     --grid-row-height: 24px;

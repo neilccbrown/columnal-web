@@ -476,6 +476,16 @@ test("testCheck", () => checkProperty([new GenImmediateData(), new GenRandom()],
 
     expect(label.textContent.trim()).toBe(expectedPass ? "OK" : "Fail");
 
-    // PORT-DEFERRED: if it failed, clicking the result (or Enter on it) shows its explanation
-    // (".explanation-flow"), with ExplanationDisplay (Phase 11 step 7).
+    if (!expectedPass)
+    {
+        // Test out the clicking to see the explanation:
+        await keyboardMoveTo(virtualGrid, labelPos);
+        expect(document.querySelector(".explanation-flow"), "Explanation").toBeNull();
+        if (r.nextBoolean())
+            await userEvent.click(label);
+        else
+            await push("Enter");
+        // (Java slept half a second)
+        await vi.waitUntil(() => document.querySelector(".explanation-flow") !== null, { timeout: 5000 });
+    }
 }, { trials: 5 }), 900_000);

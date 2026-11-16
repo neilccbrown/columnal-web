@@ -40,6 +40,13 @@ const HEADER = GridTableDisplay.HEADER_ROWS;
 const BLOCK = GridTableDisplay.ROW_BLOCK;
 const viewport = inject(VIEWPORT)!;
 const tableActions = useTableActions();
+
+// Java: CheckDisplay's result label's click (showExplanation): why it failed, below it
+function explainCheck(): void
+{
+    if (props.display.info.check?.explainable === true)
+        tableActions?.explain(props.display, { kind: "check" }, props.display.getPosition().offsetByRowCols(1, 0));
+}
 const engine = useEngine();
 const collapsed = computed(() => props.display.info.display === "COLLAPSED");
 
@@ -276,12 +283,14 @@ watchEffect(() =>
         @focus-lost="nameFocusLost"
       />
     </div>
-    <!-- Java: CheckDisplay's result, below the name.  PORT-DEFERRED: clicking it (or Enter on it) to
-         show why it failed (ExplanationDisplay, Phase 11 step 7) -->
+    <!-- Java: CheckDisplay's result, below the name; if it failed (or has an error) with an explanation,
+         clicking it (or Enter on it) shows why -->
     <div
       v-if="display.info.check !== null"
       class="check-result"
+      :class="{ explainable: display.info.check.explainable }"
       :title="display.info.check.text"
+      @click="explainCheck"
     >
       {{ display.info.check.text }}
     </div>
@@ -492,6 +501,11 @@ watchEffect(() =>
 /* Java: CheckDisplay's two cells, the name and the result (a Label in a cell, check-result) */
 .table-check {
     padding-bottom: 0;
+}
+/* (Java: underlined, with the hand cursor, while hovered if it can show why it failed) */
+.check-result.explainable:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 .check-result {
     height: var(--grid-row-height);

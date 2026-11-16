@@ -14,11 +14,11 @@ import { checkMenuItem, menu, menuItem, separator, type MenuItem } from "../comp
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import NewTableDialog, { type DataOrTransform } from "../components/dialogs/NewTableDialog.vue";
 import type { TypeManager } from "../../engine/types/data/datatype/TypeManager.js";
-import type { EngineAlert, ExporterInfo } from "../engine/protocol.js";
+import type { EngineAlert, ExplanationInfo, ExplanationSegment, ExplanationTarget, ExporterInfo } from "../engine/protocol.js";
 import { download } from "../download.js";
 import { ignoreClosed } from "../engine/EngineClient.js";
 import { provideEngine } from "../engine/useEngine.js";
-import type { GridTableDisplay } from "../grid/GridTableDisplay.js";
+import { GridTableDisplay } from "../grid/GridTableDisplay.js";
 import { provideTableActions } from "../grid/tableActions.js";
 import { provideDialogReturnFocus } from "../components/dialogs/dialogs.js";
 import { copyTypeManager, typeInfoOf } from "../project/typeCopy.js";
@@ -308,6 +308,62 @@ function selectCheck(id: string): void
 const guidance = shallowRef<Guidance | null>(null);
 let guidanceCount = 0;
 
+// Java: View's explanationDisplay: one at a time, below the cell it is attached to; a Check's goes when
+// the Check is removed or changed (Java: CheckDisplay.cleanupFloatingItems).
+// PORT-NOTE: possible Java bug, kept: only a Check's goes with its table (TableDisplay's cleanup doesn't
+// remove it), so a cell's "Why?" stays after its table is deleted or changed.
+interface ShownExplanation
+{
+    readonly table: string;
+    readonly version: number;
+    readonly check: boolean;
+    // Null while it loads (Java: "Loading..."):
+    readonly info: ExplanationInfo | null;
+    readonly attachedTo: CellPosition;
+}
+const explanation = shallowRef<ShownExplanation | null>(null);
+let explanationCount = 0;
+
+// Java: View.showExplanationDisplay, once the explanation is worked out (a Check's is shown loading)
+async function explain(display: GridTableDisplay, target: ExplanationTarget, attachedTo: CellPosition): Promise<void>
+{
+    const n = ++explanationCount;
+    const shown = { table: display.info.id, version: display.info.version, check: target.kind === "check", attachedTo };
+    if (target.kind === "check")
+        explanation.value = { ...shown, info: null };
+    const result = await engine.client.request("explanation", display.info.id, target);
+    if (n !== explanationCount)
+        return;
+    explanation.value = result === null ? (target.kind === "check" ? null : explanation.value) : { ...shown, info: markRaw(result.info) };
+}
+
+watch(engine.tables.tables, tables =>
+{
+    const e = explanation.value;
+    if (e !== null && e.check && !tables.some(t => t.id === e.table && t.version === e.version))
+    {
+        explanationCount++;
+        explanation.value = null;
+    }
+});
+
+// Java: showExplanationDisplay's jumpTo: a location's cell selected, if it is a cell shown in a table
+function explanationJump(link: NonNullable<ExplanationSegment["link"]>): void
+{
+    const display = engineGrid.value?.displays().find(d => d.info.id === link.table);
+    if (display === undefined || link.column === null || link.row === null)
+        return;
+    const column = display.info.columnNames.indexOf(link.column);
+    if (column !== -1)
+        selectCell(display.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS + link.row, column));
+}
+
+function closeExplanation(): void
+{
+    explanationCount++;
+    explanation.value = null;
+}
+
 // Java: the grid's findAndSelect, of a cell
 function selectCell(position: CellPosition): void
 {
@@ -348,6 +404,7 @@ provideTableActions({
         guidance.value = markRaw(formulaGuidance(grid, () => document.querySelector(`.table[data-table="${CSS.escape(id)}"]`)?.getBoundingClientRect() ?? null));
     },
     customDisplay: display => transformations.value?.customDisplay(display),
+    explain: (display, target, attachedTo) => void explain(display, target, attachedTo).catch(ignoreClosed),
 });
 
 onMounted(async () =>
@@ -484,6 +541,9 @@ defineExpose({
         class="main-grid"
         :manager="manager"
         :picking="picking"
+        :explanation="explanation"
+        @explanation-closed="closeExplanation"
+        @explanation-jump="explanationJump"
       />
       <div
         v-if="bannerText !== null"

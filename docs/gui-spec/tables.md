@@ -195,5 +195,17 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   want to calculate, then click Ok." (until it closes); then it closes. One shows at a time (Java opened
   another each time). `src/gui/components/GuidanceWindow.vue`, `guidance.ts`,
   `src/gui/windows/formulaGuidance.ts`.
-- Not yet: a transformation's "Why?" cell menu item (Phase 11, with explanations); R's "Re-evaluate" in the
-  name row (Phase 12).
+- Explanations (Java: `ExplanationDisplay`, from `View.showExplanationDisplay`): why a Check failed
+  (its result clicked, `transformations.md`), or how a transformation's cell was calculated (its context
+  menu's "Why?": a Calculate's calculated columns, an Aggregate's calculated columns, and any of a
+  Filter's, which explains its expression for the cell's source row; not a data table's cells, or the
+  columns a Calculate passes through). One shows at a time (another replaces it), below the cell it is
+  for (10 px below), centred on its column, 250 to 500 px wide, with rounded corners, a shadow and a
+  cross at the top right; "Loading..." until it is worked out. Its lines are the last step first, each
+  after the first starting "⬑ " ("A * 2 was 4", "⬑ A was 2, using A (row 1)"). Locations are underlined
+  links ("table:" first if not the source table, the column, and "(row n)"), which select their cell.
+  Expressions are dark blue; hovering one that is shown more than once (or the expression it is inside
+  that is explained) highlights each appearance, and what is inside them, in royal blue, underlined.
+  The cross, or a middle click on it, closes it; a Check's goes when the Check is removed or changed.
+  `src/gui/grid/ExplanationDisplay.vue`, `src/gui/engine/explanations.ts`, `EngineHost.explanation`.
+- Not yet: R's "Re-evaluate" in the name row (Phase 12).

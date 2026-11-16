@@ -60,6 +60,9 @@ export interface TableInfo
     // "Error", or "ERR:" and the message), whether it passed (null for an error), and whether its title
     // shows it failing (Java: the check-failing pseudoclass); else null:
     readonly check: CheckResultInfo | null;
+    // Whether each column's cells have "Why?" (Java: TableDisplay.getMenuItems: a Calculate's calculated
+    // columns, an Aggregate's calculated columns, and all of a Filter's):
+    readonly columnExplainable: readonly boolean[];
 }
 
 /** A Check's result (TableInfo.check). */
@@ -68,6 +71,52 @@ export interface CheckResultInfo
     readonly text: string;
     readonly passed: boolean | null;
     readonly failing: boolean;
+    // Whether clicking the result shows why (Java: CheckDisplay's failExplanationProperty, set when it
+    // failed, or for an error, with an explanation):
+    readonly explainable: boolean;
+}
+
+/**
+ * What explanation to show (Java: ExplanationDisplay's explanation): a Check's, or a transformation's cell's
+ * (Java: TableDisplay.getMenuItems' "Why?").
+ */
+export type ExplanationTarget =
+    | { readonly kind: "check" }
+    | { readonly kind: "cell", readonly column: string, readonly row: number };
+
+/**
+ * An explanation's text (Java: ExplanationDisplay.makeCell's StyledString): its lines, the last first
+ * (Java joined them with "\n⬑ "), each its parts; and the expressions parts can highlight.
+ */
+export interface ExplanationInfo
+{
+    readonly lines: readonly (readonly ExplanationSegment[])[];
+    readonly highlights: readonly ExplanationHighlight[];
+}
+
+/**
+ * A part of an explanation's line: its text and style classes, the location it links to (Java:
+ * hyperlinkLocation's Clickable), and the innermost expression it shows (an index into highlights).
+ */
+export interface ExplanationSegment
+{
+    readonly text: string;
+    readonly classes: readonly string[];
+    readonly link: { readonly table: string, readonly column: string | null, readonly row: number | null } | null;
+    readonly highlight: number | null;
+}
+
+/**
+ * An expression shown in an explanation (Java: ExplanationDisplay.HighlightExpression): which expression
+ * it is (the same number for equal expressions), whether it is explained directly, and the expressions
+ * shown inside it and around it (nearest first), as indexes into highlights.
+ */
+export interface ExplanationHighlight
+{
+    readonly expression: number;
+    readonly explainedDirectly: boolean;
+    readonly inner: readonly number[];
+    readonly parents: readonly number[];
 }
 
 /**
@@ -404,6 +453,11 @@ export interface EngineApi
      * dialog (Java: TableHat's editList), and if one was clicked (its index), where it is in the Manual
      * Edit: its data row and column.
      */
+    /**
+     * A table's explanation (Java: View.showExplanationDisplay's, for a Check's result or a cell's "Why?"),
+     * with the table its locations are relative to; null if there is none.
+     */
+    explanation(id: string, target: ExplanationTarget): { readonly srcTable: string, readonly info: ExplanationInfo } | null;
     setManualEditEntries(id: string, keep: readonly number[], jumpTo: number | null): { readonly jumpTo: { readonly row: number, readonly column: string } | null } | EngineAlert | null;
     /**
      * Changes a data table's column: its name, type and default value (Java:
@@ -471,7 +525,7 @@ export interface EngineApi
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "pasteTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "pasteTable", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "explanation", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

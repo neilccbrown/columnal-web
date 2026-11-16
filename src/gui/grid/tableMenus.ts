@@ -1,5 +1,5 @@
 // A table's menus (Java: TableDisplay.getTableHeaderContextMenu, getColumnActions' ColumnHeaderOps,
-// and makeRowContextMenu), as menu data (menus.ts) for the grid's context menu (docs/gui-spec/tables.md).
+// makeRowContextMenu and getMenuItems), as menu data (menus.ts) for the grid's context menu (docs/gui-spec/tables.md).
 import { checkMenuItem, disabled, menu, menuItem, menuItemPos, separator, textItem, type MenuEntry, type MenuItem } from "../components/menus/menus.js";
 import type { TableDisplayMode } from "../engine/protocol.js";
 import type { GridTableDisplay } from "./GridTableDisplay.js";
@@ -79,4 +79,15 @@ export function rowLabelMenu(display: GridTableDisplay, row: number): MenuEntry[
     if (display.info.canDeleteRows)
         r.push(menuItem("virtGrid.row.delete", () => display.deleteRows(row, 1)));
     return r;
+}
+
+/**
+ * Java: a data cell's context menu (TextEditorBase's), with TableDisplay.getMenuItems' "Why?" for a
+ * transformation's calculated cell, which shows how it was calculated (ExplanationDisplay).
+ */
+export function dataCellMenu(display: GridTableDisplay, column: number, why: () => void): MenuEntry[]
+{
+    if (display.info.columnExplainable[column] !== true)
+        return [];
+    return [menuItem("cell.why", why)];
 }

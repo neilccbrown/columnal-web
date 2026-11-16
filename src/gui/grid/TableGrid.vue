@@ -7,6 +7,7 @@
 // cell is edited in a DocumentTextField over it (Java: DataCellSupplier's cell, expanded while focused).
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, shallowRef, useTemplateRef, watch } from "vue";
 import { CellPosition } from "../../engine/data/data/CellPosition.js";
+import type { ExplanationInfo, ExplanationSegment } from "../engine/protocol.js";
 import { Pair } from "../../engine/utility-adt/utility/adt/Pair.js";
 import type { CellSelection } from "../../gui-logic/stf/gui/grid/CellSelection.js";
 import { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
@@ -26,7 +27,8 @@ import CommentView from "./CommentView.vue";
 import type { GridCommentDisplay } from "./GridCommentDisplay.js";
 import GridTable from "./GridTable.vue";
 import { GridTableDisplay } from "./GridTableDisplay.js";
-import { columnHeaderMenu, rowLabelMenu, tableHeaderMenu } from "./tableMenus.js";
+import { columnHeaderMenu, dataCellMenu, rowLabelMenu, tableHeaderMenu } from "./tableMenus.js";
+import ExplanationDisplay from "./ExplanationDisplay.vue";
 import { arrowPath, HIGHLIGHT, type GridHighlight } from "./highlights.js";
 import type { Picked, PickingMode } from "./picking.js";
 import { VIEWPORT } from "./viewport.js";
@@ -37,6 +39,15 @@ const props = defineProps<{
     comments?: readonly GridCommentDisplay[],
     // While a dialog picks a table or column from the grid (Java: the window's picking mode):
     picking?: PickingMode | null,
+    // The explanation showing (Java: View's explanationDisplay), below the cell it is attached to; its
+    // content null while it loads:
+    explanation?: { readonly info: ExplanationInfo | null, readonly attachedTo: CellPosition } | null,
+}>();
+const emit = defineEmits<{
+    // The explanation's cross, or a middle click on it:
+    explanationClosed: [],
+    // A location in the explanation clicked (Java: ExplanationDisplay's jumpTo):
+    explanationJump: [link: NonNullable<ExplanationSegment["link"]>],
 }>();
 
 const ROW = VirtualGrid.rowHeight;
@@ -209,6 +220,13 @@ function keyboardActivate(position: CellPosition): void
             openMenuAt(tableHeaderMenu(d), { x: r.left, y: r.top + ROW });
             return;
         }
+        // Java: CheckDisplay's result's keyboardActivate (showExplanation)
+        if (d.info.check !== null)
+        {
+            if (d.info.check.explainable)
+                tableActions?.explain(d, { kind: "check" }, position);
+            return;
+        }
         // Java: ColumnNameItem's and ColumnTypeItem's keyboardActivate: edit the column's name or type
         if ((position.rowIndex === tablePos.rowIndex + 1 || position.rowIndex === tablePos.rowIndex + 2) && column < d.info.columnNames.length)
         {
@@ -268,6 +286,15 @@ function menuFor(target: Element, e: MouseEvent): readonly MenuEntry[]
     const rowLabel = target.closest<HTMLElement>(".row-label");
     if (rowLabel !== null)
         return rowLabelMenu(display, Number(rowLabel.dataset.row));
+    // Java: a data cell's menu (its "Why?")
+    const cell = target.closest<HTMLElement>(".table-data-cell");
+    const row = cell?.closest<HTMLElement>(".row") ?? null;
+    if (cell !== null && row !== null)
+    {
+        const r = Number(row.dataset.row);
+        const c = Number(cell.dataset.col);
+        return dataCellMenu(display, c, () => tableActions?.explain(display, { kind: "cell", column: display.info.columnNames[c]!, row: r }, display.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS + r, c)));
+    }
     return [];
 }
 
@@ -387,8 +414,9 @@ function onClick(e: MouseEvent): void
     if (e.button !== 0 || !still || !(e.target instanceof Element) || e.target.closest(".cell-editor") !== null)
         return;
     const p = canvasPoint(e);
-    // (The table name field, a hat, and a comment, handle their own clicks)
-    if (e.target.closest(".table-name-text-field, .table-hat, .grid-comment") !== null)
+    // (The table name field, a hat, a comment, a Check's result and an explanation handle their own
+    // clicks: Java's DIRECTLY_CLICKABLE items)
+    if (e.target.closest(".table-name-text-field, .table-hat, .grid-comment, .check-result, .explanation-pane") !== null)
         return;
     // Java: HeadedDisplay's table header selects the entire table:
     if (e.target.closest(".table-title") !== null)
@@ -1098,6 +1126,14 @@ defineExpose({
               />
             </svg>
           </template>
+          <ExplanationDisplay
+            v-if="explanation != null"
+            :info="explanation.info"
+            :middle="(colLeft(explanation.attachedTo.columnIndex) + colLeft(explanation.attachedTo.columnIndex + 1)) / 2"
+            :top="(explanation.attachedTo.rowIndex + 1) * ROW + 10"
+            @close="emit('explanationClosed')"
+            @jump="link => emit('explanationJump', link)"
+          />
           <div
             v-if="hoverTip !== null"
             class="virtual-grid-tooltip-flow"

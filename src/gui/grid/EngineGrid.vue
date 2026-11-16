@@ -6,6 +6,7 @@ import { markRaw, shallowRef, useTemplateRef, watch } from "vue";
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import { Either } from "../../engine/utility-adt/utility/adt/Either.js";
 import { VirtualGrid } from "../../gui-logic/stf/gui/grid/VirtualGrid.js";
+import type { ExplanationInfo, ExplanationSegment } from "../engine/protocol.js";
 import { useEngine } from "../engine/useEngine.js";
 import { GridCommentDisplay } from "./GridCommentDisplay.js";
 import { GridTableDisplay } from "./GridTableDisplay.js";
@@ -18,6 +19,12 @@ const props = defineProps<{
     manager?: VirtualGrid.VirtualGridManager | null,
     // While a dialog picks a table or column from the grid:
     picking?: PickingMode | null,
+    // The explanation showing, below the cell it is attached to (TableGrid's):
+    explanation?: { readonly info: ExplanationInfo | null, readonly attachedTo: CellPosition } | null,
+}>();
+const emit = defineEmits<{
+    explanationClosed: [],
+    explanationJump: [link: NonNullable<ExplanationSegment["link"]>],
 }>();
 const engine = useEngine();
 const tableActions = useTableActions();
@@ -112,5 +119,8 @@ defineExpose({
     :displays="displays"
     :comments="comments"
     :picking="picking"
+    :explanation="explanation"
+    @explanation-closed="emit('explanationClosed')"
+    @explanation-jump="link => emit('explanationJump', link)"
   />
 </template>

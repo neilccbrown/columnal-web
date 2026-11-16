@@ -81,6 +81,7 @@ const GUI_TEST_PORTS = new Map<string, readonly string[]>([
     ["tests-gui-dtf/src/test/java/test/gui/stf/TestDocumentTextField.java", ["test/gui/components/DocumentTextField.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestInitialWindow.java", ["test/gui/windows/InitialWindow.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestBlankMainWindow.java", ["test/gui/windows/BlankMainWindow.test.ts"]],
+    ["tests-gui-central/src/test/java/test/gui/TestExplanationDisplay.java", ["test/gui/tables/ExplanationDisplay.test.ts"]],
     ["tests-gui-central/src/test/java/test/gui/TestVirtualGridScrollCoordinates.java", ["test/gui/grid/ScrollCoordinates.test.ts"]],
     ["tests-gui-tables/src/test/java/test/gui/table/TestTableEdits.java", ["test/gui/tables/TableEdits.test.ts"]],
     ["tests-gui-side/src/test/java/test/gui/TestTypeEdit.java", ["test/gui/windows/TypeEdit.test.ts"]],

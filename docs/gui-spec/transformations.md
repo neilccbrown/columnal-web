@@ -155,7 +155,9 @@ of `TestCalculate`, `TestFilter`, `TestSort`, `TestJoin`, `TestHideColumns` and 
 - Its name (the header, `check-table-title`, red while failing: `check-failing`) above its result: "OK",
   "Fail", "Error" (an error with an explanation, also failing), or "ERR:" and the message. No column
   headers or rows; nothing to copy; no Goto row.
-- Not yet: clicking the result (or Enter on it) to show why it failed (`ExplanationDisplay`, Phase 11).
+- If it failed (or has an error) with an explanation, the result is underlined, with the hand cursor,
+  while hovered, and clicking it (or Enter on it) shows why (`tables.md`'s explanations). Clicking it
+  doesn't select its cell (Java's directly clickable item).
 - While there are Checks, a status bar at the bottom of the window counts those that pass: "Checks: 1/2
   OK" ("?" for the count while any has no result), red if not all pass, underlined while hovered.
   Clicking it shows the checks pane.

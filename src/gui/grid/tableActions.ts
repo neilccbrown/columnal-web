@@ -1,6 +1,7 @@
 // What the grid asks of the project's window (Java: the TableDisplay's View): the dialogs it shows.
 import { inject, provide, type InjectionKey } from "vue";
-import type { HatLink } from "../engine/protocol.js";
+import type { CellPosition } from "../../engine/data/data/CellPosition.js";
+import type { ExplanationTarget, HatLink } from "../engine/protocol.js";
 import type { GridTableDisplay } from "./GridTableDisplay.js";
 
 export interface TableActions
@@ -29,6 +30,9 @@ export interface TableActions
     // Java: the table menu's Custom (TableDisplay.editCustomDisplay): CustomColumnDisplayDialog, then the
     // table shows all but the columns hidden there
     customDisplay(display: GridTableDisplay): void;
+    // Java: View.showExplanationDisplay, for a Check's result (CheckDisplay.showExplanation) or a
+    // transformation's cell ("Why?"), below the cell it is attached to
+    explain(display: GridTableDisplay, target: ExplanationTarget, attachedTo: CellPosition): void;
 }
 
 const TABLE_ACTIONS: InjectionKey<TableActions> = Symbol("tableActions");

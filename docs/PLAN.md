@@ -1212,6 +1212,18 @@ Steps (each a checkpoint with the project owner):
      explanation, `.explanation-flow`) is PORT-DEFERRED in the port.
 7. Explanations: `ExplanationDisplay` and a cell's "Why?". Tests: `TestExplanationDisplay` (and the end of
    `TestCreateEditTransformation.testCheck`, step 6).
+   - Done: the engine works out an explanation's lines (`src/gui/engine/explanations.ts`: Java's
+     `makeString`, `hyperlinkLocation` and `HighlightExpression`, sent as `ExplanationInfo`;
+     `EngineHost.explanation`); `src/gui/grid/ExplanationDisplay.vue` shows it in the grid (MainWindow
+     holds the one showing). A Check's result is clickable (and Enter on it) when it has an explanation
+     (`CheckResultInfo.explainable`), and no longer selects its cell when clicked (as Java's). A data
+     cell's context menu has "Why?" (`TableInfo.columnExplainable`, `tableMenus.dataCellMenu`). Tests:
+     `test/gui/tables/ExplanationDisplay.test.ts` (the port), `Explanations.test.ts`, and the end of
+     `CreateEditTransformation.test.ts`'s `testCheck`.
+   - Java bug (approved to fix, in its own commit): a data cell's menu's Cut and Copy do nothing on a
+     cell not being edited (no selection), and Paste shows text it never saves.
+   - Possible Java bug (reported, kept, PORT-NOTE): only a Check's explanation goes when its table is
+     removed or changed; a cell's "Why?" stays after its table is deleted.
 8. Importing: the import dialog with its live preview (`ImportChoicesDialog`, `ImporterGUI`, rebuilt), the
    new-table dialog's Import File and Import URL, and the rest of clipboard import and export (pasting
    into an empty cell was done in step 6). Tests: `PropFormat`, `TestExportToCSV`.

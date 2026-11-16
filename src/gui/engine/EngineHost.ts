@@ -49,7 +49,7 @@ import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
 import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
-import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type TypeTransformInfo, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type TypeTransformInfo, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExplanationInfo, type ExplanationTarget, type ExporterInfo, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 import { columnLookupInfo } from "./columnLookupInfo.js";
 import { typeTransforms } from "./typeTransforms.js";
 import { entryInfo, manualEditEntries, type ManualEditEntry } from "./manualEditEntries.js";
@@ -64,6 +64,10 @@ import { ExpressionVersion } from "../../engine/parsers/grammar/Versions.js";
 import { Calculate } from "../../engine/transformations/transformations/Calculate.js";
 import { Check } from "../../engine/transformations/transformations/Check.js";
 import { Filter } from "../../engine/transformations/transformations/Filter.js";
+import { EvaluateState } from "../../engine/expressions/transformations/expression/EvaluateState.js";
+import { EvaluationException } from "../../engine/expressions/transformations/expression/EvaluationException.js";
+import type { Explanation } from "../../engine/expressions/transformations/expression/explanation/Explanation.js";
+import { explanationInfo } from "./explanations.js";
 import { Concatenate } from "../../engine/transformations/transformations/Concatenate.js";
 import { HideColumns } from "../../engine/transformations/transformations/HideColumns.js";
 import { Join } from "../../engine/transformations/transformations/Join.js";
@@ -827,6 +831,66 @@ export class EngineHost implements EngineApi
         }
     }
 
+    // Java: CheckDisplay's showExplanation, and TableDisplay.getMenuItems' "Why?" (each worked out on a
+    // worker thread): the explanation, and the table its locations are relative to
+    public explanation(id: string, target: ExplanationTarget): { readonly srcTable: string, readonly info: ExplanationInfo } | null
+    {
+        const table = this.tables.get(id)?.table;
+        if (table === undefined)
+            return null;
+        const show = (explanation: Explanation | null, srcTableId: TableId): { readonly srcTable: string, readonly info: ExplanationInfo } | null =>
+            explanation === null ? null : { srcTable: srcTableId.getRaw(), info: explanationInfo(explanation, srcTableId) };
+        // Java: the expression's value at the row, with its explanation (or the error's)
+        const explain = (calculate: () => Expression.ValueResult): Explanation | null =>
+        {
+            try
+            {
+                return calculate().makeExplanation(null);
+            }
+            catch (e)
+            {
+                if (e instanceof EvaluationException)
+                    return e.makeExplanation();
+                if (e instanceof InternalException)
+                {
+                    Log.log(e);
+                    return null;
+                }
+                throw e;
+            }
+        };
+        if (target.kind === "check")
+            return table instanceof Check ? show(table.getExplanation(), table.getSrcTableId()) : null;
+        const columnId = new ColumnId(target.column);
+        const typeManager = this.tableManager.getTypeManager();
+        if (table instanceof Aggregate)
+        {
+            const expression = table.getColumnExpressions().find(p => p.getFirst().equals(columnId))?.getSecond();
+            return expression === undefined ? null : show(explain(() => expression.calculateValue(table.recreateEvaluateState(typeManager, target.row, true))), table.getSrcTableId());
+        }
+        if (table instanceof Calculate)
+        {
+            const expression = table.getCalculatedColumns().get(columnId);
+            return expression === undefined ? null : show(explain(() => expression.calculateValue(new EvaluateState(typeManager, target.row, true))), table.getSrcTableId());
+        }
+        if (table instanceof Filter)
+        {
+            try
+            {
+                const srcRowIndex = table.getSourceRowFor(target.row);
+                return srcRowIndex === null ? null : show(explain(() => table.getFilterExpression().calculateValue(new EvaluateState(typeManager, srcRowIndex, true))), table.getSrcTableId());
+            }
+            catch (e)
+            {
+                if (!(e instanceof InternalException || e instanceof UserException))
+                    throw e;
+                Log.log(e);
+                return null;
+            }
+        }
+        return null;
+    }
+
     // Java: TableHat's editList, once ManualEditEntriesDialog closes
     public setManualEditEntries(id: string, keep: readonly number[], jumpTo: number | null): { readonly jumpTo: { readonly row: number, readonly column: string } | null } | EngineAlert | null
     {
@@ -1484,6 +1548,9 @@ export class EngineHost implements EngineApi
             calculate: table instanceof Calculate ? { src: table.getSrcTableId().getRaw() } : null,
             aggregate: table instanceof Aggregate ? { src: table.getSrcTableId().getRaw() } : null,
             check: table instanceof Check ? this.checkResult(table) : null,
+            columnExplainable: columnNames.map(c => table instanceof Calculate ? table.getCalculatedColumns().has(new ColumnId(c))
+                : table instanceof Aggregate ? table.getColumnExpressions().some(p => p.getFirst().getRaw() === c)
+                    : table instanceof Filter),
         };
     }
 
@@ -1499,18 +1566,18 @@ export class EngineHost implements EngineApi
         try
         {
             const pass = check.getResult();
-            result = { text: pass ? "OK" : "Fail", passed: pass, failing: !pass };
+            result = { text: pass ? "OK" : "Fail", passed: pass, failing: !pass, explainable: !pass && check.getExplanation() !== null };
         }
         catch (e)
         {
             if (!(e instanceof UserException || e instanceof InternalException))
                 throw e;
             if (check.getExplanation() !== null)
-                result = { text: "Error", passed: null, failing: true };
+                result = { text: "Error", passed: null, failing: true, explainable: true };
             else
             {
                 Log.log(e);
-                result = { text: "ERR:" + e.getLocalizedMessage(), passed: null, failing: false };
+                result = { text: "ERR:" + e.getLocalizedMessage(), passed: null, failing: false, explainable: false };
             }
         }
         this.checkResults.set(check, result);

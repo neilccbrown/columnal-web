@@ -293,7 +293,7 @@ function menuFor(target: Element, e: MouseEvent): readonly MenuEntry[]
     {
         const r = Number(row.dataset.row);
         const c = Number(cell.dataset.col);
-        return dataCellMenu(display, c, () => tableActions?.explain(display, { kind: "cell", column: display.info.columnNames[c]!, row: r }, display.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS + r, c)));
+        return dataCellMenu(display, r, c, () => tableActions?.explain(display, { kind: "cell", column: display.info.columnNames[c]!, row: r }, display.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS + r, c)));
     }
     return [];
 }

@@ -1220,10 +1220,12 @@ Steps (each a checkpoint with the project owner):
      cell's context menu has "Why?" (`TableInfo.columnExplainable`, `tableMenus.dataCellMenu`). Tests:
      `test/gui/tables/ExplanationDisplay.test.ts` (the port), `Explanations.test.ts`, and the end of
      `CreateEditTransformation.test.ts`'s `testCheck`.
-   - Java bug (approved to fix, in its own commit): a data cell's menu's Cut and Copy do nothing on a
-     cell not being edited (no selection), and Paste shows text it never saves.
-   - Possible Java bug (reported, kept, PORT-NOTE): only a Check's explanation goes when its table is
-     removed or changed; a cell's "Why?" stays after its table is deleted.
+   - Java bugs fixed (approved; tests in `test/gui/tables/BugFixes.test.ts`): a data cell's menu's Cut
+     and Copy did nothing on a cell not being edited (no selection), and Paste showed text it never
+     saved (now Copy copies the cell, Cut copies it then sets it to its default, and Paste stores the
+     clipboard's text, as an edit; Cut and Paste need an editable column); and only a Check's
+     explanation went when its table was removed or changed (a cell's "Why?" stayed after its table was
+     deleted).
 8. Importing: the import dialog with its live preview (`ImportChoicesDialog`, `ImporterGUI`, rebuilt), the
    new-table dialog's Import File and Import URL, and the rest of clipboard import and export (pasting
    into an empty cell was done in step 6). Tests: `PropFormat`, `TestExportToCSV`.

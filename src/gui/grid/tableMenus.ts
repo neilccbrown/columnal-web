@@ -1,6 +1,7 @@
 // A table's menus (Java: TableDisplay.getTableHeaderContextMenu, getColumnActions' ColumnHeaderOps,
 // makeRowContextMenu and getMenuItems), as menu data (menus.ts) for the grid's context menu (docs/gui-spec/tables.md).
 import { checkMenuItem, disabled, menu, menuItem, menuItemPos, separator, textItem, type MenuEntry, type MenuItem } from "../components/menus/menus.js";
+import { ignoreClosed } from "../engine/EngineClient.js";
 import type { TableDisplayMode } from "../engine/protocol.js";
 import type { GridTableDisplay } from "./GridTableDisplay.js";
 
@@ -82,12 +83,18 @@ export function rowLabelMenu(display: GridTableDisplay, row: number): MenuEntry[
 }
 
 /**
- * Java: a data cell's context menu (TextEditorBase's), with TableDisplay.getMenuItems' "Why?" for a
- * transformation's calculated cell, which shows how it was calculated (ExplanationDisplay).
+ * Java: a data cell's context menu (TextEditorBase's Cut, Copy and Paste, see GridTableDisplay.copyCell),
+ * with TableDisplay.getMenuItems' "Why?" for a transformation's calculated cell, which shows how it was
+ * calculated (ExplanationDisplay).  Cut and Paste need a column that can be edited (Java enabled Cut
+ * whenever the cell wasn't being edited, and Paste whenever the clipboard had text).
  */
-export function dataCellMenu(display: GridTableDisplay, column: number, why: () => void): MenuEntry[]
+export function dataCellMenu(display: GridTableDisplay, row: number, column: number, why: () => void): MenuEntry[]
 {
-    if (display.info.columnExplainable[column] !== true)
-        return [];
-    return [menuItem("cell.why", why)];
+    const editable = display.info.columnEditable[column] === true;
+    const cut = menuItem("cut", () => void display.cutCell(row, column).catch(ignoreClosed));
+    const paste = menuItem("paste", () => void display.pasteIntoCell(row, column).catch(ignoreClosed));
+    const r: MenuEntry[] = [editable ? cut : disabled(cut), menuItem("copy", () => display.copyCell(row, column)), editable ? paste : disabled(paste)];
+    if (display.info.columnExplainable[column] === true)
+        r.push(separator(), menuItem("cell.why", why));
+    return r;
 }

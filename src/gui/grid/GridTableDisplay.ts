@@ -15,6 +15,7 @@ import { type EngineClient, ignoreClosed } from "../engine/EngineClient.js";
 import type { CellContent, ColumnRecipe, EngineAlert, TableDisplayMode, TableInfo } from "../engine/protocol.js";
 import { writeClipboard } from "../clipboard.js";
 import { TranslationUtility } from "../../engine/utility/utility/TranslationUtility.js";
+import { Log } from "../../engine/utility/log/Log.js";
 import { showAlert } from "../alerts.js";
 import type { CellDisplay } from "./cellDisplay.js";
 import { VersionCounter } from "../store/EngineStore.js";
@@ -281,6 +282,12 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
      */
     public doCopy(bounds: RectangleBounds | null): void
     {
+        void this.copy(bounds).catch(ignoreClosed);
+    }
+
+    // (Done once the clipboard has the cells)
+    private async copy(bounds: RectangleBounds | null): Promise<void>
+    {
         // Java: CheckDisplay.doCopy: "Nothing really to copy"
         if (this.info.check !== null)
             return;
@@ -298,9 +305,9 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
             lastRowIncl: Math.min(this.getBottomRightIncl().rowIndex, bounds.bottomRightIncl.rowIndex) - dataTop,
         };
         const info = this.info;
-        void this.client.request("copy", info.id, info.version, firstColumn, lastColumnIncl, rows)
-            .then(content => content === null ? undefined : writeClipboard(content))
-            .catch(ignoreClosed);
+        const content = await this.client.request("copy", info.id, info.version, firstColumn, lastColumnIncl, rows);
+        if (content !== null)
+            await writeClipboard(content);
     }
 
     /** From GridTable: the data rows on the page, and how the data cells on it are shown. */
@@ -346,6 +353,58 @@ export class GridTableDisplay extends GridArea implements EntireTableSelection.S
             if (result.alert !== null)
                 showAlert(result.alert);
         }).catch(ignoreClosed);
+    }
+
+    // Java: a data cell's context menu's Cut, Copy and Paste (TextEditorBase's), for a cell not being
+    // edited.  PORT-NOTE: bug fix: in Java they acted on the field's selection, which a cell not being
+    // edited doesn't have, so Cut and Copy did nothing, and Paste put text in the cell that was never
+    // saved.  Here Copy copies the cell (as the grid's copy does), Cut copies it then sets it to its
+    // column's default (as Delete does), and Paste stores the clipboard's text in it (as an edit would).
+
+    /** The menu's Copy: the cell copied. */
+    public copyCell(row: number, column: number): void
+    {
+        this.doCopy(this.cellBounds(row, column));
+    }
+
+    /** The menu's Cut: the cell copied, then set to its column's default. */
+    public async cutCell(row: number, column: number): Promise<void>
+    {
+        const bounds = this.cellBounds(row, column);
+        // (The engine copies after any change already asked for, so the copy is waited for)
+        await this.copy(bounds);
+        this.deleteCells(bounds);
+    }
+
+    /** The menu's Paste: the clipboard's text stored in the cell (if it has any, and the cell can be edited). */
+    public async pasteIntoCell(row: number, column: number): Promise<void>
+    {
+        const version = this.info.version;
+        let text: string;
+        try
+        {
+            text = await navigator.clipboard.readText();
+        }
+        catch (e)
+        {
+            Log.log("Pasting from the clipboard", e);
+            return;
+        }
+        if (text === "" || version !== this.info.version)
+            return;
+        // (As editing it: RecogniserDocument's checkEditable)
+        if (!await this.canEdit(row, column))
+        {
+            showAlert({ title: "Error", message: "Cannot edit value on a row with an error in the identifier column." });
+            return;
+        }
+        this.edit(version, row, column, text);
+    }
+
+    private cellBounds(row: number, column: number): RectangleBounds
+    {
+        const position = this.getPosition().offsetByRowCols(GridTableDisplay.HEADER_ROWS + row, column);
+        return new RectangleBounds(position, position);
     }
 
     /**

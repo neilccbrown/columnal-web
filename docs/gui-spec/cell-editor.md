@@ -84,6 +84,10 @@ Web: `src/gui/components/DocumentTextField.vue`, `src/gui/grid/CellEditDocument.
   Java, tables changed on one thread, so this couldn't happen).
 - The first time a cell's text starts with "=" while it's being edited (again if it stops, then starts
   again), the guidance on making a Calculate shows (`tables.md`).
-- A transformation's cell (not being edited) has "Why?" in its context menu, for the columns that have
-  it (`tables.md`'s explanations). Not yet: the menu's Cut, Copy and Paste (Java: `TextEditorBase`'s).
+- A cell's context menu (not being edited): Cut, Copy and Paste, then, for a transformation's columns that
+  have it, "Why?" (`tables.md`'s explanations). Copy copies the cell (as the grid's copy does); Cut
+  copies it then sets it to its column's default (as Delete does); Paste stores the clipboard's text
+  in it, as an edit would (for a transformation, asking whether to make a Manual Edit). Cut and Paste
+  are disabled for a column that can't be edited. (Java's acted on the field's selection, which a cell
+  not being edited doesn't have: Cut and Copy did nothing, and Paste's text was never saved; fixed.)
   Hover text for cut-off values is in `tables.md`; the file is saved after an edit (`projects.md`).

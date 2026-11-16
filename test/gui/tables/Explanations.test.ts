@@ -88,9 +88,10 @@ describe("A cell's \"Why?\"", () =>
     test("is on a Calculate's calculated cells, not the columns it passes through, nor a data table's", async () =>
     {
         await withTransformations();
-        expect(await cellMenu("C", 0, 2)).toEqual(["Why?"]);
-        expect(await cellMenu("C", 0, 0)).toEqual([]);
-        expect(await cellMenu("T", 0, 0)).toEqual([]);
+        // (After the menu's Cut, Copy and Paste)
+        expect(await cellMenu("C", 0, 2)).toEqual(["Cut", "Copy", "Paste", "Why?"]);
+        expect(await cellMenu("C", 0, 0)).not.toContain("Why?");
+        expect(await cellMenu("T", 0, 0)).not.toContain("Why?");
     });
 
     test("shows how the cell was calculated, below it; a location's link selects its cell; the cross closes it", async () =>

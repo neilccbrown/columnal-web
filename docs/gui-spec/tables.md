@@ -206,6 +206,7 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   links ("table:" first if not the source table, the column, and "(row n)"), which select their cell.
   Expressions are dark blue; hovering one that is shown more than once (or the expression it is inside
   that is explained) highlights each appearance, and what is inside them, in royal blue, underlined.
-  The cross, or a middle click on it, closes it; a Check's goes when the Check is removed or changed.
+  The cross, or a middle click on it, closes it; it goes when its table is removed or changed (Java
+  only removed a Check's; fixed).
   `src/gui/grid/ExplanationDisplay.vue`, `src/gui/engine/explanations.ts`, `EngineHost.explanation`.
 - Not yet: R's "Re-evaluate" in the name row (Phase 12).

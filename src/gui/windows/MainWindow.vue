@@ -308,15 +308,14 @@ function selectCheck(id: string): void
 const guidance = shallowRef<Guidance | null>(null);
 let guidanceCount = 0;
 
-// Java: View's explanationDisplay: one at a time, below the cell it is attached to; a Check's goes when
-// the Check is removed or changed (Java: CheckDisplay.cleanupFloatingItems).
-// PORT-NOTE: possible Java bug, kept: only a Check's goes with its table (TableDisplay's cleanup doesn't
-// remove it), so a cell's "Why?" stays after its table is deleted or changed.
+// Java: View's explanationDisplay: one at a time, below the cell it is attached to; it goes when its
+// table is removed or changed (Java: CheckDisplay.cleanupFloatingItems).
+// PORT-NOTE: bug fix: Java only removed a Check's (TableDisplay's cleanup didn't), so a cell's "Why?"
+// stayed after its table was deleted or changed.
 interface ShownExplanation
 {
     readonly table: string;
     readonly version: number;
-    readonly check: boolean;
     // Null while it loads (Java: "Loading..."):
     readonly info: ExplanationInfo | null;
     readonly attachedTo: CellPosition;
@@ -328,7 +327,7 @@ let explanationCount = 0;
 async function explain(display: GridTableDisplay, target: ExplanationTarget, attachedTo: CellPosition): Promise<void>
 {
     const n = ++explanationCount;
-    const shown = { table: display.info.id, version: display.info.version, check: target.kind === "check", attachedTo };
+    const shown = { table: display.info.id, version: display.info.version, attachedTo };
     if (target.kind === "check")
         explanation.value = { ...shown, info: null };
     const result = await engine.client.request("explanation", display.info.id, target);
@@ -340,7 +339,7 @@ async function explain(display: GridTableDisplay, target: ExplanationTarget, att
 watch(engine.tables.tables, tables =>
 {
     const e = explanation.value;
-    if (e !== null && e.check && !tables.some(t => t.id === e.table && t.version === e.version))
+    if (e !== null && !tables.some(t => t.id === e.table && t.version === e.version))
     {
         explanationCount++;
         explanation.value = null;

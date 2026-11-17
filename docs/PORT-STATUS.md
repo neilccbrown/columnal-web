@@ -717,7 +717,7 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 |---|---|---|---|
 | ✅ tests-basic | 17 / 17 | 1783 / 1783 (100%) | 9 / 9 (100%) |
 | ✅ tests-functions | 43 / 43 | 8812 / 8812 (100%) | 74 / 74 (100%) |
-| tests-gui-base | 20 / 26 | 3059 / 4004 (76%) |  |
+| ✅ tests-gui-base | 26 / 26 | 4004 / 4004 (100%) |  |
 | ✅ tests-gui-cell-rw | 1 / 1 | 353 / 353 (100%) | 4 / 4 (100%) |
 | ✅ tests-gui-central | 21 / 21 | 3623 / 3623 (100%) | 46 / 47 (98%) |
 | ✅ tests-gui-dtf | 1 / 1 | 397 / 397 (100%) | 4 / 4 (100%) |
@@ -814,15 +814,15 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 
 | Java | TypeScript | Lines | Status |
 |---|---|---|---|
-| `tests-gui-base/src/testFixtures/java/test/gui/TAppUtil.java` | `test/gui/tests-gui-base/fixtures/gui/TAppUtil.ts` | 110 | – |
-| `tests-gui-base/src/testFixtures/java/test/gui/TFXUtil.java` | `test/gui/tests-gui-base/fixtures/gui/TFXUtil.ts` | 345 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/TAppUtil.java` | `test/gui/tests-gui-base/fixtures/gui/TAppUtil.ts` | 110 | skipped: opens data in a JavaFX MainWindow; test/gui/fixtures/app.ts (renderApp with a saved file) |
+| `tests-gui-base/src/testFixtures/java/test/gui/TFXUtil.java` | `test/gui/tests-gui-base/fixtures/gui/TFXUtil.ts` | 345 | skipped: runs code on the JavaFX and simulation threads; there is one thread (test/gui/base/util.ts has sleep) |
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestEditorCompletion.java` | `test/gui/base/editorCompletion.ts` | 115 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorEntry.java` | `test/gui/base/expressionEditorEntry.ts` | 142 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestExpressionEditorError.java` | `test/gui/base/expressionEditorError.ts` | 305 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/expressionEditor/BaseTestQuickFix.java` | `test/gui/base/quickFix.ts` | 251 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/AutoCompleteTrait.java` | `test/gui/base/autoComplete.ts` | 103 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/CheckCSVTrait.java` | `test/gui/base/checkCSV.ts` | 146 | ✅ |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/CheckWindowBoundsTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/CheckWindowBoundsTrait.ts` | 59 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/CheckWindowBoundsTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/CheckWindowBoundsTrait.ts` | 59 | skipped: checks a JavaFX window is within the screen; dialogs are in the page |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ClickOnTableHeaderTrait.java` | `test/gui/base/clickOnTableHeader.ts` | 65 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ClickTableLocationTrait.java` | `test/gui/base/clickTableLocation.ts` | 88 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ClipboardTrait.java` | `test/gui/base/clipboard.ts` | 50 | ✅ |
@@ -835,11 +835,11 @@ Lines are lines of Java, including licence headers. GUI modules are rebuilt rath
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/FocusOwnerTrait.java` | `test/gui/base/focusOwner.ts` | 58 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ListUtilTrait.java` | `test/gui/base/listUtil.ts` | 64 | ✅ |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/PopupTrait.java` | `test/gui/base/popup.ts` | 62 | ✅ |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/QueryTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/QueryTrait.ts` | 84 | – |
-| `tests-gui-base/src/testFixtures/java/test/gui/trait/ScreenshotTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/ScreenshotTrait.ts` | 35 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/QueryTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/QueryTrait.ts` | 84 | skipped: TestFX node queries; the tests use the DOM's querySelector |
+| `tests-gui-base/src/testFixtures/java/test/gui/trait/ScreenshotTrait.java` | `test/gui/tests-gui-base/fixtures/gui/trait/ScreenshotTrait.ts` | 35 | skipped: TestFX screenshots; Vitest's browser mode takes one on failure |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/ScrollToTrait.java` | `test/gui/base/scrollTo.ts` | 250 | ✅ (parts deferred) |
 | `tests-gui-base/src/testFixtures/java/test/gui/trait/TextFieldTrait.java` | `test/gui/base/textField.ts` | 60 | ✅ |
-| `tests-gui-base/src/testFixtures/java/test/gui/util/FXApplicationTest.java` | `test/gui/tests-gui-base/fixtures/gui/util/FXApplicationTest.ts` | 312 | – |
+| `tests-gui-base/src/testFixtures/java/test/gui/util/FXApplicationTest.java` | `test/gui/tests-gui-base/fixtures/gui/util/FXApplicationTest.ts` | 312 | skipped: TestFX's base class (a JavaFX stage, screenshots on failure, FxRobot's push); Vitest's browser mode, test/gui/fixtures/app.ts and test/gui/base/keyboard.ts |
 
 </details>
 

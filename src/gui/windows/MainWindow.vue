@@ -34,6 +34,7 @@ import type { PickingMode } from "../grid/picking.js";
 import ExportDialog from "./ExportDialog.vue";
 import GotoRowDialog from "./GotoRowDialog.vue";
 import EngineGrid from "../grid/EngineGrid.vue";
+import TaskManagerWindow from "./TaskManagerWindow.vue";
 import { label, t } from "../i18n.js";
 import { useAppContext } from "../project/appContext.js";
 import { ProjectSession } from "../project/ProjectSession.js";
@@ -54,6 +55,7 @@ const recent = shallowRef<readonly ProjectSummary[]>([]);
 const opening = shallowRef(false);
 const savingAs = shallowRef(false);
 const about = shallowRef(false);
+const taskManager = shallowRef(false);
 // When a menu was last opened, for the Save item's "saved Ns ago" (Java: SaveMenuItem re-evaluates it
 // when its menu shows):
 const menuShownAt = shallowRef(Date.now());
@@ -411,6 +413,7 @@ provideTableActions({
     },
     exportTable: display => void exportTable(display).catch(ignoreClosed),
     hatLinkClicked: (display, link, point) => transformations.value?.hatLinkClicked(display, link, point),
+    fixExpression: display => transformations.value?.fixExpression(display.info.id),
     transform: (display, point) => transformations.value?.transform(display, point),
     transformType: (display, column) => transformations.value?.transformType(display, column),
     formulaTyped: display =>
@@ -497,7 +500,7 @@ function saveItem(): MenuItem
 }
 
 // (Java's Exit is left out: closing the tab does it.)
-// PORT-DEFERRED: Edit's Settings (Phase 12, with R), and the View menu's Task Manager (Phase 11 step 9).
+// PORT-DEFERRED: Edit's Settings (Phase 12, with R).
 // (Java's Find is commented out.)
 const menus = computed(() => [
     menu("menu.project",
@@ -516,6 +519,7 @@ const menus = computed(() => [
         separator(),
         menuItem("menu.view.types", () => void openTypesDialog("types").catch(ignoreClosed)),
         menuItem("menu.view.units", () => void openTypesDialog("units").catch(ignoreClosed)),
+        menuItem("menu.view.tasks", () => { taskManager.value = true; }),
         separator(),
         // Java: radio menu items
         checkMenuItem("menu.view.nopane", leftPane.value === "none", () => { leftPane.value = "none"; }),
@@ -592,6 +596,7 @@ defineExpose({
       @chosen="saveAs"
     />
     <AboutDialog v-model:open="about" />
+    <TaskManagerWindow v-model:open="taskManager" />
     <NewTableDialog
       v-model:open="newTableOpen"
       :centre-on="newTable?.point ?? null"

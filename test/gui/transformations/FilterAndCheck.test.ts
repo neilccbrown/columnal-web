@@ -131,7 +131,7 @@ describe("Filter", () =>
     {
         const a = await start((mgr, parse) =>
         {
-            mgr.record(new Filter(mgr, named("Filt A", 1, 10), new TableId("T"), parse("A > 1")));
+            mgr.record(new Filter(mgr, named("Filt A", 8, 1), new TableId("T"), parse("A > 1")));
             mgr.record(new Filter(mgr, named("Mine", 6, 10), new TableId("T"), parse("A > 1")));
         });
         await userEvent.click(await vi.waitUntil(() => hatExpression("Filt A", "A > 1")));
@@ -287,5 +287,40 @@ describe("Check", () =>
         await userEvent.click(menu.querySelector(".id-tableDisplay-menu-delete")!);
         await vi.waitUntil(() => checks(a).length === 0);
         await vi.waitUntil(() => document.querySelector(".status-bar") === null);
+    });
+});
+
+// Java: TableDisplay.fixExpressionLink, in the table's error (TableErrorDisplay).  (A Check's type error
+// shows as its result, with no link: Java's CheckDisplay isn't a TableDisplay.)
+describe("A table's error's Edit expression", () =>
+{
+    const fixLink = (table: string): HTMLElement | null => document.querySelector(`[data-table="${table}"] .table-error .fix-expression-link`);
+
+    test("a Filter whose expression has a type error shows it, with Edit expression, which edits the expression (no header) and replaces it, not renaming the Filter", async () =>
+    {
+        const a = await start((mgr, parse) =>
+        {
+            // (Named as automatic, so an edit from the hat would rename it)
+            mgr.record(new Filter(mgr, named("Filt A", 8, 1), new TableId("T"), parse("A = \"x\"")));
+            // A Filter that isn't a Boolean has an error, but not one in the expression's types:
+            mgr.record(new Filter(mgr, named("G", 8, 5), new TableId("T"), parse("A + 1")));
+        });
+        await vi.waitUntil(() => fixLink("Filt A") !== null, { timeout: 5000 });
+        expect(document.querySelector('[data-table="Filt A"] .table-error')?.textContent).toContain("Type mismatch");
+        await vi.waitUntil(() => document.querySelector('[data-table="G"] .table-error') !== null, { timeout: 5000 });
+        expect(document.querySelector('[data-table="G"] .table-error')?.textContent).toContain("Required Boolean type");
+        expect(fixLink("G")).toBeNull();
+        await userEvent.click(fixLink("Filt A")!);
+        await vi.waitUntil(() => editorFocused(), { timeout: 5000 });
+        expect(editorText()).toBe("A=\"x\"");
+        expect(document.querySelector(".edit-expression-top-message")).toBeNull();
+        await selectAll();
+        await write("B>1");
+        await userEvent.click(document.querySelector(".ok-button")!);
+        await vi.waitUntil(() => filters(a).some(f => saved(f.getFilterExpression()) === "column\\\\B > 1"), { timeout: 5000 });
+        const fixed = filters(a).find(f => saved(f.getFilterExpression()) === "column\\\\B > 1")!;
+        expect(fixed.getId().getRaw()).toBe("Filt A");
+        // The error goes, and the rows show:
+        await vi.waitUntil(() => document.querySelector('[data-table="Filt A"] .table-error') === null && document.querySelectorAll('[data-table="Filt A"] .cell').length === 4, { timeout: 5000 });
     });
 });

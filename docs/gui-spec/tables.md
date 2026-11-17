@@ -71,8 +71,8 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   default value in each row ("Error adding column" if it fails). "↓" adds a row of default values.
 - Selecting an arrow's cell and pressing Enter does the same.
 - After a change, the tables that depend on the table are re-run, and the project is saved (so Undo goes back
-  to before it). A Calculate's "⟶" opens the column expression dialog for a new column
-  (`transformations.md`). Not yet: Aggregate's arrows (Phase 11).
+  to before it). A Calculate's or Aggregate's "⟶" opens the column expression dialog for a new column
+  (`transformations.md`).
 
 ## The table name
 
@@ -160,8 +160,19 @@ The table's parts of the grid (step 5): Java `app/.../TableDisplay.java`, `Table
   translucent rectangle with a 3 px outline) with a curved green arrow from its centre to where the pointer
   was (Java: `TableHighlights`, SOURCE), until the pointer leaves the name.
 - Clicking the parts edits the transformation (`transformations.md`): the source table's name picks a new
-  source; a Filter's or Check's expression, or a Calculate's column, opens its dialog. Not yet: the other
-  parts' dialogs (Phase 11; R's, Phase 12).
+  source; the others open their dialogs. Not yet: R's (Phase 12).
+
+## A table's error
+
+- When a table's columns or rows can't be worked out (e.g. a transformation in error), its error shows over
+  where its data would be, white on dark red (Java: `TableErrorDisplay`); the table has no rows. Java
+  caught an error from counting the rows as well as from making the columns (`watchForError_`); the port
+  showed only the latter, so a Filter whose expression was in error showed no rows and no error (fixed in
+  Phase 11 step 9).
+- An error in the types of a Filter's expression ends "Edit expression" (Java: `fixExpressionLink`), which
+  opens the expression's dialog with no header ("Keep rows where:"); OK replaces the expression, not
+  renaming the Filter ("Error applying fix" if it fails). A Check's error shows as its result instead
+  (Java's `CheckDisplay` has no link).
 
 ## Hover text
 

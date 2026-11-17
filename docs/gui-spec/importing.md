@@ -74,6 +74,6 @@ dialogs, for the engine), `src/engine/importers/importers/gui/ImporterGUI.ts` (t
 
 - The engine (in a Web Worker) has no DOM, so the page parses an HTML file, and reads the table picked,
   for the engine (`HTMLImporter.prepareForPicking` and `readTable`; `ImporterDialogs.pickHTMLTable`).
-- Not yet: dragging the area near the grid's edge doesn't scroll it (Java nudged it); the split between
+- Not yet (Phase 13): dragging the area near the grid's edge doesn't scroll it (Java nudged it); the split between
   the original and the preview can't be moved (Java's SplitPane).
 - A downloaded link must allow the page to read it (CORS); Java could download any.

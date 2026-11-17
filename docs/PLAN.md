@@ -1251,6 +1251,26 @@ Steps (each a checkpoint with the project owner):
      between the grids can't be moved.
 9. Tidy up: the View menu's Task Manager (`TaskManagerWindow`, listing the engine's `Workers` tasks),
    PORT-STATUS, `docs/gui-spec/`, and carry-overs to Phase 12 or 13.
+   - Done: `src/gui/windows/TaskManagerWindow.vue` (the View menu's Task Manager, Alt+Shift+Esc; the
+     engine's `tasks`), and step 3's carry-over, a Filter's error's "Edit expression"
+     (`TableDisplay.fixExpressionLink`: `TableInfo.errorFixable`, the engine's `fixExpression`, and the
+     Filter's dialog without its header). PORT-STATUS: TestFX's infrastructure in `tests-gui-base`
+     (`FXApplicationTest`, `TAppUtil`, `TFXUtil`, `QueryTrait`, `ScreenshotTrait`,
+     `CheckWindowBoundsTrait`) is marked skipped, as Vitest's browser mode and `test/gui/fixtures` replace
+     it. `docs/gui-spec/`: `projects.md` (the Task Manager), `tables.md` (a table's error, and stale "Not
+     yet"s). Tests: `test/gui/windows/TaskManager.test.ts`, and `FilterAndCheck.test.ts`'s "Edit
+     expression".
+   - Port gap fixed: an error from counting a table's rows (e.g. a Filter whose expression is in error,
+     which Java's Filter only throws once) was only an unhandled rejection in the page, so the table showed
+     no rows and no error; now the engine keeps it and the table shows it (Java: `watchForError_`).
+   - The two `propEnterColumn` failures found in steps 3 and 6 (seeds -1024209383 and -2117298089) were in
+     the test helper `write`: a first character not on a US keyboard (a private-use one that shows as
+     nothing, and one outside the BMP) was inserted as text, which does nothing on the grid (it isn't
+     editable), so the edit started with the next character. It now sends such a character to the grid as
+     the key pressed. Both seeds pass.
+   - Carried over to Phase 13: in the import dialog, dragging the area near the grid's edge doesn't scroll
+     it, and the split between the original and the preview can't be moved (step 8); the GUI tests seen to
+     fail now and then and pass when rerun alone (`testPos11`, `propTestInsertRow`).
 
 ### Phase 12: R support via webR
 - Lazy-load webR. Replace `RExecution` with a webR backend that uses the ported
@@ -1262,7 +1282,10 @@ Steps (each a checkpoint with the project owner):
 **Tests:** `tests-gui-r`.
 
 ### Phase 13: Polish and release
-- Performance profiling on large tables; consider moving the engine to a Web Worker.
+- Performance profiling on large tables (the engine already runs in a Web Worker, as decided after Phase 7's spike).
+- From Phase 11 (`docs/gui-spec/importing.md`): in the import dialog, scrolling when the area is dragged
+  near the grid's edge, and a movable split between the original and the preview.
+- The GUI tests that fail now and then but pass when rerun alone (`testPos11`, `propTestInsertRow`).
 - Accessibility audit, PWA/offline support, and cross-browser testing (Chrome, Firefox,
   Safari).
 - Deploy as a static site (for example GitHub Pages).

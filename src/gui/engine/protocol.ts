@@ -28,6 +28,9 @@ export interface TableInfo
     readonly columnStyles: readonly (readonly string[])[];
     // The error if the table's columns can't be found (e.g. a transformation that failed):
     readonly error: string | null;
+    // Whether the error is in an expression's types (a Filter's), which "Edit expression" fixes (Java:
+    // ExpressionErrorException, TableDisplay.fixExpressionLink):
+    readonly errorFixable: boolean;
     // Which columns are shown (Java: Table.getShowColumns; the column lists above are of those shown):
     readonly display: TableDisplayMode;
     // The columns a CUSTOM display hides (Java: the display's list, kept while another display shows):
@@ -255,6 +258,14 @@ export type HatEditPart = "expression" | "calculateColumn" | "sortBy" | "splitBy
 /** A way to make a transformation from a column (Java: TableDisplay's column recipes). */
 export type ColumnRecipe = "sum" | "average" | "frequency" | "sort";
 
+/** A task waiting or running in the engine (Java: Workers.WorkInfo, as TaskManagerWindow shows it). */
+export interface TaskInfo
+{
+    readonly name: string;
+    // The priority's name (Java: Workers.Priority's toString), e.g. "FETCH"
+    readonly priority: string;
+}
+
 /** An exporter, as the export dialog lists it (Java: Exporter.getName and getSupportedFileTypes). */
 export interface ExporterInfo
 {
@@ -473,6 +484,11 @@ export interface EngineApi
      * the suggested name, and the hat's expression link, renaming if the old name was automatic).
      */
     setFilterExpression(id: string, expression: string, rename: RenameOnEditKind): EngineAlert | null;
+    /**
+     * Replaces the expression in the table's error (Java: fixExpressionLink, the error's
+     * EditableExpression.replaceExpression), not renaming the table; an alert if it failed.
+     */
+    fixExpression(id: string, expression: string): EngineAlert | null;
     /** Sets a Check's type and expression, saved as in a file (Java: the hat's editCheckLink). */
     setCheck(id: string, checkType: CheckTypeName, expression: string): EngineAlert | null;
     /** Makes a Check of the source table at the position (Java: the new-table dialog's Check). */
@@ -596,13 +612,15 @@ export interface EngineApi
      * has on the page), from shownFirst on; or null if the table has been replaced.
      */
     deleteCells(id: string, version: number, firstColumn: number, lastColumnIncl: number, firstRow: number, lastRowIncl: number, shownFirstRow: number, shownLastRowExcl: number): { readonly shownFirst: number, readonly cells: readonly (readonly CellContent[])[], readonly alert: EngineAlert | null } | null;
+    /** The engine's tasks, running then waiting, in order (Java: Workers.getTaskList). */
+    tasks(): readonly TaskInfo[];
     /** Answers once the engine has no work waiting (after everything requested before it). */
     idle(): Promise<void>;
 }
 
 export type EngineMethod = keyof EngineApi;
 // (The engine only answers these, whatever a message names)
-export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "pasteTable", "importers", "importFile", "importChoice", "importSource", "importDest", "importClose", "htmlTablePicked", "rTablesPicked", "importerPicked", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "explanation", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "idle"]);
+export const ENGINE_METHODS: ReadonlySet<string> = new Set<EngineMethod>(["load", "save", "typeInfo", "setTypeInfo", "addComment", "setCommentContent", "setCommentBottomRight", "removeComment", "createDataTable", "pasteTable", "importers", "importFile", "importChoice", "importSource", "importDest", "importClose", "htmlTablePicked", "rTablesPicked", "importerPicked", "addColumn", "appendRows", "insertRows", "deleteRows", "renameTable", "deleteTable", "deleteColumn", "columnDetails", "columnLookup", "createTransformation", "transformationDetails", "setSort", "setJoin", "setConcatenate", "toggleConcatenateMarker", "setHiddenColumns", "setFilterExpression", "fixExpression", "setCheck", "createCheck", "setSource", "calculateColumn", "setCalculateColumn", "moveCalculateColumn", "setAggregateColumn", "setAggregateSplitBy", "typeTransforms", "createTypeTransform", "createManualEditFromPrompt", "setManualEditIdentifier", "setManualEditEntries", "explanation", "editColumn", "setDisplay", "recipe", "copyAllValues", "exporters", "exportTable", "length", "rows", "copy", "setPosition", "canEdit", "edit", "deleteCells", "tasks", "idle"]);
 
 export type EngineEvent =
     // The list of tables changed, or a table in it was replaced:

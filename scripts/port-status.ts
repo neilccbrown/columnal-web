@@ -152,6 +152,13 @@ const SKIPPED = new Map<string, string>([
     ["stf/src/main/java/xyz/columnal/gui/stable/ColumnSelection.java", "entirely commented out in Java"],
     ["tests-gui-central/src/test/java/test/MatcherUtil.java", "Hamcrest matchers over JavaFX nodes' style classes; BlankMainWindow.test.ts checks the elements' classes itself"],
     ["tests-gui-central/src/test/java/test/TestInfrastructure.java", "checks Java runs on JDK 17 (for junit-quickcheck's random numbers)"],
+    // TestFX's infrastructure, which Vitest's browser mode replaces:
+    ["tests-gui-base/src/testFixtures/java/test/gui/util/FXApplicationTest.java", "TestFX's base class (a JavaFX stage, screenshots on failure, FxRobot's push); Vitest's browser mode, test/gui/fixtures/app.ts and test/gui/base/keyboard.ts"],
+    ["tests-gui-base/src/testFixtures/java/test/gui/TAppUtil.java", "opens data in a JavaFX MainWindow; test/gui/fixtures/app.ts (renderApp with a saved file)"],
+    ["tests-gui-base/src/testFixtures/java/test/gui/TFXUtil.java", "runs code on the JavaFX and simulation threads; there is one thread (test/gui/base/util.ts has sleep)"],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/QueryTrait.java", "TestFX node queries; the tests use the DOM's querySelector"],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/ScreenshotTrait.java", "TestFX screenshots; Vitest's browser mode takes one on failure"],
+    ["tests-gui-base/src/testFixtures/java/test/gui/trait/CheckWindowBoundsTrait.java", "checks a JavaFX window is within the screen; dialogs are in the page"],
 ]);
 
 function withStatus(f: FileStatus): FileStatus

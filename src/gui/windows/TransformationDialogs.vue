@@ -8,7 +8,7 @@
 import { markRaw, shallowRef, watch } from "vue";
 import type { CellPosition } from "../../engine/data/data/CellPosition.js";
 import type { TypeState } from "../../engine/expressions/transformations/expression/TypeState.js";
-import { CallExpression, IdentExpression } from "../../engine/expressions/transformations/expression/Expressions.js";
+import { CallExpression, IdentExpression, type Expression } from "../../engine/expressions/transformations/expression/Expressions.js";
 import { TypeExpression } from "../../engine/expressions/transformations/expression/type/TypeExpressions.js";
 import { FunctionList } from "../../engine/functions/transformations/function/FunctionList.js";
 import { GetOptionalOrDefault } from "../../engine/functions/transformations/function/optional/GetOptionalOrDefault.js";
@@ -508,11 +508,14 @@ interface FilterFor
 {
     readonly table: string;
     readonly expression: string;
-    readonly lookup: ColumnLookupCopy;
+    readonly lookup: Expression.ColumnLookup;
+    readonly makeTypeState: () => TypeState;
     readonly typeManager: TypeManager;
     readonly selectAll: boolean;
     readonly rename: RenameOnEditKind;
     readonly centreOn: Point | null;
+    // A Filter's error's fix (fixExpressionLink: no header, and the expression in error is replaced):
+    readonly fix: boolean;
 }
 const filterFor = shallowRef<FilterFor | null>(null);
 const filterOpen = shallowRef(false);
@@ -524,20 +527,36 @@ async function openFilterDialog(table: string, selectAll: boolean, rename: Renam
     const typeManager = markRaw(await copyTypeManager(engine.client));
     // Java: MultipleTableLookup(filter.getId(), mgr, filter.getSrcTableId(), null)
     const lookup = markRaw(new ColumnLookupCopy(await engine.client.request("columnLookup", table, details.src), typeManager, null));
-    filterFor.value = { table, expression: details.expression, lookup, typeManager, selectAll, rename, centreOn };
+    // Java: Filter.makeTypeState
+    filterFor.value = { table, expression: details.expression, lookup, makeTypeState: () => Filter.makeTypeState(typeManager), typeManager, selectAll, rename, centreOn, fix: false };
     filterOpen.value = true;
 }
 
-// Java: Filter.makeTypeState
-function filterTypeState(): TypeState
+/**
+ * Java: TableDisplay.fixExpressionLink: EditExpressionDialog (with no header) for the expression of a
+ * Filter whose type is in error, with its EditableExpression's lookup and type state.  (Check's
+ * EditableExpression is never offered: Java's CheckDisplay shows its error as the result.)
+ */
+async function fixExpression(table: string): Promise<void>
 {
-    return Filter.makeTypeState(filterFor.value!.typeManager);
+    const details = await engine.client.request("transformationDetails", table);
+    if (details?.kind !== "filter")
+        return;
+    const typeManager = markRaw(await copyTypeManager(engine.client));
+    const lookup = markRaw(new ColumnLookupCopy(await engine.client.request("columnLookup", table, details.src), typeManager, null));
+    filterFor.value = { table, expression: details.expression, lookup, makeTypeState: () => Filter.makeTypeState(typeManager), typeManager, selectAll: false, rename: "UNNEEDED", centreOn: null, fix: true };
+    filterOpen.value = true;
 }
 
 function filterChosen(expression: string): void
 {
     const target = filterFor.value;
-    if (target !== null)
+    if (target === null)
+        return;
+    // Java: fixExpressionLink's alertOnError_ ("error.applying.fix")
+    if (target.fix)
+        void engine.client.request("fixExpression", target.table, expression).then(alertIfAny).catch(ignoreClosed);
+    else
         void engine.client.request("setFilterExpression", target.table, expression, target.rename).then(alertIfAny).catch(ignoreClosed);
 }
 
@@ -753,6 +772,7 @@ defineExpose({
     newCheck,
     transform,
     hatLinkClicked: (display: GridTableDisplay, link: HatLink, point: Point) => void hatLinkClicked(display, link, point).catch(ignoreClosed),
+    fixExpression: (table: string) => void fixExpression(table).catch(ignoreClosed),
     // Java: TableDisplay.addColumnBefore_Calc (from the add-column arrows and the column menu)
     addCalculateColumn: (display: GridTableDisplay) => void openCalculateColumnDialog(display, null, "IF_OLD_AUTO").catch(ignoreClosed),
     // Java: TransformationEdits.editColumn_Calc (a Calculate's columns' headers)
@@ -859,11 +879,11 @@ defineExpose({
     v-model:open="filterOpen"
     :type-manager="filterFor.typeManager"
     :column-lookup="filterFor.lookup"
-    :make-type-state="filterTypeState"
+    :make-type-state="filterFor.makeTypeState"
     :expected-type="DataType.BOOLEAN"
     :initial-expression="filterFor.expression"
     :select-all="filterFor.selectAll"
-    top-message-key="filter.header"
+    :top-message-key="filterFor.fix ? null : 'filter.header'"
     :centre-on="filterFor.centreOn"
     @ok="filterChosen"
     @picking="mode => dialogPicking('column', mode)"

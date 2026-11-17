@@ -49,7 +49,7 @@ import { ErrorHandler } from "../../engine/utility/log/ErrorHandler.js";
 import { IdentifierUtility } from "../../engine/utility/utility/IdentifierUtility.js";
 import { Utility } from "../../engine/utility/utility/Utility.js";
 import { TableHat } from "../../gui-logic/app/gui/table/app/TableHat.js";
-import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type TypeTransformInfo, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExplanationInfo, type ExplanationTarget, type ExporterInfo, type ImportChoiceChange, type ImporterInfo, type ImportPreview, type ImportTrim, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type ToEngine, type TypeInfo } from "./protocol.js";
+import { ENGINE_METHODS, type CellContent, type ColumnLookupInfo, type CheckResultInfo, type CheckTypeName, type ColumnRecipe, type RenameOnEditKind, type SortDirectionName, type TransformationDetails, type TransformationKind, type TypeTransformInfo, type EditResult, type EngineAlert, type EngineApi, type EngineError, type EngineEvent, type ExplanationInfo, type ExplanationTarget, type ExporterInfo, type ImportChoiceChange, type ImporterInfo, type ImportPreview, type ImportTrim, type FromEngine, type LoadResult, type NewColumnDetails, type TableDisplayMode, type TableInfo, type TaskInfo, type ToEngine, type TypeInfo } from "./protocol.js";
 import { columnLookupInfo } from "./columnLookupInfo.js";
 import { typeTransforms } from "./typeTransforms.js";
 import { entryInfo, manualEditEntries, type ManualEditEntry } from "./manualEditEntries.js";
@@ -57,6 +57,7 @@ import { ComparableEither } from "../../engine/utility-adt/utility/adt/Comparabl
 import { Decimal } from "../../engine/java/JavaBigDecimal.js";
 import ComparableValue = DataTypeUtility.ComparableValue;
 import { RenameOnEdit } from "../../engine/data/data/RenameOnEdit.js";
+import { ExpressionErrorException } from "../../engine/transformations/error/expressions/ExpressionErrorException.js";
 import { BracketedStatus } from "../../engine/expressions/transformations/expression/BracketedStatus.js";
 import { ExpressionUtil } from "../../engine/expressions/transformations/expression/ExpressionUtil.js";
 import { HashMap } from "../../engine/java/HashMap.js";
@@ -106,6 +107,9 @@ export class EngineHost implements EngineApi
     // Each table's columns shown (Java: TableDisplay.columnDisplay, which the table gives its display
     // when it is set, and which the display changes):
     private readonly displays = new Map<Table, Pair<Table.Display, readonly ColumnId[]>>();
+    // The error from counting a table's rows, if any (Java: TableDisplay.watchForError_, the table's
+    // errorMessage), which its info then gives:
+    private readonly rowErrors = new WeakMap<Table, unknown>();
     // The comments, with the ids the GUI knows them by:
     private readonly comments = new Map<GridComment, string>();
     private nextCommentId = 1;
@@ -656,6 +660,37 @@ export class EngineHost implements EngineApi
     }
 
     // Java: TableHat's editCheckLink
+    public fixExpression(id: string, expression: string): EngineAlert | null
+    {
+        const table = this.tables.get(id)?.table;
+        if (table === undefined)
+            return null;
+        // (The error shown: a Filter's is only thrown once, when its rows are counted)
+        let error = this.rowErrors.get(table);
+        try
+        {
+            table.getData();
+        }
+        catch (e)
+        {
+            error = e;
+        }
+        if (!(error instanceof ExpressionErrorException))
+            return null;
+        const fixer = error.editableExpression;
+        try
+        {
+            const newExp = this.loadExpression(expression);
+            // (Java: "we'll live without rename on fix")
+            this.tableManager.edit(table, () => fixer.replaceExpression(newExp), RenameOnEdit.UNNEEDED);
+            return null;
+        }
+        catch (e)
+        {
+            return alertFor("error.applying.fix", e);
+        }
+    }
+
     public setCheck(id: string, checkType: CheckTypeName, expression: string): EngineAlert | null
     {
         const check = this.tables.get(id)?.table;
@@ -1362,7 +1397,26 @@ export class EngineHost implements EngineApi
 
     public length(id: string, version: number): number | null
     {
-        return this.current(id, version)?.getData().getLength() ?? null;
+        const table = this.current(id, version);
+        if (table === null)
+            return null;
+        try
+        {
+            return table.getData().getLength();
+        }
+        catch (e)
+        {
+            // Java: TableDisplay's "Determining row count", in watchForError_: the error is shown on the
+            // table (its rows stay as found before it; here none)
+            if (!(e instanceof UserException || e instanceof InternalException))
+                throw e;
+            if (!this.rowErrors.has(table))
+            {
+                this.rowErrors.set(table, e);
+                this.tablesChanged();
+            }
+            return 0;
+        }
     }
 
     public rows(id: string, version: number, firstRow: number, lastRowExcl: number): Promise<readonly (readonly CellContent[])[] | null>
@@ -1376,6 +1430,11 @@ export class EngineHost implements EngineApi
                 setTimeout(() => this.runRowsRequests(), 0);
             }
         });
+    }
+
+    public tasks(): readonly TaskInfo[]
+    {
+        return Workers.getTaskList().map(w => ({ name: w.taskName, priority: Workers.Priority[w.priority] }));
     }
 
     public idle(): Promise<void>
@@ -1557,6 +1616,7 @@ export class EngineHost implements EngineApi
         let columnAfter: (string | null)[] = [];
         let someAltered = false;
         let error: string | null = null;
+        let errorFixable = false;
         const operations = table.getOperations();
         try
         {
@@ -1581,6 +1641,13 @@ export class EngineHost implements EngineApi
         catch (e)
         {
             error = toEngineError(e).message;
+            errorFixable = e instanceof ExpressionErrorException;
+        }
+        if (error === null && this.rowErrors.has(table))
+        {
+            const e = this.rowErrors.get(table);
+            error = toEngineError(e).message;
+            errorFixable = e instanceof ExpressionErrorException;
         }
         const position = this.positions.get(table);
         return {
@@ -1597,6 +1664,7 @@ export class EngineHost implements EngineApi
             canAppendRows: error === null && operations.appendRows !== null,
             canAddColumn: error === null && (table instanceof ImmediateDataSource || table instanceof Calculate || table instanceof Aggregate),
             error,
+            errorFixable,
             display: Table.Display[this.displays.get(table)?.getFirst() ?? Table.Display.ALL] as TableDisplayMode,
             hiddenColumns: (this.displays.get(table)?.getSecond() ?? []).map(c => c.getRaw()),
             someAltered,

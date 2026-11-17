@@ -33,6 +33,9 @@ export interface TableActions
     // Java: View.showExplanationDisplay, for a Check's result (CheckDisplay.showExplanation) or a
     // transformation's cell ("Why?"), below the cell it is attached to
     explain(display: GridTableDisplay, target: ExplanationTarget, attachedTo: CellPosition): void;
+    // Java: TableDisplay.fixExpressionLink, the table's error's "Edit expression": EditExpressionDialog for
+    // the expression in error, which then replaces it
+    fixExpression(display: GridTableDisplay): void;
 }
 
 const TABLE_ACTIONS: InjectionKey<TableActions> = Symbol("tableActions");

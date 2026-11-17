@@ -331,6 +331,13 @@ watchEffect(() =>
       class="table-error"
     >
       {{ display.info.error }}
+      <template v-if="display.info.errorFixable">
+        <br>
+        <span
+          class="fix-expression-link"
+          @click="event => { if (event.button === 0) tableActions?.fixExpression(display); }"
+        >Edit expression</span>
+      </template>
     </div>
     <div
       v-if="!collapsed && display.info.check === null"
@@ -588,6 +595,10 @@ watchEffect(() =>
     color: white;
     background: rgb(110 29 7);
     font-size: 80%;
+}
+.fix-expression-link {
+    text-decoration: underline;
+    cursor: pointer;
 }
 .row-labels-area {
     position: absolute;
